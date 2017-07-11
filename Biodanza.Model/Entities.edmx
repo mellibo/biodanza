@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BiodanzaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ColeccionMusica">
+          <Key>
+            <PropertyRef Name="IdColeccion" />
+          </Key>
+          <Property Name="IdColeccion" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar(max)" Nullable="false" />
+          <Property Name="Carpeta" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ejercicios">
+          <Key>
+            <PropertyRef Name="IdEjercicio" />
+          </Key>
+          <Property Name="IdEjercicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar(max)" Nullable="false" />
+          <Property Name="IdGrupo" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" Nullable="false" />
+          <Property Name="Objetivo" Type="varchar(max)" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar(max)" Nullable="false" />
+          <Property Name="Detalle" Type="varchar(max)" />
+          <Property Name="Notas" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="GrupoEjercicio">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar(max)" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Interpretes">
+          <Key>
+            <PropertyRef Name="Interprete" />
+          </Key>
+          <Property Name="Interprete" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="NombreCorrecto" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Musica">
+          <Key>
+            <PropertyRef Name="IdMusica" />
+          </Key>
+          <Property Name="IdMusica" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdColeccion" Type="int" Nullable="false" />
+          <Property Name="NroCd" Type="int" Nullable="false" />
+          <Property Name="NroPista" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar(max)" Nullable="false" />
+          <Property Name="Interprete" Type="varchar(max)" Nullable="false" />
+          <Property Name="T" Type="bit" />
+          <Property Name="A" Type="bit" />
+          <Property Name="V" Type="bit" />
+          <Property Name="S" Type="bit" />
+          <Property Name="C" Type="bit" />
+          <Property Name="M" Type="bit" />
+          <Property Name="Duracion" Type="time" Precision="7" />
+          <Property Name="Archivo" Type="varchar" MaxLength="500" />
+          <Property Name="Carpeta" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="MusicaEjercicio">
+          <Key>
+            <PropertyRef Name="IdMusica" />
+            <PropertyRef Name="IdEjercicio" />
+          </Key>
+          <Property Name="IdMusica" Type="int" Nullable="false" />
+          <Property Name="IdEjercicio" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Ejercicios_GrupoEjercicio">
+          <End Role="GrupoEjercicio" Type="Self.GrupoEjercicio" Multiplicity="1" />
+          <End Role="Ejercicios" Type="Self.Ejercicios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrupoEjercicio">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Ejercicios">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Musica_ColeccionMusica">
+          <End Role="ColeccionMusica" Type="Self.ColeccionMusica" Multiplicity="1" />
+          <End Role="Musica" Type="Self.Musica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColeccionMusica">
+              <PropertyRef Name="IdColeccion" />
+            </Principal>
+            <Dependent Role="Musica">
+              <PropertyRef Name="IdColeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MusicaEjercicio_Ejercicio">
+          <End Role="Ejercicios" Type="Self.Ejercicios" Multiplicity="1" />
+          <End Role="MusicaEjercicio" Type="Self.MusicaEjercicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ejercicios">
+              <PropertyRef Name="IdEjercicio" />
+            </Principal>
+            <Dependent Role="MusicaEjercicio">
+              <PropertyRef Name="IdEjercicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MusicaEjercicio_Musica">
+          <End Role="Musica" Type="Self.Musica" Multiplicity="1" />
+          <End Role="MusicaEjercicio" Type="Self.MusicaEjercicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musica">
+              <PropertyRef Name="IdMusica" />
+            </Principal>
+            <Dependent Role="MusicaEjercicio">
+              <PropertyRef Name="IdMusica" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BiodanzaModelStoreContainer">
+          <EntitySet Name="ColeccionMusica" EntityType="Self.ColeccionMusica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ejercicios" EntityType="Self.Ejercicios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GrupoEjercicio" EntityType="Self.GrupoEjercicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Interpretes" EntityType="Self.Interpretes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Musica" EntityType="Self.Musica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MusicaEjercicio" EntityType="Self.MusicaEjercicio" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ejercicios_GrupoEjercicio" Association="Self.FK_Ejercicios_GrupoEjercicio">
+            <End Role="GrupoEjercicio" EntitySet="GrupoEjercicio" />
+            <End Role="Ejercicios" EntitySet="Ejercicios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Musica_ColeccionMusica" Association="Self.FK_Musica_ColeccionMusica">
+            <End Role="ColeccionMusica" EntitySet="ColeccionMusica" />
+            <End Role="Musica" EntitySet="Musica" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MusicaEjercicio_Ejercicio" Association="Self.FK_MusicaEjercicio_Ejercicio">
+            <End Role="Ejercicios" EntitySet="Ejercicios" />
+            <End Role="MusicaEjercicio" EntitySet="MusicaEjercicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MusicaEjercicio_Musica" Association="Self.FK_MusicaEjercicio_Musica">
+            <End Role="Musica" EntitySet="Musica" />
+            <End Role="MusicaEjercicio" EntitySet="MusicaEjercicio" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BiodanzaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ColeccionMusica">
+          <Key>
+            <PropertyRef Name="IdColeccion" />
+          </Key>
+          <Property Name="IdColeccion" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Carpeta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Musicas" Relationship="BiodanzaModel.FK_Musica_ColeccionMusica" FromRole="ColeccionMusica" ToRole="Musica" />
+        </EntityType>
+        <EntityType Name="Ejercicio">
+          <Key>
+            <PropertyRef Name="IdEjercicio" />
+          </Key>
+          <Property Name="IdEjercicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdGrupo" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Objetivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Detalle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Notas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="GrupoEjercicio" Relationship="Self.FK_Ejercicios_GrupoEjercicio" FromRole="Ejercicios" ToRole="GrupoEjercicio" />
+          <NavigationProperty Name="Musicas" Relationship="Self.MusicaEjercicio" FromRole="Ejercicios" ToRole="Musica" />
+        </EntityType>
+        <EntityType Name="GrupoEjercicio">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Ejercicios" Relationship="Self.FK_Ejercicios_GrupoEjercicio" FromRole="GrupoEjercicio" ToRole="Ejercicios" />
+        </EntityType>
+        <EntityType Name="Musica">
+          <Key>
+            <PropertyRef Name="IdMusica" />
+          </Key>
+          <Property Name="IdMusica" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdColeccion" Type="Int32" Nullable="false" />
+          <Property Name="NroCd" Type="Int32" Nullable="false" />
+          <Property Name="NroPista" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Interprete" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="T" Type="Boolean" />
+          <Property Name="A" Type="Boolean" />
+          <Property Name="V" Type="Boolean" />
+          <Property Name="S" Type="Boolean" />
+          <Property Name="C" Type="Boolean" />
+          <Property Name="M" Type="Boolean" />
+          <Property Name="Duracion" Type="Time" Precision="7" />
+          <NavigationProperty Name="Ejercicios" Relationship="Self.MusicaEjercicio" FromRole="Musica" ToRole="Ejercicios" />
+          <NavigationProperty Name="ColeccionMusica" Relationship="BiodanzaModel.FK_Musica_ColeccionMusica" FromRole="Musica" ToRole="ColeccionMusica" />
+          <Property Name="Archivo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Carpeta" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Ejercicios_GrupoEjercicio">
+          <End Role="GrupoEjercicio" Type="Self.GrupoEjercicio" Multiplicity="1" />
+          <End Role="Ejercicios" Type="Self.Ejercicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GrupoEjercicio">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Ejercicios">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MusicaEjercicio">
+          <End Role="Ejercicios" Type="Self.Ejercicio" Multiplicity="*" />
+          <End Role="Musica" Type="Self.Musica" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BiodanzaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ColeccionMusicas" EntityType="Self.ColeccionMusica" />
+          <EntitySet Name="Ejercicios" EntityType="Self.Ejercicio" />
+          <EntitySet Name="GrupoEjercicios" EntityType="Self.GrupoEjercicio" />
+          <EntitySet Name="Musicas" EntityType="Self.Musica" />
+          <AssociationSet Name="FK_Ejercicios_GrupoEjercicio" Association="Self.FK_Ejercicios_GrupoEjercicio">
+            <End Role="GrupoEjercicio" EntitySet="GrupoEjercicios" />
+            <End Role="Ejercicios" EntitySet="Ejercicios" />
+          </AssociationSet>
+          <AssociationSet Name="MusicaEjercicio" Association="Self.MusicaEjercicio">
+            <End Role="Ejercicios" EntitySet="Ejercicios" />
+            <End Role="Musica" EntitySet="Musicas" />
+          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="BiodanzaModel.sysdiagram" />
+          <AssociationSet Name="FK_Musica_ColeccionMusica" Association="BiodanzaModel.FK_Musica_ColeccionMusica">
+            <End Role="ColeccionMusica" EntitySet="ColeccionMusicas" />
+            <End Role="Musica" EntitySet="Musicas" />
+          </AssociationSet>
+          <EntitySet Name="Interpretes" EntityType="BiodanzaModel.Interprete" />
+        </EntityContainer>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Musica_ColeccionMusica">
+          <End Type="BiodanzaModel.ColeccionMusica" Role="ColeccionMusica" Multiplicity="1" />
+          <End Type="BiodanzaModel.Musica" Role="Musica" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ColeccionMusica">
+              <PropertyRef Name="IdColeccion" />
+            </Principal>
+            <Dependent Role="Musica">
+              <PropertyRef Name="IdColeccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Interprete">
+          <Key>
+            <PropertyRef Name="Interprete1" />
+          </Key>
+          <Property Name="Interprete1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NombreCorrecto" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BiodanzaModelStoreContainer" CdmEntityContainer="BiodanzaEntities">
+          <EntitySetMapping Name="ColeccionMusicas">
+            <EntityTypeMapping TypeName="BiodanzaModel.ColeccionMusica">
+              <MappingFragment StoreEntitySet="ColeccionMusica">
+                <ScalarProperty Name="IdColeccion" ColumnName="IdColeccion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Carpeta" ColumnName="Carpeta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ejercicios">
+            <EntityTypeMapping TypeName="BiodanzaModel.Ejercicio">
+              <MappingFragment StoreEntitySet="Ejercicios">
+                <ScalarProperty Name="IdEjercicio" ColumnName="IdEjercicio" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Objetivo" ColumnName="Objetivo" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="Detalle" ColumnName="Detalle" />
+                <ScalarProperty Name="Notas" ColumnName="Notas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GrupoEjercicios">
+            <EntityTypeMapping TypeName="BiodanzaModel.GrupoEjercicio">
+              <MappingFragment StoreEntitySet="GrupoEjercicio">
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musicas">
+            <EntityTypeMapping TypeName="BiodanzaModel.Musica">
+              <MappingFragment StoreEntitySet="Musica">
+                <ScalarProperty Name="Carpeta" ColumnName="Carpeta" />
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="IdMusica" ColumnName="IdMusica" />
+                <ScalarProperty Name="IdColeccion" ColumnName="IdColeccion" />
+                <ScalarProperty Name="NroCd" ColumnName="NroCd" />
+                <ScalarProperty Name="NroPista" ColumnName="NroPista" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Interprete" ColumnName="Interprete" />
+                <ScalarProperty Name="T" ColumnName="T" />
+                <ScalarProperty Name="A" ColumnName="A" />
+                <ScalarProperty Name="V" ColumnName="V" />
+                <ScalarProperty Name="S" ColumnName="S" />
+                <ScalarProperty Name="C" ColumnName="C" />
+                <ScalarProperty Name="M" ColumnName="M" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="MusicaEjercicio" TypeName="BiodanzaModel.MusicaEjercicio" StoreEntitySet="MusicaEjercicio">
+            <EndProperty Name="Ejercicios">
+              <ScalarProperty Name="IdEjercicio" ColumnName="IdEjercicio" />
+            </EndProperty>
+            <EndProperty Name="Musica">
+              <ScalarProperty Name="IdMusica" ColumnName="IdMusica" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BiodanzaModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Interpretes">
+            <EntityTypeMapping TypeName="BiodanzaModel.Interprete">
+              <MappingFragment StoreEntitySet="Interpretes">
+                <ScalarProperty Name="NombreCorrecto" ColumnName="NombreCorrecto" />
+                <ScalarProperty Name="Interprete1" ColumnName="Interprete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
