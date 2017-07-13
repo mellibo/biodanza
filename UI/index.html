@@ -76,12 +76,12 @@
         <div class="row" ng-view=""></div>
     </div>
 
-    <script type="text/ng-template" id="home.html">
-        hola
-    </script>
+<script type="text/ng-template" id="home.html">
+    hola
+</script>
 <script type="text/ng-template" id="ejercicios.html">
     <div class="row">
-        <form>
+        <form class="form-inline">
             <div class="col-sm-3">
                 <div ng-repeat="option in grupos track by $index">
                     <input type="radio" name="grupos" ng-value="option.idGrupo" ng-model="model.grupo" />
@@ -90,23 +90,19 @@
             </div>
             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-12 form-group">
-                        <label class="control-label" for="inputBuscar">Path música IBF:</label>
-                        <input id="inputPathIbf" type="text" class="form-control" ng-model="model.pathMusica" />
+                    <div class="form-group col-sm-12">
+                        <label class="control-label col-sm-2" for="inputPathIbf">Path música IBF:</label>
+                        <input id="inputPathIbf" type="text" class="form-control col-sm-10" ng-model="model.pathMusica" />
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4 form-group">
-                        <label class="control-label" for="inputBuscar">Buscar:</label>
-                        <div>
-                            <input id="inputBuscar" type="text" class="form-control" ng-model="model.buscar" ng-change="buscar()" />
-                        </div>
+                    <div class="form-group col-sm-4 ">
+                            <label class="control-label" for="inputBuscar">Buscar: </label>
+                            <input id="inputBuscar" type="text" class="form-control" ng-model="model.buscar" />
                     </div>
-                    <div class="col-sm-3 form-group">
+                    <div class="form-group col-sm-4 ">
                         <audio controls id="myAudio" autoplay ng-src="{{musicaFile}}"></audio>
                     </div>
-                    <div class="col-sm-5 form-group">
-                        <span>{{musicaFile}}</span>
+                    <div class="form-group col-sm-4 ">
+                        <span>{{ musicaSeleccionada.coleccion + '-' + musicaSeleccionada.nroCd + '-' + musicaSeleccionada.nroPista + ' ' + musicaSeleccionada.nombre + '(' + musicaSeleccionada.interprete + ')'  }}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -114,36 +110,30 @@
                         <table id="tblEjercicios" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
                             <thead>
                                 <tr class="success">
-                                    <td class="col-md-2 col-lg-2 centrado" ordenamiento="Lider">
-                                        <label id="lbl_Lider" runat="server">Ejercicio</label>
+                                    <td class="col-md-6 col-lg-6 centrado" ordenamiento="Lider">
+                                        <label id="lbl_Lider" runat="server">Ejercicio (Grupo)</label>
                                     </td>
-                                    <td class="col-md-2 col-lg-2 centrado" ordenamiento="Estado">
-                                        <label id="lbl_Estado" runat="server">Grupo</label>
-                                    </td>
-                                    <td class="col-md-3 col-lg-3 centrado" ordenamiento="Musicas">
+                                    <td class="col-md-6 col-lg-6 centrado" ordenamiento="Musicas">
                                         <label id="lbl_MotivoAnulacion">Musicas</label>
                                     </td>
-                                    <td class="col-md-2 col-lg-2 centrado" ordenamiento="Fecha_Hasta">
+                                    <!--<td class="col-md-2 col-lg-2 centrado" ordenamiento="Fecha_Hasta">
                                         <label id="lbl_FechaVencimiento" runat="server">Detalle</label>
-                                    </td>
+                                    </td>-->
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr data-ng-repeat="ejercicio in ejercicios" data-ng-show=" (model.grupo == 0 || model.grupo == ejercicio.idGrupo  ) && (model.buscar =='' || ejercicio.nombre.toUpperCase().indexOf(model.buscar.toUpperCase()) != -1)  ">
-                                    <td class="col-md-1 col-lg-1 centrado">
-                                        {{ ejercicio.nombre }}
+                                <tr data-ng-repeat="ejercicio in ejercicios" data-ng-show="filtrar(ejercicio)">
+                                    <td class="centrado">
+                                        <a data-ng-click="mostrarEjercicio(ejercicio)"> {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
                                     </td>
-                                    <td class="col-md-2 col-lg-2 centrado">
-                                        {{ ejercicio.grupo }}
-                                    </td>
-                                    <td class="col-md-2 col-lg-2 centrado">
-                                        <div data-ng-repeat="musicaEj in ejercicio.musicas" >
-                                            <a ng-click="playMusica(musicaEj.musica)" >{{ musicaEj.musica.nroCd + '-' + musicaEj.musica.nroPista + ' ' + musicaEj.musica.nombre + '(' + musicaEj.musica.interprete + ')'  }}</a>
+                                    <td class="centrado">
+                                        <div data-ng-repeat="musicaEj in ejercicio.musicas" data-ng-show="filtrarMusica(musicaEj.musica)" >
+                                            <a ng-click="model.playFile(musicaEj.musica)" >{{ musicaEj.musica.coleccion + '-' + musicaEj.musica.nroCd + '-' + musicaEj.musica.nroPista + ' ' + musicaEj.musica.nombre + '(' + musicaEj.musica.interprete + ')'  }}</a>
                                         </div> 
                                     </td>
-                                    <td class="col-md-3 col-lg-3 centrado">
+                                    <!--<td class="col-md-3 col-lg-3 centrado">
                                         {{ ejercicio.detalle }}
-                                    </td>
+                                    </td>-->
                                 </tr>
                             </tbody>
                         </table>
@@ -152,9 +142,75 @@
             </div>
         </form>
     </div>
-
 </script>
-    <script type="text/ng-template" id="login.html">
+<script type="text/ng-template" id="login.html">
+    
+</script>
+<script type="text/ng-template" id="modalEjercicio.html">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>{{ejercicio.nombre}}  - ({{ejercicio.grupo}})</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="form-horizontal" role="form">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label">{{ejercicio.detalle}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table id="tblEjercicio" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                    <thead>
+                        <tr class="success">
+                            <td class="col-md-1 col-lg-1 centrado" ordenamiento="Lider">
+                                <label id="lbl_Lider" runat="server">Identificador</label>
+                            </td>
+                            <td class="col-md-4 col-lg-4 centrado" ordenamiento="Lider">
+                                <label id="lbl_Lider" runat="server">Canción</label>
+                            </td>
+                            <td class="col-md-3 col-lg-3 centrado" ordenamiento="Estado" style="width:60px;">
+                                <label id="lbl_Estado" runat="server">Interprete</label>
+                            </td>
+                            <td class="col-md-1 col-lg-1 centrado" ordenamiento="Musicas">
+                                <label id="lbl_MotivoAnulacion">Duración</label>
+                            </td>
+                            <td class="col-md-1 col-lg-1 centrado" ordenamiento="Musicas">
+                                <label id="lbl_MotivoAnulacion">Play</label>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="musica in ejercicio.musicas">
+                            <td>
+                                {{ musica.musica.coleccion + ' ' + musica.musica.nroCd + '-' + musica.musica.nroPista  }}
+                            </td>
+                            <td>
+                                {{ musica.musica.nombre }}
+                            </td>
+                            <td>
+                                {{ musica.musica.interprete }}
+                            </td>
+                            <td>
+                                {{ musica.musica.duracion }}
+                            </td>
+                            <td class="col-md-2 col-lg-2 centrado">
+                                <a ng-click="playMusica(musica.musica)">play</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="controls-row">
+                <button type="button" class="btn  btn-success" aria-hidden="true" ng-click="aceptar()"> Cerrar </button>
+                <!--<button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true" ng-click="cancel()"> Cancelar </button>-->
+            </div>
+        </div>
+    </div>
     
 </script>
 

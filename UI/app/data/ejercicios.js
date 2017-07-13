@@ -6673,5 +6673,5537 @@
                 }
             }
         ]
+    }, {
+        "IdEjercicio": 4005,
+        "nombre": "ENCUENTRO EPIFÁNICO\r",
+        "idGrupo": 59,
+        "grupo": "LOS ENCUENTROS",
+        "detalle":
+            "La epifanía es la súbita revelación de la grandeza de la vida en lo cotidiano, que nos conduce a la percepción ampliada de la realidad y nos pone en contacto con lo sagrado presente en todo lo que existe. Es la comprensión iluminada de la divinidad del mundo, de la naturaleza sobrenatural y del amor como el gran milagro.\r\rDescripción :\r\rLas personas son invitadas a seguir todas las etapas de la ceremonia del encuentro en Biodanza (ya anteriormente descriptas en la introducción) y a ampliar el sentido del encuentro como epifanía amorosa.\r\rObjetivo :\r\rA través del encuentro, vivenciar la epifanía amorosa, la revelación de lo sagrado en cada uno de nosotros.\r\rElemento Poético :\r\rCuando la ola de emoción frente a la belleza esencial del otro nos sumerge, eso es la epifania. Esta danza posibilita que a través de la percepción sensible de lo divino en el otro, podamos entrar en contacto con lo divino en nosotros mismos.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t62\tmars 2012\r\f",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5269,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-15.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4006,
+        "nombre": "ENCUENTROS DIVERSOS\r",
+        "idGrupo": 59,
+        "grupo": "LOS ENCUENTROS",
+        "detalle":
+            "Bajo el nombre de \"Encuentros variados\" se proponen, cuando el grupo ha alcanzado un nivel importante de capacidad de feedback, situaciones de encuentros en los que las personas responden libremente a su propia vivencia (en coherencia con el contexto de la sesión y la música). El facilitador no indica ninguna modalidad particular, como es el caso con otros ejercicios de este grupo.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4915,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 20,
+                    "nombre": "Adagio Concerto per oboe Marcello",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF1-20 Adagio Concerto per oboe Marcello    (Ronda de inicio) 4, 56.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5114,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 3,
+                    "nombre": "Araguaia",
+                    "interprete": "",
+                    "archivo": "IBF11-03  Araguaia.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5126,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 15,
+                    "nombre": "Trío en Mi",
+                    "interprete": "Op 100 Schubert",
+                    "archivo": "IBF11-15 Trío en Mi,Op 100 Schubert.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5135,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 4,
+                    "nombre": "Comec.. tudo otra vez",
+                    "interprete": "",
+                    "archivo": "IBF12-04 Comec.. tudo otra vez.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5136,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 5,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "",
+                    "archivo": "IBF12-05 A noite do meu bem.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5145,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 14,
+                    "nombre": "Dolce Presenza",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:04",
+                    "archivo": "IBF12-14 Dolce Presenza Nana Caymmi (Acariciamiento) 4, 13.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5241,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-08.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5303,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 14,
+                    "nombre": "Love me",
+                    "interprete": "Nina Simona",
+                    "duracion": "12:03",
+                    "archivo": "IBF20-14 Love me     Nina Simona 3,31.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4007,
+        "nombre": "BAUTISMO DE LUZ\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rDe pie, uno frente al otro. El que recibe el bautismo permanece con los ojos cerrados en actitud receptiva, mientras su compañero eleva los brazos sobre su cabeza y los desciende lentamente a lo largo de todo el cuerpo con un contacto delicado, en actitud de transmitirle la propia luz (que es una metáfora del amor).\r\rEl gesto se asemeja al de imposición de manos, pero en este caso, las palmas se deslizan suavemente sobre el cuerpo del compañero desde la cabeza hasta los pies. Enseguida, desde los hombros hasta las manos (sin agarrarlas).\r\rTerminando el ejercicio, se suspende el contacto por algunos segundos, lo que contribuye a profundizar la vivencia.\r\rDespués de un abrazo breve, las personas invierten los roles.\r\rObjetivo :\r\rDespertar el sentimiento de sacralidad de las personas mediante el ejercicio de su capacidad de autodonación. El simbolismo de la luz representa los sentimientos humanos de generosidad y bondad. Transmitir la propia luz significa donar al otro lo mejor de sí mismo.\r\rEste ejercicio presenta una forma de comunicación trascendente, considerando que la manifestación de generosidad sólo es posible cuando se trasciende el propio ego.\rObservación :\r\rEste ejercicio consiste en una ceremonia de donación, no de curación, por lo tanto se realiza solamente de frente al otro. Eventualmente, pueden producirse fenómenos de curación, aunque no sea éste el objetivo del ejercicio.\r\rPregunta frecuente: ¿Por qué no se hacen descender las manos también en el lado posterior? Respuesta: Porque es un ejercicio de carácter simbólico (y no una lluvia de caricias) y porque la parte delantera del cuerpo es la más receptiva.\rNote CIMEB :\r\rEste ejercicio tiene dos niveles de valoración: la del dador (que se conecta a los mejores y más luminosos aspectos de su identidad), y la del destinatario (su presencia es reconocida y exaltada, iluminada). La propiedad de la luz es hacer visible lo que de otro modo permanecería en la oscuridad.\r\rElemento poético: A veces no somos más sensibles a nuestra propia luz interior. La benevolencia del otro, su disponibilidad y su apertura, operan una inversión completa que nos permite abrirnos a todo lo que el universo tiene de luz.\r"
+    }, {
+        "IdEjercicio": 4008,
+        "nombre": "DANZA DE CONTACTO MÍNIMO (o \"Danza de contacto sensible\")\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "El feedback en el contacto abre a una gran gama de intercambios. Ahora bien, a menudo, cuando las personas son muy entusiastas o poco sensibles, el contacto que ofrecen en los encuentros puede ser un poco rudo, pesado, insistente. Lo que no representa un defecto en sí mismo, pero puede no convenir a veces en ciertas situaciones más delicadas.\r\rEl contacto liviano, sensible, aéreo, mínimo, en el límite mismo de la piel, es un contacto que permite una vivencia de tipo transcendente pues ventila (es vaporoso) y abre la percepción de los límites corporales. La percepción toma la cualidad de una « percepción en membrana ». El tacto diáfano, de tipo yin, torna la piel muy receptiva. A menudo, un tacto liviano predispone más a las personas a la caricia, mejor que un tacto penetrante.\r\rDescripción :\r\rLa danza se realiza de a dos. Los dos compañeros están frente a frente, en una postura distendida, y suficientemente cerca para que los cuerpos se toquen ligeramente, sin presión, sin peso. Con los ojos cerrados danzan lentamente, los brazos livianos, las manos livianas, rozándose suavemente de manera indiferenciada, es decir sin detenerse en una parte del cuerpo en especial. La danza posee la cualidad de la fluidez y la liviandad del aire.\r\rObjetivo :\r\rSensibilizar la piel con un tacto liviano, con un tono liviano. Facilitar la vivencia de fusión con el medio ambiente a través de una percepción de límites corporales difusos. Percibir la esencia del otro \"por la piel\", siendo ésta más que el simple continente de la identidad.\r\rEsto permite también disminuir las tendencias manipuladoras que vienen de la ansiedad de querer poseer al otro, imponiéndole un contacto profundo, sin sensibilidad y sin feedback.\rObservación :\r\rLa \"Danza de contacto mínimo\", como la \"Danza de brazos sensibles \" y la \" Sintonía silenciosa\", tiene como objetivo preparar al participante a ejercicios más profundos de contacto.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4009,
+        "nombre": "DANZA DE TRANSPORTE DE CORAZÓN A CORAZÓN\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rDos participantes abrazados juntan respectivamente sus pechos y hacen movimientos lentos antero-posteriores, con el objetivo de entregar simbólicamente el corazón al otro, y recibirlo abriendo el pecho. En la continuidad de la danza, las dos personas se mueven formando un solo cuerpo, abandonando el movimiento antero-posterior. Poco a poco, cuando se sintonizan, abandonan el movimiento de vaivén y se entregan, en una vivencia donde forman uno solo, a un movimiento pulsante de los dos cuerpos juntos.\r\rObjetivo :\r\rOfrecer simbólicamente el corazón al otro y obtener la vivencia de fusión afectiva.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5102,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 12,
+                    "nombre": "Feelings",
+                    "interprete": "Morris Albert",
+                    "duracion": "12:03",
+                    "archivo": "IBF10-12 Feelings Morris Albert (Encuentros ) 3, 37.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5104,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 14,
+                    "nombre": "For a sentimental reasons",
+                    "interprete": "",
+                    "archivo": "IBF10-14 For a sentimental reasons.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5118,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 7,
+                    "nombre": "Meditation de Thays",
+                    "interprete": "",
+                    "archivo": "IBF11-07 Meditation de Thays.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5155,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 3,
+                    "nombre": "Atrás da porta",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-03 Atrás da porta           N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5241,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-08.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4010,
+        "nombre": "CARICIAS ANÓNIMAS DE MANOS EN GRUPO DE CINCO\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Se trata de un ejercicio de afectividad indiferenciada. De hecho, la caricia de las manos en este contexto anónimo aumenta la conciencia de la variedad de posibilidades presentes en el grupo: temperatura de la piel, textura, consistencia, tono, etc.\rDescripción :\r\rLos participantes forman pequeños grupos de cinco personas que se disponen en círculo. Cada uno extiende sus manos hacia el centro y las pone de forma alternada sobre las de los compañeros. Se inicia una caricia anónima con ojos cerrados, sin saber a quien pertenecen las manos que se están acariciando.\r\rEste es un ejercicio de afectividad indiferenciada. La caricia de las manos revela diferentes temperaturas, consistencias, fuerzas, pero, en general, la caricia tiene que ser delicada y tierna.\rObjetivo :\r\rVivenciar la oportunidad de amar y cuidar a través de la caricia sin saber quién es el receptor del impulso afectivo. Abrirse al amor indiferenciado.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5112,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 1,
+                    "nombre": "Tamba Tajá",
+                    "interprete": "Fafa de belem",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-01 Tamba Tajá                   Fafa de belem (R de mecimiento) 3,08.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5115,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 4,
+                    "nombre": "Little girl blue",
+                    "interprete": "Nina Simone",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-04 Little girl blue Nina Simone (Dar y Recibir Continenete) 4, 23.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5130,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 19,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF11-19  A noite do meu bem    M Creuza (Acaricimientos) 2,43.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4011,
+        "nombre": "CARICIAS DE ESPALDA EN PARES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEn pares, uno de los compañeros acaricia la espalda del otro suavemente. No se trata de un masaje, sino, al contrario, de un acto de protección. La realización de las caricias tiene que hacer sentir al compañero que las recibe que está acompañado y protegido. El ejercicio termina cuando para la música y entonces se cambia de rol: el compañero que fue acariciado ahora acaricia, mientras el otro recibe. Quien recibe caricias asume una actitud receptiva con los ojos cerrados.\r\rObjetivo :\r\rEstimular la capacidad de dar y recibir protección y cuidado afectivo. Estimular la capacidad de entregarse al placer de recibir las caricias.\rObservación :\r\rComo se dijo anteriormente, la situación de alternancia en la caricia permite a las personas, por un lado, de profundizar en su capacidad de dar y recibir, y por otro lado, aumentar su capacidad de dar ternura, protección y placer.\r\rCuando el ejercicio es realizado en la posición acostada en el suelo, será necesario ayudar a la persona a darse vuelta para sentarla y darle un abrazo contenedor. (Para la posición correcta que debe adoptarse para dar este abrazo, ver la descripción en el ejercicio \"Dar y recibir continente a dos\").\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5112,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 1,
+                    "nombre": "Tamba Tajá",
+                    "interprete": "Fafa de belem",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-01 Tamba Tajá                   Fafa de belem (R de mecimiento) 3,08.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5130,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 19,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF11-19  A noite do meu bem    M Creuza (Acaricimientos) 2,43.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5237,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-04.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4012,
+        "nombre": "CARICIAS DE MANOS EN PARES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEn pareja, uno frente al otro, se toman de las manos y comienzan a acariciar sutilmente las manos del compañero.\rCuando la emoción es muy fuerte, se pueden cerrar los ojos y aumentar brevemente la presión de las manos. Este contacto tiene que ser siempre pulsante, nunca rígido y debe tener la característica de una caricia.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t66\tmars 2012\r\fObjetivo :\r\rEste ejercicio despierta un tipo de vivencia sorprendente e intensa, porque es como conectar dos centros de energía que lentamente se transforman en una única energía. Se pasa así del contacto a la caricia, para terminar en una vivencia de comunión.\r\rNote CIMEB :\r\rEs especialmente adecuado proponer este ejercicio como una preparación para una vivencia que requiere más sensibilidad, confianza y compromiso en la relación diferenciada. Muchas vivencias de a dos constituyen una iniciacion al contacto y al diálogo en eutonia con el otro. Sin embargo, la transición del contacto a la caricia abre el camino para vivencias de gran intensidad y a un diálogo poderoso.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5112,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 1,
+                    "nombre": "Tamba Tajá",
+                    "interprete": "Fafa de belem",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-01 Tamba Tajá                   Fafa de belem (R de mecimiento) 3,08.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5131,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 20,
+                    "nombre": "Para dizer adeus",
+                    "interprete": "Tom Jobim",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-20 Para dizer adeus T Jobim  (Acariciamiento) 4, 45.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5143,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 12,
+                    "nombre": "Gracas a deus",
+                    "interprete": "M Creuza",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-12 Gracas a deus M Creuza (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5144,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 13,
+                    "nombre": "Pra vocé",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-13 Pra vocé Nana Caymmi (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5154,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 2,
+                    "nombre": "When I fall in love",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-02 When I fall in love     H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4013,
+        "nombre": "CARICIAS DE PIES EN PARES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rDos personas se eligen para hacer este ejercicio juntos. Uno de ellos se acuesta de espalda y se entrega con los ojos cerrados a recibir, mientras el otro se sienta a sus pies, colocándo éstos sobre sus muslos. Ambos pies son acariciados al mismo tiempo y el contacto se mantiene durante toda la duración de la música. Cuando la emoción es intensa, la persona que ofrece la caricia puede cerrar los ojos. Las caricias son pulsantes, variando entre levedad e intesidad.\r\rObjetivo :\r\rMuchos ejercicios de Biodanza están dirigidos para que la persona renuncie al “ego” temporalmente, poniéndose en una actitud de dedicación profunda hacia otra persona.\rEn la vivencia de devoción y humildad se esconde una fuerza que exalta la belleza de los dos participantes: del recibe el tributo y la caricia, así como del que acaricia. También podemos describir esta vivencia como una búsqueda de comunión, de una calidad particularmente profunda.\r\rProyección Existencial :\r\rEs una acción de amor, de amor humanitario. Cuando Magdalena lavó los pies de Cristo con aceite y los secó con sus cabellos, estableció un vínculo profundo y misterioso, donde había una mezcla de humildad y amor, no había arrogancia ni alarde, sino dulzura y ternura. En realidad, acariciar los pies de la persona amada es una ceremonia de vínculo extraordinariamente profunda.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5172,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 20,
+                    "nombre": "I see your face before me",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-20 I see your face before me, H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4014,
+        "nombre": "CARICIAS DEL ROSTRO EN PARES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEs una ceremonia altamente diferenciada. Recíprocamente los participantes acarician la frente, mejillas, orejas y labios del compañero. Es un acto vivencial muy intenso pero, al mismo tiempo, actúa también la conciencia. Se toma conciencia repentina de la forma del rostro del compañero, de sus detalles, que muchas veces expresan sufrimiento, tristeza, sensualidad, inocencia, etc.\r\rComo siempre, los ojos están abiertos, pero cuando se profundiza la vivencia, la persona espontáneamente cierra los ojos.\r\rLa caricia del rostro tiene dos modalidades: puede ser recíproca y simultánea o sucesiva, donde uno recibe y el otro entrega.\r\rObjetivo :\r\rAprender a acariciar el rostro con delicadeza es una tarea importante en la vida. En el momento que acariciamos un rostro, nos damos cuenta que todos los rostros tienen belleza, una belleza no formal, sino una belleza emotiva, una estética expresiva, etc.\r\rNote CIMEB :\r\rLa caricia recíproca tiende más a la linea de sexualidad, mientras que la caricia alternada tiende más hacia la afectividad. Se trata de una ceremonia altamente diferenciada: conocer al otro, único y diferente, a través de la caricia.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5158,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 6,
+                    "nombre": "Almost blue",
+                    "interprete": "C. Baker",
+                    "archivo": "IBF13-06 Almost blue               C. Baker.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4015,
+        "nombre": "CARICIAS DE LAS PROPIAS MANOS\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Ciertas personas generalmente se proyectan sólo hacia fuera, hacia la acción por la acción misma. Son personas que se ocupan solamente de las cosas útiles y no se conceden el tiempo de estar consigo mismas.\r\rDurante el ejercicio pueden tener una vivencia de gran intensidad, puesto que la unión tierna de las manos crea un poderoso campo de intercambio de energía afectiva.\r\rEs un ejercicio de la línea de Afectividad.\r\rDescripción :\r\rA partir de una conexión profunda consigo misma, la persona acerca lentamente sus dos manos y las déjà dialogar con ternura, con caricias sensibles y delicadas. Las dos manos pueden en ciertos momentos abrazarse, acunarse. La mirada puede acompanar la caricia o los ojos pueden cerrarse.\r\rObjetivo :\r\rSe entra en contacto afectivo con uno mismo. La posibilidad de contacto de una mano con la otra permite al participante una aparición lenta de la sutil emoción de estar conectado con uno mismo, de ser “uno mismo”.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4915,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 20,
+                    "nombre": "Adagio Concerto per oboe Marcello",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF1-20 Adagio Concerto per oboe Marcello    (Ronda de inicio) 4, 56.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5122,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 11,
+                    "nombre": "Watermark",
+                    "interprete": "",
+                    "archivo": "IBF11-11 Watermark.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4016,
+        "nombre": "CARICIAS DEL PROPIO CUERPO (Autoacariciamiento)\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "A raíz del tabú ligado al contacto y al placer, que caracteriza nuestra cultura y nuestra educación, la relación con el propio cuerpo está a menudo ligada a situaciones de “placer solitario”, a la masturbación y por extensión a la culpa. Muchas personas se han privado de la conexión con su cuerpo y este no es amado. Sólo tiene valor si los otros lo aman, si el placer viene de los otros, si la confirmación nos viene de los cumplidos recibidos. Ahora bien, es una búsqueda vana, esperar corresponder a lo que suponemos gustará a los otros. Es importante vivenciar de manera natural, afectiva e inocente la relación íntima con nuestro propio cuerpo.\r\rEsto constituye un verdadero proceso de rehabilitación no sólo de la autoestima sino también de la imagen de uno mismo. El amor que se profesa a uno mismo, se traduce en actos, en elecciones esenciales que traducen este amor.\r\rSegún la música utilizada, la vivencia estará diferentemente orientada al autoerotismo o a la transcendencia. Pero siempre a partir de una matriz afectiva.\rDescripción :\r\rLa persona está de pie, ojos cerrados. Las manos apoyadas en el pecho y en el vientre, en actitud de recogimiento. Cuando comienza la música, la persona acaricia suavemente con sensibilidad y con ternura todo su cuerpo, dejándose ir progresivamente a una vivencia profunda de intimidad en la que se realice un circuito completo entre la acción\r\r(las manos que acarician) y la sensibilidad (el cuerpo acariciado). Es un acto profundo de reconocimiento de uno mismo a través del placer.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t68\tmars 2012\r\fObjetivo :\r\rVivenciar la percepción del propio cuerpo como dotado de valor intrínseco y como espacio de placer.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5125,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 14,
+                    "nombre": "Consolazione N 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-14 Consolazione N 3        (R Concentrica miradas) Liszt 4, 19.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5140,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 9,
+                    "nombre": "Simples carinho",
+                    "interprete": "Simone",
+                    "duracion": "12:04",
+                    "archivo": "IBF12-09 Simples carinho Simone (Acariciamiento) 4, 00.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5159,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 7,
+                    "nombre": "O que será",
+                    "interprete": "Simone",
+                    "archivo": "IBF13-07 O que será                Simone       (Ronda de contacto múltiple).mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4017,
+        "nombre": "CARICIAS SENSIBLES DE CABELLOS EN PARES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Si una persona aprende a acariciar sensiblemente los cabellos, aprende el secreto de la caricia y en el futuro puede tocar cualquier parte del cuerpo con sensibilidad.\rDescripción :\r\rLas caricias sensibles de cabellos son superficiales, realizadas con gran dulzura y sensibilidad. La persona que da la caricia se pone en frente de quien la recibirá. La persona que recibe cierra los ojos para sentir mejor la caricia. Es muy importante aclarar que no se trata de una caricia reciproca: primero uno de los compañeros es activo y acaricia al otro, que es pasivo y recibe. Después, cuando termina la música, se invierten los roles.\r\rCuando ambos los compañeros hacen el ejercicio simultáneamente, se dan caricias recíprocas, se produce una complicidad en la cual se da y se recibe simultáneamente, pero disminuye la intensidad de esta vivencia.\rObjetivo :\r\rRecibir pasivamente las caricias significa acoger estímulos centrípetas de gran intensidad. Dar caricias significa, al contrario, ejercitar estímulos desde el exterior hacia el interior.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5112,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 1,
+                    "nombre": "Tamba Tajá",
+                    "interprete": "Fafa de belem",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-01 Tamba Tajá                   Fafa de belem (R de mecimiento) 3,08.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5116,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 5,
+                    "nombre": "Evening falls",
+                    "interprete": "",
+                    "archivo": "IBF11-05  Evening falls.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5130,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 19,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF11-19  A noite do meu bem    M Creuza (Acaricimientos) 2,43.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5131,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 20,
+                    "nombre": "Para dizer adeus",
+                    "interprete": "Tom Jobim",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-20 Para dizer adeus T Jobim  (Acariciamiento) 4, 45.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5144,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 13,
+                    "nombre": "Pra vocé",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-13 Pra vocé Nana Caymmi (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5158,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 6,
+                    "nombre": "Almost blue",
+                    "interprete": "C. Baker",
+                    "archivo": "IBF13-06 Almost blue               C. Baker.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5241,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-08.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4018,
+        "nombre": "COMPRESIÓN Y DESCOMPRESIÓN DE LAS MANOS\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "La percepción de la pulsación en el contacto es un elemento del feedback.\r\rDescripción :\r\rSe realiza de a dos. Las dos personas establecen un primer contacto tomandose las manos y conectándose en las miradas. Cuando empieza la música, cierran los ojos e interactúan en diálogo por medio de un contacto pulsante de las manos, en una respuesta en feedback, sin separarse. A este impulso del contacto corresponde un movimiento pulsante de todo el cuerpo, que permite modular el grado de intimidad y la intensidad de este diálogo que, desde las manos, poco a poco involucra a todo el ser.\r\rObjetivo :\r\rPercibir por medio del contacto los matices en el diálogo psicotónico con el otro, en las modulaciones del tono yendo desde la sensibilidad y la delicadeza a la intensidad del contacto intenso y profundo, hasta integrar la pulsación en un diálogo que incluya los matices de la vivencia.\r\r"
+    }, {
+        "IdEjercicio": 4019,
+        "nombre": "DAR Y RECIBIR CONTINENTE EN PARES (o “Acunar en el regazo\" o “Acunar al otro”)\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "\r\rPor lo general, en nuestra cultura, las personas no son abrazadas ni mucho menos acunadas. Ya sea en la familia o con amigos, prácticamente no tienen oportunidades para ofrecer o recibir continente en un abrazo de corazón a corazón. Algunos viven ese intercambio con personas muy queridas y muy cercanas, pero demasiado raramente, y la gran mayoría puede pasar años sin vivir esta experiencia, sin recibir ni ofrecer un continente real.\r\rY sin embargo, recibir continente es un tipo de alimento afectivo esencial e indispensable para la autoregulacion orgánica. De acuerdo con la medicina psicosomática, muchas enfermedades (como asma, alergias, artritis, insomnio, ciertas enfermedades del corazón), se deben a la falta de continente afectivo. Y tanto los adultos como y los niños lo necesitan.\r\rDescripción :\r\rSentados, uno de los participantes toma al otro en su regazo de manera de poderlo acunar suavemente y contenerlo en sus brazos. La persona que está recibiendo el continente está en una posición casi perpendicular a la del compañero.\r\rLa posición óptima para dar continente consiste en que las dos personas se sienten uniendo un lado de la cadera (pelvis) mirando en dirección opuesta. La persona que da continente abraza al compañero que está recibiendo, mientras este último se abandona a la protección del otro y se déjà sostener.\rObjetivo :\r\rAprender, reaprender a dar continente y a recibirlo. Fortalecer la vivencia de la propia capacidad de cuidar. Fortalecer la vivencia de entregarse y disfrutar sentirse protegido. Estimular la vivencia de abandonarse en confianza y la vivencia de reparentalizacion. La situación de la alternancia de reciprocidad estimula en cada uno la pulsacion entre la capacidad de dar, darse, recibir y ser recibido.\rObservación :\r\rEl facilitador debe asegurarse de indicar precisamente la posición para que las personas consigan llegar a un buen ajuste corporal. Esto creará condiciones favorables para poder abandonarse y para la vivencia de ser contenido. Porque al igual que muchas personas reciben muy poco continente, muchos son los que revelan una gran torpeza al ofrecerlo, a pesar de sus buenas intenciones. Un poco como si los gestos arquetípicos de acunar a un niño, tomarlo en brazos, hubiesen sido olvidados.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5115,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 4,
+                    "nombre": "Little girl blue",
+                    "interprete": "Nina Simone",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-04 Little girl blue Nina Simone (Dar y Recibir Continenete) 4, 23.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5125,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 14,
+                    "nombre": "Consolazione N 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-14 Consolazione N 3        (R Concentrica miradas) Liszt 4, 19.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4020,
+        "nombre": "REGRESIÓN AL ESTADO DE INFANCIA POR CARICIAS DE ROSTRO Y CABEZA\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "El vínculo primal es, según Rof Carballo, el proceso neurológico de integración del infante en relación al continente afectivo recibido de la madre. Una estructuración del vínculo primal deficiente causa secuelas en el desarrollo de la identidad.\r\rLa persona que experimenta la vivencia de regresión al estado de infancia reedita la situación perinatal, a nivel psicológico y neurobiológico, en un contexto de profunda afectividad. De este modo se genera un proceso de compensación afectiva que puede equilibrar eventuales formas de carencia afectiva de origen infantil, propiciando un nuevo equilibrio afectivo. Este proceso de compensación afectiva denomínase “reparentalización”.\r\rEn el ejercicio de Regresión al Estado de Infancia por Caricias del Rostro, la persona que acaricia asume simbólicamente el papel de padre cuando es hombre, o de madre cuando es mujer; la persona que es acariciada asume simbólicamente el papel de recién nacido.\r\r\f\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t70\tmars 2012\r\fDescripción :\r\rEn pareja, uno se sienta en el piso, apoyando la espalda en la pared y con las piernas entreabiertas; el otro se tiende apoyando su cabeza sobre el regazo del primero. El que está sentado acaricia el rostro y la cabeza del compañero con delicadeza y el que es acariciado se abandona en un estado regresivo.\r\rSe alternan dos tipos de caricia durante todo el tiempo de realización del ejercicio:\r\rDeslizar suavemente las yemas de los dedos desde la parte central del rostro hacia la parte periférica. Este tipo de caricia induce una vivencia de disolución (disminución de la conciencia de la propia identidad).\r\rApoyar, sin presionar, las palmas de las manos sobre la mejilla y la frente. Este tipo de caricia induce a una vivencia de protección (de sentirse protegido), que predispone al estado regresivo.\r\rTerminado el ejercicio, se suspenden las caricias y después de algunos segundos el profesor sugiere a las personas que han hecho la regresión, hacer una respiración profunda y, si lo desean, estirar los miembros como en el acto de despertar. Luego pueden abrazar al compañero. Enseguida se invierten los roles.\rObjetivo :\r\rInducir el estado de regresión y reparentalización.\r\rReparentalización: Muchas personas sufrieron el estrés de la primera infancia y\/o el abandono materno o paterno y no consiguieron establecer plenamente el “vínculo primal”.\r\rObservación :\r\rSe trata solamente de caricias y no de masajes o de activación de puntos de energía. Es conveniente no acariciar los ojos ni la boca, para no estimular el estado de vigilancia, el cual impide la regresión.\rEsta vivencia puede abrir el camino para manifestaciones emocionales intensas. Es importante invitar a las personas que están investidos de la función de \"padres\" a estar muy atentos durante todas las etapas del ejercicio, en la calidad del tacto y en la postura que debe ser claramente afectiva y de protección. Cuando el \"niño\" abre los ojos, sus ojos deben estar disponibles inmediatamente. Es a menudo durante este primer contacto, de esta primera \"huella\", que se vive reparentalisation: la posibilidad de conexión inmediata a la vida y el afecto en los ojos de alguien que nos ha acompañado, protegido, acariciado.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5115,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 4,
+                    "nombre": "Little girl blue",
+                    "interprete": "Nina Simone",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-04 Little girl blue Nina Simone (Dar y Recibir Continenete) 4, 23.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5117,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 6,
+                    "nombre": "The first time ever I saw your face",
+                    "interprete": "Roberta Flack",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-06 The first time ever I saw your face R Flack (R mecimiento) 4,23.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5234,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 1,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-01.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5235,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-02.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4021,
+        "nombre": "PROTECCIÓN AFECTIVA CON CARICIAS DE PECHO Y BRAZOS\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEn pareja se sientan en el piso, uno apoya su espalda en el pecho del otro. Quien que está sentado atrás acaricia el pecho y los brazos del compañero.\r\rLas caricias son afectivas y alternan entre caricias que parten desde el centro del pecho, envuelven los hombros y descienden a lo largo de los brazos (ofreciendo una sensación de apertura hacia la periferia) y un toque moderado de contencion en el cual las manos se depositan con una presión suave, con simple presencia.\rObjetivo :\r\rDar y recibir continente afectivo.\r\rObservación :\r\rEs importante tomarse el tiempo para ajustar las posiciones de manera que la cabeza de la persona que va a ser acariciada pueda apoyarse en un hombro de la que dará la caricia, y que ésta pueda, sin tensión, tener acceso a los hombros, brazos y pecho que va a acariciar.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4022,
+        "nombre": "CARICIAS DE UN COMPAÑERO EN GRUPO DE TRES\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "\r\rDescripción :\r\rLos participantes forman grupos de tres personas. Este ejercicio se propone de preferencia en la parte regresiva de la clase, en grupos donde ya existen las condiciones de profundización vivencial, para que se pueda alcanzar un nivel más profundo de intensidad afectivo-sexual y de intimidad.\r\rEl ejercicio puede realizarse de pie o acostado según la proposición del facilitador, y en cada caso presentara características vivenciales diferentes.\rObjetivo :\r\rAutorizarse a entregarse y a ser acariciado en todo el cuerpo, con la posibilidad de alcanzar una sensación de unidad, de sensibilidad, de afectividad y sensualidad. Todo lo que en la caricia presenta un efecto integrante. Este ejercicio favorece la posibilidad de la experiencia de integración afectivo-sensual.\r\rObservación :\r\rCuando es realizado de pie, una de las personas está entre sus dos compañeros, con los pies paralelos, con estabilidad, con las rodillas levement flexionadas, con los ojos cerrados y la boca, el cuello y los hombros relajados, en posicion de receptividad. Los dos compañeros comienzan a acariciarla sobre todo el cuerpo de manera altamente sensible, con delicadeza y sobre todo con mucha ternura. Alternan calidades diferentes de contacto, consistente pero leve y sensible. Primero, un contacto seguro en forma de presión suave sobre todo el cuerpo (los movimientos son suaves, sin intención \"anatómica\"), para sensibilizar el cuerpo entero. Después, el contacto adquiere una calidad de ternura indiferenciada, a traves del cual las caricias generan una sensación de disolución y de unificación. Una ternura que invita a fundirse y a aceptar el don de \"recibir\". Los dos compañeros acarician libremente, cuidando de bien repartir las caricias sobre todo el cuerpo, sin olvidar por ejemplo las piernas y los pies, o bien cuidando de no concentrarse los dos sobre las mismas partes del cuerpo. Es importante que la persona que es acariciada pueda tener la sensación de ser protegida y no \"fragmentada\" si algunas partes de su cuerpo son \"abandonadas\".\r\rEstas caricias pueden conducir a sensaciones profundas de placer y de erotismo, integradas a la afectividad. Las vivencias de erotismo sensible y con gran integración afectivo-sensual pueden crear las condiciones de paz reencontrada con el propio cuerpo y producir una reconciliación corporal consigo mismo. La vivencia del propio cuerpo se vuelve una experiencia de placer y erotismo, pudiendo generar respuestas neurofisiológicas de curación. Podemos identificar esta experiencia como \"el amor que cura\", tanto en el campo afectivo como en el de la sensualidad, la sexualidad y el erotismo.\r\rDebemos considerar que en la posición de pie el estado de regresión será menor que en la posición acostado, la cual induce un contexto de vivencia mas erótica tanto para los que la ofrecen como para quien la recibe.\r\rPuede suceder que la persona que es acariciada entre en tal estado de abandono y entrega afectivo-trascendente, que le sea dificil permanecer de pie. En este caso, los dos compañeros la ayudan a acostarse y continuan acariciándola acostada hasta el fin de la música. Esto es frecuente en los grupos mas avanzados donde el erotismo indiferenciado constituye para algunos una forma de trance, y para otros una entrega transcendente.\r\rCuando el ejercicio se propone acostado, la persona que recibe las caricias se acuesta en el piso entre sus dos compañeros, los cuales están sentados confortablemente. La caricia es como ya se describió.\rLa persona que es acariciada puede cambiar de posición durante el ejercicio, el facilitador puede dar la indicación de darse vuelta. Realizado en el suelo, este ejercicio puede alcanzar niveles mas profundos de entrega y de intensidad; sera entonces necesario prever mas tiempo para los cambios y la activación.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5160,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 8,
+                    "nombre": "Iso e aquilo",
+                    "interprete": "N. Caymmi",
+                    "duracion": "12:02",
+                    "archivo": "IBF13-08 Iso e aquilo                N. Caymmi (Acariciamiento) 2, 02.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5171,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 19,
+                    "nombre": "Summertime",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-19 Summertime             H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4023,
+        "nombre": "CARICIAS DE UN COMPAÑERO EN GRUPO DE CINCO\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEste ejercicio se hace siguiendo las mismas modalidades que en grupo de tres.\r\rEl abandono y la disolución facilitados por un grupo de cinco produce en ciertas personas una afectividad diferenciada con, a veces, pérdida de los limites corporales. Para otras, produce un acceso a un nivel de erotismo y de sensualidad indiferenciada, un verdadero \"Eros indiferenciado\".\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5141,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 10,
+                    "nombre": "Jura secreta",
+                    "interprete": "Simone",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-10 Jura secreta Simone (Acariciamiento) 3, 44.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5159,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 7,
+                    "nombre": "O que será",
+                    "interprete": "Simone",
+                    "archivo": "IBF13-07 O que será                Simone       (Ronda de contacto múltiple).mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5160,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 8,
+                    "nombre": "Iso e aquilo",
+                    "interprete": "N. Caymmi",
+                    "duracion": "12:02",
+                    "archivo": "IBF13-08 Iso e aquilo                N. Caymmi (Acariciamiento) 2, 02.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5161,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 9,
+                    "nombre": "Voz e suor",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-09 Voz e suor                  N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5164,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 12,
+                    "nombre": "Por causa de voçe",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-12 Por causa de voçe   N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5171,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 19,
+                    "nombre": "Summertime",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-19 Summertime             H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4024,
+        "nombre": "CARICIAS (situaciones diversas de caricias)\r",
+        "idGrupo": 60,
+        "grupo": "CONTACTO Y CARICIAS",
+        "detalle":
+            "Descripción :\r\rEn esta sección se encuentran todas las situaciones donde puede haber caricias sin que esto esté vinculado a un ejercicio específico o con un objetivo particular. Por ejemplo, los encuentros después de un grupo compacto, en el que la música induce fácilmente el intercambio de caricias, sin que esto sea especificado. También se encuentran en este grupo las músicas que se puede adaptar cuidadosamente al contexto grupal, a la vivencia y al nivel de profundización, y a otros ejercicios de caricias del catálogo (como el Grupo compacto de caricias, el Túnel de caricias, Caricias en grupo de cinco, etc ).\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5141,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 10,
+                    "nombre": "Jura secreta",
+                    "interprete": "Simone",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-10 Jura secreta Simone (Acariciamiento) 3, 44.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5142,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 11,
+                    "nombre": "Eu disse adeus",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF12-11 Eu disse adeus M Creuza (Acariciamiento) 2,42.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5149,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 18,
+                    "nombre": "",
+                    "interprete": "Nature",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-18 Nature boy A.P.(Acariciamientos) 3,22.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5158,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 6,
+                    "nombre": "Almost blue",
+                    "interprete": "C. Baker",
+                    "archivo": "IBF13-06 Almost blue               C. Baker.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5164,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 12,
+                    "nombre": "Por causa de voçe",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-12 Por causa de voçe   N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5165,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 13,
+                    "nombre": "Por toda minha vida",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-13 Por toda minha vida N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5166,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 14,
+                    "nombre": "Valerá a pena",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-14 Valerá a pena           N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5167,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 15,
+                    "nombre": "Nunca mais",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-15 Nunca mais               N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5168,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 16,
+                    "nombre": "Rama de nuvens",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-16 Rama de nuvens      N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5170,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 18,
+                    "nombre": "Proposta",
+                    "interprete": "Simone",
+                    "archivo": "IBF13-18 Proposta                  Simone.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5171,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 19,
+                    "nombre": "Summertime",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-19 Summertime             H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5173,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 21,
+                    "nombre": "Angel eyes",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-21 Angel eyes               H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5174,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 22,
+                    "nombre": "I'll be around",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-22 I'll be around            H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5241,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-08.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5249,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 16,
+                    "nombre": "Ave María",
+                    "interprete": "Ch. Gounod",
+                    "duracion": "12:03",
+                    "archivo": "IBF 17-16 Ave María Ch. Gounod (Intimidad) 3,28.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4025,
+        "nombre": "GRUPO COMPACTO DE MECIMIENTO\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "En el ejercicio de Grupo Compacto, el individuo abandona su identidad y la delega a la identidad del grupo. Cada uno de los miembros al abandonarse se torna anónimo, los ojos están cerrados y el contacto con otros es casual.\rDescripción :\r\rDurante el Grupo Compacto de Mecimiento se produce el estado de trance leve o mediano, con regresión integrativa. El grupo tiene el carácter simbólico de útero materno.\rEste ejercicio es la situación de partida para la inducción de trances más profundos, como el trance de abandono y mecimiento, en el cual uno de los miembros del grupo es acunado (mecido) por los demás.\r\rUna variedad de este ejercicio es la práctica del Coro de Caña Divina en Grupo Compacto. En este caso el trance puede resultar más profundo.\r\rPara iniciar el ejercicio, se pide a uno de los participantes que sirva de pivote (eje). Para eso se coloca al centro y comienza a mecerse lentamente al compás de la música. Todos los participantes se van aproximando a él en estado de relajación hasta hacer contacto; se pide al grupo adaptarse dulcemente al movimiento del miembro-pivote. El movimiento es en cámara lenta, suave y armónico. Cuando el grupo ha adquirido cohesión y se mece unitariamente, el sujeto que hace de pivote se abandona también al movimiento global.\r\rLa técnica del Grupo Compacto está sujeta a los siguientes preceptos:\r\rEl contacto es anónimo. Las personas, con ojos cerrados, entran en contacto casual.\r\rEl mecimiento se hace en estado de relajación, tratando de conservar el ritmo lento colectivo.\r\rCada uno colabora con su movimiento a la unidad y armonía del mecimiento.\rA cada participante se le pide no restringir la libertad de movimiento de otros miembros del grupo, aprisionándolos con sus brazos o cargándolos con el peso de su propio cuerpo. El contacto más íntimo de manos, rostros o piernas, debe estar sujeto a una progresividad que cada uno pueda permitirlo o desplazarse hacia otro lugar.\rAquellos que desean menos contacto se ubican en la periferia y regulan, por sí mismos, el grado de aproximación.\rQuienes desean un mayor contacto se van abandonando hacia el centro.\r\rLa disminución de la conciencia de sí mismo se produce cuando todos los miembros del grupo unifican el mecimiento y se entregan a un contacto confiado.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4919,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 3,
+                    "nombre": "Sete mi vezes",
+                    "interprete": "C Veloso",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-03 Sete mi vezes C Veloso     (Ronda de act final) 2, 28.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5081,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 11,
+                    "nombre": "Be here now",
+                    "interprete": "",
+                    "archivo": "IBF9-11 Be here now.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5113,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 2,
+                    "nombre": "Pode entrar",
+                    "interprete": "Fafa de Belem",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-02  Pode entrar                  Fafa de Belem (R de mecimiento) 4,25.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5115,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 4,
+                    "nombre": "Little girl blue",
+                    "interprete": "Nina Simone",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-04 Little girl blue Nina Simone (Dar y Recibir Continenete) 4, 23.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5119,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 8,
+                    "nombre": "Magie d´amour J.P.",
+                    "interprete": "Posit",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-08  Magie d´amour J.P. Posit (R de Mecimiento) 4, 45.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5129,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 18,
+                    "nombre": "Photograps",
+                    "interprete": "N Mouskori",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-18  Photograps                N Mouskori (Acariciamientos) 3,20.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5164,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 12,
+                    "nombre": "Por causa de voçe",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-12 Por causa de voçe   N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5168,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 16,
+                    "nombre": "Rama de nuvens",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-16 Rama de nuvens      N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5234,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 1,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-01.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5247,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 14,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-14.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4026,
+        "nombre": "GRUPO COMPACTO DE CARICIAS\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "El Grupo Compacto de Caricias tiene como antecedentes antropológicos la orgía primitiva y las danzas para tomar contacto con los antepasados (Indios norteamericanos del siglo XVI).\rDescripción :\r\rEs un ejercicio de caricias indiferenciadas que permite la vivencia de sentirse inmerso en la especie humana. Las personas, con los ojos cerrados, establecen entre ellas contactos indiferenciados y anónimos.\r\rObjetivo :\r\rSe acepta la diversidad humana.\r\rSe descubre la propia identidad sexual a través del contacto con diversas personas.\r\rSe despierta la fuente del deseo.\r\rSe induce un estado regresivo.\r\rObservación :\r\rEn la consigna es importante indicar a los participantes que no permanezcan en un lugar fijo, estableciendo contactos con una sola persona, sino que circulen en el grupo para aumentar la diversidad de los contactos.\r\rDespertando la fuente del deseo, los participantes mejoran la propia funcionalidad erótica. Al asumir la identidad sexual, cada persona puede conocerse mejor y orientar su comportamiento de seducción con mayor lucidez.\rElemento Poético :\r\rEl Grupo Compacto de Caricias es un recuerdo lejano de la orgía primitiva de celebración de la fertilidad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5092,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 2,
+                    "nombre": "The man I love",
+                    "interprete": "Ella Fitzgerald",
+                    "duracion": "12:03",
+                    "archivo": "IBF10-02 The man I love                Ella Fitzgerald (Sinc melód) 3,32.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5130,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 19,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF11-19  A noite do meu bem    M Creuza (Acaricimientos) 2,43.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5135,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 4,
+                    "nombre": "Comec.. tudo otra vez",
+                    "interprete": "",
+                    "archivo": "IBF12-04 Comec.. tudo otra vez.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5141,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 10,
+                    "nombre": "Jura secreta",
+                    "interprete": "Simone",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-10 Jura secreta Simone (Acariciamiento) 3, 44.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5143,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 12,
+                    "nombre": "Gracas a deus",
+                    "interprete": "M Creuza",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-12 Gracas a deus M Creuza (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5145,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 14,
+                    "nombre": "Dolce Presenza",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:04",
+                    "archivo": "IBF12-14 Dolce Presenza Nana Caymmi (Acariciamiento) 4, 13.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5147,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 16,
+                    "nombre": "Someone  to watch over me A P",
+                    "interprete": "",
+                    "archivo": "IBF12-16 Someone  to watch over me A P (Acariciamiento).mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5150,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 19,
+                    "nombre": "As times goes by,A. P.",
+                    "interprete": "",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-19 As times goes by,A. P.(Acariciamientos) 3,01.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5151,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 20,
+                    "nombre": "Flamingo A.P.",
+                    "interprete": "",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-20 Flamingo A.P. (Acariciamientos) 3, 27.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5155,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 3,
+                    "nombre": "Atrás da porta",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-03 Atrás da porta           N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5159,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 7,
+                    "nombre": "O que será",
+                    "interprete": "Simone",
+                    "archivo": "IBF13-07 O que será                Simone       (Ronda de contacto múltiple).mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5160,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 8,
+                    "nombre": "Iso e aquilo",
+                    "interprete": "N. Caymmi",
+                    "duracion": "12:02",
+                    "archivo": "IBF13-08 Iso e aquilo                N. Caymmi (Acariciamiento) 2, 02.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5161,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 9,
+                    "nombre": "Voz e suor",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-09 Voz e suor                  N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5162,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 10,
+                    "nombre": "Velho Piano",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-10 Velho Piano              N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5163,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 11,
+                    "nombre": "Neste mesmo lugar",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-11 Neste mesmo lugar  N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5164,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 12,
+                    "nombre": "Por causa de voçe",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-12 Por causa de voçe   N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5166,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 14,
+                    "nombre": "Valerá a pena",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-14 Valerá a pena           N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5168,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 16,
+                    "nombre": "Rama de nuvens",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-16 Rama de nuvens      N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5169,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 17,
+                    "nombre": "Medo de amar Nº2",
+                    "interprete": "Maria Creuza",
+                    "archivo": "IBF13-17 Medo de amar Nº2   M. Creuza.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5173,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 21,
+                    "nombre": "Angel eyes",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-21 Angel eyes               H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4027,
+        "nombre": "GRUPO COMPACTO DE TRANCE\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "La pulsación de la identidad entre un estado de consciencia intensificada de sí mismo y el estado de regresión, es uno de los instrumentos de transformación más importantes en Biodanza. La vivencia de la expansión de la consciencia es el efecto deseado después del retorno del trance. Además, se evitan en Biodanza los trances de caracter solipsista, solitario.\r\rDescripción :\r\rTodo el grupo se aproxima progresivamente y a través del contacto y del movimiento lento y repetitivo se va entrando en un estado de intensificación de trance que induce al aumento de regresión y a la inducción del estado de fusión con la totalidad.\r\rObjetivo :\r\rIntensificar el estado de trance y posibilitar la vivencia de disminución progresiva de la consciencia de si mismo y consecuente entrada en un estado de regresión hasta alcanzar el estado de fusión con el grupo y con la totalidad.\r\rObservación :\r\rEs importante informar que no se transfiera el peso del propio cuerpo para los compañeros. Progresivamente todo el grupo se deja bajar acostándose suavemente en el suelo. Puede ocurrir de que algunas personas se “caigan\" en trance más rápidamente que otras.\r\rElemento Poético :\r\rEste ejercicio permite revivir la unidad con el todo y conectarse con la “nostalgia del paraíso perdido”.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5247,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 14,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-14.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5260,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 6,
+                    "nombre": "Rainbow voice",
+                    "interprete": "The Harmonic Choir",
+                    "archivo": "IBF18-06 Rainbow voice          The Harmonic Choir.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4028,
+        "nombre": "TÚNEL DE CARICIAS\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "La autoestima y el amor por la vida estan fuertemente ligados al erotismo. Vivirse a sí mismo como espacio de placer, de erotismo, de ternura; y vivir la vida como una travesía del erotismo y la ternura. Ser acariciado tiene efectos profundos y transformadores en la identidad humana. La caricia nos torna más vivos, confiantes y amorosos.\r\rDescripción :\r\rEl grupo forma un túnel de dos lineas separadas por una distancia que permite pasar a una persona. Cada participante a su vez entra en el \"túnel\" con los ojos cerrados y avanza lentamente dejándose acariciar por sus compañeros. Al llegar al final es recibido en un abrazo por alguien que le reintegra en el túnel para acariciar a los que siguen.\rObjetivo :\r\rReaprender a vincularse por el contacto y por la caricia, estar receptivo y disfrutar del placer en ser acariciado. Aumentar la autoestima y disolver corazas caracterológicas. Porgresar en el erotismo indiferenciado.\r\rObservación :\r\rCada participante que pasa, camina lentamente sin interrumpir el flujo, para que todo el grupo pueda tener la oportunidad en vivenciar el pasaje.\r\rProyección Existencial :\r\rCaminar en un túnel de caricias induce a una vivencia del mundo maravilloso, a una experiencia del paraíso aquí y ahora y el sentido de sacralidad del cuerpo y de la belleza de la vida.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5110,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 20,
+                    "nombre": "Meditation fidich roeme",
+                    "interprete": "",
+                    "duracion": "12:02",
+                    "archivo": "IBF10-20 Meditation fidich roeme  (Encuentros) 2,34.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5144,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 13,
+                    "nombre": "Pra vocé",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-13 Pra vocé Nana Caymmi (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5145,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 14,
+                    "nombre": "Dolce Presenza",
+                    "interprete": "Nana Caymmi",
+                    "duracion": "12:04",
+                    "archivo": "IBF12-14 Dolce Presenza Nana Caymmi (Acariciamiento) 4, 13.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5237,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-04.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4029,
+        "nombre": "NIDO ECOLÓGICO (también llamado \"Nido de la especie\")\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "El contacto indiferenciado en la situación del nido activa el instinto gregario, el arquetipo del clan. Esta es una vivencia muy arcaica (la matriz original que ofrece calidez, protección, contenimiento y nutrición se encuentra en la \"cueva primitiva\") y también muy íntima y cercana (amigos, momentos de reposo de la infancia, la cercanía del cuerpo de los compañeros de juego, etc.)\rDescripción :\r\rLos participantes son invitados a acostarse cerca los unos de los otros, en contacto afectivo, con los ojos cerrados, para abandonarse juntos en el calor y la protección del grupo.\r\rObjetivo :\r\rEstimular el instinto gregario, la conexión al grupo, al clan o a la especie, en un estado de entrega y reposo.\r\rObservación :\r\rDe acuerdo con una evolución gradual y dependiendo de la capacidad de intimidad y de abandono en el grupo, el nido se puede ofrecer con variantes:\rLas personas en la ronda, se dan vuelta todos hacia la derecha, y asi se acuestan con la cabeza hacia el centro, como en posicion de \"cucharita\".\rEl nido se va creando con una persona que es invitada primero en acostarse, y los otros se situarán de manera a que todo el mundo esté en contacto (recibiendo u ofreciendo el contacto con su cuerpo: hombros, brazos, estómago, como apoyo). Aquellos que necesitan más distancia o desean menos proximidad tendrán cuidado en ponerse hacia la periferia.\rEl nido se crea de forma espontánea cuando las personas, de pie (y ya en una vivencia de abandono) se dejan lentamente caer al suelo y se amontonan unos contra otros.\rLa música establece el tono de la vivencia del nido (afectividad, sexualidad, trascendencia).\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5234,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 1,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-01.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4030,
+        "nombre": "DANZA DE TRANCE\r",
+        "idGrupo": 15,
+        "grupo": "Contacto Indiferenciado",
+        "detalle":
+            "Descripción :\r\rLa persona cierra los ojos y se deja ser danzado por la música, en un estado de disponibilidad total, dejando de lado cualquier control de su movimiento, la forma o la apariencia de éste, y dejandose totalmente ser danzado por la música. En el caso de músicas rítmicas, se debe invitar a la gente a comenzar a moverse desde el interior: liberar el cuello, las rodillas, la mandíbula y evitar movimientos periféricos, permitiendo que el cuerpo reciba los impulsos que vienen de la mobilizacion cenestésica visceral. El hecho de agitar o sacudir la cabeza en un estado de tensión no induce un trance integrante; lo que induce el trance integrante es la disolución gradual del control a través del placer de ser danzado por la música.\r\rDefinición :\r\rComo en la Radicalización de la vivencia musical (Mediumnidad musical), para llegar al estado de trance que permitirá a la persona alcanzar el estado de \"ser bailado\", se necesita una casi-inmovilidad, un estado de tonicidad abierto a los impulsos propioceptivos espontáneos; un estado incondicional y receptivo, libre de cualquier proyecto. En tales condiciones, el ego desaparece y el individuo \"permite\" a la música insinuarse a través de todo su cuerpo e inducir un estado cenestésico.\r\rSer la danza es una experiencia de trascendencia: el biosistema humano entra en armonía con el biosistema cósmico. Esta es la fuente más poderosa de renovación y activación orgánica.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5038,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 13,
+                    "nombre": "Voyage dans au de la",
+                    "interprete": "",
+                    "archivo": "IBF 7-13 Voyage dans au de la.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5247,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 14,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-14.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5264,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 10,
+                    "nombre": "O Guveng Sufi",
+                    "interprete": "",
+                    "archivo": "IBF18-10 O Guveng Sufi.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5279,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 10,
+                    "nombre": "Diamonds are a girl’s best friend",
+                    "interprete": "L. Fygi",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-10 Diamonds are a girl’s best friend      L. Fygi 2,54.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4031,
+        "nombre": "DANZA YANG\r",
+        "idGrupo": 63,
+        "grupo": "DANZA YIN Y DANZA YANG",
+        "detalle":
+            "La Danza Yang se caracteriza por los atributos asociados a lo masculino. Si la Danza Yin estimula la inspiración creativa, la Danza Yang estimula la capacidad de realización. La inspiración, de origen \"yin\", consiste en un impulso primordial que puede animar una obra de arte, un proyecto, un sueño. La fuerza \"yang\" permite, a su vez, convertir un sueño en realidad, a partir del impulso primordial \"yin\", y de realizar una obra de arte que existe solo como proyecto.\r\rDescripción :\r\rLa Danza Yang es dinámica y se realiza a través del aumento del tono muscular y de la intencionalidad que se expresa en el movimiento. La Danza Yang no es solamente expresión de fuerza, velocidad y potencia, sino también expresión de un impulso interior instintivo y emotivo, pleno de vitalidad.\r\rEsta danza es libre porque cada participante es invitado a expresar su energía \"yang\" con estilo personal.\r\rLa Danza Yang se realiza moviéndose siempre hacia adelante y con los ojos abiertos.\r\rObjetivo :\r\rAumentar la capacidad de realización, el coraje, la seguridad y la confianza en sí mismo.\r\rPor lo tanto la Danza Yang es especialmente indicada para personas que tienen dificultad de enfrentar obstáculos y de expresar la su identidad.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5194,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 1,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-01.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5204,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 11,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-11.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5205,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 12,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-12.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5206,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 13,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-13.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5278,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 9,
+                    "nombre": "All of me",
+                    "interprete": "Laura Fygi",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-09 All of me     Laura Fygi  2,53.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4032,
+        "nombre": "DANZA YANG CON GRITO\r",
+        "idGrupo": 63,
+        "grupo": "DANZA YIN Y DANZA YANG",
+        "detalle":
+            "\r\rLa Danza yang con grito es una danza individual, pero que realiza todo el grupo en forma simultánea. Los alumnos hacen gestos yang, fuertes, vigorosos, con los brazos, que implican proporcionalmente todo el cuerpo. Con la realización de los movimientos se emiten gritos también vigorosos, con la posibilidad de desplazamientos hacia delante en el espacio. Es importante que los gritos sean lo más natural posible, que salgan desde la profundidad y que no tengan un carácter teatral.\r\rObjetivo :\r\rProfundizar la expresión de la propia fuerza es muy importante porque en muchas personas está reprimida y, por ende, la identidad está continuamente amenazada.\rObservación :\r\rProyecto Minotauro (Radicalización de la vivencia).\r\rObservación :\r\rNota: Este ejercicio es más apropiado para el Proyecto Minotauro.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5195,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-02.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5281,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 12,
+                    "nombre": "Corcovado",
+                    "interprete": "Laura Fygi",
+                    "duracion": "12:04",
+                    "archivo": "IBF19-12 Corcovado     Laura Fygi 4,17.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5300,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 11,
+                    "nombre": "Dream a little dream",
+                    "interprete": "Laura Fygi",
+                    "duracion": "12:03",
+                    "archivo": "IBF20-11 Dream a little dream     Laura Fygi 3,42.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4033,
+        "nombre": "DANZA YIN\r",
+        "idGrupo": 63,
+        "grupo": "DANZA YIN Y DANZA YANG",
+        "detalle":
+            "La Danza Yin se caracteriza por atributos asociados a lo femenino: receptividad, sensibilidad, capacidad de gestación, tensión centrípeta, intimidad.\rDescripción :\r\rEsta danza se realiza con movimientos muy lentos y sensibles, sin desplazamiento, cerrando los ojos cuando aumenta la intensidad de la vivencia. La Danza Yin induce una vivencia de profunda receptividad al estimulo musical.\r\rObjetivo :\r\rDesarrollar el aspecto \"yin\" del comportamiento, induciendo una desaceleración y una mayor sensibilidad frente a la vida. La Danza Yin induce un estado de armonía profunda y de reducción de la ansiedad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5209,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 16,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-16.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4034,
+        "nombre": "DANZA DE INTEGRACIÓN YIN~YANG\r",
+        "idGrupo": 63,
+        "grupo": "DANZA YIN Y DANZA YANG",
+        "detalle":
+            "La Danza Yin y la Danza Yang realizadas por separado tienen solamente un valor didáctico y terapéutico para las personas que presentan un desequilibrio entre estas dos formas de expresión.\r\rDurante la Danza de Integración Yin-Yang es necesario que el pasaje de una a otra forma de expresión se realice sin interrupción. Son acentuadas sucesivamente la expresión de cada una de las dos fuerzas: \"yin\" y \"yang\". De este modo, la danza adquiere variaciones de intensidad que son propias a la creatividad individual.\rDescripción :\r\rDurante la Danza de Integración Yin-Yang, la fase \"yang\" puede ser realizada con los ojos abiertos, pudiendo cerrarse eventualmente durante la fase \"yin\". El paso de una polaridad a otra debe ser claro y sin embargo mantener una continuidad, sin ruptura de la danza.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t79\tmars 2012\r\fObjetivo :\r\rSe obtiene la estimulación de la capacidad creativa en hombres y mujeres. Es importante comprender que la fuerza \"yang\" y la fuerza \"yin\" se encuentran en todos los seres humanos, en distintas proporciones, independientemente del sexo y de la identidad sexual.\r\rNote CIMEB :\r\rObjetivo: Integrar el hemisferio izquierdo y el hemisferio derecho del cerebro; la motricidad voluntaria y la motricidad sensible; la tonicidad \"tónica\" y la tonicidad \"sensibile\".\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5061,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 11,
+                    "nombre": "Years of solicitude",
+                    "interprete": "Piazzola Mulligan",
+                    "archivo": "IBF8-11 Years of solicitude Piazzola Mulligan (D melód expresiva.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5207,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 14,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-14.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4035,
+        "nombre": "DANZA DE LA SERPIENTE\r",
+        "idGrupo": 64,
+        "grupo": "DANZAS DE LOS CUATRO ANIMALES",
+        "detalle":
+            "Está asociada al simbolismo de la tierra y el arquetipo motriz que representa es la armonía. La danza de la serpiente debe ser, sin duda, una danza de armonía con todo el cuerpo. Tiene también la facultad de seducir y fascinar, y la voracidad. Se puede asociar al acto de seducción amorosa y de conquista de la “presa” amorosa. Tiene algo que ver con el amor, porque quien ama quiere “devorar” a su ser amado.\r\rOtros simbolismos asociados a la serpiente son lo sagrado y el poder. En las coronas de los Faraones está la serpiente como símbolo sagrado del poder. La serpiente forma parte también del caduceo, símbolo de la medicina. Una imagen muy notoria es de la serpiente que se muerde la cola, indicando que el fin representa también el comienzo. Simboliza los ciclos de un proceso que se repiten.\rDescripción :\r\rLa danza de la serpiente es armoniosa. Comienza en el piso con movimientos ondulantes, levantándose de apoco, exponiendo la cabeza y el pecho con actitudes de seducción. Algunas formas expresivas de la serpiente son el silbido y el sacar la lengua para transmitir su deseo de devorar.\r\rNote CIMEB :\r\rObjetivo: Expresar la capacidad de seducción, de fascinación. Aumentar el propio magnetismo.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5063,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 13,
+                    "nombre": "My little brown book",
+                    "interprete": "Ellington y Coltrane",
+                    "duracion": "12:04",
+                    "archivo": "IBF8-13 My little brown book  Ellington y Coltrane (Extensión arm) 4,57.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5064,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 14,
+                    "nombre": "Europa",
+                    "interprete": "Gato Barbieri",
+                    "duracion": "12:04",
+                    "archivo": "IBF8-14 Europa Gato Barbieri (Elasticidad integ ) 4, 14.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5065,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 15,
+                    "nombre": "The Quintesence",
+                    "interprete": "Q. Jones",
+                    "duracion": "12:04",
+                    "archivo": "IBF8-15 The Quintesence Q. Jones (Elasticidad integ) 4, 26.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5200,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 7,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-07.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4036,
+        "nombre": "DANZA DEL TIGRE\r",
+        "idGrupo": 64,
+        "grupo": "DANZAS DE LOS CUATRO ANIMALES",
+        "detalle":
+            "La danza del tigre tiene algunas características propias del animal: armonía del felino, potencia de sus movimientos, agilidad.\r\rEstas cualidades no tienen que ser confundidas con la agresividad violenta hacia un compañero. En realidad, el tigre es agresivo cuando necesita capturar una presa para alimentarse. Durante esta danza, se debe tener tensión en los brazos y ésta viene de los hombros y de la parte dorsal. La energía concentrada en la espalda se dirige hacia los brazos y manos, dando una sensación de tensión interior.\r\rObjetivo :\r\rEste ejercicio tiene el objetivo de aumentar la agilidad y la armonía dinámica.\r\rEn el pasado se hablaba de “sacar afuera el tigre” cada vez que era necesario responder a una agresión. He eliminado esta expresión porque la agresividad se imponía en la danza de muchos alumnos por sobre otras características del tigre, como el atractivo de su belleza, su fuerza y el sinergismo de sus movimientos. El simbolismo del tigre es el fuego.\r\r\f\r\r\r\rBiodanza ® , IBF Catálogo IBF\t80\tmars 2012\r\fNote CIMEB :\r\rDescripcion: Se trata de desplazamientos lentos con un control ágil del poder y de la sinuosidad en un equilibrio dinámico. El movimiento esta habitado de tensión que traduce la intención (de captura, de caza). Esta tensión emana de los hombros y de la parte superior dorsal (del triangulo dorsal). La energia concentrada en la espalda se dirige hacia los brazos y las manos, danso una sensación de tensión interior. La mirada traduce la acuidad, la agudeza de una determinación tranquila. Los movimientos se caracterizan por su elegancia.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5070,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 20,
+                    "nombre": "",
+                    "interprete": "Taxi Driver",
+                    "duracion": "12:04",
+                    "archivo": "IBF8-20 Taxi Driver, Love theme- CSF (Extension máx) 4, 17.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5196,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 3,
+                    "nombre": "Have a cigar",
+                    "interprete": "Pink Floyd",
+                    "duracion": "12:05",
+                    "archivo": "IBF15-03 Have a cigar Pink Foid (Danza Tigre) 5, 09.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4037,
+        "nombre": "DANZA DEL HIPOPÓTAMO\r",
+        "idGrupo": 64,
+        "grupo": "DANZAS DE LOS CUATRO ANIMALES",
+        "detalle":
+            "Lo he elegido como símbolo del agua, para que el participante logre vincularse más con el placer de sumergirse en el agua y en el lodo. Además se considera un animal social y ecológico, en el sentido que los pájaros comen sobre su piel y es muy sociable con sus semejantes. Representa también la voracidad en alimentarse, dado que come alrededor de cien kilos de hierba al día. Esta dieta vegetal no diminuye para nada su agresividad; cuando está furioso por una amenaza es capaz de grandes destrucciones. Puede ser muy manso y, al mismo tiempo, muy violento.\r\rAlgunas personas piensan que el simbolismo del agua tendría que ser un pez, pero para los objetivos de Biodanza el Hipopótamo es el más idóneo. El pez no representa el placer de estar sumergido en el agua y en el lodo de manera tan evidente como el hipopótamo, permaneciendo casi en éxtasis por horas y horas. Además los peces son de sangre fría, se desplazan en cardúmenes y también solos, mientras que el hipopótamo vive siempre en manada.\r\rDescripción :\r\rLa dinámica de la danza está concentrada en la panza. El participante comienza acariciando su propia panza, después continúa acariciando, con movimientos lentos y fraternos, la panza de los compañeros.\r\rNote CIMEB :\r\rObjetivo: Despertar el instinto de saciedad. La vivencia esta relacionada al placer viceral, a la alimentación, y a abandonar la culpa relativa al placer de los sentidos (sensualidad).\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5198,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 5,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-05.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5273,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 4,
+                    "nombre": "With a little help from my friends",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-04 With a little help from my friends     The B. 2,45.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4038,
+        "nombre": "DANZA DE LA GARZA\r",
+        "idGrupo": 64,
+        "grupo": "DANZAS DE LOS CUATRO ANIMALES",
+        "detalle":
+            "Representa la gracia del movimiento, la levedad, la potencia de la ascensión y la armonía. Los movimientos de la danza parten desde el centro del pecho. El vuelo posee la energía del pecho, es un acto de abertura hacia el espacio. La Garza tiene la gracia del vuelo y el dominio de los espacios. La vivencia es de levedad, de falta de gravedad, de lenta ascensión y elevación. Representa también la visión desde la altura.\r\rEn psicología se habla mucho sobre la “visión con profundidad o abisal”, sin considerar la visión de la altura. Debemos acostumbrarnos a mirar las cosas desde la altura, donde las dificultades se dejan ver menos amenazadoras y es posible ver la situación en su totalidad.\r\rEl simbolismo de la garza es el aire.\r\rObjetivo :\r\rIncorporar la vivencia de levedad y libertad, para compensar una realidad a menudo estrecha, una percepcion a menudo limitada. El pajaro es simbolo de la libertad de ir y venir en un espacio sin limites.\rProyección Existencial :\r\rLa danza del ave nos conecta al arquetipo de la levedad: esa que nace de la visión de altura, del vuelo, de la percepción del horizonte abierto e infinito.\r\rNote CIMEB :\r\rDescripcion: Los pies separados a la distancia de la cadera, un pie un poco mas atras que el otro; las rodillas flexibles para permitir un movimiento pulsante de elevación y descenso (el impulso de ascención nace de la posibilidad de descender y echarse a volar). Los brazos evocan un movimineto suave y ligero de elevación, de alas. Es fundamental que el movimeinto nazca del plexo y no de los hombros. Los ojos estan cerrados.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5074,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 4,
+                    "nombre": "Elsha",
+                    "interprete": "",
+                    "archivo": "IBF9-04 Elsha.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5197,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-04.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5287,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 18,
+                    "nombre": "Tai Chi ",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF19-18 Tai Chi 4,58.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4039,
+        "nombre": "DANZA DE LAS TRANSFORMACIONES Y EL MITO DE SHIVA\r",
+        "idGrupo": 65,
+        "grupo": "DANZAS DE SHIVA DE VISHNU Y DE BRAHMA",
+        "detalle":
+            "\r\rShiva pertenece a la trilogía de dioses hindúes integrada por Brahma, el Creador, y Vishnu, el Conservador de la Vida. Shiva simboliza la eterna transformación del universo, que consiste en la cíclica destrucción y creación. Es el dios de la danza y de las transformaciones.\r\rEl proceso cósmico es muerte y resurrección, eterna renovación de la vida. Dentro de nosotros mismos, la acción de Shiva sería la de morir para nuestro viejo cuerpo y renacer a un nuevo ciclo de vida. La danza de Shiva tiene por tema la actividad cósmica, la eterna transformación.\r\rAnanda Coomaraswamy describe las cinco actividades divinas de Shiva:\r\rLa creación continua del Universo, originada en el ritmo.\rConservación, basada en el equilibrio y mesura de los movimientos.\r\rDestrucción de las formas ya superadas mediante el fuego interior.\rLa eterna renovación.\r\rLa encarnación de la vida.\r\rLlama la atención que el Dios de la Danza, Shiva Nataraja, sea, al mismo tiempo, el Dios de los Cambios, lo que implicaría que los cambios son inducidos por la danza.\r\rShiva se representa con el pie derecho aplastando a un demonio, lo que simboliza la victoria sobre las fuerzas demoníacas de la destrucción, y el izquierdo en el aire, representado el equilibrio y el impulso de ascensión. La imagen de Shiva posee cuatro brazos, con los cuales realiza la creación y destrucción cíclica del mundo. Está rodeada por un círculo de fuego. La danza de Shiva es, por lo tanto, un movimiento que destruye para generar el proceso de creación.\r\rInspirado en las Danzas de Shiva y en su simbología de transformación, Rolando Toro Araneda creó la “Danza de las Transformaciones”, que posee tres atributos esenciales del movimiento: Unidad, Equilibrio y Armonía.\r\rUnidad: Significa que todo el cuerpo se mueve en perfecta coordinación, integrando sus partes y conectándose a todo lo viviente. Desde el punto de vista psicomotor, requiere una integración de las vías piramidales y extrapiramidales.\r\rEquilibrio: Plantea la exigencia del movimiento en relación con la fuerza de gravedad de la tierra, reajustando en todo momento las estructuras posturales. Todas las variaciones se realizan en equilibrio inestable sobre una pierna, lo que requiere la integración de los receptores del equilibrio del oído interno con las estructuras córtico-cerebelosas.\r\rArmonía: Los movimientos deben hacerse en perfecta fusión con la música, dando al cuerpo la pulsación de la vida.\r\rEn la etapa de aprendizaje se integran las estructuras sensorio-motoras, auditivas, visuales y vestibulares. En etapas más avanzadas se produce la ampliación del estado de consciencia, por el intenso proceso de integración que induce.\r\rLa Danza de las Transformaciones propuesta en Biodanza incluye, una vez establecido el patrón arquetípico, desplazamiento a través del espacio con gran riqueza de variaciones, creatividad y armonía.\r\rEl simbolismo de la Danza de las Transformaciones sugiere la destrucción del viejo cuerpo rígido y reprimido, para nacer en un cuerpo nuevo, tierno y libre. No puede haber mudanzas si no hay destrucción del pasado, o transformación de él.\r\rEl valor de los tres atributos del movimiento (Unidad, Equilibrio y Armonía), no es sólo de integración motora. Hay un proceso de trascendencia en esta danza que integra niveles altamente diferenciados, lo que tiene una resonancia metafísico-existencial:\r\rUnidad: Todo el cuerpo está en acción. No hay disociación posible. La bioenergía fluye, reforzando la estabilidad dinámica del organismo.\r\rEquilibrio: No es sólo una función laberíntico-cerebeloso, sino también psíquica: equilibrio ante distintas opciones o tentaciones de cambio. Siempre hay posibilidades de cambiar de lugar, de trabajo, de amor, etc. Dentro de esas polaridades magnéticas (cambio y conservación), cada uno debe estar conectado con su centro. Esa cualidad de equilibrio existencial surge de la resonancia con un centro de equilibrio interior.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t83\tmars 2012\r\fArmonía: Es la perfecta relación en “feed-back”; conexión y transmisión de un estímulo-respuesta a todo el mundo exterior, de modo que el mundo interior palpite en resonancia, hasta que la barrera entre lo exterior e interior desaparezca.\r\rSi se cumplen estos tres atributos, se inicia una nueva etapa de renovación existencial. Realizada con gran entrenamiento, activa no sólo las áreas y vías corticales, motoras y sensoriales, sino también los centros límbicos relacionados con la conciencia cósmica.\rNote CIMEB :\r\rEsta danza puede ser realizada en pares, tomandose las manos, cara a cara. También puede ser realizada en ronda, en cuyo caso adquiere una cualidad mas lúdica.\r\rObjetivo: La realizacion de esta danza pasa por fases diferentes. Durante el aprendizaje s eintegran las estructuras sensorio-motoras, auditivas, visuales y vestibulares (oido interno). En las fases mas avanzadas puede producirse una expansión del estado de conciencia, justamente como consecuencia del intenso proceso de integración inducido.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5227,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 14,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-14.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5228,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 15,
+                    "nombre": "Song from the hills",
+                    "interprete": "Ravi Shankar",
+                    "archivo": "IBF16-15 Song from the hills           Ravi Shankar (D Shiva).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5229,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 16,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-16.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5307,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 18,
+                    "nombre": "Sinfonia 9",
+                    "interprete": "Himno Alegría     Bethoven",
+                    "archivo": "IBF20-18 Sinfonia 9, Himno Alegría     Bethoven.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4040,
+        "nombre": "DANZA DE LA CONSERVACIÓN Y EL MITO DE VISHNU\r",
+        "idGrupo": 65,
+        "grupo": "DANZAS DE SHIVA DE VISHNU Y DE BRAHMA",
+        "detalle":
+            "Vishnu es el dios de la conservación de los ciclos vitales. Representa la fuerte inercia biológica que reitera y conserva la vida y el universo. Es la belleza de lo permanente, lo que genera seguridad y confianza. Todos los días al amanecer aparece el mismo sol para brindar la vida; todas las noches la luna en la oscuridad; la misma secuencia de las estaciones; la notable estabilidad de las estrellas en la bóveda celeste. Los seres queridos permaneciendo en nosotros; la felicidad de ver siempre un mismo rostro. Las variaciones que se dan con armonía dentro de los mismos patrones.\r\rVishnu establece los ejes dentro de un sistema y da el equilibrio a nuestro cuerpo sobre ambas piernas.\r\rBasados en el simbolismo de Vishnu, Rolando Toro Araneda y Cecilia Luzzi, crearon la “Danza de la Conservación de la Vida”.\r\rAsí como para dar un salto evolutivo (transtasis), hay que cambiar las formas de equilibrio (Shiva), la conservación del nuevo equilibrio conquistado la ultra estabilidad- requiere de la homeostasis de Vishnu. Así como las funciones ergotrópicas necesitan de la fuerza de Shiva, las funciones trofotrópicas requieren la fuerza de Vishnu. En algunas personas predomina lo que podríamos denominar el “espíritu de Shiva” y están en permanente cambio; mientras que en otras predomina el “espíritu de Vishnu”, creando un círculo de protección de todo aquello que tienen y aman.\r\rLa Danza de la Conservación está cuidadosamente estructurada para inducir ese estado de serena armonía.\r\rEtapas de la Danza:\r\rObjetivo :\r\rLa Danza de la Conservación induce la profunda necesidad de movernos dentro de patrones de estabilidad, con referencia a un centro afectivo adherente, pleno de continente. El cuidado del calor íntimo de la vida y del hogar, guardar el fuego dentro de nosotros, permanecer en el éxtasis de lo cotidiano, conectados a la tierra y rechazando los cambios, dar a la vida la solemnidad indispensable para hacer de ella un hogar de crecimiento y maduración.\r\rEtapas de la Danza :\r\r1 Búsqueda del centro\r\rCon los pies apoyados en el suelo, se oscila con movimientos leves en sentido lateral y antero-posterior, hasta encontrar el centro. Se obtiene así un sentimiento de estabilidad.\r\r2 Variaciones simétricas\r\rLos brazos se mueven con movimientos simétricos en torno al eje central del cuerpo.\r\r3 Variaciones asimétricas\r\rLos brazos se mueven con movimientos asimétricos en torno al eje central del cuerpo, sin desplazamiento.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t84\tmars 2012\r\f4 Posición de Vishnu\r\rEl cuerpo de pié, apoyado sobre la cadera y pierna izquierda (la pierna derecha está semi-flexionada). La mano izquierda tocando el borde externo del hueso coxal izquierdo. La mano derecha levantada a la altura del pecho, con la palma hacia el frente, en delicado gesto de detener elementos externos.\r\r5 Rechazo a los cambios\r\rLa mano derecha avanza en suave gesto de rechazo al cambio. Es un movimiento que se realiza con decisión y satisfacción.\r\r6 Danza simétrica, con movimientos amplios\r\rEl movimiento se inicia ampliando la base de sustentación, separando un poco la pierna derecha. Puede haber desplazamientos minimos causados por los cambios de apoyo. Los brazos realizan movimientos amplios y simétricos. La persona ejerce la maestria de sus movimientos y de su equilibrio.\r\r7 Danza asimétrica con movimientos amplios\r\rSe pone a prueba la estabilidad con cambios mayores, pero conservando siempre el eje interior. Movimientos amplios y asimétricos, cambio de base de apoyo, equilibrio en el cambio siempre en referencia al eje interior, al centro.\r\r8 Cuidando el fuego\r\rSe forma con las manos una esfera invisible mantenida por el magnetismo natural del cuerpo, se traslada de izquierda a derecha.\r\r9 Guardando el fuego\r\rSe lleva la esfera hacia el pecho, en un gesto de intimidad. Los valores afectivos se conservan dentro del pecho.\r\r10 Círculo de protección\r\rLos brazos caen suavemente desde el centro y, levantándose por los lados, generan un círculo que se cierra sobre la cabeza. Así, el mundo propio está protegido y a salvo.\r\r11 Posición de Vishnu\r\rLas manos descienden de nuevo, las palmas se juntan, y se vuelve a la posicion de Vishnu (ver N°4). El gesto de \"rechazar los cambios\" es mas sereno y confiante.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5230,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 17,
+                    "nombre": "Rosas das Rosas MUSICISTI PROVENZA",
+                    "interprete": "",
+                    "archivo": "IBF16-17 Rosas das Rosas MUSICISTI PROVENZA.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5237,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-04.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5246,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 13,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4041,
+        "nombre": "DANZA DE BRAHMA\r",
+        "idGrupo": 65,
+        "grupo": "DANZAS DE SHIVA DE VISHNU Y DE BRAHMA",
+        "detalle":
+            "Dios de la Creación, Brahma es el primer creado y el creador de todas las cosas. Frecuentemente es representado con cuatro brazos y cuatro cabezas, que simbolizan la omnipresencia y omnisciencia.\r\rLa Historia:\r\rBrahma recibe el don de la creación de parte del Innombrable y lo guarda en su corazón. Luego Brahma duerme y sueña, y su sueño es el mundo. Su sueño es tan bello que, cuando despierta, decide crear el mundo que soñó. Así, crea todas las cosas hacia las cuatro direcciones cardinales, ejerciendo el don recibido. Finalmente, satisfecho con su trabajo, contempla su obra y la ofrece a Krishna (o Vishnu, dios de la conservación del mundo). Confiando que su creación está a salvo y feliz por haberla ofrecido, vuelve a dormirse.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t85\tmars 2012\r\fDescripción :\r\rLa persona está de pié, en posición de Identidad. Cuando comienza la música, ambas manos se extienden hacia delante en un gesto de recibir el don de la creación y luego se llevan junto al pecho, en un acto de guardar el don junto al corazón. Los ojos se cierran y la cabeza se abandona hacia delante, en actitud de reposo.\r\rPoco a poco los ojos se abren, la cabeza se levanta y se gira lentamente hacia un lado y hacia otro, abarcando con su mirada todo el espacio circundante.\r\rPosteriormente la mano y el brazo derecho se abren hacia delante y hacia su mismo lado, con un movimiento circular y amplio, en un gesto de ejercer el don de la creación, mientras la mirada acompaña el gesto. Luego la mano vuelve hacia el pecho.\r\rSe continúa con la apertura de la mano y el brazo izquierdo hacia su mismo lado. La mirada siempre acompaña el movimiento. La mano izquierda vuelve hacia el pecho.\r\rSucesivamente el gesto se amplía hasta alcanzar el espacio posterior: primero por la derecha, luego por la izquierda. La mirada siempre abarca un espacio más amplio, infinito.\r\rSe retorna a la posición inicial. La pierna derecha avanza con la rodilla levemente flexionada; el brazo y la mano derecha, palma hacia arriba, se alzan en un gesto de oferta. La mano izquierda acompaña levemente más abajo. La mirada se dirige hacia arriba, pues Brahma ofrece su creación a Vishnu. Observar que, mientras todo el cuerpo tiende hacia delante y arriba, la rodilla derecha flexionada se dispone a una actitud de respeto y humildad.\r\rRetorno lento a la posición inicial; los pies juntos, las manos sobre el pecho, la cabeza reposando levemente hacia delante y los ojos cerrados.\r\rObjetivo :\r\rValorizar la propia capacidad creativa.\r\rTener la vivencia de generosidad; crear es ofrecer los propios frutos al universo y  a la vida.\rTener la conciencia amplificada de sí mismo como creador, como centro de la creación.\r\rNote CIMEB :\r\rDefinicion: Invocación de la fuerza creadora en su aspecto generoso y organizado (Cosmos), en comparación con el aspecto destructor de Shiva (Caos).\rEtapas de la Danza :\r\r1 Posición de identidad\r\rRecepción del don de la creación.\r\r2 Posición de intimidad\r\rBrahma se reposa y sueña.\r\r3 Despertar y descubrir con la mirada el espacio que nos rodea\r\rBrahma despierta y ve que el mundo soñado no existe.\r\r4 Gestos de oferta hacia la derecha y la izquierda\r\rBrahma decide crear todas las cosas soñadas. (El gesto evoca el de sembrar generosamente a partir de lo que se tiene en el corazon).\r\r5 Gestos de oferta más amplios\r\rQue alcanzan el espacio posterior.\r\r6 Retorno a la posición de identidad y contemplación\r\rBrahma satisfecho contempla su creación.\r\r7 Gesto de oferta hacia la derecha y arriba con ambas manos\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5231,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 18,
+                    "nombre": "Heaven and hell",
+                    "interprete": "Vangelis",
+                    "archivo": "IBF16-18 Heaven and hell Vangelis (D Brahma).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4042,
+        "nombre": "COROS RÍTMICOS\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "\r\rLos “Coros rítmicos” se realizan utilizando dos mantras diferentes: “Samba-Cananda-Camina-Bum-Ba” Y “Ase-Sita-Hum”. Este ejercicio es de la Línea de la Trascendencia.\rDescripción :\r\rLos participantes en círculo, tomados de las manos, cierran los ojos y pronuncian las sílabas de uno de los mantras, acompañándose con el ritmo marcado por los pies en el piso. Mientras los participantes repiten rítmicamente el mantra, el profesor se asegura que ninguno de los participantes se disperse en iniciativas personales, sino que todos canten al mismo tiempo estas palabras.\r\rEl ritmo se hace progresivo y tiene que adquirir una gran unidad sonora, una polifonía sonora, conservando hasta el final la misma matriz rítmica.\r\rSucesivamente, en una segunda etapa, los participantes pueden soltarse de las manos de la ronda y proseguir en forma individual, todos juntos, la danza de este ritmo producido por el grupo. El ritmo se apodera de la percepción de los participantes y, eventualmente, se pueden producir estados de trance rítmico liviano.\r\rSe realiza sin música.\r\r\rCORO DE CAÑA DIVINA\r\r\rDescripción :\r\rEl grupo, en ronda, ensaya emitir la voz desde el vientre y no desde la garganta. Luego los participantes se invitan a emitir, suavemente, el sonido de la letra “A”, junto al aire de la expiración. Se crea así una monofonía que, lentamente, deviene a polifonía debido a las variaciones de tonalidad del sonido que cada uno emite. De este modo se genera un coro polifónico.\r\rLos participantes se mantienen con los ojos cerrados, en estado de relajamiento corporal. Hay que solicitar al grupo que se mantenga la armonía del coro, evitando la eventual tendencia a destacarse elevando excesivamente la voz.\rObjetivo :\r\rInducción de estado de trance y de regresión a lo indiferenciado dentro de un contexto místico. Lo indiferenciado se refiere a la disminución de la percepción del propio límite corporal. El contexto místico alude al sentimiento de fusión con el universo.\r\rObservación :\r\rEventualmente puede suceder que alguno de los participantes se tienda en el suelo debido a la intensificación del estado de trance. El profesor, por ende, tiene que estar atento para poder ayudar a quien eventualmente lo desee. En este caso se le retira delicadamente de la ronda y se designa a un compañero para que le dé continente.\r\rEl coro de caña divina es un ejercicio de línea de la Transcendencia que puede ser utilizado en distintas modalidades. En grupo indiferenciado, como descrito aquí, o en espiral (ver ejercicio con mismo nombre) o con emergente (ver ejercicio de mismo nombre). Las tres variaciones se hacen sin música.\r\rElemento Poético :\r\rEste ejercicio es inspirado en ceremonias tibetanas. La metáfora “caña divina” alude a las cañas de bambú, que “cantan” por efecto del viento. No son las cañas las que cantan, sino “Algo” que canta en ellas. Con esto se quiere evidenciar la falta de intencionalidad en la emisión de las voces, en la cual las personas emiten un sonido sintiendo que no son ellos los que cantan, sino es algo que canta dentro de ellos, así como el viento en las cañas. Para los tibetanos “Algo” es la divinidad. En Biodanza es sólo una metáfora de la armonía cósmica.\r\rNote CIMEB :\r\rEste ejercicio alcanza aún mas su objetivo cuando las personas han adquirido la capacidad de fundirse con el grupo, cuando la necesidad de diferenciarse desaparece.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t87\tmars 2012\r\fCORO DE CAÑA DIVINA EN ESPIRAL\r\r\rDescripción :\r\rOtra forma consiste en cantar la letra ”a” a partir de una ronda en la que dos participantes se sueltan de las manos, y una de ellas comienza entonces a girar muy lentamente sobre ella misma, sosteniendo la mano de un compañero, de un solo lado, lo que tiene por efecto inducir un enrollamiento de todo el grupo en espiral. Un grupo compacto se forma y las personas cesan entonces de desplazarse para permanecer “enrollados”. La constitución de una espiral tiende a acentuar el efecto de trance inducido por este ejercicio. Convendrá pues hacer de manera que la persona que estará en el corazón de la espiral esté totalmente apta para abandonarse.\r\r\rCORO DE CAÑA DIVINA CON EMERGENTE\r\r\rDescripción :\r\rEn una primera forma, los participantes en ronda emiten el sonido de la letra “a”, buscando armonizar el volumen sin que nadie domine con su propia voz sobre la de los demás. El sonido debe ser profundo, visceral y no venir de la garganta. Cuando las personas se han armonizado, una de ellas puede entrar en"
+    }, {
+        "IdEjercicio": 4043,
+        "nombre": "CORO DE CAÑA DIVINA\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Descripción :\r\rEl grupo, en ronda, ensaya emitir la voz desde el vientre y no desde la garganta. Luego los participantes se invitan a emitir, suavemente, el sonido de la letra “A”, junto al aire de la expiración. Se crea así una monofonía que, lentamente, deviene a polifonía debido a las variaciones de tonalidad del sonido que cada uno emite. De este modo se genera un coro polifónico.\r\rLos participantes se mantienen con los ojos cerrados, en estado de relajamiento corporal. Hay que solicitar al grupo que se mantenga la armonía del coro, evitando la eventual tendencia a destacarse elevando excesivamente la voz.\rObjetivo :\r\rInducción de estado de trance y de regresión a lo indiferenciado dentro de un contexto místico. Lo indiferenciado se refiere a la disminución de la percepción del propio límite corporal. El contexto místico alude al sentimiento de fusión con el universo.\r\rObservación :\r\rEventualmente puede suceder que alguno de los participantes se tienda en el suelo debido a la intensificación del estado de trance. El profesor, por ende, tiene que estar atento para poder ayudar a quien eventualmente lo desee. En este caso se le retira delicadamente de la ronda y se designa a un compañero para que le dé continente.\r\rEl coro de caña divina es un ejercicio de línea de la Transcendencia que puede ser utilizado en distintas modalidades. En grupo indiferenciado, como descrito aquí, o en espiral (ver ejercicio con mismo nombre) o con emergente (ver ejercicio de mismo nombre). Las tres variaciones se hacen sin música.\r\rElemento Poético :\r\rEste ejercicio es inspirado en ceremonias tibetanas. La metáfora “caña divina” alude a las cañas de bambú, que “cantan” por efecto del viento. No son las cañas las que cantan, sino “Algo” que canta en ellas. Con esto se quiere evidenciar la falta de intencionalidad en la emisión de las voces, en la cual las personas emiten un sonido sintiendo que no son ellos los que cantan, sino es algo que canta dentro de ellos, así como el viento en las cañas. Para los tibetanos “Algo” es la divinidad. En Biodanza es sólo una metáfora de la armonía cósmica.\r\rNote CIMEB :\r\rEste ejercicio alcanza aún mas su objetivo cuando las personas han adquirido la capacidad de fundirse con el grupo, cuando la necesidad de diferenciarse desaparece.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t87\tmars 2012\r\fCORO DE CAÑA DIVINA EN ESPIRAL\r\r\rDescripción :\r\rOtra forma consiste en cantar la letra ”a” a partir de una ronda en la que dos participantes se sueltan de las manos, y una de ellas comienza entonces a girar muy lentamente sobre ella misma, sosteniendo la mano de un compañero, de un solo lado, lo que tiene por efecto inducir un enrollamiento de todo el grupo en espiral. Un grupo compacto se forma y las personas cesan entonces de desplazarse para permanecer “enrollados”. La constitución de una espiral tiende a acentuar el efecto de trance inducido por este ejercicio. Convendrá pues hacer de manera que la persona que estará en el corazón de la espiral esté totalmente apta para abandonarse.\r\r\rCORO DE CAÑA DIVINA CON EMERGENTE\r\r\rDescripción :\r\rEn una primera forma, los participantes en ronda emiten el sonido de la letra “a”, buscando armonizar el volumen sin que nadie domine con su propia voz sobre la de los demás. El sonido debe ser profundo, visceral y no venir de la garganta. Cuando las personas se han armonizado, una de ellas puede entrar en el círculo, con los ojos cerrados y dejar emerger su canto mientras que las otras mantienen la base constante. Cuando ella ha terminado, permanece algunos instantes en silencio y vuelve a la ronda. Será entonces remplazada por otra persona en el centro. Esta realización demanda una buena preparación afectiva del grupo para que ninguno de los participantes monopolice el centro.\r\r\rCANTO DEL PROPIO NOMBRE\r\r\rDescripción :\r\rEl participante va al centro de la ronda y, en profunda conexión consigo mismo, comienza a cantar su nombre (lo hace varias veces), con gran emoción y tratando de escuchar la resonancia interior de la palabra que representa su nombre\/identidad.\r\rObjetivo :\r\rEste es un ejercicio de refuerzo de la propia identidad que puede conducir al intasis (estado de conciencia intensificada de sí mismo y de estar vivo).\rObservación :\r\rNota: este es un ejercicio específico del Proyecto Minotauro. Cuando es realizado fuera de ese contexto, el facilitador deberá reservar este ejercicio para circunstancias muy especiales (por ejemplo un aniversario, un cumpleaños) y crear una atmósfera ritual, para que la vivencia de cantar el propio nombre no se transforme en algo superficial o trivial.\r"
+    }, {
+        "IdEjercicio": 4044,
+        "nombre": "CORO DE CAÑA DIVINA EN ESPIRAL\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "\r\rDescripción :\r\rOtra forma consiste en cantar la letra ”a” a partir de una ronda en la que dos participantes se sueltan de las manos, y una de ellas comienza entonces a girar muy lentamente sobre ella misma, sosteniendo la mano de un compañero, de un solo lado, lo que tiene por efecto inducir un enrollamiento de todo el grupo en espiral. Un grupo compacto se forma y las personas cesan entonces de desplazarse para permanecer “enrollados”. La constitución de una espiral tiende a acentuar el efecto de trance inducido por este ejercicio. Convendrá pues hacer de manera que la persona que estará en el corazón de la espiral esté totalmente apta para abandonarse.\r\r\rCORO DE CAÑA DIVINA CON EMERGENTE\r\r\rDescripción :\r\rEn una primera forma, los participantes en ronda emiten el sonido de la letra “a”, buscando armonizar el volumen sin que nadie domine con su propia voz sobre la de los demás. El sonido debe ser profundo, visceral y no venir de la garganta. Cuando las personas se han armonizado, una de ellas puede entrar en el círculo, con los ojos cerrados y dejar emerger su canto mientras que las otras mantienen la base constante. Cuando ella ha terminado, permanece algunos instantes en silencio y vuelve a la ronda. Será entonces remplazada por otra persona en el centro. Esta realización demanda una buena preparación afectiva del grupo para que ninguno de los participantes monopolice el centro.\r\r\rCANTO DEL PROPIO NOMBRE\r\r\rDescripción :\r\rEl participante va al centro de la ronda y, en profunda conexión consigo mismo, comienza a cantar su nombre (lo hace varias veces), con gran emoción y tratando de escuchar la resonancia interior de la palabra que representa su nombre\/identidad.\r\rObjetivo :\r\rEste es un ejercicio de refuerzo de la propia identidad que puede conducir al intasis (estado de conciencia intensificada de sí mismo y de estar vivo).\rObservación :\r\rNota: este es un ejercicio específico del Proyecto Minotauro. Cuando es realizado fuera de ese contexto, el facilitador deberá reservar este ejercicio para circunstancias muy especiales (por ejemplo un aniversario, un cumpleaños) y crear una atmósfera ritual, para que la vivencia de cantar el propio nombre no se transforme en algo superficial o trivial.\rProyección Existencial :\r\rCantar el propio nombre es una vivencia de profunda conexión con uno misno: dar al nombre con el que otros nos llaman el eco del llamado que nos ofrecemos a nosotros mismos, y reconocerse en este llamado.\rElemento Poético :\r\rEl sonido de cada nombre es único cuando vibra en la voz del que lo lleva.\r\rObservación :\r\rSe realiza sin música.\r\r\rCANTO DEL NOMBRE DE UN COMPAÑERO\r\r\rDescripción :\r\rEl grupo se toma de las manos en una ronda bien cerrada, uniendo sus hombros con los del compañero del lado. Un voluntario sale al centro y elige un compañero para cantar su nombre, colocándose frente a él. En una conexión profunda consigo mismo, con los ojos cerrados, el participante voluntario emite una melodía ajustada al nombre del compañero; cuando la melodía lo exige, se alargarán las vocales para que sea una perfecta integración entre esta última y el nombre de compañero. Una vez concluído el canto los dos compañeros se abrazan y se reintegran a la ronda, de manera que otro voluntario pueda elegir ir al centro para ofrecer el canto del nombre a otro compañero.\r\rEste ejercicio pertenece a la Línea de la Afectividad.\r\rObjetivo :\r\rRefuerzo de la identidad de la persona que canta a través de la expresión afectiva hacia un compañero. Además se refuerza la identidad de la persona que lo recibe a través de la vivencia de recibir el regalo afectivo del canto de su nombre.\r\rObservación :\r\rSe realiza sin música.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t88\tmars 2012\r\fNote CIMEB :\r\rEste ejercicio es una verdadera ceremonia de confirmación afectiva. Puede ser propuesto dentro de una secuencia que tiene como objetivo celebrar a una persona en una ocasión especial (desafio, Minotauro, momento especial de la vida del grupo, etc).\r\rEste ejercicio puede también hacerse en ronda: una persona va al centro y canta (llama) el nombre de un compañero. El que es asi llamado viene al centro y se acerca al primero, desde donde llama el nombre de otro compañero, ayudado también por el primero. Asi, con iniciativa del ultimo en llegar y ayudado por todos los que estan en el centro, uno a uno el grupo entero es llamado al centro por su nombre. El facilitador permanece fuera para sostener con su presencia a los que seran llamados últimos.\r\rY también puede hacerse en ronda, donde un voluntario es invitado a ir al centro y cantar el nombre de"
+    }, {
+        "IdEjercicio": 4045,
+        "nombre": "CORO DE CAÑA DIVINA CON EMERGENTE\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Descripción :\r\rEn una primera forma, los participantes en ronda emiten el sonido de la letra “a”, buscando armonizar el volumen sin que nadie domine con su propia voz sobre la de los demás. El sonido debe ser profundo, visceral y no venir de la garganta. Cuando las personas se han armonizado, una de ellas puede entrar en el círculo, con los ojos cerrados y dejar emerger su canto mientras que las otras mantienen la base constante. Cuando ella ha terminado, permanece algunos instantes en silencio y vuelve a la ronda. Será entonces remplazada por otra persona en el centro. Esta realización demanda una buena preparación afectiva del grupo para que ninguno de los participantes monopolice el centro.\r\r\rCANTO DEL PROPIO NOMBRE\r\r\rDescripción :\r\rEl participante va al centro de la ronda y, en profunda conexión consigo mismo, comienza a cantar su nombre (lo hace varias veces), con gran emoción y tratando de escuchar la resonancia interior de la palabra que representa su nombre\/identidad.\r\rObjetivo :\r\rEste es un ejercicio de refuerzo de la propia identidad que puede conducir al intasis (estado de conciencia intensificada de sí mismo y de estar vivo).\rObservación :\r\rNota: este es un ejercicio específico del Proyecto Minotauro. Cuando es realizado fuera de ese contexto, el facilitador deberá reservar este ejercicio para circunstancias muy especiales (por ejemplo un aniversario, un cumpleaños) y crear una atmósfera ritual, para que la vivencia de cantar el propio nombre no se transforme en algo superficial o trivial.\rProyección Existencial :\r\rCantar el propio nombre es una vivencia de profunda conexión con uno misno: dar al nombre con el que otros nos llaman el eco del llamado que nos ofrecemos a nosotros mismos, y reconocerse en este llamado.\rElemento Poético :\r\rEl sonido de cada nombre es único cuando vibra en la voz del que lo lleva.\r\rObservación :\r\rSe realiza sin música.\r\r\rCANTO DEL NOMBRE DE UN COMPAÑERO\r\r\rDescripción :\r\rEl grupo se toma de las manos en una ronda bien cerrada, uniendo sus hombros con los del compañero del lado. Un voluntario sale al centro y elige un compañero para cantar su nombre, colocándose frente a él. En una conexión profunda consigo mismo, con los ojos cerrados, el participante voluntario emite una melodía ajustada al nombre del compañero; cuando la melodía lo exige, se alargarán las vocales para que sea una perfecta integración entre esta última y el nombre de compañero. Una vez concluído el canto los dos compañeros se abrazan y se reintegran a la ronda, de manera que otro voluntario pueda elegir ir al centro para ofrecer el canto del nombre a otro compañero.\r\rEste ejercicio pertenece a la Línea de la Afectividad.\r\rObjetivo :\r\rRefuerzo de la identidad de la persona que canta a través de la expresión afectiva hacia un compañero. Además se refuerza la identidad de la persona que lo recibe a través de la vivencia de recibir el regalo afectivo del canto de su nombre.\r\rObservación :\r\rSe realiza sin música.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t88\tmars 2012\r\fNote CIMEB :\r\rEste ejercicio es una verdadera ceremonia de confirmación afectiva. Puede ser propuesto dentro de una secuencia que tiene como objetivo celebrar a una persona en una ocasión especial (desafio, Minotauro, momento especial de la vida del grupo, etc).\r\rEste ejercicio puede también hacerse en ronda: una persona va al centro y canta (llama) el nombre de un compañero. El que es asi llamado viene al centro y se acerca al primero, desde donde llama el nombre de otro compañero, ayudado también por el primero. Asi, con iniciativa del ultimo en llegar y ayudado por todos los que estan en el centro, uno a uno el grupo entero es llamado al centro por su nombre. El facilitador permanece fuera para sostener con su presencia a los que seran llamados últimos.\r\rY también puede hacerse en ronda, donde un voluntario es invitado a ir al centro y cantar el nombre de un compañero. Todo el grupo se une cantando en coro la melodía. Se hace sin música.\r\r\rDIÁLOGOS DE VOCES\r\r\rEste Ejercicio pertenece a la Línea de la Afectividad. Se realiza en pareja, preferentemente con ojos cerrados. Revela la capacidad de resonancia con el otro al prescindir de la palabra. Se trata de un diálogo sonoro, un diálogo de voces y no de palabras.\r\rSe caracteriza por la búsqueda de una perfecta conexión sensible, de una resonancia del uno con el otro. El ejercicio induce una comunicación afectiva profunda. As dos personas transmiten recíprocamente estados de ánimo sutiles y emociones a través de la voz.\rDescripción :\r\rUno frente al otro, separados por una distancia mediana, uno a la vez hacen una breve emisión vocal que"
+    }, {
+        "IdEjercicio": 4046,
+        "nombre": "CANTO DEL PROPIO NOMBRE\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Descripción :\r\rEl participante va al centro de la ronda y, en profunda conexión consigo mismo, comienza a cantar su nombre (lo hace varias veces), con gran emoción y tratando de escuchar la resonancia interior de la palabra que representa su nombre\/identidad.\r\rObjetivo :\r\rEste es un ejercicio de refuerzo de la propia identidad que puede conducir al intasis (estado de conciencia intensificada de sí mismo y de estar vivo).\rObservación :\r\rNota: este es un ejercicio específico del Proyecto Minotauro. Cuando es realizado fuera de ese contexto, el facilitador deberá reservar este ejercicio para circunstancias muy especiales (por ejemplo un aniversario, un cumpleaños) y crear una atmósfera ritual, para que la vivencia de cantar el propio nombre no se transforme en algo superficial o trivial.\rProyección Existencial :\r\rCantar el propio nombre es una vivencia de profunda conexión con uno misno: dar al nombre con el que otros nos llaman el eco del llamado que nos ofrecemos a nosotros mismos, y reconocerse en este llamado.\rElemento Poético :\r\rEl sonido de cada nombre es único cuando vibra en la voz del que lo lleva.\r\rObservación :\r\rSe realiza sin música.\r\r\rCANTO DEL NOMBRE DE UN COMPAÑERO\r\r\rDescripción :\r\rEl grupo se toma de las manos en una ronda bien cerrada, uniendo sus hombros con los del compañero del lado. Un voluntario sale al centro y elige un compañero para cantar su nombre, colocándose frente a él. En una conexión profunda consigo mismo, con los ojos cerrados, el participante voluntario emite una melodía ajustada al nombre del compañero; cuando la melodía lo exige, se alargarán las vocales para que sea una perfecta integración entre esta última y el nombre de compañero. Una vez concluído el canto los dos compañeros se abrazan y se reintegran a la ronda, de manera que otro voluntario pueda elegir ir al centro para ofrecer el canto del nombre a otro compañero.\r\rEste ejercicio pertenece a la Línea de la Afectividad.\r\rObjetivo :\r\rRefuerzo de la identidad de la persona que canta a través de la expresión afectiva hacia un compañero. Además se refuerza la identidad de la persona que lo recibe a través de la vivencia de recibir el regalo afectivo del canto de su nombre.\r\rObservación :\r\rSe realiza sin música.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t88\tmars 2012\r\fNote CIMEB :\r\rEste ejercicio es una verdadera ceremonia de confirmación afectiva. Puede ser propuesto dentro de una secuencia que tiene como objetivo celebrar a una persona en una ocasión especial (desafio, Minotauro, momento especial de la vida del grupo, etc).\r\rEste ejercicio puede también hacerse en ronda: una persona va al centro y canta (llama) el nombre de un compañero. El que es asi llamado viene al centro y se acerca al primero, desde donde llama el nombre de otro compañero, ayudado también por el primero. Asi, con iniciativa del ultimo en llegar y ayudado por todos los que estan en el centro, uno a uno el grupo entero es llamado al centro por su nombre. El facilitador permanece fuera para sostener con su presencia a los que seran llamados últimos.\r\rY también puede hacerse en ronda, donde un voluntario es invitado a ir al centro y cantar el nombre de un compañero. Todo el grupo se une cantando en coro la melodía. Se hace sin música.\r\r\rDIÁLOGOS DE VOCES\r\r\rEste Ejercicio pertenece a la Línea de la Afectividad. Se realiza en pareja, preferentemente con ojos cerrados. Revela la capacidad de resonancia con el otro al prescindir de la palabra. Se trata de un diálogo sonoro, un diálogo de voces y no de palabras.\r\rSe caracteriza por la búsqueda de una perfecta conexión sensible, de una resonancia del uno con el otro. El ejercicio induce una comunicación afectiva profunda. As dos personas transmiten recíprocamente estados de ánimo sutiles y emociones a través de la voz.\rDescripción :\r\rUno frente al otro, separados por una distancia mediana, uno a la vez hacen una breve emisión vocal que puede constituir una pequeñísima frase melódica. A tal emisión de voz, el otro tiene que responder con total coherencia, no desde el ego, sino, al contrario, escuchando lo que el otro está diciendo con su voz. Se tiene que originar una respuesta armónica y coherente que se origina desde adentro, que puede ser constituida también por una breve frase melódica.\r\rSimultáneamente, cada uno se mueve en dirección de la voz del otro con pasos lentos. Cuando los dos participantes están muy cerca, el ejercicio se concluye y pueden darse un abrazo.\r\rSe realiza sin música.\r\r\rPOESÍA-CANCIÓN\r\r\r"
+    }, {
+        "IdEjercicio": 4047,
+        "nombre": "CANTO DEL NOMBRE DE UN COMPAÑERO\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Descripción :\r\rEl grupo se toma de las manos en una ronda bien cerrada, uniendo sus hombros con los del compañero del lado. Un voluntario sale al centro y elige un compañero para cantar su nombre, colocándose frente a él. En una conexión profunda consigo mismo, con los ojos cerrados, el participante voluntario emite una melodía ajustada al nombre del compañero; cuando la melodía lo exige, se alargarán las vocales para que sea una perfecta integración entre esta última y el nombre de compañero. Una vez concluído el canto los dos compañeros se abrazan y se reintegran a la ronda, de manera que otro voluntario pueda elegir ir al centro para ofrecer el canto del nombre a otro compañero.\r\rEste ejercicio pertenece a la Línea de la Afectividad.\r\rObjetivo :\r\rRefuerzo de la identidad de la persona que canta a través de la expresión afectiva hacia un compañero. Además se refuerza la identidad de la persona que lo recibe a través de la vivencia de recibir el regalo afectivo del canto de su nombre.\r\rObservación :\r\rSe realiza sin música.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t88\tmars 2012\r\fNote CIMEB :\r\rEste ejercicio es una verdadera ceremonia de confirmación afectiva. Puede ser propuesto dentro de una secuencia que tiene como objetivo celebrar a una persona en una ocasión especial (desafio, Minotauro, momento especial de la vida del grupo, etc).\r\rEste ejercicio puede también hacerse en ronda: una persona va al centro y canta (llama) el nombre de un compañero. El que es asi llamado viene al centro y se acerca al primero, desde donde llama el nombre de otro compañero, ayudado también por el primero. Asi, con iniciativa del ultimo en llegar y ayudado por todos los que estan en el centro, uno a uno el grupo entero es llamado al centro por su nombre. El facilitador permanece fuera para sostener con su presencia a los que seran llamados últimos.\r\rY también puede hacerse en ronda, donde un voluntario es invitado a ir al centro y cantar el nombre de un compañero. Todo el grupo se une cantando en coro la melodía. Se hace sin música.\r\r\rDIÁLOGOS DE VOCES\r\r\rEste Ejercicio pertenece a la Línea de la Afectividad. Se realiza en pareja, preferentemente con ojos cerrados. Revela la capacidad de resonancia con el otro al prescindir de la palabra. Se trata de un diálogo sonoro, un diálogo de voces y no de palabras.\r\rSe caracteriza por la búsqueda de una perfecta conexión sensible, de una resonancia del uno con el otro. El ejercicio induce una comunicación afectiva profunda. As dos personas transmiten recíprocamente estados de ánimo sutiles y emociones a través de la voz.\rDescripción :\r\rUno frente al otro, separados por una distancia mediana, uno a la vez hacen una breve emisión vocal que puede constituir una pequeñísima frase melódica. A tal emisión de voz, el otro tiene que responder con total coherencia, no desde el ego, sino, al contrario, escuchando lo que el otro está diciendo con su voz. Se tiene que originar una respuesta armónica y coherente que se origina desde adentro, que puede ser constituida también por una breve frase melódica.\r\rSimultáneamente, cada uno se mueve en dirección de la voz del otro con pasos lentos. Cuando los dos participantes están muy cerca, el ejercicio se concluye y pueden darse un abrazo.\r\rSe realiza sin música.\r\r\rPOESÍA-CANCIÓN\r\r\rAntes se propone la composición de una poesía a través del ejercicio de la Línea de la Creatividad llamado:\r\r“La poesía eres tú”.\r\rUna vez que la poesía está escrita, el alumno trata de poner melodía a las palabras, tomando solamente algunos versos que se reiteran y se modulan en relación con la extensión de la melodía (por ejemplo: se alargan algunas vocales para ajustar las palabras a la melodía).\r\rSe elige un tema y se hacen algunas variaciones sobre el mismo. Dichas variaciones se tienen que referir al tema y a la melodía inicial. Por ende, hay que evitar variaciones que se escapan del tema. Se realiza sin música.\r\rNota: Este ejercicio es más apropiado para la extensión de Biodanza “Laboratorio de Creatividad”.\r\rObservación :\r\rEste ejercicio es sobre todo parte de profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\rPOESÍA-CANCIÓN-DANZA\r\r\rEn este ejercicio se integran tres formas de expresión creativas: la poesía, el canto y la danza. El participante primero tiene que escribir una poesía usando el ejercicio de la Línea de la Creatividad llamado “El poema eres tú”.\r\rDespués, crea la melodía sobre la base de la poesía que creó (no es necesario usar toda la poesía, sino una frase llena de belleza y significado).\r\rEn seguida, en una tercera fase, el participante danza mientras canta la poesía que escribió. Es necesario intentarlo varias veces hasta llegar a la perfecta integración de los tres componentes. Se realiza sin"
+    }, {
+        "IdEjercicio": 4048,
+        "nombre": "DIÁLOGOS DE VOCES\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Este Ejercicio pertenece a la Línea de la Afectividad. Se realiza en pareja, preferentemente con ojos cerrados. Revela la capacidad de resonancia con el otro al prescindir de la palabra. Se trata de un diálogo sonoro, un diálogo de voces y no de palabras.\r\rSe caracteriza por la búsqueda de una perfecta conexión sensible, de una resonancia del uno con el otro. El ejercicio induce una comunicación afectiva profunda. As dos personas transmiten recíprocamente estados de ánimo sutiles y emociones a través de la voz.\rDescripción :\r\rUno frente al otro, separados por una distancia mediana, uno a la vez hacen una breve emisión vocal que puede constituir una pequeñísima frase melódica. A tal emisión de voz, el otro tiene que responder con total coherencia, no desde el ego, sino, al contrario, escuchando lo que el otro está diciendo con su voz. Se tiene que originar una respuesta armónica y coherente que se origina desde adentro, que puede ser constituida también por una breve frase melódica.\r\rSimultáneamente, cada uno se mueve en dirección de la voz del otro con pasos lentos. Cuando los dos participantes están muy cerca, el ejercicio se concluye y pueden darse un abrazo.\r\rSe realiza sin música.\r\r\rPOESÍA-CANCIÓN\r\r\rAntes se propone la composición de una poesía a través del ejercicio de la Línea de la Creatividad llamado:\r\r“La poesía eres tú”.\r\rUna vez que la poesía está escrita, el alumno trata de poner melodía a las palabras, tomando solamente algunos versos que se reiteran y se modulan en relación con la extensión de la melodía (por ejemplo: se alargan algunas vocales para ajustar las palabras a la melodía).\r\rSe elige un tema y se hacen algunas variaciones sobre el mismo. Dichas variaciones se tienen que referir al tema y a la melodía inicial. Por ende, hay que evitar variaciones que se escapan del tema. Se realiza sin música.\r\rNota: Este ejercicio es más apropiado para la extensión de Biodanza “Laboratorio de Creatividad”.\r\rObservación :\r\rEste ejercicio es sobre todo parte de profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\rPOESÍA-CANCIÓN-DANZA\r\r\rEn este ejercicio se integran tres formas de expresión creativas: la poesía, el canto y la danza. El participante primero tiene que escribir una poesía usando el ejercicio de la Línea de la Creatividad llamado “El poema eres tú”.\r\rDespués, crea la melodía sobre la base de la poesía que creó (no es necesario usar toda la poesía, sino una frase llena de belleza y significado).\r\rEn seguida, en una tercera fase, el participante danza mientras canta la poesía que escribió. Es necesario intentarlo varias veces hasta llegar a la perfecta integración de los tres componentes. Se realiza sin música.\rObservación :\r\rEste ejercicio es sobre todo parte profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\f\rBiodanza ® , IBF Catálogo IBF\t89\tmars 2012\r\fEL POEMA ERES TÚ\r\r\rDescripción :\r\rDos personas se eligen mutuamente por afinidad. Se sientan uno frente al otro y entran cada uno en la contemplación del otro. Se abren el misterio del otro, sensibilizándose a la esencia, al estado de ánimo, a las emociones que expresa su rostro, a todo lo que emerge como esencial. Entonces, mientras se mantiene la proximidad, cada uno expresa en el lenguaje poético su vivencia a ver al otro. Tú eres el poema: tú eres el centro de mi percepción. Tú eres la razón de mi poema.\r\rObjetivo :\r\rDesarrollar el lenguaje afectivo y poético y la capacidad de exaltar la presencia del otro.\r\rObservación :\r\rSe realiza preferentemente sin música para no influenciar la inspiración de las personas con el contenido semántico emocional de ésta. Sin embargo, es preparado por una música y es también concluído con la misma música, la cual indica el marco inicial de conexión e intimidad y el marco final del tiempo del ritual.\r\r\rDANZA INTERIOR (sin música)\r\r\rLa \"Danza interior\" se hace sin música, dando asi prioridad a la conexión profunda con uno mismo, a partir de movimientos cenestésicos inducidos por la escucha profunda de uno mismo.\r\rDescripción :\r\rSe trata de una danza de gran intimidad con características muy personales, tanto en la forma como en la vivencia. Los movimientos son muy lentos y de escucha profunda de uno mismo. La percepción interna y la profunda conexión con la propia intimidad inducen, en la esfera del silencio, la percepción de la musicalidad y del sonido interno. Mediante la reducción de los movimientos voluntarios y los gestos expresivos intencionales, se acentúan los movimientos cenestésicos que hacen nacer una danza interior.\r\rCuando este ejercicio se propone en la naturaleza, la respuesta interna es mucho mayor, ya que se"
+    }, {
+        "IdEjercicio": 4049,
+        "nombre": "POESÍA-CANCIÓN-DANZA\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "En este ejercicio se integran tres formas de expresión creativas: la poesía, el canto y la danza. El participante primero tiene que escribir una poesía usando el ejercicio de la Línea de la Creatividad llamado “El poema eres tú”.\r\rDespués, crea la melodía sobre la base de la poesía que creó (no es necesario usar toda la poesía, sino una frase llena de belleza y significado).\r\rEn seguida, en una tercera fase, el participante danza mientras canta la poesía que escribió. Es necesario intentarlo varias veces hasta llegar a la perfecta integración de los tres componentes. Se realiza sin música.\rObservación :\r\rEste ejercicio es sobre todo parte profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\f\rBiodanza ® , IBF Catálogo IBF\t89\tmars 2012\r\fEL POEMA ERES TÚ\r\r\rDescripción :\r\rDos personas se eligen mutuamente por afinidad. Se sientan uno frente al otro y entran cada uno en la contemplación del otro. Se abren el misterio del otro, sensibilizándose a la esencia, al estado de ánimo, a las emociones que expresa su rostro, a todo lo que emerge como esencial. Entonces, mientras se mantiene la proximidad, cada uno expresa en el lenguaje poético su vivencia a ver al otro. Tú eres el poema: tú eres el centro de mi percepción. Tú eres la razón de mi poema.\r\rObjetivo :\r\rDesarrollar el lenguaje afectivo y poético y la capacidad de exaltar la presencia del otro.\r\rObservación :\r\rSe realiza preferentemente sin música para no influenciar la inspiración de las personas con el contenido semántico emocional de ésta. Sin embargo, es preparado por una música y es también concluído con la misma música, la cual indica el marco inicial de conexión e intimidad y el marco final del tiempo del ritual.\r\r\rDANZA INTERIOR (sin música)\r\r\rLa \"Danza interior\" se hace sin música, dando asi prioridad a la conexión profunda con uno mismo, a partir de movimientos cenestésicos inducidos por la escucha profunda de uno mismo.\r\rDescripción :\r\rSe trata de una danza de gran intimidad con características muy personales, tanto en la forma como en la vivencia. Los movimientos son muy lentos y de escucha profunda de uno mismo. La percepción interna y la profunda conexión con la propia intimidad inducen, en la esfera del silencio, la percepción de la musicalidad y del sonido interno. Mediante la reducción de los movimientos voluntarios y los gestos expresivos intencionales, se acentúan los movimientos cenestésicos que hacen nacer una danza interior.\r\rCuando este ejercicio se propone en la naturaleza, la respuesta interna es mucho mayor, ya que se ve acentuada por la estimulación sensorial y sonora que viene del medioambiente.\r\rEn \"Biodanza y Voz\", del flujo respiratorio propio a cada uno (del ritmo o frecuencia respiratoria), del propio aliento vital, en la escucha silenciosa y sensible, uno puede experimentar la vivencia intensa y trascendente del \"aliento de vida\" en todos sus matices y posibilidades sonoras.\r\rObjetivo :\r\rLa \"Danza interior\" requiere un buen nivel de integración sensitivomotora e integración de la fluidez. Su objetivo principal es profundizar la auto-percepción, el movimiento de la intimidad con uno mismo y la conexión con los diferentes elementos sensoriales y sensibles de nuestra percepción.\r\r\rDIBUJO SENSIBLE\r\r\rEl desarrollo de la \"percepción sensible\" es la primera condición para crear imágenes a través del dibujo.\r\rCuando queremos dibujar un rostro, un paisaje, un objeto real o imaginario, estamos solicitando por lo general lo que se llama el \"canal ocular-motor\", poniéndolo al servicio de representaciones pre-establecidas\r\rde esquemas almacenados en nuestra memoria como en una computadora: construimos y elaboramos partiendo de nuestro propio repertorio de formas aprendidas. El resultado es un diseño rígido y sin vida,sin alma, una especie de esquema simple y obvio. La complejidad de la imagen, la que que se refiere a la morfogénesis, está ausente.\rNo hay ninguna conexión entre el grupo de signos y el significado intrínseco de la forma. Se trata de una disociación entre los aspectos semióticos y los aspectos semánticos. Carece de emoción. Carece de vida.\r\rSi tomamos como punto de partida para la morfogénesis nuestra\"percepción del objeto\", abordándolo con sensibilidad en el trato con sus alusiones inmediatas, asi se trate de sombras o de formas unidas en el espacio, logramos descubrir el sentido de la imagen.\r\rEl artista, al igual que el explorador, se mueve un territorio a otro uniendo en la misma línea, del mismo trazo, las estructuras que emergen delante de sus ojos, revelando la forma en toda su complejidad.\r\rCuando se dibuja un esquema que tenemos en la memoria, el diseño es rígido. Si dibujamos sin mantener nuestra mirada fija en el papel sino tratando de capturar algo del sujeto, sus formas vivas, vibrantes y expresivas, nos revelan la esencia.\r\rLa técnica apropiada para hacer esto es la percepción sensible del objeto, es decir, una percepcion no formal. La mirada ligeramente desenfocada, la mirada que recorre lentamente los contornos, ya sea de un florero, un rostro, una planta, etc.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t90\tmars 2012\r\fDescripción :\r"
+    }, {
+        "IdEjercicio": 4050,
+        "nombre": "EL POEMA ERES TÚ\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "\r\rDescripción :\r\rDos personas se eligen mutuamente por afinidad. Se sientan uno frente al otro y entran cada uno en la contemplación del otro. Se abren el misterio del otro, sensibilizándose a la esencia, al estado de ánimo, a las emociones que expresa su rostro, a todo lo que emerge como esencial. Entonces, mientras se mantiene la proximidad, cada uno expresa en el lenguaje poético su vivencia a ver al otro. Tú eres el poema: tú eres el centro de mi percepción. Tú eres la razón de mi poema.\r\rObjetivo :\r\rDesarrollar el lenguaje afectivo y poético y la capacidad de exaltar la presencia del otro.\r\rObservación :\r\rSe realiza preferentemente sin música para no influenciar la inspiración de las personas con el contenido semántico emocional de ésta. Sin embargo, es preparado por una música y es también concluído con la misma música, la cual indica el marco inicial de conexión e intimidad y el marco final del tiempo del ritual.\r\r\rDANZA INTERIOR (sin música)\r\r\rLa \"Danza interior\" se hace sin música, dando asi prioridad a la conexión profunda con uno mismo, a partir de movimientos cenestésicos inducidos por la escucha profunda de uno mismo.\r\rDescripción :\r\rSe trata de una danza de gran intimidad con características muy personales, tanto en la forma como en la vivencia. Los movimientos son muy lentos y de escucha profunda de uno mismo. La percepción interna y la profunda conexión con la propia intimidad inducen, en la esfera del silencio, la percepción de la musicalidad y del sonido interno. Mediante la reducción de los movimientos voluntarios y los gestos expresivos intencionales, se acentúan los movimientos cenestésicos que hacen nacer una danza interior.\r\rCuando este ejercicio se propone en la naturaleza, la respuesta interna es mucho mayor, ya que se ve acentuada por la estimulación sensorial y sonora que viene del medioambiente.\r\rEn \"Biodanza y Voz\", del flujo respiratorio propio a cada uno (del ritmo o frecuencia respiratoria), del propio aliento vital, en la escucha silenciosa y sensible, uno puede experimentar la vivencia intensa y trascendente del \"aliento de vida\" en todos sus matices y posibilidades sonoras.\r\rObjetivo :\r\rLa \"Danza interior\" requiere un buen nivel de integración sensitivomotora e integración de la fluidez. Su objetivo principal es profundizar la auto-percepción, el movimiento de la intimidad con uno mismo y la conexión con los diferentes elementos sensoriales y sensibles de nuestra percepción.\r\r\rDIBUJO SENSIBLE\r\r\rEl desarrollo de la \"percepción sensible\" es la primera condición para crear imágenes a través del dibujo.\r\rCuando queremos dibujar un rostro, un paisaje, un objeto real o imaginario, estamos solicitando por lo general lo que se llama el \"canal ocular-motor\", poniéndolo al servicio de representaciones pre-establecidas\r\rde esquemas almacenados en nuestra memoria como en una computadora: construimos y elaboramos partiendo de nuestro propio repertorio de formas aprendidas. El resultado es un diseño rígido y sin vida,sin alma, una especie de esquema simple y obvio. La complejidad de la imagen, la que que se refiere a la morfogénesis, está ausente.\rNo hay ninguna conexión entre el grupo de signos y el significado intrínseco de la forma. Se trata de una disociación entre los aspectos semióticos y los aspectos semánticos. Carece de emoción. Carece de vida.\r\rSi tomamos como punto de partida para la morfogénesis nuestra\"percepción del objeto\", abordándolo con sensibilidad en el trato con sus alusiones inmediatas, asi se trate de sombras o de formas unidas en el espacio, logramos descubrir el sentido de la imagen.\r\rEl artista, al igual que el explorador, se mueve un territorio a otro uniendo en la misma línea, del mismo trazo, las estructuras que emergen delante de sus ojos, revelando la forma en toda su complejidad.\r\rCuando se dibuja un esquema que tenemos en la memoria, el diseño es rígido. Si dibujamos sin mantener nuestra mirada fija en el papel sino tratando de capturar algo del sujeto, sus formas vivas, vibrantes y expresivas, nos revelan la esencia.\r\rLa técnica apropiada para hacer esto es la percepción sensible del objeto, es decir, una percepcion no formal. La mirada ligeramente desenfocada, la mirada que recorre lentamente los contornos, ya sea de un florero, un rostro, una planta, etc.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t90\tmars 2012\r\fDescripción :\r\rLa propuesta se realiza en dos etapas. El ejercicio se lleva a cabo en pares. Las personas se sientan frente a frente y uno tras otro dibujan como es su costumbre, sin instrucción específica del facilitador, el retrato de su compañero. A continuación, dejando a un lado sus diseños, se compenetran sensiblemente de la cara del otro (esta parte puede ser precedida por la Caricia del rostro en pares). En una hoja nueva, realizan el \"retrato sensible\" del compañero, tratando de no mirar el papel sino dejando que el trazo exprese lo esencial de su percepción.\r\rLas personas entonces se ofrecen un momento de contemplación de sus respectivas obras. A continuación, todos los dibujos son llevados al centro, cada uno colocando su dibujo formal cerca de su diseño sensible, y el grupo forma una ronda que se mueve alrededor para sensibilizarse a través de la contemplación.\rObjetivo :\r\rDesbloquear el dibujo de los límites de la percepción formal para permitir una percepción sensible y esencial de los seres y las cosas. En la creatividad la percepción sensible es subjetiva y por lo tanto, es original y única.\r\rObservación :\r"
+    }, {
+        "IdEjercicio": 4051,
+        "nombre": "DANZA INTERIOR (sin música)\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "La \"Danza interior\" se hace sin música, dando asi prioridad a la conexión profunda con uno mismo, a partir de movimientos cenestésicos inducidos por la escucha profunda de uno mismo.\r\rDescripción :\r\rSe trata de una danza de gran intimidad con características muy personales, tanto en la forma como en la vivencia. Los movimientos son muy lentos y de escucha profunda de uno mismo. La percepción interna y la profunda conexión con la propia intimidad inducen, en la esfera del silencio, la percepción de la musicalidad y del sonido interno. Mediante la reducción de los movimientos voluntarios y los gestos expresivos intencionales, se acentúan los movimientos cenestésicos que hacen nacer una danza interior.\r\rCuando este ejercicio se propone en la naturaleza, la respuesta interna es mucho mayor, ya que se ve acentuada por la estimulación sensorial y sonora que viene del medioambiente.\r\rEn \"Biodanza y Voz\", del flujo respiratorio propio a cada uno (del ritmo o frecuencia respiratoria), del propio aliento vital, en la escucha silenciosa y sensible, uno puede experimentar la vivencia intensa y trascendente del \"aliento de vida\" en todos sus matices y posibilidades sonoras.\r\rObjetivo :\r\rLa \"Danza interior\" requiere un buen nivel de integración sensitivomotora e integración de la fluidez. Su objetivo principal es profundizar la auto-percepción, el movimiento de la intimidad con uno mismo y la conexión con los diferentes elementos sensoriales y sensibles de nuestra percepción.\r\r\rDIBUJO SENSIBLE\r\r\rEl desarrollo de la \"percepción sensible\" es la primera condición para crear imágenes a través del dibujo.\r\rCuando queremos dibujar un rostro, un paisaje, un objeto real o imaginario, estamos solicitando por lo general lo que se llama el \"canal ocular-motor\", poniéndolo al servicio de representaciones pre-establecidas\r\rde esquemas almacenados en nuestra memoria como en una computadora: construimos y elaboramos partiendo de nuestro propio repertorio de formas aprendidas. El resultado es un diseño rígido y sin vida,sin alma, una especie de esquema simple y obvio. La complejidad de la imagen, la que que se refiere a la morfogénesis, está ausente.\rNo hay ninguna conexión entre el grupo de signos y el significado intrínseco de la forma. Se trata de una disociación entre los aspectos semióticos y los aspectos semánticos. Carece de emoción. Carece de vida.\r\rSi tomamos como punto de partida para la morfogénesis nuestra\"percepción del objeto\", abordándolo con sensibilidad en el trato con sus alusiones inmediatas, asi se trate de sombras o de formas unidas en el espacio, logramos descubrir el sentido de la imagen.\r\rEl artista, al igual que el explorador, se mueve un territorio a otro uniendo en la misma línea, del mismo trazo, las estructuras que emergen delante de sus ojos, revelando la forma en toda su complejidad.\r\rCuando se dibuja un esquema que tenemos en la memoria, el diseño es rígido. Si dibujamos sin mantener nuestra mirada fija en el papel sino tratando de capturar algo del sujeto, sus formas vivas, vibrantes y expresivas, nos revelan la esencia.\r\rLa técnica apropiada para hacer esto es la percepción sensible del objeto, es decir, una percepcion no formal. La mirada ligeramente desenfocada, la mirada que recorre lentamente los contornos, ya sea de un florero, un rostro, una planta, etc.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t90\tmars 2012\r\fDescripción :\r\rLa propuesta se realiza en dos etapas. El ejercicio se lleva a cabo en pares. Las personas se sientan frente a frente y uno tras otro dibujan como es su costumbre, sin instrucción específica del facilitador, el retrato de su compañero. A continuación, dejando a un lado sus diseños, se compenetran sensiblemente de la cara del otro (esta parte puede ser precedida por la Caricia del rostro en pares). En una hoja nueva, realizan el \"retrato sensible\" del compañero, tratando de no mirar el papel sino dejando que el trazo exprese lo esencial de su percepción.\r\rLas personas entonces se ofrecen un momento de contemplación de sus respectivas obras. A continuación, todos los dibujos son llevados al centro, cada uno colocando su dibujo formal cerca de su diseño sensible, y el grupo forma una ronda que se mueve alrededor para sensibilizarse a través de la contemplación.\rObjetivo :\r\rDesbloquear el dibujo de los límites de la percepción formal para permitir una percepción sensible y esencial de los seres y las cosas. En la creatividad la percepción sensible es subjetiva y por lo tanto, es original y única.\r\rObservación :\r\rEste mismo ejercicio puede realizarse dibujando un objeto.\r\r\rDANZAS ESPECÍFICAS (por orden alfabético)\r\r\rBajo este capítulo se agrupan danzas que estan en relación con las extensiones o con situaciones muy específicas. A veces son variaciones del Catálogo de base de danzas de IBF (Rolando Toro Araneda) y, a veces, están relacionadas con la radicalización vivencial.\r\rLas extensiones o situaciones de radicalización son, por ejemplo:\r\rLos Cuatro Elementos, el Proyecto Minotauro, Biodanza Acuática, Biodanza en la Naturaleza, Los caminos de éxtasis, El árbol de los deseos, Feminidad y Masculinidad profundas, etc.\rAlgunas de estas danzas se inspiran en aplicaciones específicas, tales como la Biodanza para Niños y Adolescentes.\r\r\rABDOMINALES (llamada “Danza del astronauta” cuando es propuesta a niños)\r\r\rDescripción :\r\r"
+    }, {
+        "IdEjercicio": 4052,
+        "nombre": "DIBUJO SENSIBLE\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "El desarrollo de la \"percepción sensible\" es la primera condición para crear imágenes a través del dibujo.\r\rCuando queremos dibujar un rostro, un paisaje, un objeto real o imaginario, estamos solicitando por lo general lo que se llama el \"canal ocular-motor\", poniéndolo al servicio de representaciones pre-establecidas\r\rde esquemas almacenados en nuestra memoria como en una computadora: construimos y elaboramos partiendo de nuestro propio repertorio de formas aprendidas. El resultado es un diseño rígido y sin vida,sin alma, una especie de esquema simple y obvio. La complejidad de la imagen, la que que se refiere a la morfogénesis, está ausente.\rNo hay ninguna conexión entre el grupo de signos y el significado intrínseco de la forma. Se trata de una disociación entre los aspectos semióticos y los aspectos semánticos. Carece de emoción. Carece de vida.\r\rSi tomamos como punto de partida para la morfogénesis nuestra\"percepción del objeto\", abordándolo con sensibilidad en el trato con sus alusiones inmediatas, asi se trate de sombras o de formas unidas en el espacio, logramos descubrir el sentido de la imagen.\r\rEl artista, al igual que el explorador, se mueve un territorio a otro uniendo en la misma línea, del mismo trazo, las estructuras que emergen delante de sus ojos, revelando la forma en toda su complejidad.\r\rCuando se dibuja un esquema que tenemos en la memoria, el diseño es rígido. Si dibujamos sin mantener nuestra mirada fija en el papel sino tratando de capturar algo del sujeto, sus formas vivas, vibrantes y expresivas, nos revelan la esencia.\r\rLa técnica apropiada para hacer esto es la percepción sensible del objeto, es decir, una percepcion no formal. La mirada ligeramente desenfocada, la mirada que recorre lentamente los contornos, ya sea de un florero, un rostro, una planta, etc.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t90\tmars 2012\r\fDescripción :\r\rLa propuesta se realiza en dos etapas. El ejercicio se lleva a cabo en pares. Las personas se sientan frente a frente y uno tras otro dibujan como es su costumbre, sin instrucción específica del facilitador, el retrato de su compañero. A continuación, dejando a un lado sus diseños, se compenetran sensiblemente de la cara del otro (esta parte puede ser precedida por la Caricia del rostro en pares). En una hoja nueva, realizan el \"retrato sensible\" del compañero, tratando de no mirar el papel sino dejando que el trazo exprese lo esencial de su percepción.\r\rLas personas entonces se ofrecen un momento de contemplación de sus respectivas obras. A continuación, todos los dibujos son llevados al centro, cada uno colocando su dibujo formal cerca de su diseño sensible, y el grupo forma una ronda que se mueve alrededor para sensibilizarse a través de la contemplación.\rObjetivo :\r\rDesbloquear el dibujo de los límites de la percepción formal para permitir una percepción sensible y esencial de los seres y las cosas. En la creatividad la percepción sensible es subjetiva y por lo tanto, es original y única.\r\rObservación :\r\rEste mismo ejercicio puede realizarse dibujando un objeto.\r\r\rDANZAS ESPECÍFICAS (por orden alfabético)\r\r\rBajo este capítulo se agrupan danzas que estan en relación con las extensiones o con situaciones muy específicas. A veces son variaciones del Catálogo de base de danzas de IBF (Rolando Toro Araneda) y, a veces, están relacionadas con la radicalización vivencial.\r\rLas extensiones o situaciones de radicalización son, por ejemplo:\r\rLos Cuatro Elementos, el Proyecto Minotauro, Biodanza Acuática, Biodanza en la Naturaleza, Los caminos de éxtasis, El árbol de los deseos, Feminidad y Masculinidad profundas, etc.\rAlgunas de estas danzas se inspiran en aplicaciones específicas, tales como la Biodanza para Niños y Adolescentes.\r\r\rABDOMINALES (llamada “Danza del astronauta” cuando es propuesta a niños)\r\r\rDescripción :\r\rEste ejercicio consiste en tenderse en el suelo apoyado sólo en la parte baja de la espalda mientras se mantiene el tronco, la cabeza y las extremidades elevadas. En esta posición, se balancea ligeramente el cuerpo, subiendo y bajando el tronco (sin tocar el suelo) y moviendo ligeramente las piernas y los brazos como si estuviera en condiciones de gravedad cero, con el fin de parecerse a un astronauta que fluye o flota en el espacio.\r\rObservación :\r\rSe trata de un ejercicio específico de la metodología de Biodanza para niños. Evoca la sensación de flotar en el espacio sin fuerza de gravedad y por lo tanto, en la consigna, se sugiere al niño la imagen del astronauta.\r\r"
+    }, {
+        "IdEjercicio": 4053,
+        "nombre": "ABDOMINALES (llamada “Danza del astronauta” cuando es propuesta a niños)\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Descripción :\r\rEste ejercicio consiste en tenderse en el suelo apoyado sólo en la parte baja de la espalda mientras se mantiene el tronco, la cabeza y las extremidades elevadas. En esta posición, se balancea ligeramente el cuerpo, subiendo y bajando el tronco (sin tocar el suelo) y moviendo ligeramente las piernas y los brazos como si estuviera en condiciones de gravedad cero, con el fin de parecerse a un astronauta que fluye o flota en el espacio.\r\rObservación :\r\rSe trata de un ejercicio específico de la metodología de Biodanza para niños. Evoca la sensación de flotar en el espacio sin fuerza de gravedad y por lo tanto, en la consigna, se sugiere al niño la imagen del astronauta.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5076,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 6,
+                    "nombre": "Rosa C Poyares",
+                    "interprete": "",
+                    "archivo": "IBF9-06 Rosa C Poyares               (Abanico chino).mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4054,
+        "nombre": "BIOGENERADOR (Biodanza Clínica)\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "El Biogenerador consiste en una ceremonia inspirada a los antiguos ritos antropológicos de curación. Este ejercicio invoca la capacidad de curación que pertenece al ser humano. Antes de proponer el Biogenerador, es necesario preparar a los participantes con la realización de ejercicios de afectividad y de trascendencia, para estimularlos hacia un estado de ánimo de amor y paz.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t91\tmars 2012\r\fDescripción :\r\rSe forman dos rondas concéntricas. Los participantes de la ronda interior están frente a los de la ronda exterior. La ronda interna es formada por personas que se encuentran en un momento de dificultad caracterizado por enfermedades, dolores, angustias y preocupaciones. Estas personas pueden llevar una mano a la parte del propio cuerpo que corresponde a su dificultad. Por ejemplo: si se tratara de un sufrimiento de amor, el participante lleva la mano en su propio pecho cerca del corazón; si se tratara de problemas profesionales, pone la mano en la cabeza; si los problemas son con los órganos genitales, se pone la mano ahí; etc.\r\rLos participantes de la ronda exterior se mueven lentamente hacia un lado parándose frente a uno de los compañeros de la ronda interna y acarician la zona afligida.\r\rLos miembros de la ronda externa no tienen que quedarse por largo tiempo frente a la misma persona (máximo un minuto), de modo que la ronda generadora de vida (o sea la externa) pueda moverse fluidamente sin bloquearse.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5255,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 3,
+                    "nombre": "Largo Concierto N 7",
+                    "interprete": "Vivaldi",
+                    "archivo":
+                        "IBF18-03 Largo Concierto N 7 Vivaldi (Evocación y liberac de la energía interna) 2, 17 (1).mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4055,
+        "nombre": "CANTO SOBRE EL CUERPO\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Se trata de un ejercicio específico propuesto en el contexto de la sanación en Neo-chamanismo.\r\rDescripción :\r\rUna persona recibe, en posicion acostada, un baño de sonido sobre todo su cuerpo. El sonido es la emision visceral y el aliento de cinco (o siete) de sus compañeros. Estas personas se conectan con su capacidad de dar y transforman su expresión afectiva en expresión vocal visceral. La voz es una vibración, esta vibración lleva la intención real de las personas y \"envuelve\" totalmente a la persona quien, en un estado de abandono que facilita el trance, se vuelve \"permeable\" y absorbe la vibración. Se crea gradualmente una armonía entre todos, y la percepción de la vibración de la armonía tiene un efecto armonizador a un nivel orgánico muy profundo.\r\rAl final de la ceremonia, la persona recibe un toque contenedor en todo el cuerpo y a continuación es recibida, sentada, en abrazos alternados que le dan cada vez más identidad.\rObjetivo :\r\rInducir un estado de trance profundo por medio de la vibración de las voces sobre el cuerpo.\r\r\rCONEXIÓN A LA GLORIA DE VIVIR\r\r\rDesafio del Proyecto Minotauro.\r\rDescripción :\r\rEsta danza tiene el significado de una celebración ontológica, de celebrar el hecho de estar vivo. Permitir la plena manifestación de la euforia interna y profunda que proviene del acto de vivir. Estar vivo es un gran triunfo que debemos celebrar con intensidad.\r\r"
+    }, {
+        "IdEjercicio": 4056,
+        "nombre": "CONEXIÓN A LA GLORIA DE VIVIR\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Desafio del Proyecto Minotauro.\r\rDescripción :\r\rEsta danza tiene el significado de una celebración ontológica, de celebrar el hecho de estar vivo. Permitir la plena manifestación de la euforia interna y profunda que proviene del acto de vivir. Estar vivo es un gran triunfo que debemos celebrar con intensidad.\r\r"
+    }, {
+        "IdEjercicio": 4057,
+        "nombre": "CONEXIÓN CON LA PROPIA FUERZA\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "La falta de conexión con su propia fuerza es, a menudo, el origen de un sentimiento de debilidad y limita considerablemente la plena expresión de sí. Todas las personas está dotadas de una fuerza vital. La vivencia de sentir la fuerza de la vida en sí mismo participa en la rehabilitación de la confianza en la vida. Ahora bien, a menudo, la fuerza está asociada a la agresividad, la rabia o la cólera. Es entonces importante diferenciar esta vivencia para otorgarle de nuevo el lugar y el valor que le son propios en el sentido de un proceso de rehabilitación de una identidad sana y potente.\r\r\f\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t92\tmars 2012\r\fDescripción :\r\rConcentración de la fuerza:\r\rSentir nuestra fuerza sin desparramarla. Sin hacer nada más. Como el guerrero que se prepara toda su vida, manteniéndose listo para el momento en el que necesitará esta fuerza. Los movimientos son intensos. Los ojos cerrados. No hay desplazamientos, o gestos “parasitarios” inútiles.\r\rExpresión de la fuerza: Es allí donde la fuerza conectada, mantenida, va a expresarse en una danza tónica, yang, intensa, ojos abiertos, con desplazamientos enraizados, consistentes.\rHay coherencia de la tonicidad en todo el cuerpo: a la fuerza de los brazos corresponde la de las piernas y la intensidad en la mirada. La expresión de la fuerza es luminosa, apasionada. No está asociada a la cólera.\r\rObjetivo :\r\rEstimular la percepción de la propia fuerza por el tono, el equilibrio, la expresión y la intensidad.\r\rObservación :\r\rEs interesante proponer las  dos danzas (Concentración y expresión) de manera consecutiva.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5205,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 12,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-12.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5212,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 19,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-19.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5261,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 7,
+                    "nombre": "Eric´s theme",
+                    "interprete": "Vangelis",
+                    "archivo": "IBF18-07 Eric´s theme              Vangelis.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5281,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 12,
+                    "nombre": "Corcovado",
+                    "interprete": "Laura Fygi",
+                    "duracion": "12:04",
+                    "archivo": "IBF19-12 Corcovado     Laura Fygi 4,17.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4058,
+        "nombre": "DANZA CUBISTA\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Laboratorio de Creatividad.\r\rDescripción :\r\rEsta danza evoca la escuela del cubismo del arte contemporáneo: moviminetos angulosos, asimétricos.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5223,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 10,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-10.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4059,
+        "nombre": "DANZA DEL CHAMÁN\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Las características del chamán son complejas y múltiples: incluyen la naturaleza y los elementos, la libertad con respecto al tiempo y al espacio, la capacidad de transformación y de transmutación de la identidad mediante el trance, la experiencia de la muerte y el renacimiento, y la preservación de la identidad psíquica de la comunidad. Las herramientas de curación son también complejas y múltiples, y están relacionadas con la capacidad de desdiferenciación.\r\rLa danza es para el chamán el camino del conocimiento y del viaje en las diferentes dimensiones de la vida.\r\rDescripción :\r\rLa danza es una inmersión en el aquí y ahora, un olvido total de sí mismo. Sin embargo, como todo trance, está codificada por la dirección deseada. Aquí, es la identificación mediante la fusión con los elementos, con las máscaras y pinturas faciales, o con el animal totémico.\r\rObservación :\r\rExtensión Biodanza y Chamanismo.\r\rObservación :\r\rLa música es creada por el uso del tambor por el danzante mismo, o bien por alguien en el grupo que sabe tocar el tambor. También se puede usar la música de encantamiento de los indios Navajo. Véase también en la serie BA, la pieza BA 36-05 (Double Drumming With Callback II [Part])\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5037,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 12,
+                    "nombre": "Riacho",
+                    "interprete": "Guem",
+                    "duracion": "12:03",
+                    "archivo": "IBF 7-12 Riacho Guem                (Danza de tierra) 3, 29.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4060,
+        "nombre": "DANZA DEL CAOS A LA ARMONÍA (o del Caos al Orden)\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "En su definicion de la Creatividad (tanto artística como existencial), Rolando Toro la describe como el camino del caos al orden. En su enfoque de la afectividad, el amor es la única fuerza que puede ayudarnos a transmutar las situaciones más oscuras. En su enfoque de la trascendencia, nos invita a la intimidad con el orden dentro de lo indiferenciado, lo increado, lo desconocido ... de todo lo que nuestra percepción limitada no puede ver y sin embargo existe. Nuestro camino de humanidad está en nuestra capacidad de encontrar orden y armonía en cualquier situación; de tener el coraje de la intimidad con el Caos. El coraje es, junto con el amor y la iluminación, uno de los elementos del inconsciente numinoso.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t93\tmars 2012\r\fDescripción :\r\rLa persona danza dejándose hundir en el caos, en la oscuridad, en una danza donde sus fuerzas la abandonan, y la tristeza la puede invadir. Es invitada a percibir en la música el momento en el que el caos se invierte y la danza se convierte en una expresión de la transmutación, con una elevación hacia la luz y la armonía.\rObjetivo :\r\rFamiliarizarse con las fuerzas vitales capaces de permitirnos encontrar el principio atractor que nos \"saca\" del caos hacia el orden y la armonía. El orden es la fuerza del amor.\rDefinición :\r\rTransformación del caos en armonía.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5213,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 20,
+                    "nombre": "The great gig in the sky",
+                    "interprete": "Pink Floyd",
+                    "archivo": "IBF15-20 The great gig in the sky Pink Floid (Caos).mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4061,
+        "nombre": "DANZA DE OPRESIÓN-LIBERACIÓN\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "A menudo somos el más grande opresor de nuestros impulsos vitales, de nuestros deseos y nuestros instintos. Esto se debe a las prohibiciones y condicionamientos introyectados de nuestra educación: cuanto más rigida haya sido ésta, más fuerte es el dictador interior. Tenemos que encontrar dentro de nosotros mismos la fuerza para liberarnos de las cadenas que impiden el progreso hacia nuestra identidad.\rDescripción :\r\rLa persona se coloca de rodillas en el piso, con la frente hacia el suelo, coloca sus manos detrás de la espalda y se agarra ambas muñecas con fuerza, como dos esposas. Se conecta a su fuerza de auto-opresión para transformarla poco a poco en fuerza de auto-liberación. El momento de la liberación debe ser un momento de júbilo y de triunfo. La duración total de la música debe servir para aumentar la intensidad de una rebelión interna contra el opresor en su interior.\r\rObjetivo :\r\rEstimular la fuerza de auto-liberación.\r\rObservación :\r\rEsta danza es especifica del Proyecto Minotauro y constituye un desafio existencial.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5277,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 8,
+                    "nombre": "That old feeling",
+                    "interprete": "Laura Fygi",
+                    "duracion": "12:03",
+                    "archivo": "IBF19-08 That old feeling     Laura Fygi 3,50.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4062,
+        "nombre": "DANZA PARA UN SER AUSENTE\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Aplicación en el Proyecto Minotauro y en grupos preparados a la radicalización vivencial.\r\rDescripción :\r\rLa persona danza en coherencia con el contenido semántico de la música, evocando a un ser ausente (evitar la invocación de una persona fallecida) y simbólicamente le ofrece su danza.\r\rObjetivo :\r\rLa ausencia puede ser llenada evocando la presencia de un ser querido. A menudo, fenómenos de tipo telepático se producen cuando se evoca fuertemente la presencia de un ser querido.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5221,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-08.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5245,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 12,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-12.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4063,
+        "nombre": "DANZA SURREALISTA\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle": "Laboratorio de Creatividad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5224,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 11,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-11.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4064,
+        "nombre": "DECIR NO-ESTABLECER LÍMITES\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Desafio del Proyecto Minotauro.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t94\tmars 2012\r\fDescripción :\r\rLa persona es invitada, desde la posición de la identidad y con los ojos abiertos, a expresar un NO a los cuatro puntos cardinales, con un gesto firme en coherencia con con el tono de la voz y el movimiento del cuerpo entero.\r\rObjetivo :\r\rAfirmar con poder, con determinación, con serenidad y con seguridad la capacidad de decir que no, de oponerse y de establecer límites.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5195,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-02.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4065,
+        "nombre": "EXPRESIÓN DE LA FEMINIDAD\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Enfoque específico de la identidad de género. La feminidad profunda.\r\rDescripción :\r\rLas mujeres danzan en conexión profunda con ellas mismas y en consonancia con el pulso de la música, invocando mediante su danza lo que es característico de lo femenino: la profundidad, la sensualidad, la dulzura, la apertura, el recibimiento, el don generoso de si misma .. a fin de profundizar para sí mismas la vivencia de sentirse mujer asumida en toda su grandeza. El facilitador evitará darle demasiado peso a su demostración y propondrá una expresión sincera de sí misma y la aceptación de la diversidad de las expresiones.\r\rObjetivo :\r\rIntegrar la expresión propia al género femenino de manera arquetípica y no estereotipada.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5216,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 3,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-03.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5217,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 4,
+                    "nombre": "Miss Celie´s blues, T Vega  El color púrpura",
+                    "interprete": "",
+                    "duracion": "12:02",
+                    "archivo": "IBF16-04 Miss Celie´s blues, T Vega  El color púrpura (D Exp femenina) 2, 34.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5220,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 7,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-07.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4066,
+        "nombre": "EXPRESIÓN DE LA MASCULINIDAD\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Enfoque específico de la identidad de género. Masculinidad profunda.\r\rDescripción :\r\rLos hombres danzan en conexión profunda con ellos mismos y en consonancia con el pulso de la música, invocando mediante su danza lo que es característico de lo masculino: la profundidad, la sensualidad, el vigor, la apertura, el recibimiento, el don generoso de sí mismo .. a fin de profundizar para sí mismos la vivencia de sentirse hombre asumido en toda su grandeza. El facilitador evitará darle demasiado peso a su demostración y propondrá una expresión sincera de sí mismo y la aceptación de la diversidad de las expresiones.\r\rObjetivo :\r\rIntegrar la expresión propia al género masculino de manera arquetípica y no estereotipada.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5038,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 13,
+                    "nombre": "Voyage dans au de la",
+                    "interprete": "",
+                    "archivo": "IBF 7-13 Voyage dans au de la.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5190,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 16,
+                    "nombre": "Libertango",
+                    "interprete": "Piazolla",
+                    "duracion": "12:02",
+                    "archivo": "IBF14-16 Libertango A Piazolla (Danzar para otro) 2,58.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5214,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 1,
+                    "nombre": "Zorba",
+                    "interprete": "Mikis Theodorakis",
+                    "archivo": "IBF16-01 Zorba  Mikis Theodorakis   (Danza expresiva masculina).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5215,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-02.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4067,
+        "nombre": "FETALIZACIÓN CÓSMICA\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Desafío del Proyecto Minotauro y ejercicio de profundización de la trascendencia de la extensión \"Biodanza en la Naturaleza\". No se debe confundir con la Posicion Generatriz \"Flotar en el líquido amniótico\".\r\r\rAULLAR COMO LOBOS\r\r\rProyecto Minotauro, Biodanza en la Naturaleza y Laboratorio de Creatividad.\r\r\rMANDALA\r\r\rExtension \"Los caminos del éxtasis\".\r\r"
+    }, {
+        "IdEjercicio": 4068,
+        "nombre": "AULLAR COMO LOBOS\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Proyecto Minotauro, Biodanza en la Naturaleza y Laboratorio de Creatividad.\r\r\rMANDALA\r\r\rExtension \"Los caminos del éxtasis\".\r\r"
+    }, {
+        "IdEjercicio": 4069,
+        "nombre": "MANDALA\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle": "Extension \"Los caminos del éxtasis\".\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5232,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 19,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-19.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4070,
+        "nombre": "APERTURA DEL ESPACIO VITAL (o Crear el espacio del propio crecimiento)\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "\r\rCierto estilo de vida y ciertos hábitos reducen la movilidad existencial. Las personas, aún aquellas que no se sienten nutridas por su medio (afectivo o profesional), no osan ampliar su horizonte. Otras se satisfacen de lo adquirido o de una forma reducida de seguridad. Cesan entonces de evolucionar, de crecer. Conviene estimular el instinto de exploración: desplazarse, osar expresarse, ver más lejos, tornarse curioso, dar a las motivaciones un espacio amplio para sus expresiones.\r\rDescripción :\r\rEsta danza se caracteriza por desplazamientos determinados, apasionados, voluntarios, a partir del centro afectivo. Los movimientos son amplios, la mirada abraza el espacio. La tonicidad se adapta según las impulsiones: algunas más livianas, otras más potentes. La vivencia invocada es la de la expansión, del impulso vital, de potencia, de compromiso.\rObservación :\r\rDe acuerdo con la música elegida, esta danza puede ser seguida por una danza de extensión (armónica o máxima) que es también apertura del espacio vital.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5044,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 19,
+                    "nombre": "Moonlight serenade",
+                    "interprete": "Glen Miller",
+                    "duracion": "12:03",
+                    "archivo": "IBF 7-19 Moonlight serenade G Miller (Despl abriendo espacio levedad) 3,50.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5190,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 16,
+                    "nombre": "Libertango",
+                    "interprete": "Piazolla",
+                    "duracion": "12:02",
+                    "archivo": "IBF14-16 Libertango A Piazolla (Danzar para otro) 2,58.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4071,
+        "nombre": "PINTURA ESTILO CUBISMO\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle": "Laboratorio de Creatividad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5222,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 9,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-09.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4072,
+        "nombre": "PINTURA IMPRESIONISTA\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle": "Laboratorio de Creatividad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4073,
+        "nombre": "PERCEPCIÓN DE LA NATURALEZA CON LOS CINCO SENTIDOS\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Ejercicio de la extension \"Biodanza en la Naturaleza\".\r\r\rPERCEPCIÓN ESTÉTICA DEL OTRO (Calificación del otro)\r\r\rLas personas tienen dificultad para percibir el estado interior de los otros, generalmente se quedan en la percepción de los aspectos externos, superficiales y formales, sin captar los estados de alegría, tristeza, miedo, sufrimiento, erotismo y afectividad.\r\rAsí como existe una estética aplicada en las artes (poesía, teatro, literatura, etc.) -estética es la percepción del bello- he propuesto una “Estética Antropológica como la percepción de la belleza del ser humano”.\rDescripción :\r\rSentados en rondas de 6 personas; uno de los miembros comienza la comunicación con el compañero del lado. Se pone frente a él y toma sus manos; después expresa verbalmente y con afectividad, la percepción de los aspectos más bellos que descubre en el otro.\r\rObjetivo :\r\rAprender a percibir profundamente los aspectos más positivos de las personas; aumentar la capacidad de comprensión humana.\r\rObservación :\r\rSin música\r\r"
+    }, {
+        "IdEjercicio": 4074,
+        "nombre": "PERCEPCIÓN ESTÉTICA DEL OTRO (Calificación del otro)\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Las personas tienen dificultad para percibir el estado interior de los otros, generalmente se quedan en la percepción de los aspectos externos, superficiales y formales, sin captar los estados de alegría, tristeza, miedo, sufrimiento, erotismo y afectividad.\r\rAsí como existe una estética aplicada en las artes (poesía, teatro, literatura, etc.) -estética es la percepción del bello- he propuesto una “Estética Antropológica como la percepción de la belleza del ser humano”.\rDescripción :\r\rSentados en rondas de 6 personas; uno de los miembros comienza la comunicación con el compañero del lado. Se pone frente a él y toma sus manos; después expresa verbalmente y con afectividad, la percepción de los aspectos más bellos que descubre en el otro.\r\rObjetivo :\r\rAprender a percibir profundamente los aspectos más positivos de las personas; aumentar la capacidad de comprensión humana.\r\rObservación :\r\rSin música\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4915,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 20,
+                    "nombre": "Adagio Concerto per oboe Marcello",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF1-20 Adagio Concerto per oboe Marcello    (Ronda de inicio) 4, 56.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4075,
+        "nombre": "PERCEPCIÓN DEL OTRO CON LOS CINCO SENTIDOS\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "\r\rA menudo estamos limitados en nuestra percepción de los demás y de nosotros mismos, por a prioris relacionados con el cuerpo. Nuestros sentidos son las puertas que están abiertas al mundo, al mundo del otro. Abrir las puertas de nuestra percepción sensorial nos da acceso a la realidad del otro.\rDescripción :\r\rLas personas forman pares y hacen juntos la secuencia completa (vista, olfato, oído, gusto y tacto). Más que un ejercicio, se trata de una verdadera ceremonia de descubrimiento del otro y de entrega de sí mismo en el descubrimiento (para la persona que se abandona a \"ser percibida o ser sentida\" en toda su corporeidad).\rObjetivo :\r\rSuperar los tabúes relacionados con el cuerpo y abrir nuestra percepción total. Por otra parte, superar nuestras inhibiciones de ser vistos en toda nuestra naturalidad y sin artificios. Esta percepción del otro con los cinco sentidos es una apertura hacia la aceptación total y hacia la intimidad.\r\rObservación :\r\rLa música acompaña todas las etapas excepto la del Oído que se hace en silencio para permitir la percepción de los sonidos más sutiles. Al final de la ceremonia, la persona que se ha ofrecido es recibida en un abrazo por su pareja antes del cambio de posiciones.\r\rElemento Poético :\r\rNingún aroma, ningún paisaje, ningún perfume, ninguna textura, ninguna música no podrían ser más bellas que las que la creación puso al centro de nuestros cuerpos vivos. Son una expresión de la vida misma. Recibirlas es un honor.\r\rEtapas de la Danza :\r\r1 La vista\r\rFrente a su compañero que esta sentado en posicion receptiva y ofrece toda su atención, la persona danza y es vista en todo su despliegue. No es una danza de seducción, es vivenciar la realidad de ver y ser visto.\r\r2 El oído\r\rAhora, la persona se acuesta de espalda en posición receptiva y permanece asi a lo largo de las etapas sucesivas. El otro acerca la oreja a las partes del cuerpo que están dotadas de sonidos naturales: el aliento, el corazón, las tripas. Cada sonido es la música a la vida. Cada música es única.\r\r3 El olfato\r\rRecorrer del cuerpo del compañero oliendo el olor de su piel y de las partes más expresivas (axilas, fosas nasales, comisuras de los labios, cabello, cuello). Ninguna parte del cuerpo es un tabú. Ningún olor es un tabú. Cada persona tiene un perfume único.\r\r4 El gusto\r\rCada piel tiene un sabor. Navegar por la piel con nuestros labios y con el roce de nuestra lengua para percibir los sabores (de las manos, del hueco de su cuello, los codos, etc ….) con suavidad y voluptuosidad. Con veneración. Cada persona tiene un sabor único.\r\r5 El tacto\r\rDejar que nuestras manos, con ternura y conexión profunda, perciban lo que los ojos no pueden captar. El contacto se convierte en caricia y en adoración. Cabe señalar que el contacto no es exploratorio, sino un encantamiento del descubrimiento y de la intimidad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5176,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-02.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4076,
+        "nombre": "RENACIMIENTO\r",
+        "idGrupo": 67,
+        "grupo": "DANZAS ESPECÍFICAS (por orden alfabético)",
+        "detalle":
+            "Proyecto Minotauro.\r\rDescripción :\r\rEste es un ritual para hacer frente y transmutar el miedo de la vejez y el temor a la muerte.\r\rPara la consigna completa, se debe referirse al libro \"Proyecto Minotauro\".\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4914,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 19,
+                    "nombre": "La primavera",
+                    "interprete": "Vivaldi",
+                    "duracion": "12:03",
+                    "archivo": "IBF1-19 La primavera                 Vivaldi            (Ronda de inicio) 3, 37.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5118,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 7,
+                    "nombre": "Meditation de Thays",
+                    "interprete": "",
+                    "archivo": "IBF11-07 Meditation de Thays.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4077,
+        "nombre": "SINTONÍA SILENCIOSA\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Es un ejercicio extremamente importante porque induce una vivencia de profunda receptividad a los estímulos externos y especialmente al contacto humano. Pertenece a la Línea de la Afectividad.\rDescripción :\r\rSe realiza en pareja. Uno de los dos es pasivo y cierra los ojos evocando un estado de extrema sensibilidad. El otro es activo y da toques livianísimos y delicados en algunas partes del cuerpo de su compañero, el cual responderá sensiblemente, moviendo la parte tocada. Así, por ejemplo, si el otro le toca una mano, el participante mueve la misma mano con extrema sensibilidad. De esta forma cada toque hará mover la parte tocada con armonía y sensibilidad. Una vez concluído el ejercicio, se invierten los roles.\r\rObjetivo :\r\rEstimulación de la integración sensoriomotora a través de la afectividad. Sensibilización a los estímulos del medio ambiente.\r\rObservación :\r\rLa persona que tiene el papel activo es invitada a no sobreestimular a su pareja, es decir, no tocar varias partes del cuerpo a la vez o muy rápidamente, ya que no dejaría lugar a una expresión sensible.\rObservación :\r\rEste ejercicio se realiza sin música. Sin embargo, es posible proponerlo con música: en este caso, referirse a la \"Danza de sensibilizacion en pares\".\r\r\rPOSICIONES GENERATRICES\r\r\rINTRODUCCIÓN\r\rDesde el principio de la historia humana hasta nuestros días, el hombre realiza algunos “gestos eternos”. Estos gestos “arquetípicos” aparecen en los bajorrelieves, esculturas y pinturas de todos los tiempos. Se trata de gestos de adoración, maternidad, reverencia, trabajo, intimidad, etc.\r\rRudolf von Laban afirma que “los movimientos de la danza son los movimientos de la vida”. Etienne Decroux seleccionó 22 posiciones como partes fundamentales que generan el movimiento del Arte de la Mímica.\r\rEn Biodanza seleccioné tres códigos de Posiciones Generatrices, que permiten crear danzas espontáneas de gran riqueza y profundidad humana. Cada una de estas posiciones tiene un significado psicológico profundo.\r\rLos gestos arquetípicos pertenecen al inconsciente colectivo descrito por C. G. Jung y constituyen verdaderas matrices expresivas.\r\rLos tres códigos de posiciones generatrices que propongo en Biodanza son producto de una larga búsqueda en el repertorio gestual de distintas culturas: hindú, egipcia, greco-romana y occidental moderna. Seleccioné las que para mí representan gestos altamente evolucionados -capaces de inducir vivencias profundas y trascendentes- que tienen el poder de generar “danzas internas”. Llamé a estos gestos arquetípicos “Posiciones Generatrices” porque pueden generar danzas específicas.\r\rLa danza expresiva común es una combinación de movimientos organizados por la vivencia personal del danzarín. Las danzas que surgen de la combinación de posiciones generatrices poseen una dimensión más universal y se refieren a la grandeza del hombre. La combinación de tres, o más posiciones generatrices, dan origen a danzas de una extraordinaria belleza y pureza expresiva.\r\rLa realización de las posiciones generatrices tiene que durar aproximadamente un minuto. En seguida se sugiere a los alumnos realizar una danza libre, haciendo variaciones sobre la respectiva posición generatriz.\r\rEl criterio para separar los tres códigos es el aumento progresivo de complejidad de la vivencia. Las posiciones del primer código aluden a la relación del hombre con lo sagrado y está muy próximo a las necesidades humanas más básicas. El segundo código se refiere a los estados de regresión. El tercer código induce estados de expansión de conciencia.\r\r\f\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t98\tmars 2012\r\fLa postura básica de casi todas las Posiciones Generatrices es la Posicion de Identidad, de la cual partimos y a la cual regresamos al final. Las piernas separadas a la distancia de las caderas, la cabeza derecha sobre sus hombros, los brazos relajados.\r\rLa división en tres Códigos distintos se refiere también a la creciente capacidad vivencial del biodanzante. De hecho, una inmadurez vivencial no permite el acceso completo a los objetivos de las Posiciones Generatrices de los Códigos II o III.\r\r\rPOSICIONES GENERATRICES - CÓDIGO 1\r\r\r\rVALOR (o Protección del Valor)\r\r\rPuños cerrados, brazos extendidos, cabeza derecha y actitud serena. Se cruzan los brazos con lentitud y firmeza en el pecho, en acto de mantener el poder y defender un valor interno. El gesto se refiere al valor interior de la persona como criatura trascendente.\r\rEsta posición induce danzas que expresan la identidad. Se asume el “si mismo”. Los ojos miran hacia delante y los pies están levemente separados.\r\rObservación :\r\rTomarse el tiempo con los brazos a lo largo del cuerpo y los puños cerrados antes de llegar a cruzarlos frente al pecho. Esta PG se refiere a la capacidad de tener sentimientos, pensamientos, sensaciones y deseos propios. Durante las variaciones, la danza siempre sugiere la protección, la defensa (parecida a un arte marcial).\r"
+    }, {
+        "IdEjercicio": 4078,
+        "nombre": "VALOR (o Protección del Valor)\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "\r\rPuños cerrados, brazos extendidos, cabeza derecha y actitud serena. Se cruzan los brazos con lentitud y firmeza en el pecho, en acto de mantener el poder y defender un valor interno. El gesto se refiere al valor interior de la persona como criatura trascendente.\r\rEsta posición induce danzas que expresan la identidad. Se asume el “si mismo”. Los ojos miran hacia delante y los pies están levemente separados.\r\rObservación :\r\rTomarse el tiempo con los brazos a lo largo del cuerpo y los puños cerrados antes de llegar a cruzarlos frente al pecho. Esta PG se refiere a la capacidad de tener sentimientos, pensamientos, sensaciones y deseos propios. Durante las variaciones, la danza siempre sugiere la protección, la defensa (parecida a un arte marcial).\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5194,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 1,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-01.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4079,
+        "nombre": "CONEXIÓN CON EL INFINITO\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "Descripción :\r\rPié izquierdo adelante. Los brazos se levantan lentamente, tratando de tocar con la punta de los dedos un lugar imaginario en el cielo. Las manos con las palmas opuestas y los ojos abiertos. Este gesto induce la vivencia de vincularse con lo desconocido e insondable.\r\rObjetivo :\r\rEsta posición genera una danza mística con movimientos de ascensión, nos inicia al misterio.\r\rObservación :\r\rLa PG se realiza una vez y luego la danza comienza con, como referencia, la elevación, la conexión hacia arriba. En la danza, a fin de establecer una pulsación, hay momentos de retorno a la posición de identidad alternando con variaciones que sugieren la ascensión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5253,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 1,
+                    "nombre": "I wish you were here",
+                    "interprete": "",
+                    "archivo": "IBF18-01 I wish you were here (parte 1)    Pink Floyd.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4080,
+        "nombre": "INTIMIDAD\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "Las manos se acercan al pecho lentamente, como para proteger el mundo íntimo; la cabeza se inclina con devoción. Este gesto genera una vivencia de intimidad consigo mismo, como si uno se disolviera en su interior. Pies unidos. Los ojos se cierran cuando se intensifica la vivencia.\r\rLa posición de intimidad genera danzas de recogimiento e interioridad que tienden a un estado de intasis.\r\rEs el despertar con “lo más íntimo de lo íntimo” (S. Agustín).\r\rObservación :\r\rTras la realización de la PG durante un minuto, la danza ofrece las variaciones de la intimidad, de pie o en cuclillas, en una pulsacion yin\/yang, apertura\/ intimidad. Es conveniente proponer a las personas que tienen dificultades con la vivencia de intimidad, de tratar de ponerse en contacto real con las partes del cuerpo más íntimas, poco expuestas o poco tocadas, poniendo sus manos sobre su propio cuerpo, o abrázandose. Esta sugerencia puede ser apenas visible en la demostración danzada del facilitador.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4915,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 20,
+                    "nombre": "Adagio Concerto per oboe Marcello",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF1-20 Adagio Concerto per oboe Marcello    (Ronda de inicio) 4, 56.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5087,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 17,
+                    "nombre": "Orfeo e Eurídice",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-17 Orfeo e Eurídice( Parte 2)  Gluck 4, 02.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5111,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 21,
+                    "nombre": "Preludio Op 28 N-4 Largo",
+                    "interprete": "Chopin",
+                    "duracion": "12:02",
+                    "archivo": "IBF10-21 Preludio Op 28 N-4 Largo Chopin (Encuentros) 2, 04.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5125,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 14,
+                    "nombre": "Consolazione N 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-14 Consolazione N 3        (R Concentrica miradas) Liszt 4, 19.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5211,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 18,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-18.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5249,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 16,
+                    "nombre": "Ave María",
+                    "interprete": "Ch. Gounod",
+                    "duracion": "12:03",
+                    "archivo": "IBF 17-16 Ave María Ch. Gounod (Intimidad) 3,28.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5254,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 2,
+                    "nombre": "Requiem tedesco BRAHMS",
+                    "interprete": "",
+                    "archivo": "IBF18-02 Requiem tedesco BRAHMS.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4081,
+        "nombre": "PEDIR\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "La pierna derecha adelantada, la pierna izquierda se pliega levemente en la rodilla. Ojos abiertos. El brazo derecho se eleva hacia delante a 140º, la palma de la mano vuelta hacia arriba. El brazo izquierdo queda atrás. La mirada y la cara se dirigen, con dignidad, en dirección de la mano derecha.\r\rLa actitud de pedir es aún más difícil que la de dar o recibir, en especial para las personas que sufren sentimientos de inferioridad.\rNote CIMEB :\r\rAnteriormente, Rolando señalaba que se debia \"poner una rodilla en el suelo\". Cambió de parecer, y la posicion que resulta es inestable e incómoda. Interrogado, Rolando dijo que sí es incómodo pedir, y que cuando una persona se ve obligada a pedir en la vida es que se encuentra en una posición inestable e incómoda. Es importante poner de manifiesto la sinceridad y la dignidad del gesto de pedir (todo pedido, todo deseo es bello en el sentido de que es una expresión de la vida). La posición se realiza de forma individual (no nos encontramos frente a una compañero); sin embargo, se puede hacer en dos grupos de modo que todo el mundo sea acogido en un abrazo al final. No se propone la danza generada.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5122,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 11,
+                    "nombre": "Watermark",
+                    "interprete": "",
+                    "archivo": "IBF11-11 Watermark.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4082,
+        "nombre": "DAR-DARSE\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "Estas dos posiciones evocan sensaciones de generosidad y auto-donación. A menudo son propuestas de manera sucesiva.\r\rDescripción :\r\rDar:\r\rPies separados. Los brazos se elevan lentamente hacia adelante hasta un ángulo de 35º. Manos abiertas en la actitud generosa de dar. Ojos abiertos.\r\rDarse:\r\rEl mismo movimiento más amplio: el cuerpo se abandona hacia atrás en acto de ofrecerse completamente. La posición generatriz de darse pone en práctica la difícil prueba de donarse al otro, sin miedo. Cerrar los ojos cuando se intensifica la vivencia.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5111,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 21,
+                    "nombre": "Preludio Op 28 N-4 Largo",
+                    "interprete": "Chopin",
+                    "duracion": "12:02",
+                    "archivo": "IBF10-21 Preludio Op 28 N-4 Largo Chopin (Encuentros) 2, 04.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5124,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 13,
+                    "nombre": "Impromptu N 3",
+                    "interprete": "",
+                    "duracion": "12:06",
+                    "archivo": "IBF11-13 Impromptu N 3            (R Concentrica miradas) Shubert 6, 24.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4083,
+        "nombre": "RECIBIR\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Partiendo de la posición de Identidad se pasa a la de “Dar” donde los brazos se levantan hacia delante en un ángulo de 90º, para después abrirse en un acto receptivo. Ojos abiertos y pies ligeramente separados.\r\rEste gesto complementa al anterior y está en relación al equilibrio de dar – recibir. Las personas que solo saben dar tienen problemas graves, así también las que saben solo recibir.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t100\tmars 2012\r\f09-03\r\u0007Bilitis\r\u0007Zamfir, Gheorghe\r\u00074:30\r\u0007\r\u000717-05\r\u0007Ponteio\r\u0007Branco, Waltel\r\u00072:21\r\u0007\r\u000710-20\r\u0007V podvecer (At Twilight), Idyll for\r\u0007Fibich, Zdenek (1850-1900)\r\u00072:27\r\u0007\r\u0007\r\u0007Orchestra - Op.39 {Mistaked Known as\r\u0007\r\u0007\r\u0007\r\u0007\r\u0007Poème op.41, No.6}\r\u0007\r\u0007\r\u0007\r\u0007\r\rPROTEGER LA VIDA\r\r\rEl movimiento es lento y delicado como acunando a un niño. Los ojos permanecen abiertos, contemplando el espacio-cuna formado por los brazos, y los pies liegramente separados.\r\rEsta posición genera vivencias de ternura y encantamiento frente a todo ser y activa los sentimientos de maternidad y paternidad. Estimula la sensación universal de reverencia y respeto por la vida.\r\rCuando se realiza la danza libre con variaciones generada por la posición, se sugiere simbolizar el cuidado y la atención que se da a toda forma de vida (un pájaro, una flor, una persona en dificultad, un ciego, la tierra, etc.).\r"
+    }, {
+        "IdEjercicio": 4084,
+        "nombre": "PROTEGER LA VIDA\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "El movimiento es lento y delicado como acunando a un niño. Los ojos permanecen abiertos, contemplando el espacio-cuna formado por los brazos, y los pies liegramente separados.\r\rEsta posición genera vivencias de ternura y encantamiento frente a todo ser y activa los sentimientos de maternidad y paternidad. Estimula la sensación universal de reverencia y respeto por la vida.\r\rCuando se realiza la danza libre con variaciones generada por la posición, se sugiere simbolizar el cuidado y la atención que se da a toda forma de vida (un pájaro, una flor, una persona en dificultad, un ciego, la tierra, etc.).\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5238,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 5,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-05.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5249,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 16,
+                    "nombre": "Ave María",
+                    "interprete": "Ch. Gounod",
+                    "duracion": "12:03",
+                    "archivo": "IBF 17-16 Ave María Ch. Gounod (Intimidad) 3,28.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4085,
+        "nombre": "TRABAJOS PRIMORDIALES\r",
+        "idGrupo": 68,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+        "detalle":
+            "Brazo derecho atrás en acto de lanzar un objeto. El gesto consiste en dar un impulso vigoroso a algo que se encuentra en la mano. El brazo izquierdo acompaña naturalmente el movimiento, moderando la fuerza del brazo opuesto. La pierna derecha está hacia atrás en perfecto sinergismo. La posición favorece los movimientos de los trabajos manuales, agrícolas y movimientos del deporte.\r\rEs interesante la utilización de esta posición para estimular la sincronización y euritmia del grupo. Las coreografías libres que se inducen se relacionan con ceremonias colectivas de trabajo.\r\rSe trata de rehabilitar la dignidad del trabajo, la conexión entre el trabajador y su labor o su obra. Relizados con lentitud, estos gestos evocan danzas, y son de gran riqueza para trabajar la linea de Creatividad.\rObservación :\r\rEn esta PG, no se trata en realidad de estar \"trabajando\" sino de expresar de modo estilizado los gestos del trabajo. En las variaciones, se puede danzar con movimientos tales como:\rTransportar una carga sobre la espalda; tirar de una cuerda, una red de pesca, maniobrar un barco, alzar un mástil, izar una vela, tejer, enrollar una cuerda, hachar madera, dibujar, remar, cosechar, sembrar … Todo tipo de oficios y trabajos manuales que evocan el contacto directo entre la mano y la materia.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5267,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 13,
+                    "nombre": "I wish you were here",
+                    "interprete": "",
+                    "archivo": "IBF18-13 I wish you were here (parte 2)   Pink Floyd.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4086,
+        "nombre": "DETERMINACIÓN\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "\r\rSe empieza en la Posición de Identidad. Todo el cuerpo se extiende hacia delante: la pierna derecha da un paso con la rodilla levemente doblada, el brazo derecho extendido hacia delante, la mano abierta con la palma vuelta hacia abajo. La pierna izquierda tendida hacia atras como preparándose al impulso. El brazo izquierdo con la mano abierta extendido a lo largo de la pierna izquierda. Los ojos están abiertos mirando hacia adelante como apuntando a un blanco, y la tensión muscular aumenta progresivamente con la intensidad de la música.\r\rLa vivencia es de proyección hacia el futuro y de predisposición a la acción.\r\rObservación :\r\rCuando la tensión muscular ha alcanzado un nivel tal que la transición a la acción se impone, la persona arranca, como una flecha, en una marcha determinada acompañada por la música. Después de a un corto período de tiempo durante el cual es posible vivenciar la determinación en acción, se vuelve a la posición inicial de identidad. Esta posición de deteminación es una metáfora del arco tendido hacia una meta. El danzante es a la vez arquero, arco, flecha y trayectoria.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5268,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 14,
+                    "nombre": "Allegro Tempestad Sinfon N6 pastoral",
+                    "interprete": "Beethoven",
+                    "archivo": "IBF18-14 Allegro Tempestad Sinfon N6 pastoral Beethoven.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4087,
+        "nombre": "EXPANSIÓN (“El Hombre Estrella”)\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "De pie en la PG de Identidad, con los brazos al costado del cuerpo y la mirada hacia delante. Desplazando hacia el lado el pie izquierdo, se separan las piernas y, simultáneamente, se cierran los puños llevándolos al pecho y apoyándolos uno al otro. En seguida se abre el brazo y la mano derecha hacia el costado en alto, después del mismo modo el brazo y la mano izquierda; la mirada sigue cada vez el movimiento de la mano. Después de mantener algunos instantes esta posición en estrella, se regresa a la posición inicial.\r\rEsta posición se basa en el dibujo del Hombre de Vitruvio de Leonardo da Vinci. Se refiere al hombre cósmico. Sólo puedo sentirme uno con el cosmos cuando me abro a él. El movimiento no se detiene donde alcanzan mis dedos, sino que se extiende más allá. En la danza generada por la posición se invita a las variaciones, se puede desplazarse, darse vuelta, rotar, en movimientos en gran expansión. Sin embargo, debemos tener cuidado de no cerrar los puños, incluso si retornamos a momentos de conexión con uno mismo. Esta posición tiene esencialmente por objetivo existencial la apertura y la expansión de la identidad. Una identidad cósmica.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5048,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 23,
+                    "nombre": "Coppelia  Leo",
+                    "interprete": "Delibes",
+                    "duracion": "12:02",
+                    "archivo": "IBF 7-23 Coppelia  Leo Delibes     (Desplaz con levedad y cordi) 2, 23.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5212,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 19,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-19.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5231,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 18,
+                    "nombre": "Heaven and hell",
+                    "interprete": "Vangelis",
+                    "archivo": "IBF16-18 Heaven and hell Vangelis (D Brahma).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5261,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 7,
+                    "nombre": "Eric´s theme",
+                    "interprete": "Vangelis",
+                    "archivo": "IBF18-07 Eric´s theme              Vangelis.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5262,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 8,
+                    "nombre": "Finlandia",
+                    "interprete": "",
+                    "archivo": "IBF18-08 Finlandia (parte final) Sibelius.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4088,
+        "nombre": "ATEMPORALIDAD\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "Sentados inidvidualmente con las piernas plegadas y con las plantas de los pies unidas. Las manos se ponen una sobre otra con las palmas vueltas hacia arriba, apoyadas sobre los pies. La cabeza, dulcemente relajada, se inclina hacia el pecho. Se queda en esta posición a lo máximo un minuto. En seguida es necesario que el facilitador proponga que se tiendan en el piso para relajar la musculatura.\r\rEsta posición, acompañada de música adecuada, induce una vivencia de eternidad, o sea la percepción del tiempo dilatado. Por eso la posición generatriz de atemporalidad puede ser considerada una forma de meditación.\r\rSe trata de una vivencia \"fuera del tiempo\", donde el tiempo se libera de cualquier medida. Se inspira en el yoga y la vivencia surge de la sensación muy sutil de la concentración de energía llevada a cabo sin ningún esfuerzo. Para la gente que tiene dificultades posturales, se debera invitarlas a adaptarse a sus posibilidades motrices (incluyendo hacerla sentado en una silla). Sin embargo, la demostración del facilitador debe cumplir con la consigna. Esta posición no es seguida de una danza generada.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5258,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 5,
+                    "nombre": "Daphnes et Chloé 6",
+                    "interprete": "Ravel",
+                    "archivo": "IBF18-05 Daphnes et Chloé 6  Ravel (1).mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4089,
+        "nombre": "CONEXIÓN CON LO PRIMORDIAL\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "\r\rCon los ojos abiertos y agachado, con las rodillas flexionadas, se acaricia el suelo con las manos. La mirada está dirigida hacia las propias manos.\r\rEsta posición evoca el artesano con la arcilla, la selección de semillas y la preparación de alimentos. En el plano visceral y fisiológico evoca el parto natural, la micción y la defecación.\r\rEsta es una posición particularmente incómoda para los llamados seres civilizados de nuestras ciudades. Por ello es necesario, en primer lugar, que no exceda de 1 minuto y, en segundo lugar, adaptarla si es necesario:\r\rEn lugar de tener los pies en paralelo, las personas pueden tenerlos abiertos, o permanecer sobre las puntas de los pies. Si la posición es todavía difícil, es posible poner una rodilla en el suelo.\r\rMientras las manos acarician el suelo,se hacen pequeños movimientos de desplazamiento, siempre agachados. Esta PG es particularmente adecuada en Biodanza en la Naturaleza y Biodanza y Arcilla. Al final de la danza, ofrecemos a la gente un momento para acostarse sobre su costado y luego estirarse.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5266,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 12,
+                    "nombre": "Canzone del latte",
+                    "interprete": "Africa Sanctus",
+                    "archivo": "IBF18-12 Canzone del latte     Africa Sanctus.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4090,
+        "nombre": "FLUCTUAR EN EL LÍQUIDO AMNIÓTICO\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "En posición fetal de lado, con los ojos cerrados y la boca semiabierta, se comienza con lentos movimientos de fluctuación, como un feto en el amnios.\r\rDurante la realización de este ejercicio se gira lentamente hacia el lado opuesto, apoyando completamente la columna vertebral y la cabeza en el suelo, mientras se pasa de un lado al otro. Esta oscilación puede repetirse dos o tres veces, siguiendo el movimiento regresivo creado por la música. Todos los movimientos tienen que evocar la vivencia de fluctuación.\r\rA medida que se gira hay una progresión del movimiento apoyados sobre la espalda, las piernas se alejan unas de otras (como un bebé, acostado sobre su espalda, las rodillas dobladas sobre el vientre). Las manos se encuentran cerca de la boca y de la nariz. La cabeza no se levanta del suelo. Esta posición es particularmente regresiva, conviene proponerla en dos grupos para que todos puedan ser recibidos en un abrazo de mecimiento en el suelo durante aproximadamente 2,5 minutos.\r\rEste ejercicio induce una vivencia de regresión, de retorno al origen de la vida. Es volver a la experiencia indiferenciada del período perinatal, con las percepciones que la acompañaban: la percepción de la separación o de la des-fusión se desvanece, dando paso a una percepción indiferenciada.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5257,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 4,
+                    "nombre": "2001 0disea nello spazio",
+                    "interprete": "",
+                    "archivo": "IBF18-04 2001 0disea nello spazio.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4091,
+        "nombre": "DISPOSICIÓN A SER FECUNDADA (indicada para el sexo femenino)\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "\r\rRecostadas de espalda sobre el suelo, con las piernas semiabiertas y las rodillas ligeramente dobladas en actitud receptiva. Los brazos están naturalmente abandonados en el suelo, los ojos cerrados y la boca semiabierta.\r\rLos movimientos son lentos y cadenciosos para facilitar una receptividad activa. Progresivamente los movimientos aumentan de intensidad, siguiendo el “crescendo” de la música. Las piernas se ponen en posición semi-doblada que permite levantar la pelvis.\r\rSe inician movimientos de levantar y bajar espontáneamente la pelvis: este movimiento no debe ser mecánico, sino responder al impulso interior.\r\rLa posición generatriz de disposición genital se refiere a las ceremonias primitivas de fecundación, en las cuales las mujeres tendidas en los surcos de los campos invocaban la fuerza fecundadora del cielo que se manifestaba con la lluvia y la luz solar.\r\rEsta posición a menudo sigue a la de Conexión con lo Primordial. Como está indicada sólo para las mujeres, los hombres presentes serán invitados a acompañarlas: cada hombre se pone en una actitud de profundo respeto por una de las mujeres. Al final de la danza, con gran delicadeza y cuidado, la acogerá en sus brazos para un abrazo de protección.\r\rA veces, durante la misma música, se puede invitar a los hombres a hacer de nuevo la posición de la Conexión con lo Primordial, mientras que las mujeres realizan su danza de entrega. En todos los casos, se debe proponer en dos grupos para que cada mujer pueda ser acogida al final de su danza.\r\rEsta posición permite recuperar el sentido sagrado de la feminidad. Aquel que ha sido testigo de este abandono también puede conectarse a esta dimensión sagrada del misterio. Cuando el hombre contempla la danza, da gracias por el don de la posibilidad de ver revelada delante de sus ojos la feminidad profunda de sus compañeras. Su participación también fortalece el sentido de la protección de las mujeres en posición de entrega total.\r\rLa posición no está separada de la danza. En los movimientos, se trata de una búsqueda interior, para encontrar una expresión activa de la receptividad.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5265,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 11,
+                    "nombre": "African Sanctus",
+                    "interprete": "David Fanshawe",
+                    "archivo": "IBF18-11 African Sanctus        David Fanshawe.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4092,
+        "nombre": "ENCUENTRO CON EL HERMANO\r",
+        "idGrupo": 69,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 2",
+        "detalle":
+            "Partiendod e la posicion de Identidad, se extienden los brazos hacia adelante, con el pecho abierto, con el gesto de recibir a una persona con una cordial disposición. Los brazos se extienden todavía un poco más, mientras se avanza un paso adelante.\r\rLa vivencia estimula la actitud receptiva para con los otros. Este gesto genera una nueva forma de vinculación afectiva.\r\rEsta posición despierta en nosotros una forma de expresión espontanea de la hospitalidad, del recibimiento. Es dar una información completa, llena y entera, de nuestra disponibilidad. La vida cotidiana y la rutina a menudo nos alejan de la celebración del otro cuando llega nuestras vidas. Lo que genera esta posición no es estrictamente una danza sino más bien un encuentro (que por cierto es el ejercicio más adecuado para ofrecer continuación).\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4958,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 3,
+                    "nroPista": 19,
+                    "nombre": "Gloria",
+                    "interprete": "A Vivaldi",
+                    "duracion": "12:02",
+                    "archivo": "IBF3-19 Gloria                             A Vivaldi       (Ronda final) 2, 31.mp3",
+                    "carpeta": "IBF03- RONDAS FINALES"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4959,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 3,
+                    "nroPista": 20,
+                    "nombre": "Aleluya",
+                    "interprete": "Haendel",
+                    "duracion": "12:03",
+                    "archivo": "IBF3-20 Aleluya                          Haendel        (Ronda final) 3, 39.mp3",
+                    "carpeta": "IBF03- RONDAS FINALES"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4093,
+        "nombre": "CONEXIÓN CIELO-TIERRA\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "\r\rA partir de la Posicion de Identidad, se levanta lentamente el brazo derecho hacia el cielo, simultáneamente se da un paso con el pie derecho. El brazo izquierdo se mantiene con la palma de la mano vuelta hacia el suelo. Los ojos están abiertos o semicerrados. La boca está semiabierta.\r\rEn esta posición se recoge la energía del cielo con la mano derecha y con la izquierda se la descarga en la tierra. El gesto se realiza de manera leve, fluida y pulsante. Para generar la pulsación se hace un ligero, lento y continuo movimiento de flexión de las rodillas.\r\r\f\r\rBiodanza ® , IBF Catálogo IBF\t104\tmars 2012\r\fObjetivo :\r\rEsta posición generatriz induce la vivencia de ser un puente, un “médium”, una vía de conexión entre el cielo y la tierra. En las simbologías de distintas culturas, el matrimonio entre el cielo y la tierra, o sea el matrimonio cósmico, simboliza la unión entre lo masculino, lo femenino y la fecundación. Algunos antecedentes míticos y antropológicos aluden a esta metáfora cósmica. La unión entre el rey y la reina; los dos primeros símbolos del Y' Ching: C’iên, el cielo y C’uên la tierra; el matrimonio entre el cielo y la tierra. En la danza de los derviches se realiza esta posición considerada el “Axis Mundi”.\r\rLa posición generatriz Conexión Cielo – Tierra estimula entonces la conexión íntima con las dos grandes fuerzas de la naturaleza: lo masculino y lo femenino (Yang – Yin).\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5226,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 13,
+                    "nombre": "Allegro non molto L´Invierno",
+                    "interprete": "Vivaldi",
+                    "archivo": "IBF16-13 Allegro non molto L´Invierno Vivaldi (Semilla).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4094,
+        "nombre": "EVOCACIÓN Y LIBERACIÓN DE LA ENERGÍA INTERNA\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "De pie, se acercan lentamente las manos abiertas con las palmas vueltas hacia el pecho, donde se apoyan una sobre otra, en gesto de intimidad. En seguida lentamente se abren los brazos, extendiendo levemente el pecho hacia delante, de manera de permitir la expansión del potencial afectivo. Los ojos están cerrados y la boca semicerrada.\r\rEsta posición induce una vivencia de expresión de la energía amorosa hacia el mundo.\r\rAl final de la posicion y antes de la danza de variaciones, las manos regresan a posarse en el pecho. Durante las variaciones, se establece una pulsacion entre los momentos de evocación de la energía (sensible, con las manos en el pecho, la conexión con uno mismo) y los de liberación (de apertura, ampliación). En los momentos de conexión con uno mismo, evitar enrrollarse sobre uno mismo ahondando el pecho, lo cual podría causar una vivencia de cerrarse.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5255,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 3,
+                    "nombre": "Largo Concierto N 7",
+                    "interprete": "Vivaldi",
+                    "archivo":
+                        "IBF18-03 Largo Concierto N 7 Vivaldi (Evocación y liberac de la energía interna) 2, 17 (1).mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4095,
+        "nombre": "ELEVACIÓN\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "La posición se realiza de pie, brazos junto al tronco, antebrazos levantados en ángulo recto hacia delante y levemente hacia afuera. Las manos con las palmas hacia arriba y los dedos apenas abiertos. La boca semiabierta y los ojos abiertos.\r\rCuando la vivencia se intensifica, el pecho se abre un poco mas y la cabeza se echa levemente hacia atras para permitir la elevación de la mirada.\rEs un gesto de “elevación” que genera una vivencia de levedad. La idea de “elevación” alude a una fuerza ascendente de pureza. Este estado de ánimo está alimentado por la posibilidad de elevarse por sobre las dificultades existenciales y ver los hechos de la vida con una visión de altura, desde un punto de vista de totalidad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4916,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 21,
+                    "nombre": "Aria della corda sol",
+                    "interprete": "J S Bach",
+                    "duracion": "12:05",
+                    "archivo": "IBF1-21 Aria della corda sol       J S Bach          (Ronda de inicio) 5, 20.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5089,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 19,
+                    "nombre": "Adag Conc Nº 1",
+                    "interprete": "Bach",
+                    "archivo": "IBF9-19 Adag Conc Nº 1 Bach Brandeburg  (PG Elevación).mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4096,
+        "nombre": "INSPIRACIÓN\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "\r\rDe pie en la posicion de Identidad, la mano izquierda posada sobre el pecho. La mano derecha ligeramente hacia adelante, en un gesto extremadamente sensible, como si se tocara el aire. Los ojos abiertos, mirando adelante sin intencionalidad.\r\rEsta posición genera un estado de incubación creativa, o sea el momento en que se produce el acto creador. Con la mano izquierda en el pecho se alude a la conexión íntima con uno mismo (inspiración) y con la mano derecha se sugiere el inicio de la acción creadora.\r\rLa vivencia de inspiración tiene la cualidad del estado de éxtasis creativo que se caracteriza por la emoción de expresarse.\r\rEs como un gesto que se esboza, que toca el aire. Esta posición es tan delicada, tan mínima, que es necesario que la integración afectivo-motriz esté bien avanzada. De hecho, sin ella, el gesto no tiene sentido cuando es solo gesto. La mano izquierda sobre el corazón hace justamente referencia a la fuente emocional de la creación. Hacer lo que sentimos. La integración entre la emoción, la inspiración y la realización. La danza que sigue se asemeja a una danza yin, muy sensible en los movimientos, los gestos que delicadamente tocan el aire. Una receptividad sutilmente activa.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4097,
+        "nombre": "RECIBIR LA GRACIA\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "Sentados con las piernas cruzadas (en posicion de semi-loto), las manos apoyadas sobre las rodillas y las palmas hacia arriba. La cabeza tiene que estar levemente abandonada hacia atrás (sin esforzarse), los ojos cerrados y la boca semiabierta.\r\rEsta posición induce a una vivencia de beatitud que se manifiesta como un regalo, un don recibido: “la gracia de existir”. La persona puede percibir una sensación de armonía con lo que la rodea y, si la vivencia se hace en la naturaleza, de armonía con el universo. Esta posición generatriz puede ser considerada una forma de meditación.\r\rEsta posición no es seguida por una danza. Sin embargo, existe la posibilidad de introducir cambios cuando se intensifica la vivencia, como movimientos pulsantes de mecerse hacia adelante y atrás, o movimientos suaves de la cabeza. Rolando dice a menudo, cuando presenta esta posición, que la vivencia de la gracia es \"descendiente\", es decir, que desciende hacia nosotros en respuesta a otra \"ascendente\", cuando el ser entero se eleva en una actitud de agradecer. En esta posición, no hay nada que hacer, nada que esperar. La gracia es lo que le llega a quien dice gracias.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5124,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 13,
+                    "nombre": "Impromptu N 3",
+                    "interprete": "",
+                    "duracion": "12:06",
+                    "archivo": "IBF11-13 Impromptu N 3            (R Concentrica miradas) Shubert 6, 24.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5125,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 14,
+                    "nombre": "Consolazione N 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-14 Consolazione N 3        (R Concentrica miradas) Liszt 4, 19.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4098,
+        "nombre": "MAGNETISMO\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "De pie, las palmas de las manos vueltas una hacia la otra, se acercan y se alejan, como sosteniendo una esfera invisible. Este gesto tiene que ser realizado muy lentamente, en búsqueda de la percepción de la energía magnética polarizada entre las dos manos.\r\rEsta posición induce la vivencia de la creación de una esfera de energía pulsante.\r\rLos ojos están abiertos. La mirada sigue el movimiento de las manos. La danza que sigue consiste en una pulsación de este movimiento con la esfera, y se extiende poco a poco a una danza con la esfera o dentro de la esfera de energía.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5123,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 12,
+                    "nombre": "Nocturno Nº 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-12 Nocturno Nº 3             (R Concentrica miradas)  Liszt  4, 32.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5255,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 3,
+                    "nombre": "Largo Concierto N 7",
+                    "interprete": "Vivaldi",
+                    "archivo":
+                        "IBF18-03 Largo Concierto N 7 Vivaldi (Evocación y liberac de la energía interna) 2, 17 (1).mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4099,
+        "nombre": "ILUMINACIÓN\r",
+        "idGrupo": 70,
+        "grupo": "POSICIONES GENERATRICES - CÓDIGO 3",
+        "detalle":
+            "\r\rA partir de la posicion de Identidad, la persona junta ambas manos unidas sobre su pecho en una actitud de intimidad. Los ojos abiertos. Las manos se separan levemente y se dan vuelta las palmas hacia delante con extrema sensibilidad.\r\rEste gesto produce una intensificación sutil de la percepción. La posición crea un espacio para la contemplación y revela el esplendor del universo.\r\rEsta posición representa el resultado posible de la conexión profunda con uno mismo, en el sentido de que la iluminación se inicia con un estado de claridad interior. La danza consiste en crear un espacio de contemplación, como si se estuviera mirando también con las manos y con el corazón. El estado de iluminación se traduce por una sensación de ligereza y de transparencia.\r\rEs interesante proponer el \"bautismo de luz\" antes de esta posición generatriz.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5124,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 13,
+                    "nombre": "Impromptu N 3",
+                    "interprete": "",
+                    "duracion": "12:06",
+                    "archivo": "IBF11-13 Impromptu N 3            (R Concentrica miradas) Shubert 6, 24.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5125,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 14,
+                    "nombre": "Consolazione N 3",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF11-14 Consolazione N 3        (R Concentrica miradas) Liszt 4, 19.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5249,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 16,
+                    "nombre": "Ave María",
+                    "interprete": "Ch. Gounod",
+                    "duracion": "12:03",
+                    "archivo": "IBF 17-16 Ave María Ch. Gounod (Intimidad) 3,28.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4100,
+        "nombre": "DANZA DE LA SEMILLA\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "La “Vivencia de Crecimiento” es una de las más profundas y bellas que un ser humano puede experimentar. Desarrollar cada día las potencialidades desconocidas o no reveladas. Crecer hasta el fin de nuestros días, florecer y dar frutos. De este modo, la vida humana se puede parecer a un árbol que brota de una semilla, se hace fuerte y fecunda, nutrido por la linfa inmemorable del amor. Florece y da frutos en forma tan generosa, que sus ramas se rompen por el peso de sus frutos, hasta su muerte.\r\rLa semilla contiene el proceso de la vida y se transmite a través de millones de años. En cada etapa nacen nuevos brotes, nuevas capacidades. En cada edad recibimos la gracia de nuevas visiones. Todos los momentos de nuestra existencia tienen un valor intrínseco que es necesario saber descubrir.\rDescripción :\r\rLa persona se coloca en el suelo, en la posición de la semilla: de rodillas, el pecho completamente inclinado hacia delante, la frente hacia abajo y con sus brazos debajo de ella, o bien alrededor de sus muslos (segun sus capacidades físicas, se puede ajustar la posición; la clave está en que parta de una posición \"recogida\" hacia un despliegue gradual y ascendente). No se trata de \"representar\" imitándolo, el desarrollo de un pequeño árbol. Es la música que debe proporcionar el ímpetu para el crecimiento, no nuestra voluntad. Debemos llegar a ser la música en sí y desplegarnos hacia arriba, desde las entrañas oscuras de la tierra hasta la luz. \"Algo\" crece en nosotros. Nuestra sabiduría es permitir que la energía ascendente se manifieste.\r\rObjetivo :\r\rVolver a conectarse con las infinitas posibilidades de crecer y evolucionar desde el propio potencial. El ejercicio de crecimiento lleva a una vivencia de una fuerza excepcional.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5226,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 13,
+                    "nombre": "Allegro non molto L´Invierno",
+                    "interprete": "Vivaldi",
+                    "archivo": "IBF16-13 Allegro non molto L´Invierno Vivaldi (Semilla).mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4101,
+        "nombre": "ECLOSIÓN (o 'Despliegue\")\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "\r\rDescripción :\r\rLa danza de la eclosión a la vida es una danza muy cercana, en su esencia, a la danza de la semilla. Sin embargo, se realiza con acompañamiento: con protección y especialmente con la estimulación ofrecida por el otro. Es un compañero que estimula la eclosión a la vida con estimulación delicada y la orientación por las caricias y un toque muy sensible.\r\rLa persona (el danzante) se coloca en el suelo en una posición semi-fetal (diferente de la posición inicial de la danza de la semilla, que es de rodillas e inclinado sobre sí mismo y en una posición de profunda conexión con la fuerza visceral, que hace posible y natural la expansión ascendente que seguirá).\r\rEn la danza de eclosión a la vida, la posición semi-fetal se debe a que es la presencia y el estímulo ofrecido por el otro (el cuidador) que constituyen la fuerza de inducción del despliegue. Las fuerzas no provienen de nosotros, sino de la receptividad a los estímulos emocionales del mundo. Por lo tanto, la persona que quiere desplegarse déjà un poco suspendidos sus propios impulsos y tendencias de crecer por sí mismo. No es pasiva, sino receptiva. Se déjà llevar por las fuerzas intrínsecas del nacimiento y de la expansión en su encuentro con el mundo.\r\rEl cuidador empieza a tocarlo con cuidado y movimientos muy delicados, transmitiéndole su calor, su contacto, su presencia. Su objetivo es entrar en profunda sintonía con el danzante con el fin de facilitar el movimiento, que se desarrolla gradualmente hasta desplegarse y amplificarse. Lo ayuda a asegurar que este despliegue se haga en continuidad y con la fluidez de una secuencia natural (como el florecimiento de una flor).\r\rEstos delicados toques y caricias ayudan a dar apoyo y orientación a abrirse hasta encontrar la posición acostado de espaldas y abierto, listo para ser fertilizado por el aire y la luz. Continuando con el acompañamiento con el contacto y los abrazos que le dan amor y apoyo, se lo ayuda a plegar las piernas (para preparar el momento de levantarse) y el ayudante se coloca detrás (hacia la cabeza) para levantar al danzante a la posición sentado sosteniendo con firmeza su espalda y la cabeza. Siempre con abrazos y comunicando seguridad, se lo ayuda a ponerse de pie. De hecho, por su apoyo, el cuidador se coloca en una posición de tutor y de contenedor que ayudará al danzante a desplegarse. Tan pronto como el danzante muestra los primeros intentos de abrir gradualmente sus ojos, el ayudante le muestra los primeros pasos, lo incentiva a caminar y luego a danzar. A danzar la vida. Luego viene el paso crucial de comunicarle el coraje y el encanto de danzar solo, a dejar ir la mano, a alejarse para danzar su propia vida, no danzando para el compañero que lo ayudó, pero en el mundo y para el mundo.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4102,
+        "nombre": "DANZA DE LA CREACIÓN\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Este ejercicio pertenece a la Línea de la Creatividad y es distinta de la Danza de Brahma, la cual es puramente simbólica. Se comienza en la posición de la semilla, inclinándose sobre el propio cuerpo, con la cabeza agachada.\r\rLa música “Finlandia” de Sibelius, transmite una potencia creciente al movimiento. El participante asciende con determinada energía, siguiendo ciertas etapas que reiteran la cosmogonía de la aparicion del hombre.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t108\tmars 2012\r\fDescripción :\r\rEl origen del mundo es un enigma insondable para la mente humana.\r\rAlgunas religiones orientales intuyen un movimiento primordial de un gesto. La Creación emerge de una danza generatriz. En otras religiones, como en el Génesis judeocristiano, el origen del mundo es el soplo divino, la voz, el aliento de la vida, la palabra que designa el nombre de las cosas, dándoles identidad y rescatándolas de lo informe, del caos.\r\rLas cosmogonías en distintos pueblos tienen, por lo tanto, una filiación “corporal” o bien “espiritual”.\r\rEspíritu, respiración, aliento, alma, soplo, prana universal.\r\rLa danza de Shiva, que destruye y crea los Universos, pertenece a las cosmogonías del movimiento. El Génesis bíblico, que dice: “En el principio fue el verbo”, pertenece a la línea cognitivo-verbal.\r\rPosiblemente estas dos líneas representan las opciones iniciales del drama de la consciencia frente a un misterio insondable. Más, si somos consecuentes con la intuición de una unidad primordial, la bifurcación de lo corporal y de lo espiritual no tiene razón de ser y representaría más bien una catástrofe antropológica: la primera gran disociación.\r\rSin embargo, en todas las cosmogonías se parte de un principio único, que luego se desdobla y pasa a ser una dualidad, trinidad o cuaternidad. Ese principio único puede ser un demiurgo solitario, un dios innominado e ininteligible, el huevo primordial, la simiente de la vida, etc. Es decir, se describe el proceso que va de la unidad a la diversidad y que ha sido llamado por los filósofos la “Unidad Múltiple”. Así, en la cosmogonía egipcia, el dios Ra separa a los hermanos de Nut y Geb, creando el espacio de la vida y la bóveda celeste. En Oriente, el Tao está formado por la dualidad Ying-Yang. N el Génesis bíblico, Jehová separa los cielos de la tierra, la luz de las tinieblas. Las cosmogonías griegas intuyen los principios cósmicos, llegando a la cuaternidad de Anaximandro, formada por los elementos Tierra, Aire, Fuego y Agua.\r\rEl principio general de las cosmogonías consiste en la diferenciación progresiva a partir de un principio único que, al diversificarse, va generando una realidad cada vez más compleja. En el sentido de Teilhard de Chardin, se va perfeccionando evolutivamente la creación, desde lo simple a lo complejo, desde lo indiferenciado a lo diferenciado; mientras en el Oriente este proceso es cíclico y representa la sucesión milenaria de revoluciones kármicas. En el Cristianismo este proceso es lineal y se desarrolla históricamente para terminar con la Parúsia, el regreso de Dios para el Juicio Final.\r\rFrente a la dificultad de unificar la experiencia cosmogónica es un sentido abarcador, he tomado los elementos más universales para reproducir en una danza, la vivencia personal de la creación del mundo, las series de movimientos que conducen del caos al cosmos. Este proceso, en nuestra concepción, no se desenvuelve en un ciclo cerrado o lineal; responde a un modelo evolutivo en espiral logarítmico. El Universo, así, se perfecciona a través de sucesivos procesos de integración en circuitos vitales cada vez más diferenciados. El mecanismo integrador es el amor comunitario, la conexión con la vida.\rObjetivo :\r\rInducir la vivencia de la creación cosmogónica y despertar en el danzante la potencialidad y exaltación creadora.\rObservación :\r\rTiempo total de la musica 8:33. Version del CD 14 de Marcelo Mur (antigua coleccion IBF).\r\rEtapas de la Danza :\r\r1 Semilla primordial\r\rEl dios-semilla, respirando en el espacio cósmico, comienza a despertar y crecer, manifestando sus potencialidades.\r\r2 Fecundación de los espacios con la energía genital\r\rLos movimientos expresan la expansión de la fuerza genital.\r\r3 Aparición de la dualidad\r\rDanza Yin y Danza Yang. Del caos originario se separan el Principio Femenino y el Principio Masculino.\r\r1:02 - Yin\r\r1:21 - Yang\r\r"
+    }, {
+        "IdEjercicio": 4103,
+        "nombre": "DAR Y RECIBIR LA FLOR\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "Descripción :\r\rEs un ejercicio de a dos. Un compañero hace el gesto de ofrecer al otro una flor. El otro hace el gesto de recibirla. Los gestos mímicos de dar la flor indican si ésta es sacada del suelo, del aire o de alguna parte del cuerpo (desde el corazón, por ejemplo). Al gesto de recibir, se agregan los gestos que indican el lugar donde el compañero pone la flor en su cuerpo. Luego se invierten los papeles.\rObjetivo :\r\rSe estimula la expresión creativa mediante la mímica gestual y la expresividad.\r\rSe induce vivencia en la Línea de la Afectividad, al establecer una forma de comunicación gestual que expresa la relación entre el acto de dar y el de recibir. Activa en el nivel simbólico estas dos funciones afectivas fundamentales.\r\rObservación :\r\rA través de este ejercicio se revelan aspectos caracterológicos de los participantes, por ejemplo: Quien\r\rtoma la Flor: ¿De que lugar se toma la flor?, ¿Del cielo, de la tierra, de la mente o del corazón?. Quien la recibe: ¿En que lugar de su propio cuerpo coloca la flor?, ¿En el pelo, en el pecho, en la pelvis, etc.?. De esta forma se crea una fenomenología simple y clara de dar y recibir. Tiene un efecto simbólico inconsciente, que está en relación con el equilibrio de estas dos funciones.\rPor otra parte, esta danza es una representación de gran transferencia afectiva, que tiene un carácter poético en el gesto de dar y recibir una flor.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5076,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 6,
+                    "nombre": "Rosa C Poyares",
+                    "interprete": "",
+                    "archivo": "IBF9-06 Rosa C Poyares               (Abanico chino).mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5211,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 18,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-18.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5242,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 9,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-09.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4104,
+        "nombre": "DANZA DE LA AMISTAD\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "\r\rLa amistad es uno de los sentimientos más profundos y nobles del ser humano. En la amistad se combinan la afectividad, el sentimiento estético, la lealtad y la sintonía de la conciencia.\r\rCuando se preguntó a Ronald Laing: “¿Qué es un hombre enfermo?”, él respondió: “Un hombre enfermo es quien no tiene amigos”.\r\rLa amistad es un sentimiento que permite al otro ser libre. No hay celos en la amistad, hay profundo respeto por lo que el amigo siente. La amistad es, como vemos, un sentimiento complejo que se profundiza con el pasar del tiempo.\r\rPlatón expresaba: “No hay que dejar crecer las malezas en el camino de la amistad”. Esto significa que hay que cuidar al amigo. “Amigo es algo para guardarse en el lado izquierdo del pecho bajo siete llaves”, dice la canción brasilera de Milton Nascimento.\r\rDurante la amistad se crea una red mental, un código que sólo lo comprenden los amigos. La fecundación de cerebros es un fenómeno real, y se manifiesta en aspectos intelectuales y existenciales. La amistad es esencialmente creadora.\r\rUn hombre sin verdaderos amigos es afectivamente inconsistente. Tener un amigo es una bienaventuranza, un maravilloso don de la existencia.\r\rEn Biodanza se propone la “Danza del Amigo” que tiene los siguientes pasos:\r\rEncuentro del Amigo.\r\rMirar el Mundo Juntos.\r\rOposición.\rSembrar Juntos.\r\rCosechar Juntos.\rEscuchar el Corazón del Otro.\r\rLlevar Siempre al Amigo en el Corazón, aunque se encuentren lejos.\r\rEtapas de la Danza :\r\r1 Descubrir al amigo\r\rUn sentimiento de simpatía y afinidad inicia la amistad. A veces, esta afinidad puede tener un componente de admiración o de complementación psicológica.\rLas personas se elogen para esta danza a dos. El grupo se mezcla y cada uno se pasea por el mundo, disponible. En una mirada, los amigos se descubren y se \"reconocen\" en una danza de encuntro progresivo de maravillamiento recíproco.\r\r2 Mirar el mundo juntos\r\rEs interesante observar que, generalmente, los amigos tienen una visión semejante sobre el mundo, a pesar de sus diferencias. Por esta razón sienten agrado en compartir la compañía. Sentirse verdaderamente acompañado brinda felicidad.\rLas personas parten juntas a descubrir el mundo con su mirada común, admirando y maravillándose de las mismas cosas.\r\r3 Oposición\r\rEventualmente los amigos tienen conflictos y puntos de vista diferentes frente a la realidad. En estos casos se produce un desacuerdo que, durante la danza, se expresa en una confrontación de fuerzas oponiendo recíprocamente los antebrazos. A través de esta dialéctica de oposición se alcanza un consenso debido a que entre los amigos no hay rigidez. Esta lucha termina con un abrazo de reconciliación.\r\r4 Sembrar juntos\r\rSe trata de realizar algunas tareas o proyectos juntos y con objetivos comunes. Crear juntos en base al respto de la diferencia, que la riqueza de la amistad. Relizan juntos gestos de creación, de proyectos con objetivos comunes, ayudándose.\r\r5 Cosechar juntos\r\rConsiste en recibir el producto del esfuerzo común, sin egoísmo. Se trata de una celebración de la unidad de acciones recíprocas.\r\r6 Escuchar el corazón del amigo\r\rEs ser capaz de identificarse con los sentimientos del otro. Empatía, comprensión y comunión son características afectivas de la amistad. Cada uno escucha el corazón del otro.\r\r\f\r\r\r\rBiodanza ® , IBF Catálogo IBF\t111\tmars 2012\r\f7 Llevar siempre al amigo en el corazón\r\rConsiste en una forma de belleza interior que conserva la fidelidad del sentimiento, el recuerdo y la gratitud recíproca, a pesar de estar muchas veces distantes. Cada par de amigos se separa después del último abrazo y parte al encuentro de otros amigos.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5118,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 7,
+                    "nombre": "Meditation de Thays",
+                    "interprete": "",
+                    "archivo": "IBF11-07 Meditation de Thays.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5242,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 9,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-09.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4105,
+        "nombre": "DANZA DE AMOR 1 - CONDUCTA DE LA PAREJA ESTABLE\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "Es una danza secuencial realizada en pareja que tiene significados importantísimos para la convivencia amorosa.\rDescripción :\r\rCada participante elige un compañero para realizar la danza. La elección responde a un criterio de afinidades, ésta es intuitiva y constituye una especie de química emocional donde se mezclan simpatía y atracción.\r\rObjetivo :\r\rRepresenta un conjunto de conceptos básicos para descubrir y conservar el amor en pareja. Si el participante pudiera integrar los principios que están implícitos en la secuencia de los movimientos de esta danza, tendría grandes posibilidades para la felicidad en la vida de pareja.\r\rEtapas de la Danza :\r\r1 Descubrimiento de la persona amada\r\rTiene un carácter epifánico, la aparición de algo maravilloso. Epifanía es la revelación. Las dos personas, a distancia, establecen la conexión a través de la mirada y se acercan progresivamente hasta llegar a tomarse de las manos.\r\r2 Ocupar los espacios vacíos\r\rSe trata de una Danza de Fluidez en Pareja en la cual cada uno introduce los brazos ocupando los espacios vacíos que se producen durante la realización de los movimientos. Esta etapa simboliza el complemento recíproco.\r\r3 Caricias sensibles durante la danza de fluidez en pareja\r\rTiene un simbolismo erótico: la intimidad erótica viene de la complementaridad.\r\r4 Protección\r\rUno de los integrantes de la pareja se coloca atrás y abraza con firmeza al otro, mientras la persona protegida hace gestos de fragilidad, pero sintiendo paulatinamente la fuerza de la protección recibida. Las posiciones se invierten y se repite el mismo ritual. El significado de esta etapa es de estar disponible para cuidar al compañero en momentos de fragilidad, ofreciéndole apoyo y contención afectiva.\r\r5 Sostener al otro\r\rEn la convivencia siempre hay que cargar el peso y las responsabilidades. En este caso, el ejercicio consiste en sostener al compañero con la espalda, en un acto que no tiene que ser violento, sino dulce, en el que uno se extiende sobre la espalda del otro que está inclinado hacia abajo. Se realiza en forma recíproca. Esta etapa se hace con precisión y concentración. Quien recibe el peso del compañero puede doblar levemente las rodillas para mantener el equilibrio. Las diferencias de carácter y temperamento que hay entre la pareja muchas veces constituyen un “peso” existencial. Sostener al otro consiste en aguantar estas diferencias en la espalda, con comprensión y afecto.\r6 Escuchar el corazón del otro\r\rLos amantes escuchan recíprocamente el corazón del compañero; primero uno, después el otro. El simbolismo es de comprensión afectiva: saber lo que el otro siente, adivinar lo que siente.\r\r7 Autodonación\r\rLas parejas se disponen uno frente al otro, tomados de la cintura. Uno sostiene con firmeza y seguridad al otro, quien se abandona hacia atrás. Este movimiento también es recíproco.\r\r8 Abrazo\r\rEn este momento los amantes establecieron una relación muy profunda e intercambian un abrazo. El simbolismo es de comprensión y aceptación recíproca completa.\r\rCuando las personas cumplen estos momentos arquetípicos en su convivencia amorosa, generalmente la pareja queda unida.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4925,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 9,
+                    "nombre": "Learning how tolove you",
+                    "interprete": "George Harrison",
+                    "duracion": "12:04",
+                    "archivo": "IBF2-09 Learning how tolove you  G Harrison  (R act final) 4,07.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5102,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 12,
+                    "nombre": "Feelings",
+                    "interprete": "Morris Albert",
+                    "duracion": "12:03",
+                    "archivo": "IBF10-12 Feelings Morris Albert (Encuentros ) 3, 37.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5130,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 19,
+                    "nombre": "A noite do meu bem",
+                    "interprete": "M Creuza",
+                    "duracion": "12:02",
+                    "archivo": "IBF11-19  A noite do meu bem    M Creuza (Acaricimientos) 2,43.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5143,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 12,
+                    "nombre": "Gracas a deus",
+                    "interprete": "M Creuza",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-12 Gracas a deus M Creuza (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5237,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF 17-04.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4106,
+        "nombre": "DANZA DE AMOR 2 - LA SEPARACIÓN Y RECONCILIACIÓN\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "El aprendizaje fundamental de esta danza es que la separación tiene que ser amigable y nunca violenta. A veces un amor se puede transformar en una gran y profunda amistad.\r\rEtapas de la Danza :\r\r1 Separación\r\rLos amantes, uno frente al otro y tomados de las manos, comienzan lentamente a separarse, sin violencia pero con dolor y tristeza.\r\r2 Sufrimiento y nostalgia\r\rLos protagonistas realizan una danza solitaria, expresando dolor y sufrimiento.\r\r3 Búsqueda de un nuevo amor\r\rLos protagonistas caminan por el mundo en búsqueda de otras opciones amorosas y hacen danzas de seducción delante de algunos miembros del grupo. Estos encuentros tienen un carácter pasajero, de algo sin fuerza, sin permanencia.\r\r4 Redescubrimiento del amor en la multitud\r\rDespués de varias pruebas sin logros, los protagonistas se descubren de nuevo en la multitud; se sienten fuertemente atraídos el uno del otro. Se acercan en feedback hasta abrazarse.\r\r5 Encuentro sensual con caricias muy intensas\r\rUn miembro de la pareja se pone atrás y posee al otro, haciendo movimientos puramente genitales. Se realizan otras expresiones de contacto, incluyendo también aquellas en el piso. Esta etapa representa simbólicamente una apasionada posesión.\r\r6 Reconciliación\r\rLos amantes se abrazan dulcemente, creando una sensación de paz y armonía. Después pasean juntos por el mundo tomados de las manos.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5169,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 17,
+                    "nombre": "Medo de amar Nº2",
+                    "interprete": "Maria Creuza",
+                    "archivo": "IBF13-17 Medo de amar Nº2   M. Creuza.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5193,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 19,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-19.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4107,
+        "nombre": "DANZA DE AMOR 3 - POSICIONES SECUENCIALES DE PLACER\r",
+        "idGrupo": 71,
+        "grupo": "DANZAS SECUENCIALES",
+        "detalle":
+            "Es una síntesis de las posiciones del acto sexual inspirada en el Kamasutra y de la Ananda Ranga. El número de las posiciones obviamente está reducido y constituye un punto de partida para aplicar la fantasía y creatividad en el encuentro sexual.\r\rLas etapas aquí referidas se realizan pasando de una posición a otra con fluidez, para evitar actitudes mecánicas en el acto sexual. Es necesario que los participantes descubran la creatividad en el acto de amor y no caigan en la monotonía, que termina por disminuir la fuerza de la atracción en la pareja.\r\rLa Danza de Amor 3 tiene un carácter estrictamente simbólico y didáctico, de manera que su realización resulta solamente a nivel figurado y no realista. Se realiza siguiendo una estructura gestual de la postura, que contribuye al aprendizaje de nuevas adaptaciones corporales durante el acto sexual.\rObjetivo :\r\rEl objetivo didáctico de la Danza de Amor III es que las personas tomen más iniciativas en el contacto, que no sean repetitivas ni monótonas en su sexualidad, y que utilicen la fantasía erótica. Las propuestas implícitas en este ejercicio, en la realidad, hay que hacerlas con elementos fetichistas: ropa interior especial, etc.\rEtapas de la Danza :\r\r1 Caricias preliminares\r\rEs una especie de preparación al erotismo. Los amantes están sentados, uno frente al otro, acariciándose.\r\r\f\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t113\tmars 2012\r\f2 El hombre arriba\r\rAmbos están acostados, pero el hombre está sobre la mujer. Se pueden mirar a los ojos e intercambiar besos, los genitales están en contacto. Esta posición tiene la ventaja de ofrecer una mayor personalización de la relación. La mujer, al estar abajo, puede abrir las piernas, levantar la pelvis y exponer los genitales. Es una posición de dominio del hombre sobre la mujer, por ende el hombre tiene que evitar caer con todo su peso sobre la compañera y debe apoyarse sobre sus manos. Se desarrollan caricias recíprocas que lentamente llevan a los cuerpos a la próxima posición.\r\rEl hombre posee a la mujer desde atrás. Es una posición más anónima, más instintiva, menos personalizada, pero que tiene la ventaja -para el hombre- de poder disfrutar el placer del contacto con los glúteos femeninos, la posibilidad de tomar los senos de la compañera y también de masturbarla. Muchas mujeres prefieren esta posición en vez de la frontal, porque se excitan mejor y porque pueden masturbarse (o ser masturbadas por el hombre).\r\r3 El hombre posee a la mujer desde atrás\r\rEs una posición más anónima, más instintiva, menos personalizada, pero que tiene la ventaja -para el hombre- de poder disfrutar el placer del contacto con los glúteos femeninos, la posibilidad de tomar los senos de la compañera y también de masturbarla. Muchas mujeres prefieren esta posición en vez de la frontal, porque se excitan mejor y porque pueden masturbarse (o ser masturbadas por el hombre).\r\r4 Posición invertida o en oposición\r\rCada uno de los amantes está con la boca cerca del genital del otro. Es una posición muy importante porque revela la confianza recíproca de asumir totalmente la genitalidad del otro y muchas veces sirve para preparar el orgasmo. Este ejercicio es una excelente preparación para una penetración más íntima. Lentamente se pasa a la siguiente posición.\r\r5 La mujer arriba\r\rEl hombre acostado en el piso, boca arriba, recibe a la mujer que se sienta sobre sus genitales, en posición dominante. La mujer tiene la posibilidad de mayor libertad de movimiento, sin tener la opresión del peso del compañero. Además, es ella quien conduce su orgasmo haciendo los movimientos que necesita. A algunas mujeres les gusta solamente esta posición; es un hecho natural que habla del placer de dominar el hombre. Hay un elemento de autoafirmación.\r6 Posición mixta\r\rEs una de las más importantes. La mujer que está acostada boca arriba, flexiona la pierna izquierda. El hombre, que está arriba, pasa su pierna derecha fuera de la pierna flexionada de la mujer. Esta posición es altamente personalizada, porque los rostros están uno frente al otro y porque el hombre tiene acceso a los senos.\r\rLa mujer expone totalmente sus genitales; la penetración del hombre es completa y la mujer experimenta intensamente su virilidad. El hombre siente el contacto de las nalgas de la mujer y tiene acceso al rostro y a los senos; por eso se denomina “posición mixta”.\r7 Posición de lado\r\rEl hombre y la mujer abrazados con mucha delicadeza, están acostados reposando uno al lado del otro, con ternura, paz y serenidad.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4925,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 9,
+                    "nombre": "Learning how tolove you",
+                    "interprete": "George Harrison",
+                    "duracion": "12:04",
+                    "archivo": "IBF2-09 Learning how tolove you  G Harrison  (R act final) 4,07.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5102,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 12,
+                    "nombre": "Feelings",
+                    "interprete": "Morris Albert",
+                    "duracion": "12:03",
+                    "archivo": "IBF10-12 Feelings Morris Albert (Encuentros ) 3, 37.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5143,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 12,
+                    "nombre": "Gracas a deus",
+                    "interprete": "M Creuza",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-12 Gracas a deus M Creuza (Acariciamiento) 3, 23.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5146,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-15.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5169,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 17,
+                    "nombre": "Medo de amar Nº2",
+                    "interprete": "Maria Creuza",
+                    "archivo": "IBF13-17 Medo de amar Nº2   M. Creuza.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5274,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 5,
+                    "nombre": "When I’m Sixty Four",
+                    "interprete": "The  Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-05 When I’m Sixty Four     The B.  2,39.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4108,
+        "nombre": "TRANCE DE SUSPENSIÓN\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "\r\rLa situación simbólica del trance de suspensión es que permite recrear de manera ritual las condiciones de la gestación intrauterina:\r\rEl grupo representa la matriz caliente, segura, protectora en la que la persona se encuentra en una situación de dependencia total (con como corolario la confianza) y delega totalmente a sus compañeros la responsabilidad de lo más primordial de su identidad: los comportamientos de vigilancia para sobrevivir, y por ende todas las funciones biosociológicas que les son asociadas. El grupo toma todas las iniciativas que tomaría la persona y realiza todos los actos normalmente a cargo de conciencia de vigilia y de vigilancia necesarias para sobrevivir (equilibrio, motricidad voluntaria, evaluación del medio ambiente por la percepción para tomar la decisión). Lo que permite a la persona abandonarse (una madre simbólica cuida) para que se activen las funciones ya no de vigilancia sino de metabolización, de reparación orgánica : efectivamente, en la matriz el bebé recibe todo lo que necesita (calor, alimento, protección, estímulos) sin tener que anticipar sobre su necesidad ni instaurar una estrategia para su satisfacción.\r\rEn este espacio, en un lapso de tiempo muy corto desde el punto de vista de la duración, pero totalmente dilatado del punto de vista de la vivencia, la persona realiza una suerte de vuelta hacia la fuente de sus propias potencialidades, a una etapa anterior a su desarrollo, sobre todo anterior a los “rasguños” debidos al proceso mismo de enfrentamiento de diferentes dificultades y condicionamientos resultantes de todo ser en el mundo. Estar en el mundo exige una adaptación (física, fisiológica, afectiva y del comportamiento). Si esta adaptación tiene como efecto “modelar” el cerebro y enriquecer las conexiones sinápticas (sin el otro no hay identidad), esta engendra stress múltiples de orígenes variados que constituyen lo que Rolando Toro nombra como los “ecofactores negativos del desarrollo”.\r\rLa regresión inducida en Biodanza constituye una suerte de “desdiferenciación” en comparación con el proceso ontogenético, y este constituye un proceso de diferenciación evolutiva.\rEn esta “vuelta hacia la fuente” la persona retoma contacto con el argumento vital primero, en la medida en que las condiciones, a la vez internas (la capacidad a abandonarse no constituye un desafío sino un placer) y externas (la cualidad acompañante del grupo) están reunidas.\r\rEs la razón por la que el facilitador estará atento para crear las condiciones de lo que constituye un verdadero ritual de renacimiento. Estas condiciones no son un intento de crear la perfección: toda exigencia de perfección de las condiciones tanto de parte del facilitador como del grupo o de la persona que va a vivenciar la propuesta es la expresión de una rigidez que impedirá la vivencia de abandono.\r\rBastará con invitar a todos los protagonistas a estar presentes lo mejor que puedan, facilitando, en la vivencia de preparación, a la vez la inocencia, la liviandad, la aceptación, la receptividad Y la intimidad, la sensibilidad, el don de sí, la generosidad, la empatía.\r\rHuelga decir entonces que el ejercicio será propuesto a grupos que ya hayan realizado un proceso de iniciación en Biodanza por lo tanto de integración afectiva importante.\r\rCon respecto a la invitación efectuada al alumno, hay varias alternativas posibles:\r\r-Se trata de un día particular, y el grupo ofrece la ceremonia a la persona (cumpleaños, momento existencial clave). En este caso, la persona sabe que va a vivir este trance de suspensión y es importante que esté de acuerdo.\r\r-Se trata del proceso normal del grupo y en ese caso, el facilitador déjà el centro libre a toda persona que desee vivir esta ceremonia. Deberá solamente explicar que una sola persona podrá vivirlo. Es una razón suplementaria para asegurarse de la integración afectiva del grupo en la medida en que todos serán llamados a cuidar a uno solo, aún cuando ellos hubieran deseado estar en su lugar. En esta situación, conviene valorizar mucho la experiencia de los que componen la matriz.\r\rEn estos dos primeros casos, se aconseja precisar al grupo que conviene ofrecerse a esta ceremonia cuando esta no constituye un desafío. Efectivamente, el miedo será una barrera casi con certeza para el abandono.\r\r-Se trata de un “desafío” del Proyecto Minotauro o del Árbol de los Deseos. En este caso, el facilitador sabe cual persona será llamada, según la encuesta realizada y de su propia intuición. La persona debe tener la posibilidad de aceptar o rehusarse.\r\rLa explicación se hace previamente y todas las etapas son descriptas, si fuera necesario representadas (la primera vez) para que el facilitador no tenga más que hablar- o muy poco, durante la ceremonia. Si debe hacerlo, tendrá una voz suave, contenedora y tranquilizante. Para evitar una exigencia de perfección, puede informar a la persona que recibirá la ceremonia, que cada uno hará lo mejor posible y que todo el\r\r\f\rBiodanza ® , IBF Catálogo IBF\t115\tmars 2012\r\fgrupo pide ternura por las eventuales imperfecciones del acompañamiento. Efectivamente, ciertas personas aumentan su baja autoestima, en el caso en que el grupo manifieste torpeza (“tenía que pasarme a mí. De todas maneras, mi madre nunca supo ocuparse bien de mí…”etc.\r\rDe la misma manera, será conveniente precisar que como en todo ejercicio de Biodanza, se trata de un proceso y no hay motivo para juzgar la propia experiencia en términos de “trance aprobado”, de “buen trance” o “mal trance”. La persona no tiene en absoluto el dominio conciente o voluntario sobre la profundidad de su abandono.\r\rEl facilitador debe asegurarse que el lugar de trabajo esté suficientemente protegido en términos de intimidad y que no hay observadores.\r\rObservación :\r\rEl facilitador puede sugerir que la persona que ha vivido la experiencia, pueda escribir en los días siguientes, su experiencia, sus sueños, sus deseos y eventualmente sus tomas de conciencia. Si la experiencia tuvo lugar en una sesión semanal, es esencial que la persona esté presente en la sesión siguiente y ésta se abra con un tiempo de compartir el relato existencial.\r\rMúsicas asociadas por secuencia :\r\rAdagio String Quartet », Schubert – (abandono y giros en la matriz)\r\rAve Maria » - Gounod (Suspensión y giro por le grupo)\r\rAve María » - (Depositar a la persona en el suelo y crear el cordón umbilical)\rBilitis » - Zamfir – (Caricias continentes en todo el cuerpo)\r\rAdagio » A. Marcello – (Caricias continentes en todo el cuerpo)« L’horloge de ma vie » JP Posit – Abrazos sucesivos de pie\rL’horloge de ma vie » JP Posit – Primeros pasos y presentación al grupo.\r"
+    }, {
+        "IdEjercicio": 4109,
+        "nombre": "DANZA DEL ÁNGEL\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rEl ángel es un arquetipo, un residente del inconsciente inherente al ser humano. El ángel, más que una imagen visual, es un sentimiento, una forma de luz del alma que ofrece afecto, alivio y tranquilidad.\r\rEl arquetipo del ángel crea un fondo emocional para la integración entre el cuerpo y el alma, una especie atmósfera saturada de energía, hermosa y diáfana. La idea de considerar a los ángeles como entidades aisladas y separadas del ser humano mantiene, de manera lamentable, el drama de la disociación cuerpo-alma.\r\rEl arquetipo del ángel permite una conexión con los aspectos sutiles de la realidad. Integra la sensibilidad con la afectividad, con frecuencia separadas. Para merecer la compañía de los ángeles, se debe invocarlos con amor y mantener un contacto permanente con ellos. El contacto con los ángeles es un compromiso de amor, una preocupación recíproca que crece día a día.\r\rDescripción :\r\rEn la danza de base del ángel, el cuerpo es ligero y los brazos se mueven suavemente como alas. Hay una actitud de elevación. El movimiento general del cuerpo es reservado (no expansivo, sino discreto) como se puede ser frente a algo frágil y sensible.\r\rObjetivo :\r\rEl ángel es un arquetipo de la pureza. Incorporarlo en una danza despierta una forma de afectividad que conecta por un lado a la integridad y la autenticidad y, por otro lado, a la inocencia, la buena fe, la confianza en el otro.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5269,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-15.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5271,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 17,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-17.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4110,
+        "nombre": "DANZA DEL ÁNGEL DEL AMOR\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\rDescripción :\r\rEl amor es lo que sostiene y permite la conexión, el enlace. Cuando amamos, dialogamos por medio de \"ángeles interpuestos\", por luz interpuesta. Porque es la parte angelical de cada uno que va hacia el otro. Y es cuando los ángeles hablan que los seres humanos pueden unirse. La danza evoca la profundidad, la presencia, la apertura incondicional al otro y al mundo. Invocar el ángel del amor es convertirse en el amor, es ser danzado por el amor.\r\rObjetivo :\r\rPredisponernos a todo lo que nos conecta unos con otros, a nuestra parte luminosa. Introducir esta parte de nosotros mismos como \"previa\" al encuentro y a la comunicación. Tenemos tendencia a enfatizar nuestros temores o los defectos de los demás.\r\r"
+    }, {
+        "IdEjercicio": 4111,
+        "nombre": "DANZA DEL ÁNGEL DEL ÉXTASIS\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\r\f\r\r\rBiodanza ® , IBF Catálogo IBF\t120\tmars 2012\r\fDescripción :\r\rEl éxtasis es un cambio de estado de conciencia que corresponde a maravillarse. Evocar este estado de conciencia es recordar nuestro asombro viendo un árbol, una flor, un niño, un ser querido. Se trata de un llamamiento suave y sutil a este estado de percepción. Por lo tanto, no es una exigencia ni una solicitud - por lo tanto tampoco una invocación -, sino la evocación de un estado de armonía suave, sostenido por la música.\r\rObjetivo :\r\rCambio en la percepción de la realidad y de nosotros mismos en esta realidad. Aprender a familiarizarse con el éxtasis.Predisponernos a todo lo que nos conecta unos con otros, a nuestra parte luminosa. Introducir esta parte de nosotros mismos como \"previa\" al encuentro y a la comunicación. Tenemos tendencia a enfatizar nuestros temores o los defectos de los demás.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4112,
+        "nombre": "DANZA DEL ÁNGEL DE LA FUERZA\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\rDescripción :\r\rEn nuestra cultura, la fuerza es a menudo mal vista. Puede estar para muchos asociada a la violencia o a la dominación. Y es para eso que se la utiliza a menudo. Nuestra cultura da tanta importancia al sufrimiento, tanto reconocimiento a nuestra parte víctima, que la gente se olvida la via de conexión a su propia fuerza que es la fuerza de la vida. Esta danza es precedida por una invocación: me conecto a la fuerza que viene de lo más poderoso del mundo, de los seres, del universo. La fuerza que, conectada a la vida y al servicio de ella, es capaz de mover las montañas de nuestras dudas y pensamientos limitantes. Los movimientos son poderosos, intensos, expresando una energia serena y radiante.\rObjetivo :\r\rTransformar la duda y el miedo en fuerza y fe.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5206,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 13,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-13.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4113,
+        "nombre": "DANZA DEL ÁNGEL DE LA ILUMINACIÓN\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\rDescripción :\r\rEl sentimiento de estar iluminado o ser luminoso realmente puede generar luz. Muchos experimentos biológicos muestran que nuestros cuerpos tienen su propia luz. En la naturaleza, las luciérnagas, algunos peces, algunos vegetales emanan luz. Las reacciones biológicas producen energía radiante. Algunas personas demuestran su percepción del aura. Rita Levi Montalcini dijo que \"el Espíritu es un haz de luz que pasa a través de nuestro cerebro\". Un rayo de luz en el cuerpo.\r\rObjetivo :\r\rLa danza viene de la conexión que nos da la sensación de ser luminosos. El ángel es la parte más clara, más transparente, lúcida, de nosotros mismos. Esa que ve lo que lo racional no puede ver. Esa que ve más allá de todas las opacidades.\r\rComo para los otras danzas de los ángeles, esta es precedida por la invocación de la luz interior, y la danza refleja la vivencia de una \"energía radiante\", de una luz proyectada sobre el mundo y otros.\r\rElemento Poético :\r\rChopin dijo: \"No hay nada que hacer, solo recibir para que descienda y se derrame sobre nosotros la gracia, que no es sino la generosidad de la vida manifestada.\"\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5089,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 19,
+                    "nombre": "Adag Conc Nº 1",
+                    "interprete": "Bach",
+                    "archivo": "IBF9-19 Adag Conc Nº 1 Bach Brandeburg  (PG Elevación).mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5270,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 16,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-16.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4114,
+        "nombre": "DANZA DEL ÁNGEL DEL RENACIMIENTO\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\rDescripción :\r\rLa danza comienza con una invocación de la capacidad de \"reverdecer\" , de \"florecer de nuevo\", de \"renacer\" de todo y siempre. A continuación, los gestos evocan una vivencia de elevación y expansión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5240,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 7,
+                    "nombre": "Claire de lune",
+                    "interprete": "Debussy",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-07 Claire de lune Debussy  (Bautismo de luz) 4, 46.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4115,
+        "nombre": "DANZA DEL ÁNGEL DE LA MAÑANA\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "El Presentimiento del Ángel - Extensión de Biodanza\r\rAlgunas danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\rDescripción :\r\rLas depresiones matinales son peores que las del resto del día. Los depresivos endógenos se suicidan desgraciadamente a menudo en la madrugada. Pero a veces, sin estar deprimido, es posible que tengamos que enfrentar despertares sin entusiasmo, días sin gracia. Es entonces que podemos invocar al ángel de la aurora, de la esperanza, del despertar a la vida. Esto se hace invocando la fuerza ascendente y expansiva de un estado de ánimo que coincide con un humor ligero, alegre, expansivo, de esperanza y optimismo. Los movimientos son ligeros y ascendentes.\r\rRolando Toro dijo, hablando del \"Ángel de la mañana\", que era nuestra capacidad de empezar cada nuevo día con una mirada nueva, nuestra capacidad diaria de maravillarnos. Y que tenemos que invocar a este ángel todas las mañanas, antes de ir hacia los demás y hacia el mundo. La Danza del Ángel de la mañana es la invocación de la frescura de nuestra inocencia.\rNote CIMEB :\r\rPara la referencia musical, ver Catalogo CIMBEB - Argentina BA01 - 04\r\rMorgenstimmung (Au matin) (Esa-Pekka Salonen) - Peer Gynt, Suite 1-1, Op.46 - Grieg, Edvard (1843-1907)\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5269,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-15.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4116,
+        "nombre": "DANZA DEL ÁNGEL GUARDIÁN\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "La falta de transcendencia se manifiesta a menudo por una falta de confianza en sí mismo, en el otro y en la vida. Esta falta de confianza puede generar la sensación de estar expuestos a todos los peligros, de ser olvidado. La invocación del ángel puede constituir una poderosa estimulación de las potencialidades interiores de protección de la propia vida: nuestra parte más luminosa (confiada y en conexión profunda con la vida) es capaz de cuidar de la parte más frágil de nosotros (la que pierde esta conexión, el camino). La invocación del ángel guardián es la invocación de nuestra capacidad natural de intuición de lo que va en el sentido de la protección de la vida. Es la evocación del guardián en sí, como el padre protector ha sido el guardián del pequeño.\r\r\f\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\r\rBiodanza ® , IBF Catálogo IBF\t122\tmars 2012\r\fDescripción :\r\rEsta danza se realiza de a dos. Una de las dos personas será protegida por la otra, en sus movimientos y en sus desplazamientos. La que invoca al ángel (la potencialidad innata) tendrá los ojos cerrados y avanzará sensiblemente, en una danza o marcha liviana e “intuitiva”. Una de sus manos estará apoyada con confianza en la mano del “Ángel”, la otra mano puede quedar libre al costado o apoyarse sobre el corazón (evocando la capacidad para orientarse a partir de las motivaciones profundas como fuerzas de la intuición).\r\rLa persona percibirá los mensajes por presiones en la mano por su compañero, cada vez que está cerca de un obstáculo. Ella deberá detenerse y orientar su paso de otra forma en un espacio seguro, sin obstáculos. La persona que cuida, quien encarna al ángel guardián, será benevolente, atenta a no guiar sino a proteger, siguiendo los pasos de su protegido\/a, le manifestará signos mediante presiones en las manos cada vez que se presente un obstáculo (una pared, un compañero, etc.).\r\rAl terminar la música, se abrazan y la situación es invertida permitiendo a cada uno vivenciar los dos polos de la vivencia.\r\rObjetivo :\r\rIntegrar la vivencia de poseer en uno todas las posibilidades de proteger la vida, de cuidarla y de sentir cual es el camino hacia la vida.\rNote CIMEB :\r\rAvanzar en la vida \"con ojos cerrados\" es una expresión de gran confianza. Sin embargo, si esto es demasiado difícil para algunas personas, se puede abrir los ojos y poco a poco domesticar la vivencia de avanzar con los ojos cerrados.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5270,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 16,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-16.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4117,
+        "nombre": "DANZA DEL ÁNGEL GUÍA\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "A veces, como obnubilados, atentos a nuestros proyectos o a lo que confundimos con nuestros deseos, ya no vemos lo que nos rodea, no sentimos más la fuerza vital que tiene por único propósito guiarnos hacia la vida. Perdemos nuestra capacidad de conexión con la vida. La invocación del Ángel Guía, es la invocación de nuestra aptitud natural para dejarnos guiar por la sabiduría de la vida, por nuestro inconciente vital y no sólo por nuestra voluntad. Esta danza puede constituir una suerte de desafío para personas muy voluntariosas, poco sensibles y que adelantan todo, se precipitan sin sentir y no aceptan ser guiados, ni siquiera por amor.\r\rDescripción :\r\rEsta danza se realiza de a dos. Uno cierra los ojos y la mano en la de su “ángel”, se deja guiar en una danza liviana. La otra persona, benevolente, la guía en una danza liviana sin por esto inducir manipulación, sin ponerla en situación de desafío, sino de manera de facilitarle el abandono en la confianza, la posibilidad de dejarse guiar y de sentir la alegría que esto provoca.\rObjetivo :\r\rVivenciar la posibilidad de confiar en la vida dejándose guiar por “señales” que vienen de nuestra sensibilidad profunda. Superar el miedo de la incertidumbre. Disminuir la influencia de la voluntad como única guía de nuestras acciones.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5110,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 10,
+                    "nroPista": 20,
+                    "nombre": "Meditation fidich roeme",
+                    "interprete": "",
+                    "duracion": "12:02",
+                    "archivo": "IBF10-20 Meditation fidich roeme  (Encuentros) 2,34.mp3",
+                    "carpeta": "IBF10-Sincr Melódica,Encuentros  Contacto sensible"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4118,
+        "nombre": "DIÁLOGO DE ÁNGELES\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "Descripción :\r\rCuando la parte mas luminosa de nosotros mismos es mostrada al el otro, para encontrarse con la parte luminosa del otro, podemos decir que nuestros ángeles \"dialogan\". Llegan al otro antes cualquier otro aspecto de nuestra identidad.\r\rObjetivo :\r\rIr hacia el otro a partir de nuestra esencia más luminosa y amorosa.\r\rProyección Existencial :\r\rNuestras relaciones se nutren de la parte luminosa de cada uno cuando nuestros ángeles son los mensajeros que preceden nuestros actos.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5269,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-15.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4119,
+        "nombre": "RONDA DE ÁNGELES\r",
+        "idGrupo": 72,
+        "grupo": "DANZAS DE LOS ÁNGELES",
+        "detalle":
+            "En el cuadro de Botticelli que representa La Natividad, los ángeles danzan sobre el pesebre en una ronda de alegría y celebración. La “Ronda de ángeles” de Biodanza se inspira en esta escena. La celebración íntima del nacimiento del niño interior es un rito.\r\rLa ronda debe realizarse con movimientos leves, armónicos y ascendentes. Genera un sentimiento de felicidad epifánica (manifestación de lo divino).\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5248,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 15,
+                    "nombre": "Adagio, String Quintet in C,",
+                    "interprete": "Schubert",
+                    "duracion": "12:04",
+                    "archivo": "IBF 17-15 Adagio, String Quintet in C, Schubert (Intimidad) 4, 45.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5269,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-15.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5271,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 17,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF18-17.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4120,
+        "nombre": "DANZA DE LA TIERRA\r",
+        "idGrupo": 73,
+        "grupo": "LOS ELEMENTOS",
+        "detalle":
+            "Descripción :\r\rLa tierra se refiere a la base, a la materia, a lo que es concreto y estable. La dinámica de la danza es hacia abajo (hacia la base), con la apertura de la zona pélvica y una vivencia de estabilidad y peso (consistencia).\r\rObservación :\r\rExtensión de Biodanza \"Identidad y los Cuatro Elementos\". Las danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5037,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 12,
+                    "nombre": "Riacho",
+                    "interprete": "Guem",
+                    "duracion": "12:03",
+                    "archivo": "IBF 7-12 Riacho Guem                (Danza de tierra) 3, 29.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5038,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 13,
+                    "nombre": "Voyage dans au de la",
+                    "interprete": "",
+                    "archivo": "IBF 7-13 Voyage dans au de la.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5039,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 14,
+                    "nombre": "Appel des esprits",
+                    "interprete": "",
+                    "archivo": "IBF 7-14 Appel des esprits.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5040,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 15,
+                    "nombre": "Ensaio geral",
+                    "interprete": "",
+                    "archivo": "IBF 7-15 Ensaio geral.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5272,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 1,
+                    "nombre": "Ay Fond Kiss",
+                    "interprete": "Fairground Attraction",
+                    "duracion": "12:03",
+                    "archivo": "IBF19-01 Ay Fond Kiss     Fairground Attraction 3,24.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5288,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 2,
+                    "nombre": "Yellow submarine",
+                    "interprete": "The Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBT19-02 Yellow submarine     The Beatles 2,29.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4121,
+        "nombre": "DANZA DEL FUEGO\r",
+        "idGrupo": 73,
+        "grupo": "LOS ELEMENTOS",
+        "detalle":
+            "Descripción :\r\rEl fuego es lo más vivo, lo luminoso, lo caliente, lo apasionado. La danza, según la música, expresa las cualidades predominantes de fuego.\r\rObservación :\r\rExtensión de Biodanza \"Identidad y los Cuatro Elementos\". Las danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\rObservación :\r\rDe acuerdo con la propuesta de la música, la danza puede ser expresiva (fuego expansivo) o más sensible e internalizada (protección del fuego interior).\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5050,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 25,
+                    "nombre": "Arpa paraguaya",
+                    "interprete": "",
+                    "archivo": "IBF 7-25 Arpa paraguaya.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5056,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 8,
+                    "nroPista": 6,
+                    "nombre": "Djobí-Djobá",
+                    "interprete": "Gipsy King",
+                    "duracion": "12:03",
+                    "archivo": "IBF8-06 Djobí-Djobá Gipsy King (D expresiva intensidad) 3, 31.mp3",
+                    "carpeta": "IBF08 -Extensión arm, máx Elasticidad  Expresividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5189,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 15,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-15.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5190,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 16,
+                    "nombre": "Libertango",
+                    "interprete": "Piazolla",
+                    "duracion": "12:02",
+                    "archivo": "IBF14-16 Libertango A Piazolla (Danzar para otro) 2,58.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5201,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-08.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5261,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 18,
+                    "nroPista": 7,
+                    "nombre": "Eric´s theme",
+                    "interprete": "Vangelis",
+                    "archivo": "IBF18-07 Eric´s theme              Vangelis.mp3",
+                    "carpeta": "IBF18-Posiciones Generatrices TRASCENDENCIA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5275,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 6,
+                    "nombre": "I’ve got a woman",
+                    "interprete": "Ray Charles",
+                    "duracion": "12:02",
+                    "archivo": "IBF19-06 I’ve got a woman     Ray Charles 2,55.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5276,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 7,
+                    "nombre": "A mi manera",
+                    "interprete": "Gipsy Kings",
+                    "duracion": "12:03",
+                    "archivo": "IBF19-07 A mi manera     Gipsy Kings 3,56.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4122,
+        "nombre": "DANZA DEL AGUA\r",
+        "idGrupo": 73,
+        "grupo": "LOS ELEMENTOS",
+        "detalle":
+            "Descripción :\r\rEl agua es el elemento asociado a la comida, el abrigo, la matriz de las aguas primordiales, la emoción, la sensualidad cenestésica (las aguas interiores), la profundidad. También se asocia con la fluidez, lo que evita los obstáculos y que es redondo y cuya forma se adapta a todos los contenedores. La danza, según la música, evoca las cualidades predominantes del agua.\rObservación :\r\rExtensión de Biodanza \"Identidad y los Cuatro Elementos\". Las danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5150,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 19,
+                    "nombre": "As times goes by,A. P.",
+                    "interprete": "",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-19 As times goes by,A. P.(Acariciamientos) 3,01.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5239,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 17,
+                    "nroPista": 6,
+                    "nombre": "Blue lotus",
+                    "interprete": "E Berglund",
+                    "duracion": "12:05",
+                    "archivo": "IBF 17-06 Blue lotus E Berglund (Aire) 5,13.mp3",
+                    "carpeta": "IBF17-Ayudando a crecer Dar y Recibir Trance suspensión"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4123,
+        "nombre": "DANZA DEL AIRE\r",
+        "idGrupo": 73,
+        "grupo": "LOS ELEMENTOS",
+        "detalle":
+            "Descripción :\r\rEl aire está asociado con una ligera expansión, con la facilidad, la libertad, la imaginación, la elevación. La danza del aire, de acuerdo con la música elegida, refleja diferentes cualidades del elemento.\r\rObservación :\r\rExtensión de Biodanza \"Identidad y los Cuatro Elementos\". Las danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5047,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 22,
+                    "nombre": "Vals del emperador J",
+                    "interprete": "Strauss",
+                    "duracion": "12:04",
+                    "archivo": "IBF 7-22 Vals del emperador J Strauss (Desplaz con levrdad y cord) 4, 28.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5048,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 23,
+                    "nombre": "Coppelia  Leo",
+                    "interprete": "Delibes",
+                    "duracion": "12:02",
+                    "archivo": "IBF 7-23 Coppelia  Leo Delibes     (Desplaz con levedad y cordi) 2, 23.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5122,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 11,
+                    "nombre": "Watermark",
+                    "interprete": "",
+                    "archivo": "IBF11-11 Watermark.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5197,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 15,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF15-04.mp3",
+                    "carpeta": "IBF15-Danza Yang Yin, fLOR CREATIVIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5287,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 18,
+                    "nombre": "Tai Chi ",
+                    "interprete": "",
+                    "duracion": "12:04",
+                    "archivo": "IBF19-18 Tai Chi 4,58.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4124,
+        "nombre": "DANZA DE TIERRA Y AIRE\r",
+        "idGrupo": 73,
+        "grupo": "LOS ELEMENTOS",
+        "detalle":
+            "Descripción :\r\rExtensión de Biodanza \"Identidad y los Cuatro Elementos\". Las danzas de esta extensión sólo se mencionan en este catálogo. Su descripción detallada es parte de los documentos relativos a esta extensión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5027,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 7,
+                    "nroPista": 2,
+                    "nombre": "Kyrié  Missa luba",
+                    "interprete": "",
+                    "archivo": "IBF 7-02 Kyrié  Missa luba.mp3",
+                    "carpeta": "IBF07- Ritmo Sinergismo Desplazamiento con levedad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5288,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 19,
+                    "nroPista": 2,
+                    "nombre": "Yellow submarine",
+                    "interprete": "The Beatles",
+                    "duracion": "12:02",
+                    "archivo": "IBT19-02 Yellow submarine     The Beatles 2,29.wma",
+                    "carpeta": "IBF19 Complementario 1"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4125,
+        "nombre": "ANIMACIÓN DEL MOVIMIENTO\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "Animación significa \"poner en vida, dar vida\". Animar el movimiento es expresar la vitalidad en el movimiento.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t125\tmars 2012\r\fDescripción :\r\rSe trata de una danza libre con una música vital y alegre, para \"ponerle más vida\" (animar) a nuestro movimiento.\r\rObjetivo :\r\rEstimular la alegría de vivir y la vitalidad.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5002,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 5,
+                    "nroPista": 21,
+                    "nombre": "Batuque",
+                    "interprete": "D. Mercury",
+                    "archivo": "IBF 5-21 Batuque                      D. Mercury.mp3",
+                    "carpeta": "IBF05-D Ritmos tropicales rondas"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5003,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 5,
+                    "nroPista": 22,
+                    "nombre": "Bumbo da mangueira",
+                    "interprete": "Gal Costa",
+                    "archivo": "IBF 5-22 Bumbo da mangueira, Gal Costa.mp3",
+                    "carpeta": "IBF05-D Ritmos tropicales rondas"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5296,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 7,
+                    "nombre": "Tema desconocido ",
+                    "interprete": "",
+                    "duracion": "12:02",
+                    "archivo": "IBF20-07 Tema desconocido 2,23.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4126,
+        "nombre": "ANIMACIÓN DE A DOS\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "Animación significa \"poner en vida, dar vida\". Animar el movimiento es expresar la vitalidad en el movimiento. Realizado de a dos, se añade una nota de afectividad con caracter lúdico y alegre.\r\rDescripción :\r\rSe trata de una danza libre en pares con una música vital y alegre. Puede haber cambios.\r\rDefinición :\r\rNo es un ejercicio propiamente dicho, sino un \"procedimiento de facilitación\" que puede incluirse en el concepto genérico de activación.\rProyección Existencial :\r\rAnimarse o activarse mutuamente es un poco como \"contagiarse de vida\" el uno al otro.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4933,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 17,
+                    "nombre": "Bem leve",
+                    "interprete": "M Monte",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-17 Bem leve                         M Monte (R act final) 2,37.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4127,
+        "nombre": "DANZA LIBRE\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "\r\rDescripción :\r\rCon una música que presenta una amplia variedad de tonalidades, la persona es invitada a danzar libremente. La danza se propone cuando las personas ya ha hecho un proceso de recuperación de sus habilidades motoras naturales; de lo contrario, tienden a reproducir estereotipos o disociaciones.\r\rObjetivo :\r\rPermitir que la gente pueda danzar sin tener que preocuparse por el rendimiento o la performance, al mismo tiempo descubriendo poco a poco un estilo personal.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4950,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 3,
+                    "nroPista": 11,
+                    "nombre": "Deixa a vida me levar",
+                    "interprete": "Z Pagodinho",
+                    "duracion": "12:04",
+                    "archivo": "IBF3-11 Deixa a vida me levar    Z Pagodinho (Ronda final) 4, 41.mp3",
+                    "carpeta": "IBF03- RONDAS FINALES"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4997,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 5,
+                    "nroPista": 16,
+                    "nombre": "Me muero por ella",
+                    "interprete": "Caña Brava",
+                    "archivo": "IBF 5-16 Me muero por ella      Caña Brava.mp3",
+                    "carpeta": "IBF05-D Ritmos tropicales rondas"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4128,
+        "nombre": "DANZA EN PARES\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "La danza en pares tiene una configuración más libre que la sincronización rítmica o la sincronización melódica en pares.\r\rDescripción :\r\rLas personas son invitadas a danzar con iniciativas recíprocas y compartidas, en coherencia con la estimulación musical y tratando de mantener un diálogo entre ellas en todos los niveles: expresión, ritmo, distancia, espontaneidad, sensibilidad.\r\rObjetivo :\r\rPromover la capacidad de sintonizarse con el otro coordenando las iniciativas, los gestos y la expresión.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4920,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 4,
+                    "nombre": "Coqueiro de Itapoa",
+                    "interprete": "C Veloso",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-04 Coqueiro de Itapoa           C Veloso (R  act final) 2,43.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4948,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 3,
+                    "nroPista": 9,
+                    "nombre": "Conto de areia",
+                    "interprete": "Clara Nunes",
+                    "duracion": "12:03",
+                    "archivo": "IBF3-09 Conto de areia                 Clara Nunes (Ronda final) 3, 45.mp3",
+                    "carpeta": "IBF03- RONDAS FINALES"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5135,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 4,
+                    "nombre": "Comec.. tudo otra vez",
+                    "interprete": "",
+                    "archivo": "IBF12-04 Comec.. tudo otra vez.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5139,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-08.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5150,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 19,
+                    "nombre": "As times goes by,A. P.",
+                    "interprete": "",
+                    "duracion": "12:03",
+                    "archivo": "IBF12-19 As times goes by,A. P.(Acariciamientos) 3,01.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5156,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 4,
+                    "nombre": "Apelo",
+                    "interprete": "Maria Creuza",
+                    "archivo": "IBF13-04 Apelo                         M. Creuza.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5178,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-04.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5303,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 14,
+                    "nombre": "Love me",
+                    "interprete": "Nina Simona",
+                    "duracion": "12:03",
+                    "archivo": "IBF20-14 Love me     Nina Simona 3,31.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4129,
+        "nombre": "SINCRONIZACIÓN RÍTMICA SUAVE\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "La transición del ritmo a la melodía representa un paso significativo en el proceso de integración motriz. Del mismo modo, esta misma transición en las danzas con el otro da lugar a una mayor sensibilidad en el diálogo. Mientras el ritmo le da una base, la melodía sostiene los matices y variaciones de ese diálogo.\rDescripción :\r\rLa posición es la misma que para la sincronización rítmica en pares. El ritmo es más oscilante, más central. Los movimientos son más sinuosos o sensibles. El ritmo queda un poco \"relegado\". Esta danza puede ser una interesante transición hacia la sincronización melódica, la cual invita a una mayor intimidad. El ritmo es suavmente \"erotizado\".\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4932,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 16,
+                    "nombre": "Alta noite",
+                    "interprete": "M Monte",
+                    "duracion": "12:03",
+                    "archivo": "IBF2-16 Alta noite                        M Monte     (R act final) 3, 59.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4130,
+        "nombre": "DANZA DE ARMONIZACIÓN EN PARES\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "La armonía es la manifestación de la unidad. La sensación de armonía es un sentimiento de continuidad con lo y los que nos rodean, y con quienes nos relacionamos.\rDescripción :\r\rDos personas danzan, con los ojos cerrados o abiertos (pulsación de la mirada de acuerdo a la vivencia), tomados de las manos, con movimientos sensibles y de comunión. Se hace hincapié en la posibilidad de hacerse uno juntos, de fusionarse en lugar de diferenciarse. La danza puede ser comparada a una danza de brazos sensibles de a dos.\rObjetivo :\r\rLograr la vivencia de unidad en sí mismo y con los demás.\r\rObservación :\r\rLa danza puede parecerse a una sincronización melódica extremadamente sensible y sin desplazamiento.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4914,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 1,
+                    "nroPista": 19,
+                    "nombre": "La primavera",
+                    "interprete": "Vivaldi",
+                    "duracion": "12:03",
+                    "archivo": "IBF1-19 La primavera                 Vivaldi            (Ronda de inicio) 3, 37.mp3",
+                    "carpeta": "IBF01- RONDAS DE INICIO"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4920,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 4,
+                    "nombre": "Coqueiro de Itapoa",
+                    "interprete": "C Veloso",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-04 Coqueiro de Itapoa           C Veloso (R  act final) 2,43.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4936,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 20,
+                    "nombre": "Andanca",
+                    "interprete": "B Carvalho",
+                    "duracion": "12:03",
+                    "archivo": "IBF2-20 Andanca                         B Carvalho (Ronda de inicio) 3,54.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4984,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 5,
+                    "nroPista": 3,
+                    "nombre": "Paixao de beata",
+                    "interprete": "P. do Acordeon",
+                    "archivo": "IBF 5-03 Paixao de beata           P. do Acordeon (Forró lento).mp3",
+                    "carpeta": "IBF05-D Ritmos tropicales rondas"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4991,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 5,
+                    "nroPista": 10,
+                    "nombre": "Feira de mangaio",
+                    "interprete": "Clara Nunes",
+                    "archivo": "IBF 5-10 Feira de mangaio      Clara Nunes     (Forró rápido).mp3",
+                    "carpeta": "IBF05-D Ritmos tropicales rondas"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5078,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 8,
+                    "nombre": "Muito",
+                    "interprete": "",
+                    "archivo": "IBF9-08 Muito.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5155,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 3,
+                    "nombre": "Atrás da porta",
+                    "interprete": "N. Caymmi",
+                    "archivo": "IBF13-03 Atrás da porta           N. Caymmi.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5158,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 6,
+                    "nombre": "Almost blue",
+                    "interprete": "C. Baker",
+                    "archivo": "IBF13-06 Almost blue               C. Baker.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5176,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-02.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5177,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 3,
+                    "nombre": "The girl from Ipanema",
+                    "interprete": "S Getz-Gilberto",
+                    "archivo": "IBF14-03 The girl from Ipanema      S Getz-Gilberto(Danza en par).mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5178,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 4,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-04.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5179,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 5,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-05.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5180,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 6,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-06.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5182,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-08.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5183,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 9,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-09.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5216,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 16,
+                    "nroPista": 3,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF16-03.mp3",
+                    "carpeta": "IBF16- Danza Expresiva creativa VITALIDAD TRASCENDENCIA"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4131,
+        "nombre": "INTEGRACIÓN DE CUELLO Y HOMBROS\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "Descripción :\r\rPara mayor progresividad, puede ser muy interesante proponer una integración del movimiento continuo de rotación de la cabeza (Movimiento Segmentario del cuello) y la rotación anteroposterior de los hombros (Movimiento Segmentario de hombros), porque a menudo sucede que la gente hace el segundo movimiento (hombros) causando rigidez en el cuello, cambiando la tensión de lugar. En esta danza, se trata de iniciar una rotación suave del cuello y poco a poco, sin detener el movimiento, integrar el movimiento de los hombros, con flexibilidad en la espalda.\r\r\f\rBiodanza ® , IBF Catálogo IBF\t128\tmars 2012\r\f",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 5073,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 3,
+                    "nombre": "Bilitis",
+                    "interprete": "Zamfir",
+                    "duracion": "12:04",
+                    "archivo": "IBF9-03 Bilitis Zamfir                           (Seg pecho brazos) 4, 32.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4132,
+        "nombre": "ACTIVACIÓN DESPUÉS DE GRUPO COMPACTO\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "El momento de la reactivación después de un grupo compacto es muy difícil porque las personas tienen que ser activadas y al mismo tiempo es necesario conservar los beneficios del abandonarse en el seno del grupo.\rDescripción :\r\rLa activación después de un grupo compacto se puede hacer de varias maneras. Las personas pueden ser alentadas a tomarse de las manos de dos personas cercanas y así la ronda se vuelve a formar con suavidad y se abre. También pueden ser invitados a acercarse a una persona y entonces la activación se produce de a dos. O la activación se hace por pequeños grupos: del grupo grande vamos formando grupos más pequeños para ir haciendo encuentros (lo más común) o hacia una ronda. En muy raras ocasiones se hace una propuesta de danza individual.\r\rObjetivo :\r\rDespués de la disolución en lo indiferenciado y en la regresión, la posibilidad de volver a la percepción de los límites de identidad claros, mientras se mantiene el beneficio de la regresión. Promover la expansión de la conciencia que habrá permitido la fusión grupal.\r\rDefinición :\r\rNo es un ejercicio propiamente dicho, sino un \"procedimiento de facilitación\" que puede incluirse en el concepto genérico de la activación.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4919,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 3,
+                    "nombre": "Sete mi vezes",
+                    "interprete": "C Veloso",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-03 Sete mi vezes C Veloso     (Ronda de act final) 2, 28.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 4932,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 16,
+                    "nombre": "Alta noite",
+                    "interprete": "M Monte",
+                    "duracion": "12:03",
+                    "archivo": "IBF2-16 Alta noite                        M Monte     (R act final) 3, 59.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5120,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 9,
+                    "nombre": "Earth born",
+                    "interprete": "",
+                    "archivo": "IBF11-09   Earth born.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5139,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 12,
+                    "nroPista": 8,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF12-08.mp3",
+                    "carpeta": "IBF12-Encuentros Acariciamiento SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5154,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 2,
+                    "nombre": "When I fall in love",
+                    "interprete": "H. Merrill",
+                    "archivo": "IBF13-02 When I fall in love     H. Merrill.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4133,
+        "nombre": "ACTIVACIÓN PROGRESIVA (levantarse del nido o de la regresión en el suelo)\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "Descripción :\r\rLas personas comienzan a moverse suavemente, estimulándose con caricias suave, con contacto dulce y afectivo y\/o sensual, según el contexto vivencial del nido y la inducción de la música. Se ayudan a sentarse y estando siempre en contacto, se levantan juntos.\r\rObjetivo :\r\rPermitir un retorno gradual hacia la autonomía y la iniciativa después de la regresión, de manera armoniosa.\r\rDefinición :\r\rNo es un ejercicio propiamente dicho, sino un \"procedimiento de facilitación\" que puede incluirse en el concepto genérico de activación.\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4921,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 5,
+                    "nombre": "Canto de povo de um lugar",
+                    "interprete": "C Veloso",
+                    "duracion": "12:04",
+                    "archivo": "IBF2-05 Canto de povo de um lugar C Veloso (R act lenta) 4, 15.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5078,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 9,
+                    "nroPista": 8,
+                    "nombre": "Muito",
+                    "interprete": "",
+                    "archivo": "IBF9-08 Muito.mp3",
+                    "carpeta": "IBF09-Fluídez Seg, Eutonía  Integ motora cenest  Respiración"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5120,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 9,
+                    "nombre": "Earth born",
+                    "interprete": "",
+                    "archivo": "IBF11-09   Earth born.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5121,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 11,
+                    "nroPista": 10,
+                    "nombre": "To go beyond",
+                    "interprete": "Enya",
+                    "duracion": "12:03",
+                    "archivo": "IBF11-10  To go beyond  Enya (R salida estado regresión) 3, 00.mp3",
+                    "carpeta": "IBF11-Ronda mirada,mecimiento acariciamento Afectividad"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5170,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 13,
+                    "nroPista": 18,
+                    "nombre": "Proposta",
+                    "interprete": "Simone",
+                    "archivo": "IBF13-18 Proposta                  Simone.mp3",
+                    "carpeta": "IBF13-Acaricia... R contacto múltiple SEXUALIDAD"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4134,
+        "nombre": "DANZA DE ACTIVACIÓN EN PARES\r",
+        "idGrupo": 74,
+        "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+        "detalle":
+            "Descripción :\r\rSon danzas de a dos (con o sin cambios) que progresivamente inducen la activación a través de la relación con el otro. La ternura, las caricias, la coordinación, la sincronización serán elementos de esta activación. No se trata de encuentros propiamente dichos porque las personas son invitadas a danzar con las personas que están más cerca de ellas sin salir completamente de la regresión. Es sólo gradualmente que la elección interviene de nuevo en los intercambios.\r\rObjetivo :\r\rActivation después de la regresión o del estado indiferenciado, a través de la relación diferenciada.\r\r",
+        "musicas": [
+            {
+                "musica": {
+                    "idMusica": 4933,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 2,
+                    "nroPista": 17,
+                    "nombre": "Bem leve",
+                    "interprete": "M Monte",
+                    "duracion": "12:02",
+                    "archivo": "IBF2-17 Bem leve                         M Monte (R act final) 2,37.mp3",
+                    "carpeta": "IBF02- RONDA DE ACT LENTA"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5176,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 14,
+                    "nroPista": 2,
+                    "nombre": "",
+                    "interprete": "",
+                    "archivo": "IBF14-02.mp3",
+                    "carpeta": "IBF14-Samba 5 Pulsación,SEXUALIDAD"
+                }
+            }, {
+                "musica": {
+                    "idMusica": 5301,
+                    "idColeccion": 3,
+                    "coleccion": "IBF",
+                    "nroCd": 20,
+                    "nroPista": 12,
+                    "nombre": "My way",
+                    "interprete": "Elvis Presley",
+                    "duracion": "12:03",
+                    "archivo": "IBF20-12 My way     Elvis Presley 3,54.wma",
+                    "carpeta": "IBF20 Complementario II"
+                }
+            }
+        ]
+    }, {
+        "IdEjercicio": 4135,
+        "nombre": "MARCHA EN PARES (para autoregulación)\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "Cuando al final de un ejercicio muy vital, queremos invitar a las personas a disfrutar de un momento de auto-regulación en movimiento, es decir, permitir que la estimulación cardiovascular se calme lentamente, podemos invitarlos a caminar en su propio ritmo con grandes movimientos respiratorios hasta que sientan el momento de parar.\r\rEste no es un ejercicio de Biodanza en sentido estricto, sino un \"procedimiento de facilitación\". Este caminar puede ser acompañado de música o no.\r"
+    }, {
+        "IdEjercicio": 4136,
+        "nombre": "POESÍA-CANCIÓN\r",
+        "idGrupo": 2,
+        "grupo": "Ronda",
+        "detalle":
+            "\r\rAntes se propone la composición de una poesía a través del ejercicio de la Línea de la Creatividad llamado:\r\r“La poesía eres tú”.\r\rUna vez que la poesía está escrita, el alumno trata de poner melodía a las palabras, tomando solamente algunos versos que se reiteran y se modulan en relación con la extensión de la melodía (por ejemplo: se alargan algunas vocales para ajustar las palabras a la melodía).\r\rSe elige un tema y se hacen algunas variaciones sobre el mismo. Dichas variaciones se tienen que referir al tema y a la melodía inicial. Por ende, hay que evitar variaciones que se escapan del tema. Se realiza sin música.\r\rNota: Este ejercicio es más apropiado para la extensión de Biodanza “Laboratorio de Creatividad”.\r\rObservación :\r\rEste ejercicio es sobre todo parte de profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\rPOESÍA-CANCIÓN-DANZA\r\r\rEn este ejercicio se integran tres formas de expresión creativas: la poesía, el canto y la danza. El participante primero tiene que escribir una poesía usando el ejercicio de la Línea de la Creatividad llamado “El poema eres tú”.\r\rDespués, crea la melodía sobre la base de la poesía que creó (no es necesario usar toda la poesía, sino una frase llena de belleza y significado).\r\rEn seguida, en una tercera fase, el participante danza mientras canta la poesía que escribió. Es necesario intentarlo varias veces hasta llegar a la perfecta integración de los tres componentes. Se realiza sin música.\rObservación :\r\rEste ejercicio es sobre todo parte profundizaciones vivenciales como el \"Laboratorio de creatividad\", \"Proyecto Minotauro\" y \"Arbol de los deseos\".\r\r\f\rBiodanza ® , IBF Catálogo IBF\t89\tmars 2012\r\fEL POEMA ERES TÚ\r\r\rDescripción :\r\rDos personas se eligen mutuamente por afinidad. Se sientan uno frente al otro y entran cada uno en la contemplación del otro. Se abren el misterio del otro, sensibilizándose a la esencia, al estado de ánimo, a las emociones que expresa su rostro, a todo lo que emerge como esencial. Entonces, mientras se mantiene la proximidad, cada uno expresa en el lenguaje poético su vivencia a ver al otro. Tú eres el poema: tú eres el centro de mi percepción. Tú eres la razón de mi poema.\r\rObjetivo :\r\rDesarrollar el lenguaje afectivo y poético y la capacidad de exaltar la presencia del otro.\r\rObservación :\r\rSe realiza preferentemente sin música para no influenciar la inspiración de las personas con el contenido semántico emocional de ésta. Sin embargo, es preparado por una música y es también concluído con la misma música, la cual indica el marco inicial de conexión e intimidad y el marco final del tiempo del ritual.\r\r\rDANZA INTERIOR (sin música)\r\r\rLa \"Danza interior\" se hace sin música, dando asi prioridad a la conexión profunda con uno mismo, a partir de movimientos cenestésicos inducidos por la escucha profunda de uno mismo.\r\rDescripción :\r\rSe trata de una danza de gran intimidad con características muy personales, tanto en la forma como en la vivencia. Los movimientos son muy lentos y de escucha profunda de uno mismo. La percepción interna y la profunda conexión con la propia intimidad inducen, en la esfera del silencio, la percepción de la musicalidad y del sonido interno. Mediante la reducción de los movimientos voluntarios y los gestos expresivos intencionales, se acentúan los movimientos cenestésicos que hacen nacer una danza interior.\r\rCuando este ejercicio se propone en la naturaleza, la respuesta interna es mucho mayor, ya que se ve acentuada por la estimulación sensorial y sonora que viene del medioambiente.\r\rEn \"Biodanza y Voz\", del flujo respiratorio propio a cada uno (del ritmo o frecuencia respiratoria), del propio aliento vital, en la escucha silenciosa y sensible, uno puede experimentar la vivencia intensa y trascendente del \"aliento de vida\" en todos sus matices y posibilidades sonoras.\r\rObjetivo :\r\rLa \"Danza interior\" requiere un buen nivel de integración sensitivomotora e integración de la fluidez. Su objetivo principal es profundizar la auto-percepción, el movimiento de la intimidad con uno mismo y la conexión con los diferentes elementos sensoriales y sensibles de nuestra percepción.\r\r\rDIBUJO SENSIBLE\r\r\rEl desarrollo de la \"percepción sensible\" es la primera condición para crear imágenes a través del dibujo.\r\rCuando queremos dibujar un rostro, un paisaje, un objeto real o imaginario, estamos solicitando por lo general lo que se llama el \"canal ocular-motor\", poniéndolo al servicio de representaciones pre-establecidas\r\rde esquemas almacenados en nuestra memoria como en una computadora: construimos y elaboramos"
     }
 ];
