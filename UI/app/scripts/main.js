@@ -7,9 +7,9 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'ejerciciosController',
         templateUrl:  'ejercicios.html'
     }).
-    when('/matricula/configuracion/', {
-        controller: 'configuracionMatriculaController',
-        templateUrl: viewBase + 'matricula/configuracion.html'
+    when('/musicas/', {
+        controller: 'musicasController',
+        templateUrl: 'musicas.html'
     }).
     when('/acceso/', {
         controller: 'loginController',
@@ -317,8 +317,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         }
     }).
     when('/', {
-        controller: 'homeController',
-        templateUrl: 'home.html'
+        redirectTo: '/ejercicios'
     }).
     otherwise({
         redirectTo: '/'
