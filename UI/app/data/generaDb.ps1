@@ -32,6 +32,6 @@ foreach ($check in $checks){
 db.$table  = $json ;
 "
     $jsName = $table + ".js"
-    set-Content  $jsName $js
+    set-Content  $jsName $js -Encoding UTF8 
 }
 

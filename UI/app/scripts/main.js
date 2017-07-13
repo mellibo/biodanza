@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', ['ui.grid', 'ui.grid.selection', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.cellNav', 'ui.grid.resizeColumns', 'ui.grid.autoResize', 'services', 'directives', 'ngRoute', 'ngAnimate', 'ngMessages', 'ui.bootstrap', 'toaster', 'loadingStatus', 'ui.select']);
+﻿var app = angular.module('app', ['ui.grid', 'ui.grid.selection', 'ui.grid.edit', 'ui.grid.rowEdit', 'ui.grid.cellNav', 'ui.grid.resizeColumns', 'ui.grid.autoResize', 'services', 'directives', 'ngRoute', 'ngAnimate', 'ngMessages', 'ngSanitize', 'ui.bootstrap', 'toaster', 'loadingStatus', 'ui.select']);
 var viewBase = 'file:///app/views/';
 
 app.config(['$routeProvider', function ($routeProvider) {
