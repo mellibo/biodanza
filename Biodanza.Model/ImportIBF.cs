@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,12 @@ namespace Biodanza.Model
 
         public string importarTodosEjercicios()
         {
+            var cmd = db.Database.Connection.CreateCommand();
+            cmd.CommandText =
+                @"  UPDATE Ejercicios SET Observaciones = REPLACE(Observaciones,'DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA','DANZAS DE SHIVA DE VISHNU Y DE BRAHMA')where Observaciones like '%DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA%'";
+            cmd.CommandType = CommandType.Text;
+            db.Database.Connection.Open();
+            cmd.ExecuteNonQuery();
             var ejercicios = db.Ejercicios.Where(x => x.Observaciones.StartsWith("IBF,"));
             var errores = new StringBuilder();
             foreach (var ejercicio in ejercicios)
@@ -36,6 +43,7 @@ namespace Biodanza.Model
         {
             var campos = ejercicio.Observaciones.Split(',');
             var musicas = campos[3].Split(';');
+            var result = new StringBuilder();
             foreach (var codMusica in musicas)
             {
                 if (string.IsNullOrEmpty(codMusica.Trim())) continue;
@@ -46,10 +54,14 @@ namespace Biodanza.Model
                 ejercicio.IdGrupo = db.GrupoEjercicios.First(x => x.Nombre == grupo).IdGrupo;
                 if (ejercicio.Musicas.Any(x => x.NroCd == cd && x.NroPista == pista && x.IdColeccion == idColeccionIbf)) continue;
                 var musica = db.Musicas.FirstOrDefault(x => x.NroCd == cd && x.NroPista == pista && x.IdColeccion == idColeccionIbf);
-                if (musica == null) return "Musica no encontrada: " + codMusica + "\r\n";
+                if (musica == null)
+                {
+                    result.AppendLine("Musica no encontrada: " + codMusica);
+                    continue;
+                }
                 ejercicio.Musicas.Add(musica);
             }
-            return null;
+            return result.ToString();
         }
 
         public Musica GetMusicaFromFilename(string filename)

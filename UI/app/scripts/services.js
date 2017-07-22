@@ -1,6 +1,6 @@
 ﻿var services = angular.module('services', []);
 
-services.factory('contextService',['$q', '$http', function ($q, $http) {
+services.factory('contextService', ['$q', '$localStorage', function ($q, $localStorage) {
     var context = {};
 
     function getStream(url ,params) {
@@ -25,6 +25,16 @@ services.factory('contextService',['$q', '$http', function ($q, $http) {
         return deferred.promise;
     };
 
+    context.config = function(cfg) {
+        if (typeof cfg == 'undefined') {
+            var config = $localStorage.biodanzaConfig;
+            if (config == null) {
+                config = { pathMusica:''}
+            }
+            return config;
+        }
+        $localStorage.biodanzaConfig = cfg;
+    };
 
     return context;
 }]);

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CommandLine;
 using CommandLine.Text;
 using NPOI.HSSF.UserModel;
@@ -114,14 +115,34 @@ namespace Biodanza.Model
             if (colFolder == null) return null;
 
             var files = Directory.GetFiles(colFolder, pista + "*");
-            if (files.Length == 1) return files[0].Substring(root.Length + 1);
+            if (files.Length == 1) return files[0].Substring(root.Length);
             if (!pista.StartsWith("0")) return null;
             files = Directory.GetFiles(colFolder, pista.Substring(1) + "*");
-            if (files.Length == 1) return files[0].Substring(root.Length + 1);
+            if (files.Length == 1) return files[0].Substring(root.Length);
             if (files.Length <= 1) return null;
             int i;
             var file = files.FirstOrDefault(x => !int.TryParse(x.Substring(1, 1), out i));
-            return file.Substring(root.Length + 1);
+            return file.Substring(root.Length);
+        }
+
+        public string UpdateCarpetaYArchivoEnDb(string root)
+        {
+            var ret =new StringBuilder();
+
+            var db = new BiodanzaEntities();
+
+            var musicas = db.Musicas.Where(x => x.IdColeccion == 1);
+            foreach (var musica in musicas)
+            {
+                var file = GetFileFromCD_Pista(root,
+                    musica.NroCd.ToString().PadLeft(2, '0') + "." + musica.NroPista.ToString().PadLeft(2, '0'));
+                var archivo = Path.GetFileName(file);
+                var carpeta = Path.GetDirectoryName(file);
+                musica.Archivo = archivo;
+                musica.Carpeta = carpeta;
+            }
+            db.SaveChanges();
+            return ret.ToString();
         }
     }
 }

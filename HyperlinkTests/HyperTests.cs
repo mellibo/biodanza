@@ -9,7 +9,7 @@ namespace HyperlinkTests
     [TestClass]
     public class HyperTests
     {
-        private const string root = @"D:\Google Drive\Biodanza\Musica\Buenos Aires\";
+        private const string root = @"D:\Google Drive\Biodanza\Musica\BsAs\";
 
         [TestMethod]
         public void GetFileFromCD_PistaString_2Digitos()
@@ -51,6 +51,17 @@ namespace HyperlinkTests
             //act
             bio.HyperLinks();
 
+            //assert
+        }
+
+        [TestMethod]
+        public void UpdateCarpetaYArchivo()
+        {
+            //arrange
+            var bio = new BioCol();
+
+            //act
+            bio.UpdateCarpetaYArchivoEnDb(@"D:\Google Drive\Biodanza\Musica\BsAs\");
             //assert
         }
     }

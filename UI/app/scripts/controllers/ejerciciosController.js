@@ -7,10 +7,14 @@
     $scope.model.ejercicio = {};
     $scope.model.grupo = 0;
     $scope.model.buscar = "";
-    $scope.model.pathMusica = 'D:\\Google Drive\\Biodanza\\Musica\\IBF\\';
+    if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica ==="") {
+        $location.path("/config");
+    }
+
+    $scope.model.pathMusica = contextService.config().pathMusica;
     $scope.model.playFile = function (musica) {
         $scope.musicaSeleccionada = musica;
-        $scope.musicaFile = $scope.model.pathMusica + musica.carpeta + '/' + musica.archivo;
+        $scope.musicaFile = $scope.model.pathMusica + musica.coleccion + "/" + musica.carpeta + '/' + musica.archivo;
     };
 
     $scope.filtrar = function(ejercicio) {
@@ -74,14 +78,24 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 't
     }
 }]);
 
-app.controller('musicasController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', function ($scope, $window, $location, toaster, contextService, $uibModal) {
+app.controller('musicasController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
     $scope.musicas = db.musicas;
+    $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
     $scope.musicaSeleccionada = {};
     $scope.model = {};
+    $scope.model.pathMusica = contextService.config().pathMusica;
     $scope.model.buscar = "";
-    $scope.model.pathMusica = 'D:\\Google Drive\\Biodanza\\Musica\\IBF\\';
     $scope.model.playFile = function (musica) {
         $scope.musicaSeleccionada = musica;
-        $scope.musicaFile = $scope.model.pathMusica + musica.carpeta + '/' + musica.archivo;
+        $scope.musicaFile = $scope.model.pathMusica + musica.coleccion + "/" + musica.carpeta + '/' + musica.archivo;
     };
+}]);
+
+app.controller('configController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
+    $scope.config = contextService.config();
+
+    $scope.grabar = function () {
+        if ($scope.config.pathMusica[$scope.config.pathMusica.length - 1] !== "/") $scope.config.pathMusica += "/";
+        contextService.config($scope.config);
+    }
 }]);
