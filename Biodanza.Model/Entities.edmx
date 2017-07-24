@@ -79,6 +79,20 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Biodanza.dbo.tempMusica' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tempMusica">
+          <Key>
+            <PropertyRef Name="NroCd" />
+            <PropertyRef Name="NroPista" />
+            <PropertyRef Name="Col" />
+            <PropertyRef Name="texto" />
+          </Key>
+          <Property Name="NroCd" Type="int" Nullable="false" />
+          <Property Name="NroPista" Type="int" Nullable="false" />
+          <Property Name="Col" Type="int" Nullable="false" />
+          <Property Name="texto" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Ejercicios_GrupoEjercicio">
           <End Role="GrupoEjercicio" Type="Self.GrupoEjercicio" Multiplicity="1" />
           <End Role="Ejercicios" Type="Self.Ejercicios" Multiplicity="*" />
@@ -135,6 +149,14 @@
           <EntitySet Name="Musica" EntityType="Self.Musica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MusicaEjercicio" EntityType="Self.MusicaEjercicio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempMusica" EntityType="Self.tempMusica" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tempMusica].[NroCd] AS [NroCd], 
+    [tempMusica].[NroPista] AS [NroPista], 
+    [tempMusica].[Col] AS [Col], 
+    [tempMusica].[texto] AS [texto]
+    FROM [dbo].[tempMusica] AS [tempMusica]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Ejercicios_GrupoEjercicio" Association="Self.FK_Ejercicios_GrupoEjercicio">
             <End Role="GrupoEjercicio" EntitySet="GrupoEjercicio" />
             <End Role="Ejercicios" EntitySet="Ejercicios" />
@@ -246,6 +268,7 @@
             <End Role="Musica" EntitySet="Musicas" />
           </AssociationSet>
           <EntitySet Name="Interpretes" EntityType="BiodanzaModel.Interprete" />
+          <EntitySet Name="tempMusicas" EntityType="BiodanzaModel.tempMusica" />
         </EntityContainer>
         <EntityType Name="sysdiagram">
           <Key>
@@ -275,6 +298,18 @@
           </Key>
           <Property Name="Interprete1" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="NombreCorrecto" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempMusica">
+          <Key>
+            <PropertyRef Name="NroCd" />
+            <PropertyRef Name="NroPista" />
+            <PropertyRef Name="Col" />
+            <PropertyRef Name="texto" />
+          </Key>
+          <Property Name="NroCd" Type="Int32" Nullable="false" />
+          <Property Name="NroPista" Type="Int32" Nullable="false" />
+          <Property Name="Col" Type="Int32" Nullable="false" />
+          <Property Name="texto" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -359,6 +394,16 @@
               <MappingFragment StoreEntitySet="Interpretes">
                 <ScalarProperty Name="NombreCorrecto" ColumnName="NombreCorrecto" />
                 <ScalarProperty Name="Interprete1" ColumnName="Interprete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempMusicas">
+            <EntityTypeMapping TypeName="BiodanzaModel.tempMusica">
+              <MappingFragment StoreEntitySet="tempMusica">
+                <ScalarProperty Name="texto" ColumnName="texto" />
+                <ScalarProperty Name="Col" ColumnName="Col" />
+                <ScalarProperty Name="NroPista" ColumnName="NroPista" />
+                <ScalarProperty Name="NroCd" ColumnName="NroCd" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,6 +14,7 @@
         <EntityTypeShape EntityType="BiodanzaModel.sysdiagram" Width="1.5" PointX="3.375" PointY="6.75" />
         <AssociationConnector Association="BiodanzaModel.FK_Musica_ColeccionMusica" />
         <EntityTypeShape EntityType="BiodanzaModel.Interprete" Width="1.5" PointX="9" PointY="3" />
+        <EntityTypeShape EntityType="BiodanzaModel.tempMusica" Width="1.5" PointX="5.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

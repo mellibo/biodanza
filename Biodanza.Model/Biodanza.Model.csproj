@@ -110,6 +110,9 @@
     <Compile Include="sysdiagram.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="tempMusica.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -31,5 +31,6 @@ namespace Biodanza.Model
         public virtual DbSet<Musica> Musicas { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Interprete> Interpretes { get; set; }
+        public virtual DbSet<tempMusica> tempMusicas { get; set; }
     }
 }

@@ -187,6 +187,63 @@ namespace Biodanza.Model
             return result.ToString();
         }
 
+        public string UpdateNombreInterprete()
+        {
+            var result = new StringBuilder();
+            var db =new BiodanzaEntities();
+            var list = db.tempMusicas;
+            foreach (var tempMusica in list)
+            {
+                var musica =
+                    db.Musicas.FirstOrDefault(
+                        x => x.NroCd == tempMusica.NroCd && x.NroPista == tempMusica.NroPista && x.IdColeccion == 3);
+                if (musica == null)
+                {
+                    result.AppendLine($"{tempMusica.NroCd};{tempMusica.NroPista}");
+                    continue;
+                }
+                var arr = tempMusica.texto.Split(';');
+                if (arr.Length < 4)
+                {
+                    result.AppendLine($"{tempMusica.NroCd};{tempMusica.NroPista};{tempMusica.texto}");
+                    continue;
+                }
+                musica.Nombre = arr[1].Trim();
+                if (arr[2].IndexOf("(") > -1)
+                {
+                    arr[2] = arr[2].Substring(0, arr[2].IndexOf("(") - 1);
+                }
+                musica.Interprete = arr[2].Trim();
+                TimeSpan ts;
+                if (TimeSpan.TryParse("00:" + arr[3], out ts))
+                {
+                    musica.Duracion = ts;
+                }
+            }
+            var musica1 = db.Musicas.First(x => x.NroCd == 15 && x.NroPista == 4 && x.IdColeccion == 3);
+            musica1.Nombre = "Oikan Ayns Bethlehem (Birth In Bethlehem)";
+            musica1.Interprete = "Christian, Emma";
+            musica1.Duracion = new TimeSpan(0,5,14);
+
+            musica1 = db.Musicas.First(x => x.NroCd == 16 && x.NroPista == 20 && x.IdColeccion == 3);
+            musica1.Nombre = "Andante - Sinfonia in Si bemolle Maggiore";
+            musica1.Interprete = "Salieri, Francesco";
+            musica1.Duracion = new TimeSpan(0,3,44);
+
+            musica1 = db.Musicas.First(x => x.NroCd == 18 && x.NroPista == 1 && x.IdColeccion == 3);
+            musica1.Nombre = "I wish you were here (parte 1)";
+            musica1.Interprete = "Pink Floyd";
+            musica1.Duracion = new TimeSpan(0,3,54);
+
+            musica1 = db.Musicas.First(x => x.NroCd == 18 && x.NroPista == 13 && x.IdColeccion == 3);
+            musica1.Nombre = "I wish you were here (parte 1)";
+            musica1.Interprete = "Pink Floyd";
+            musica1.Duracion = new TimeSpan(0,3,54);
+
+            db.SaveChanges();
+            return result.ToString();
+        }
+
         private IDictionary<string, string> GetInterpretes()
         {
             var ret = new Dictionary<string,string>();

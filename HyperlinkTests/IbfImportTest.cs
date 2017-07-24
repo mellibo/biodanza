@@ -251,5 +251,17 @@ Llevar al grupo hacia una activación final permitiendo un estado de conciencia c
             //assert
             Console.WriteLine(result);
         }
+
+        [TestMethod]
+        public void UpdateMusicaNombreInterprete()
+        {
+            //arrange
+
+            //act
+            var result = importIbf.UpdateNombreInterprete();
+
+            //assert
+            Console.WriteLine(result);
+        }
     }
 }
