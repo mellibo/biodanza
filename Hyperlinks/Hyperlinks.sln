@@ -15,19 +15,20 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UI", "..\UI\", "{7D7A8D6E-0
 		Debug.AspNetCompiler.VirtualPath = "/localhost_51442"
 		Debug.AspNetCompiler.PhysicalPath = "..\UI\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51442\"
-		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.Updateable = "false"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_51442"
 		Release.AspNetCompiler.PhysicalPath = "..\UI\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51442\"
-		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.Updateable = "false"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "51442"
 		SlnRelativePath = "..\UI\"
+		StartServerOnDebug = "false"
 	EndProjectSection
 EndProject
 Global

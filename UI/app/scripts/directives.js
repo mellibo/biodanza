@@ -1,4 +1,4 @@
-﻿var directives = angular.module('directives', ['services', 'ui.grid.autoResize', 'ui.grid.edit', 'ui.grid.selection', 'ui.bootstrap']);
+﻿var directives = angular.module('directives', ['services', 'ngTable', 'ui.grid.autoResize', 'ui.grid.edit', 'ui.grid.selection', 'ui.bootstrap']);
 
 
 directives.directive('uiSelectWrap', uiSelectWrap);
@@ -18,7 +18,7 @@ function uiSelectWrap($document, uiGridEditConstants) {
     };
 }
 
-directives.directive('cabredBuscarAlumno',['alumnoService', 'uiGridConstants', '$uibModal', function (alumnoService, uiGridConstants, $uibModal) {
+directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($uibModal, NgTableParams) {
     return {
         restrict: 'E'
         //, template: '<span ng-transclude></span><button type="button" style="float:right" ng-click="show()">...</button>'
@@ -26,7 +26,7 @@ directives.directive('cabredBuscarAlumno',['alumnoService', 'uiGridConstants', '
         //, transclude: true
         , scope: {
             selected: '='
-            , 'onSelectedAlumno': '&onSelectedAlumno'// se ejecuta antes de que se actualice el valor
+            , 'onSelectedMusica': '&onSelectedMusica'// se ejecuta antes de que se actualice el valor
         }
         , link: function(scope, element, attrs) {
             element.parent().bind('click', function () {
@@ -35,15 +35,16 @@ directives.directive('cabredBuscarAlumno',['alumnoService', 'uiGridConstants', '
                 scope.show();
             });
         }
-        , controller:['$scope', '$rootScope', function ($scope, $rootScope) {
+        , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                $scope.apellido = '';
-                $scope.selected = $scope.selected || { legajo: "" };
-                $scope.legajo = $scope.selected.legajo || '';
-                $scope.documento = '';
+                $scope.cancion= '';
+                $scope.selected = $scope.selected || { cancion: "" };
+                $scope.idMusica = 0;
+                $scope.interprete = '';
+                $scope.ejercicio = {}
                 var modalInstance = $uibModal.open({
-                    templateUrl: viewBase + 'popupBuscarAlumno.html'
-                                                    , controller: popupBuscarAlumnoInstance
+                    templateUrl: 'popupBuscarMusica.html'
+                                                    , controller: popupMusicaInstance
                                                     , size: 'lg'
                                                     , resolve: {
                                                         directiveScope: function () {
@@ -53,116 +54,63 @@ directives.directive('cabredBuscarAlumno',['alumnoService', 'uiGridConstants', '
                 });
                 modalInstance.result.then(function (selectedItem) {
                     $scope.selected = selectedItem;
-                    $rootScope.$broadcast('buscarAlumnoSelected', selectedItem);
-                    if ($scope.onSelectedAlumno()) $scope.onSelectedAlumno()(selectedItem); // se ejecuta antes de que se actualice el valor
+                    $rootScope.$broadcast('buscarMusicaSelected', selectedItem);
+                    if ($scope.onSelectedMusica()) $scope.onSelectedMusica()(selectedItem); // se ejecuta antes de que se actualice el valor
                 });
 
             };
 
-            var popupBuscarAlumnoInstance = ['$scope', 'alumnoService', '$uibModalInstance' , 'directiveScope', 'toaster', function ($scope, alumnoService, $uibModalInstance , directiveScope, toaster) {
+            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, toaster, NgTableParams) {
                 $scope.directiveScope = directiveScope;
-                $scope.data = [];
-                $scope.buscar = function (apellido, legajo, documento) {
-                    alumnoService.search(apellido, legajo, documento)
-                        .then(function(response) {
-                            if (response.data.ok) {
-                                $scope.data = response.data.list;
-                            } else {
-                                toaster.pop('error', 'Busca Alumno', 'Error: ' + response.data.mensaje);
-                            }
-                        });
+                $scope.musicas = db.musicas;
+
+                $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
+
+                $scope.musicaSeleccionada = {};
+
+                $scope.model = {};
+                $scope.model.select = true;
+                $scope.model.ok = function (musica) {
+                    $uibModalInstance.close(musica);
                 };
 
-                $scope.gridApi = {};
-
-                $scope.gridFocus = function() {
-                    $scope.gridOptions.selectRow(0, true);
-                    $(".ngViewport").focus();
-                };
-                
-                $scope.$watch('directiveScope.apellido', function () {
-                    if ($scope.directiveScope.apellido.length > 2) {
-                        $scope.buscar($scope.directiveScope.apellido, '', '');
-                    } else {
-                        $scope.data = [];
-                    }
-                });
-
-                $scope.$watch('directiveScope.legajo', function () {
-                    if ($scope.directiveScope.legajo.length > 2) {
-                        $scope.buscar('', $scope.directiveScope.legajo, '');
-                    } else {
-                        $scope.data = [];
-                    }
-                });
-
-                $scope.$watch('directiveScope.documento', function () {
-                    $scope.buscar('', '', $scope.directiveScope.documento);
-                    //if ($scope.directiveScope.documento.length > 2) {
-                    //} else {
-                    //    $scope.data = [];
-                    //}
-                });
-
-                $scope.aceptar = function () {
-                    if ($scope.gridApi.selection.getSelectedRows().length !== 1) return;
-                    $uibModalInstance.close($scope.gridApi.selection.getSelectedRows()[0]);
-                };
-
-                $scope.gridOptions = {
-                    data: 'data',
-                    selectionRowHeaderWidth: 35,
-                    enableFullRowSelection: true,
-                    enableRowSelection: true
-                    , enableColumnResizing: true
-                    , enableRowHeaderSelection: true
-                    , rowSelection: true
-                    , multiSelect: false
-                    , i18n: 'es'
-                    //, selectedItems: []
-                    , columnDefs: [
-                    { field: 'legajo', displayName: 'Legajo', width: '100' }
-                    , { field: 'carrera.carrera', displayName: 'Carrera', width: '150' }
-                    , { field: 'nombreCompleto', displayName: 'Nombre', width: '300' }
-                    , { field: 'documento', displayName: 'documento', width: '120' }
-                    ]
-                };
-
-                $scope.gridOptions.onRegisterApi = function (gridApi) {
-                    $scope.gridApi = gridApi;
-                };
 
                 $scope.cancel = function () {
-                    $uibModalInstance .dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             }];
         }]
     };
 }]);
 
-directives.directive('cabredBuscarCatedra',['catedraService', 'uiGridConstants', 'carreraService', '$log', '$uibModal', function (catedraService, uiGridConstants, carreraService, $log, $uibModal) {
+directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function ($uibModal, NgTableParams) {
     return {
         restrict: 'E'
+        //, template: '<span ng-transclude></span><button type="button" style="float:right" ng-click="show()">...</button>'
+        , replace: false
+        //, transclude: true
         , scope: {
             selected: '='
-            , 'onSelectedCatedra': '&onSelectedCatedra'
-            , vigente : "=soloVigentes"
-            , tipo : "=tipoCatedra"
+            , 'onSelectedEjercicio': '&onSelectedEjercicio'// se ejecuta antes de que se actualice el valor
         }
-        , link: function (scope, element, attrs) {
+        , link: function(scope, element, attrs) {
             element.parent().bind('click', function () {
+                //console.log(attrs);
+                //scope.selected = '=selected';
                 scope.show();
             });
         }
-        , controller:['$scope', '$rootScope', function ($scope, $rootScope) {
+        , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                $scope.carrera = { id: '21' };
-                $scope.turno = '';
-                $scope.division = '';
+                $scope.cancion= '';
+                $scope.selected = $scope.selected || { cancion: "" };
+                $scope.idMusica = 0;
+                $scope.interprete = '';
+                $scope.ejercicio = {}
                 var modalInstance = $uibModal.open({
-                                                    templateUrl: viewBase + 'popupBuscarCatedra.html'
-                                                    , controller: popupBuscarCatedraInstance
-                                                    ,size: 'lg'
+                    templateUrl: 'popupBuscarEjercicio.html'
+                                                    , controller: popupEjercicioInstance
+                                                    , size: 'lg'
                                                     , resolve: {
                                                         directiveScope: function () {
                                                             return $scope;
@@ -171,219 +119,77 @@ directives.directive('cabredBuscarCatedra',['catedraService', 'uiGridConstants',
                 });
                 modalInstance.result.then(function (selectedItem) {
                     $scope.selected = selectedItem;
-                    $rootScope.$broadcast('buscarCatedraSelected', selectedItem);
-                    if ($scope.onSelectedCatedra()) $scope.onSelectedCatedra()(selectedItem); // se ejecuta antes de que se actualice el valor
-                });
-
-            };
-
-            var popupBuscarCatedraInstance =['$scope', 'catedraService', '$uibModalInstance' , 'directiveScope', 'toaster', 'carreraService', function ($scope, catedraService, $uibModalInstance , directiveScope, toaster, carreraService) {
-                carreraService.all().then(function(data) {
-                    $scope.carreras = data.data;
-                    $scope.directiveScope.carrera = findByAttr($scope.carreras, 'id', directiveScope.carrera.id || '');
-                });
-                $scope.directiveScope = directiveScope;
-                //$scope.turno = directiveScope.turno || '';
-                //$scope.division = directiveScope.division || '';
-                $scope.turnos = ddlTurnosOptions;
-                $scope.divisiones = ddlDivisionesOptions;
-                $scope.data = [];
-                $scope.buscar = function (carrera, turno, division) {
-                    catedraService.search(carrera, turno, division, null, $scope.directiveScope.vigente, null, $scope.directiveScope.tipo)
-                        .then(function (response) {
-                            if (response.data.ok) {
-                                $scope.data = response.data.list;
-                            } else {
-                                toaster.pop('error', 'Busca Catedra', 'Error: ' + response.data.mensaje);
-                            }
-                        });
-                };
-
-                $scope.gridApi = {};
-
-                $scope.gridFocus = function () {
-                    $scope.gridOptions.selectRow(0, true);
-                    $(".ngViewport").focus();
-                };
-
-                $scope.$watch('directiveScope.carrera.id', function () {
-                    $scope.buscar($scope.directiveScope.carrera.id, $scope.directiveScope.turno, $scope.directiveScope.division);
-                });
-
-                $scope.$watch('directiveScope.turno', function () {
-                    $scope.buscar($scope.directiveScope.carrera.id, $scope.directiveScope.turno, $scope.directiveScope.division);
-                });
-
-                $scope.$watch('directiveScope.division', function () {
-                    $scope.buscar($scope.directiveScope.carrera.id, $scope.directiveScope.turno, $scope.directiveScope.division);
-                });
-
-                $scope.aceptar = function () {
-                    if ($scope.gridApi.selection.getSelectedRows().length !== 1) return;
-                    $uibModalInstance.close($scope.gridApi.selection.getSelectedRows()[0]);
-                };
-
-                $scope.gridOptions = {
-                    data: 'data',
-                    //showFooter: true
-                    selectionRowHeaderWidth: 35,
-                    enableFullRowSelection :true,
-                    enableRowSelection: true
-                    , enableColumnResizing: true
-                    ,enableRowHeaderSelection :true
-                    ,rowSelection : true
-                    , multiSelect: false
-                    //, enableColumnReordering: true
-                    //, enableColumnResize: true
-                    //, showColumnMenu: true
-                    //, showHeader: true
-                    //, showFilter: false
-                    //, selectedItems: []
-                    , columnDefs: [
-                    { field: 'id', displayName: 'Nro', width: '50' }
-                    , { field: 'carrera.carrera', displayName: 'Carrera', width: '100' }
-                    , { field: 'asignatura.nombre', displayName: 'Asignatura', width: '200' }
-                    , { field: 'turno', displayName: 'Turno', width: '55' }
-                    , { field: 'division', displayName: 'Div.', width: '50' }
-                    , { field: 'titular.apellido', displayName: 'Titular', width: '200', cellTemplate: '<div class="ngCellText">{{row.entity.titular.apellido + ", " + row.entity.titular.nombre}}</div>' }
-                    , { field: 'docenteActual.apellido', displayName: 'Docente Actual', width: '200', cellTemplate: '<div class="ngCellText">{{row.entity.docenteActual.apellido + ", " + row.entity.docenteActual.nombre}}</div>' }
-                    ]
-                };
-
-                $scope.gridOptions.onRegisterApi = function (gridApi) {
-                    $scope.gridApi = gridApi;
-                    gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-                        var msg = 'row selected ' + row.isSelected;
-                        $log.log(msg);
-                    });
-
-                    gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
-                        var msg = 'rows changed ' + rows.length;
-                        $log.log(msg);
-                    });
-                };
-
-                $scope.cancel = function () {
-                    $uibModalInstance .dismiss('cancel');
-                };
-            }];
-        }]
-    };
-}]);
-
-directives.directive('cabredBuscarAgente',['agenteService', '$uibModal', '$rootScope', function (agenteService, $uibModal, $rootScope) {
-    return {
-        restrict: 'E'
-        //, template: '<span ng-transclude></span><button type="button" style="float:right" ng-click="show()">...</button>'
-        , replace: true
-        //, transclude: true
-         , scope: {
-             selected: '='
-            , 'onSelectedAgente': '&onSelectedAgente'// se ejecuta antes de que se actualice el valor
-         }
-        , link: function (scope, element, attrs) {
-            element.parent().bind('click', function () {
-                scope.show();
-            });
-        }
-        , controller:['$scope', function ($scope) {
-            $scope.show = function () {
-                $scope.apellido = '';
-                $scope.nombre = '';
-                $scope.selected = $scope.selected || { documento : "" };
-                $scope.documento = $scope.selected.documento || "";
-                var modalInstance = $uibModal.open({
-                                                    templateUrl: viewBase + 'popupBuscarAgente.html'
-                                                    , controller: popupBuscarAgenteInstance
-                                                    ,size: 'lg'
-                                                    , resolve: {
-                                                        directiveScope: function () {
-                                                            return $scope;
-                                                        }
-                                                    }
-                });
-                modalInstance.result.then(function(selectedItem) {
-                    $scope.selected = selectedItem;
-                    //$scope.$apply();
-                    $rootScope.$broadcast('buscarAgenteSelected', selectedItem);
-                    if ($scope.onSelectedAgente()) $scope.onSelectedAgente()(selectedItem); // se ejecuta antes de que se actualice el valor
+                    $rootScope.$broadcast('buscarEjercicioSelected', selectedItem);
+                    if ($scope.onSelectedEjercicio()) $scope.onSelectedEjercicio()(selectedItem); // se ejecuta antes de que se actualice el valor
                 });
             };
 
-            var popupBuscarAgenteInstance =['$scope', 'agenteService', '$uibModalInstance' , 'directiveScope', 'toaster', function ($scope, agenteService, $uibModalInstance , directiveScope, toaster) {
+            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, toaster, NgTableParams) {
                 $scope.directiveScope = directiveScope;
-                $scope.data = [];
-                $scope.buscar = function (apellido, nombre, documento) {
-                    agenteService.find(apellido, nombre, documento)
-                        .then(function (response) {
-                            if (response.data.ok) {
-                                $scope.data = response.data.list;
-                            } else {
-                                toaster.pop('error', 'Busca Agente', 'Error: ' + response.data.mensaje);
-                            }
+                $scope.ejercicios = db.ejercicios;
+
+                $scope.tableParams = new NgTableParams({  }, { dataset: $scope.ejercicios });
+
+                $scope.ejercicioSeleccionado = {};
+
+                $scope.model = {};
+                $scope.model.select = true;
+                $scope.model.grupo = 0;
+                $scope.model.buscar = "";
+                $scope.filtrar = function (ejercicio) {
+                    if ($scope.model.grupo !== 0 && $scope.model.grupo !== ejercicio.idGrupo) return false;
+                    if ($scope.model.buscar === '') return true;
+                    var searchString = $scope.model.buscar.toUpperCase();
+                    if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
+                    if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
+                    var ok = false;
+                    angular.forEach(ejercicio.musicas,
+                        function (value) {
+                            if (ok) return;
+                            if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
+                            if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
                         });
+                    return ok;
                 };
 
-                $scope.gridApi = {};
+                $scope.filtrarMusica = function (musica, ejercicio) {
+                    if ($scope.model.buscar === '') return true;
+                    var searchString = $scope.model.buscar.toUpperCase();
+                    if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
+                    if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
 
-                $scope.gridFocus = function () {
-                    $scope.gridOptions.selectRow(0, true);
-                    $(".ngViewport").focus();
+                    if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
+                    if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
+                    return false;
+                }
+
+
+                $scope.mostrarEjercicio = function (ejercicio) {
+                    $scope.model.ejercicio = ejercicio;
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        ariaLabelledBy: 'modal-title',
+                        ariaDescribedBy: 'modal-body',
+                        templateUrl: 'modalEjercicio.html',
+                        controller: 'modalEjercicioController',
+                        size: 'lg',
+                        resolve: {
+                            model: function () {
+                                return $scope.model;
+                            }
+                        }
+                    });
+                }
+
+                $scope.model.ok = function (ejercicio) {
+                    $uibModalInstance.close(ejercicio);
                 };
 
-                $scope.$watch('directiveScope.apellido', function () {
-                    if ($scope.directiveScope.apellido.length > 2) {
-                        $scope.buscar($scope.directiveScope.apellido, '', '');
-                    } else {
-                        $scope.data = [];
-                    }
-                });
-
-                $scope.$watch('directiveScope.nombre', function () {
-                    if ($scope.directiveScope.nombre.length > 2) {
-                        $scope.buscar($scope.directiveScope.apellido, $scope.directiveScope.nombre, '');
-                    } else {
-                        $scope.data = [];
-                    }
-                });
-
-                $scope.$watch('directiveScope.documento', function () {
-                    $scope.buscar('', '', $scope.directiveScope.documento);
-                });
-
-
-                $scope.aceptar = function () {
-                    if ($scope.gridApi.selection.getSelectedRows().length !== 1) return;
-                    $uibModalInstance.close($scope.gridApi.selection.getSelectedRows()[0]);
-                };
-
-                $scope.gridOptions = {
-                    data: 'data',
-                    selectionRowHeaderWidth: 35,
-                    enableFullRowSelection: true,
-                    enableRowSelection: true
-                    , enableColumnResizing: true
-                    , enableRowHeaderSelection: true
-                    , rowSelection: true
-                    , multiSelect: false
-                    , columnDefs: [
-                        { field: 'id', displayName: 'Nro', width: '50' }
-                        , { field: 'apellido', displayName: 'Apellido', width: '200' }
-                        , { field: 'nombre', displayName: 'Nombre', width: '200' }
-                        , { field: 'documento', displayName: 'Documento', width: '100' }
-                        , { field: 'mail', displayName: 'Mail', width: '200' }
-                    ]
-                };
-
-                $scope.gridOptions.onRegisterApi = function (gridApi) {
-                    $scope.gridApi = gridApi;
-                };
 
                 $scope.cancel = function () {
-                    $uibModalInstance .dismiss('cancel');
+                    $uibModalInstance.dismiss('cancel');
                 };
             }];
-
         }]
     };
 }]);

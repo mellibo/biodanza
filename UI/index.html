@@ -25,7 +25,6 @@
     <script type="text/javascript" src="app/scripts/main.js"></script>
     <script type="text/javascript" src="app/scripts/filters.js"></script>
     <script type="text/javascript" src="app/scripts/controllers/ejerciciosController.js"></script>
-    <script type="text/javascript" src="app/scripts/controllers/headerController.js"></script>
     <script type="text/javascript" src="app/scripts/utils.js"></script>
     <script type="text/javascript" src="app/data/grupos.js"></script>
     <script type="text/javascript" src="app/data/ejercicios.js"></script>
@@ -55,6 +54,7 @@
                 <!--<li ><a href="/Equivalencias/Index">Equivalencias</a></li>-->
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
+                <li ng-class="{active:isActive('/clases')}"><a href="#clases">Clases</a></li>
                 <li ng-class="{active:isActive('/config')}"><a href="#config">Configuración</a></li>
                 <!--                  <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -73,17 +73,25 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
-    <div class="container">
-        <div class="row" style="margin-top: 50px;" >
-            <div loading-status-message style="position:fixed; display:none;">accediendo al servidor espere...</div>
-            <toaster-container toaster-options="{'time-out': 3000, 'close-button':true}"></toaster-container>
+    <div class="container" ng-controller="audioController">
+        <div class="row">
+            <br/>
+            <br/>
+            <br/>
+            <div class="col-sm-4">
+                <div class="form-group ">
+                    <audio controls id="myAudio" autoplay ng-src="{{musicaFile}}"></audio>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group ">
+                    <span>{{ musicaSeleccionada.coleccion + '-' + musicaSeleccionada.nroCd + '-' + musicaSeleccionada.nroPista + ' ' + musicaSeleccionada.nombre + '(' + musicaSeleccionada.interprete + ')' }}</span>
+                </div>
+            </div>
         </div>
         <div class="row" ng-view=""></div>
     </div>
 
-<script type="text/ng-template" id="home.html">
-    hola
-</script>
 <script type="text/ng-template" id="ejercicios.html">
     <div class="row">
         <form class="form-inline">
@@ -94,58 +102,10 @@
                 </div>
             </div>
             <div class="col-sm-9">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <label class="control-label" for="inputBuscar">Buscar: </label>
-                            <input id="inputBuscar" type="text" class="form-control" ng-model="model.buscar" />
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <audio controls id="myAudio" autoplay ng-src="{{musicaFile}}"></audio>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <span>{{ musicaSeleccionada.coleccion + '-' + musicaSeleccionada.nroCd + '-' + musicaSeleccionada.nroPista + ' ' + musicaSeleccionada.nombre + '(' + musicaSeleccionada.interprete + ')'  }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 form-group" style="height:80vh;overflow-y: scroll;">
-                        <table id="tblEjercicios" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
-                            <thead>
-                                <tr class="success">
-                                    <td class="col-md-6 col-lg-6 centrado">
-                                        <label id="lbl_Lider" >Ejercicio (Grupo)</label>
-                                    </td>
-                                    <td class="col-md-6 col-lg-6" >
-                                        <label id="lbl_MotivoAnulacion">Musicas</label>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr data-ng-repeat="ejercicio in ejercicios" data-ng-show="filtrar(ejercicio)">
-                                    <td >
-                                        <a data-ng-click="mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html"> {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
-                                    </td>
-                                    <td >
-                                        <div data-ng-repeat="musicaEj in ejercicio.musicas" data-ng-show="filtrarMusica(musicaEj, ejercicio)" >
-                                            <a ng-click="model.playFile(musicaEj)" >{{ musicaEj.coleccion + '-' + musicaEj.nroCd + '-' + musicaEj.nroPista + ' ' + musicaEj.nombre + '(' + musicaEj.interprete + ')'  }}</a>
-                                        </div> 
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div ng-include="'grillaEjercicios.html'" ></div>
             </div>
         </form>
     </div>
-</script>
-<script type="text/ng-template" id="login.html">
-    
 </script>
 <script type="text/ng-template" id="modalEjercicio.html">
     <div class="modal-content">
@@ -214,40 +174,41 @@
     </div>
     
 </script>
-<script type="text/ng-template" id="musicas.html">
+<script type="text/ng-template" id="grillaMusica.html">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="form-group col-sm-4">
-                <audio controls id="myAudio" autoplay ng-src="{{musicaFile}}"></audio>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <table id="tblEjercicio" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;" >
+        <table id="tblEjercicio" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
             <tr data-ng-repeat="musica in $data">
                 <td class="col-md-1 col-lg-1 " title="'Col.'" sortable="'coleccion'" filter="{coleccion: 'text'}">
-{{ musica.coleccion }}
+                    {{ musica.coleccion }}
                 </td>
                 <td class="col-md-1 col-lg-1 " title="'Identificador'" filter="{nroCd: 'number'}">
-{{ musica.nroCd + '-' + musica.nroPista  }}
+                    {{ musica.nroCd + '-' + musica.nroPista  }}
                 </td>
                 <td class="col-md-4 col-lg-4 " title="'Canción'" sortable="'nombre'" filter="{nombre: 'text'}">
-{{ musica.nombre }}
+                    <span ng-if="model.select !== true">{{ musica.nombre }}</span><a ng-if="model.select === true" ng-click="model.ok(musica)">{{ musica.nombre }}</a>
                 </td>
                 <td class="col-md-3 col-lg-3 " title="'Interprete'" sortable="'interprete'" filter="{interprete: 'text'}">
-{{ musica.interprete }}
+                    {{ musica.interprete }}
                 </td>
                 <td class="col-md-1 col-lg-1 " title="'Lineas'" sortable="'lineas'" filter="{lineas: 'text'}">
-{{ musica.lineas }}
+                    {{ musica.lineas }}
                 </td>
                 <td class="col-md-1 col-lg-1 " title="'Duración'" sortable="'duracion'">
-{{ musica.duracion }}
+                    {{ musica.duracion }}
                 </td>
-                <td class="col-md-3 col-lg-1" title="'play'">
+                <td class="col-md-1 col-lg-1" title="'play'">
                     <a ng-click="model.playFile(musica)">play</a>
+                </td>
+                <td class="col-md-1 col-lg-1" title="'sel'" ng-if="model.select === true">
+                    <a ng-if="model.select === true" ng-click="model.ok(musica)"><span ng-click="model.selected(musica)" class="glyphicon glyphicon-ok"></span></a>
                 </td>
             </tr>
         </table>
+    </div>
+</script>
+<script type="text/ng-template" id="musicas.html">
+    <div class="row">
+        <div ng-include="'grillaMusica.html'"></div>
     </div>
 </script>
 <script type="text/ng-template" id="config.html">
@@ -264,5 +225,148 @@
         </form>
     </div>
 </script>
+<script type="text/ng-template" id="clases.html">
+    <div class="row">
+        <form class="form-inline">
+            <button type="button" class="btn btn-sucess" ng-click="nueva()">Nueva Clase</button>
+            <table id="tblClases" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                <tr data-ng-repeat="clase in $data">
+                    <td class="col-md-2 col-lg-2 " title="'Título'" sortable="'titulo'" filter="{titulo: 'text'}">
+                        {{ clase.titulo }}
+                    </td>
+                    <td class="col-md-1 col-lg-1 " title="'Fecha Clase'" filter="{fechaClase: 'text'}">
+                        {{ clase.fechaClase  }}
+                    </td>
+                    <td class="col-md-5 col-lg-5 " title="'Ejercicios'" >
+                        {{ clase.ejercicios.length  }}
+                    </td>
+                    <td class="col-md-4 col-lg-4 " title="'Comentarios'" sortable="'comment'" filter="{comment: 'text'}">
+                        {{ clase.comentarios }}
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</script>
+<script type="text/ng-template" id="clase.html">
+    <div class="row">
+        <form class="form-inline">
+            <button type="button"class="btn btn-sucess" ><buscar-musica /> Musica</button>
+            <button type="button" class="btn btn-sucess" ng-click="cerrar()">Cerrar</button>
+            <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                <tr data-ng-repeat="ejercicio in clase.ejercicios">
+                    <td class="col-md-1 " title="'Nº'" >
+                        <div class="btn-group-vertical col-md-10">
+                            <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                            <button type="button" class="btn btn-success" ng-click="moveDown(ejercicio)"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                        </div>
+                        <div class="align-middle" >
+                            <label >{{ ejercicio.nro }}</label>
+                        </div>
+                    </td>
+                    <td class="col-md-3" title="'Ejercicio'">
+                        <div class="btn-group-vertical col-md-3">
+                            <button type="button" class="btn btn-primary"><buscar-ejercicio selected="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
+                            <button type="button" class="btn btn-danger" ng-click="deleteEjercicio(ejercicio)"><span class="glyphicon glyphicon-trash"></span></button>
+                        </div>
+                        <label class="col-md-9">{{ ejercicio.ejercicio.nombre }}</label>
+                    </td>
+                    <td class="col-md-2" title="'Música'">
+                        <div class="btn-group col-md-12">
+                            <button type="button" class="btn btn-primary"><buscar-musica selected="ejercicio.musica" /> <span class="glyphicon glyphicon-search"></span></button>
+                            <button type="button" class="btn btn-danger" ng-click="deleteMusica(ejercicio)"><span class="glyphicon glyphicon-trash"></span></button>
+                            <button type="button" class="btn btn-warning" ng-click="selectEj()"><span class="glyphicon glyphicon-play"></span></button>
+                        </div>
+                        <label class="col-md-12 ">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ')' }}</label>
+                        
+                    </td>
+                    <td class="col-md-3"  title="'Consigna'" >
+                        <div class="form-group col-md-12" style="height:100%;">
+                            <textarea class="form-control " rows="4" style="width:100%;height:auto !important;" ng-model="ejercicio.consigna"></textarea>
+                        </div>
+                    </td>
+                    <td class="col-md-3 " title="'Comentarios'">
+                        <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comenarios"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</script>
+<script type="text/ng-template" id="popupBuscarMusica.html">
+    <div>
+        <form name="form" ng-submit="submit()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Música</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div ng-include="'grillaMusica.html'"></div>
+                        </div>
+                    </div>
+               </div>
+           </div>
+        </form>
+    </div>    
+</script>
+<script type="text/ng-template" id="grillaEjercicios.html">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group ">
+                <label class="control-label" for="inputBuscar">Buscar: </label>
+                <input id="inputBuscar" type="text" class="form-control" ng-model="model.buscar" />
+            </div>
+        </div>
+        <div class="col-sm-12 form-group" style="height:80vh;overflow-y: scroll;">
+            <table id="tblEjercicios" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                <thead>
+                    <tr class="success">
+                        <td class="col-md-6 col-lg-6 centrado">
+                            <label id="lbl_Lider">Ejercicio (Grupo)</label>
+                        </td>
+                        <td class="col-md-6 col-lg-6">
+                            <label id="lbl_MotivoAnulacion">Musicas</label>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="ejercicio in ejercicios" data-ng-show="filtrar(ejercicio)">
+                        <td>
+                            <a data-ng-click="mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html"> {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
+                            <div ng-if="model.select === true"><button type="button" class="btn btn-success" ng-click="model.ok(ejercicio)">Seleccionar</button></div>
+                        </td>
+                        <td>
+                            <div data-ng-repeat="musicaEj in ejercicio.musicas" data-ng-show="filtrarMusica(musicaEj, ejercicio)">
+                                <a ng-click="model.playFile(musicaEj)">{{ musicaEj.coleccion + '-' + musicaEj.nroCd + '-' + musicaEj.nroPista + ' ' + musicaEj.nombre + '(' + musicaEj.interprete + ')'  }}</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        
+</script>
+<script type="text/ng-template" id="popupBuscarEjercicio.html">
+    <div>
+        <form name="form" ng-submit="submit()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Seleccionar Ejercicio</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div ng-include="'grillaEjercicios.html'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+
 </body>
 </html>

@@ -15,6 +15,14 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'configController',
         templateUrl: 'config.html'
     }).
+    when('/clases/', {
+        controller: 'clasesController',
+        templateUrl: 'clases.html'
+    }).
+    when('/clase/', {
+        controller: 'claseController',
+        templateUrl: 'clase.html'
+    }).
     when('/', {
         redirectTo: '/ejercicios'
     }).
