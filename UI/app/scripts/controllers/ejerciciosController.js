@@ -19,6 +19,7 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 't
 
 app.controller('musicasController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
     $scope.musicas = db.musicas;
+    $scope.ejercicios = db.ejercicios;
     $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
     $scope.musicaSeleccionada = {};
     $scope.model = {};
@@ -116,6 +117,7 @@ app.controller('headerController', ['$scope', '$rootScope', '$window', '$locatio
 
 app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', function ($scope, $rootScope, $window, $location, toaster, contextService) {
     $scope.play = function (musica) {
+        if (musica === null) return;
         $scope.musicaSeleccionada = musica;
         $scope.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
     }
