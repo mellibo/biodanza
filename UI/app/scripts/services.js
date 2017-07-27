@@ -15,7 +15,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', function
     };
 
     context.saveClases = function() {
-        $localStorage.biodanzaConfig = biodanzaClases;
+        $localStorage.biodanzaClases = biodanzaClases;
     }
     context.nuevoEjercicioClase = function(clase) {
         var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null });
@@ -31,6 +31,14 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', function
         biodanzaClases.unshift(clase);
         context.saveClases();
         return clase;
+    }
+
+    context.deleteClase = function (clase) {
+        var index = biodanzaClases.indexOf(clase);
+        if (index > -1) {
+            biodanzaClases.splice(index, 1);
+        }
+        context.saveClases();
     }
 
     context.ejercicioMoveUp = function (clase, ejercicio) {
@@ -81,6 +89,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', function
     context.clase = function(value) {
         if (typeof value == 'undefined') {
             var value = _clase;
+            if (value === null) return null;
             if (value == null) {
                 value = context.nuevaClase();
             }

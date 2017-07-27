@@ -162,7 +162,7 @@ directives.directive('arsoftConfirmation',['$uibModal', function ($uibModal) {
             $scope.onOk = function(){};
             $scope.open = function() {
                 var modalInstance = $uibModal.open({
-                    templateUrl: viewBase + 'dialog.html'
+                    templateUrl: 'dialog.html'
                     , controller: ModalInstanceCtrl
                     //size: 'sm',
                     ,resolve: {

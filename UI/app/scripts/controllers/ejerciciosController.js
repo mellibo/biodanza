@@ -46,13 +46,42 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'toaster',
         contextService.clase(contextService.nuevaClase());
         $location.path('/clase');
     }
+
+    $scope.delete = function (clase) {
+        contextService.deleteClase(clase);
+        $scope.tableParams.reload();
+        //$scope.clases = contextService.clases();
+    }
+
+    $scope.grabar = function() {
+        contextService.saveClases();
+    };
+
+    $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
+    $scope.editarClase = function(clase) {
+        contextService.clase(clase);
+        $location.path('/clase');
+    }
 }]);
 
 app.controller('claseController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
     $scope.clase = contextService.clase();
+
+    if (!$scope.clase) {
+        $location.path("/clases");
+        return;
+    }
+
+    $scope.mostrarEjercicio = contextService.modelEjercicios.mostrarEjercicio;
+
     $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
 
+    $scope.grabar = function () {
+        contextService.saveClases();
+    };
+    $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
 
+    
     $scope.moveUp = function (ejercicio) {
         contextService.ejercicioMoveUp($scope.clase, ejercicio);
     }
@@ -88,10 +117,8 @@ app.controller('headerController', ['$scope', '$rootScope', '$window', '$locatio
 app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', function ($scope, $rootScope, $window, $location, toaster, contextService) {
     $scope.play = function (musica) {
         $scope.musicaSeleccionada = musica;
-        $scope.musicaFile = $scope.pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
+        $scope.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
     }
-
-    $scope.pathMusica = contextService.config().pathMusica;
 
     contextService.playFn = $scope.play;
 
