@@ -124,71 +124,14 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                 });
             };
 
-            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, toaster, NgTableParams) {
+            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'contextService', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, contextService, toaster, NgTableParams) {
                 $scope.directiveScope = directiveScope;
-                $scope.ejercicios = db.ejercicios;
-
-                $scope.tableParams = new NgTableParams({  }, { dataset: $scope.ejercicios });
-
-                $scope.ejercicioSeleccionado = {};
-
-                $scope.model = {};
-                $scope.model.select = true;
-                $scope.model.grupo = 0;
-                $scope.model.buscar = "";
-                $scope.filtrar = function (ejercicio) {
-                    if ($scope.model.grupo !== 0 && $scope.model.grupo !== ejercicio.idGrupo) return false;
-                    if ($scope.model.buscar === '') return true;
-                    var searchString = $scope.model.buscar.toUpperCase();
-                    if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-                    if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-                    var ok = false;
-                    angular.forEach(ejercicio.musicas,
-                        function (value) {
-                            if (ok) return;
-                            if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                            if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
-                        });
-                    return ok;
-                };
-
-                $scope.filtrarMusica = function (musica, ejercicio) {
-                    if ($scope.model.buscar === '') return true;
-                    var searchString = $scope.model.buscar.toUpperCase();
-                    if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-                    if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-
-                    if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
-                    if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
-                    return false;
-                }
 
 
-                $scope.mostrarEjercicio = function (ejercicio) {
-                    $scope.model.ejercicio = ejercicio;
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        ariaLabelledBy: 'modal-title',
-                        ariaDescribedBy: 'modal-body',
-                        templateUrl: 'modalEjercicio.html',
-                        controller: 'modalEjercicioController',
-                        size: 'lg',
-                        resolve: {
-                            model: function () {
-                                return $scope.model;
-                            }
-                        }
-                    });
-                }
+                $scope.modelEjercicios = contextService.modelEjercicios;
+                $scope.modelEjercicios.select = true;
+                $scope.modelEjercicios.$uibModalInstance = $uibModalInstance;
 
-                $scope.model.ok = function (ejercicio) {
-                    $uibModalInstance.close(ejercicio);
-                };
-
-
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
             }];
         }]
     };

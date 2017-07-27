@@ -1,64 +1,8 @@
 ﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', '$uibModal', function ($scope, $rootScope, $window, $location, toaster, contextService, $uibModal) {
-    $scope.grupos = db.grupos;
-    $scope.ejercicios = db.ejercicios;
-    $scope.musicas = db.musicas;
-    $scope.musicaSeleccionada = {};
-    $scope.model = {};
-    $scope.model.ejercicio = {};
-    $scope.model.grupo = 0;
-    $scope.model.buscar = "";
-    if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica ==="") {
+    $scope.modelEjercicios = contextService.modelEjercicios;
+
+    if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica === "") {
         $location.path("/config");
-    }
-
-    $scope.model.pathMusica = contextService.config().pathMusica;
-    $scope.model.playFile = function (musica) {
-        contextService.play(musica);
-    };
-
-    $scope.filtrar = function(ejercicio) {
-        if ($scope.model.grupo !== 0 && $scope.model.grupo !== ejercicio.idGrupo) return false;
-        if ($scope.model.buscar === '') return true;
-        var searchString = $scope.model.buscar.toUpperCase();
-        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-        var ok = false;
-        angular.forEach(ejercicio.musicas,
-            function(value) {
-                if (ok) return;
-                if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
-            });
-        return ok;
-    };
-
-    $scope.filtrarMusica = function (musica, ejercicio) {
-        if ($scope.model.buscar === '') return true;
-        var searchString = $scope.model.buscar.toUpperCase();
-        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-
-        if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
-        if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
-        return false;
-    }
-
-
-    $scope.mostrarEjercicio = function (ejercicio) {
-        $scope.model.ejercicio = ejercicio;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'modalEjercicio.html',
-            controller: 'modalEjercicioController',
-            size: 'lg',
-            resolve: {
-                model: function () {
-                    return $scope.model;
-                }
-            }
-        });
     }
 }]);
 
@@ -117,12 +61,16 @@ app.controller('claseController', ['$scope', '$window', '$location', 'toaster', 
         contextService.ejercicioMoveDown($scope.clase, ejercicio);
     }
 
+    $scope.playFile = function (musica) {
+        contextService.play(musica);
+    };
+
     $scope.deleteEjercicio = function (ejercicio) {
-        ejercicio.ejercicio = null;
+        contextService.deleteEjercicio(ejercicio);
     }
 
     $scope.deleteMusica = function (ejercicio) {
-        ejercicio.musica = null;
+        contextService.deleteMusica(ejercicio);
     }
 
     $scope.cerrar = function () {
