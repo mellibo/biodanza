@@ -1,4 +1,4 @@
-﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', '$uibModal', function ($scope, $rootScope, $window, $location, toaster, contextService, $uibModal) {
+﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'contextService', '$uibModal', function ($scope, $rootScope, $window, $location, contextService, $uibModal) {
     $scope.modelEjercicios = contextService.modelEjercicios;
 
     if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica === "") {
@@ -6,7 +6,7 @@
     }
 }]);
 
-app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModalInstance', 'model', function ($scope, $window, $location, toaster, contextService, $uibModalInstance, model) {
+app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'contextService', '$uibModalInstance', 'model', function ($scope, $window, $location, contextService, $uibModalInstance, model) {
     $scope.ejercicio = model.ejercicio;
     $scope.model = model;
     $scope.playMusica = function(musica) {
@@ -17,10 +17,56 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 't
     }
 }]);
 
-app.controller('musicasController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
+app.controller('musicasController', ['$scope', '$filter', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $filter, $location, contextService, $uibModal, NgTableParams) {
     $scope.musicas = db.musicas;
+    $scope.data = db.musicas;
     $scope.ejercicios = db.ejercicios;
-    $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
+    $scope.model = { selectedEjercicio : "" };
+    $scope.ejerciciosNombre = [];
+    angular.forEach(db.ejercicios, function(value) {
+        $scope.ejerciciosNombre.push(value.nombre);
+    });
+
+    $scope.refreshGrid = function () {
+         $scope.tableParams.reload();
+    };
+
+    $scope.tableParams = new NgTableParams({ count: 15 },
+    {
+        total: $scope.musicas.length,
+        getData: function (params) {
+            // use build-in angular filter
+            var orderedData = params.sorting ?
+                    $filter('orderBy')($scope.data, params.orderBy()) :
+                    $scope.data;
+            orderedData = params.filter ?
+                    $filter('filter')(orderedData, params.filter()) :
+                    orderedData;
+            if ($scope.model.selectedEjercicio) {
+                var arrEjs = $filter('filter')(db.ejercicios, { nombre: $scope.model.selectedEjercicio });
+                var arrFiltrado = [];
+                for (var i = 0; i < arrEjs.length; i++) {
+                    var eje = arrEjs[i];
+                    var filtroMusicas = eje.musicas;
+                    var arrEjMusica = $filter('filter')(orderedData,
+                        function (value, index, array) {
+                            var fil = $filter('filter')(filtroMusicas,
+                                { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista }, true);
+                            //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
+                            if (typeof fil === "undefined") return false;
+                            return fil.length === 1;;
+                        });
+                    angular.extend(arrFiltrado, arrEjMusica);
+                    console.log(arrFiltrado);
+                }
+                orderedData = arrFiltrado;
+            }
+            $scope.musicas = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+
+            params.total(orderedData.length); // set total for recalc pagination
+            return $scope.musicas;
+        }
+    });
     $scope.musicaSeleccionada = {};
     $scope.model = {};
     $scope.model.pathMusica = contextService.config().pathMusica;
@@ -30,7 +76,7 @@ app.controller('musicasController', ['$scope', '$window', '$location', 'toaster'
     };
 }]);
 
-app.controller('configController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
+app.controller('configController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
     $scope.config = contextService.config();
 
     $scope.grabar = function () {
@@ -39,7 +85,7 @@ app.controller('configController', ['$scope', '$window', '$location', 'toaster',
     }
 }]);
 
-app.controller('clasesController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
+app.controller('clasesController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
     $scope.clases = contextService.clases();
     $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
 
@@ -65,7 +111,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'toaster',
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'toaster', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, toaster, contextService, $uibModal, NgTableParams) {
+app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
     $scope.clase = contextService.clase();
 
     if (!$scope.clase) {
@@ -108,14 +154,14 @@ app.controller('claseController', ['$scope', '$window', '$location', 'toaster', 
     }
 }]);
 
-app.controller('headerController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', function ($scope, $rootScope, $window, $location, toaster, contextService) {
+app.controller('headerController', ['$scope', '$rootScope', '$window', '$location', 'contextService', function ($scope, $rootScope, $window, $location, contextService) {
     $scope.isActive = function (route) {
         $scope.usuario = contextService.usuario;
         return $location.path().startsWith(route);
     };
 }]);
 
-app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'toaster', 'contextService', function ($scope, $rootScope, $window, $location, toaster, contextService) {
+app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'contextService', function ($scope, $rootScope, $window, $location, contextService) {
     $scope.play = function (musica) {
         if (musica === null) return;
         $scope.musicaSeleccionada = musica;

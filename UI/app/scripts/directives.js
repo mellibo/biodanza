@@ -1,22 +1,4 @@
-﻿var directives = angular.module('directives', ['services', 'ngTable', 'ui.grid.autoResize', 'ui.grid.edit', 'ui.grid.selection', 'ui.bootstrap']);
-
-
-directives.directive('uiSelectWrap', uiSelectWrap);
-
-uiSelectWrap.$inject = ['$document', 'uiGridEditConstants'];
-
-function uiSelectWrap($document, uiGridEditConstants) {
-    return function link($scope, $elm, $attr) {
-        $document.on('click', docClick);
-
-        function docClick(evt) {
-            if ($(evt.target).closest('.ui-select-container').size() === 0) {
-                $scope.$emit(uiGridEditConstants.events.END_CELL_EDIT);
-                $document.off('click', docClick);
-            }
-        }
-    };
-}
+﻿var directives = angular.module('directives', ['services', 'ngTable']);
 
 directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($uibModal, NgTableParams) {
     return {
@@ -60,10 +42,11 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 
             };
 
-            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, toaster, NgTableParams) {
+            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, NgTableParams) {
                 $scope.directiveScope = directiveScope;
                 $scope.musicas = db.musicas;
-
+                $scope.ejercicios = db.ejercicios;
+                $scope.selectedEjercicio = {};
                 $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
 
                 $scope.musicaSeleccionada = {};
@@ -124,9 +107,12 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                 });
             };
 
-            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'contextService', 'toaster', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, contextService, toaster, NgTableParams) {
+            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'contextService', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, contextService, NgTableParams) {
                 $scope.directiveScope = directiveScope;
 
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
 
                 $scope.modelEjercicios = contextService.modelEjercicios;
                 $scope.modelEjercicios.select = true;
@@ -209,72 +195,3 @@ directives.directive('ngEnter', [function () {
     };
 }]);
 
-/*
-directives.directive('ngBlur', function () {
-    return function (scope, elem, attrs) {
-        elem.bind('blur', function () {
-            scope.$apply(attrs.ngBlur);
-        });
-    };
-});
-*/
-directives.directive('fileDownload', function () {
-    return {
-        restrict: 'AE',
-        scope: {
-            fileDownload: '=',
-            fileName: '=',
-        },
-
-        link: function (scope, elem, atrs) {
-
-
-            scope.$watch('fileDownload', function (newValue, oldValue) {
-
-                if (newValue != undefined && newValue != null) {
-                    console.debug('Downloading a new file');
-                    var isFirefox = typeof InstallTrigger !== 'undefined';
-                    var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-                    var isIE = /*@cc_on!@*/false || !!document.documentMode;
-                    var isEdge = !isIE && !!window.StyleMedia;
-                    var isChrome = !!window.chrome && !!window.chrome.webstore;
-                    var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-                    var isBlink = (isChrome || isOpera) && !!window.CSS;
-
-                    if (isFirefox || isIE || isChrome) {
-                        if (isChrome) {
-                            console.log('Manage Google Chrome download');
-                            var url = window.URL || window.webkitURL;
-                            var fileURL = url.createObjectURL(scope.fileDownload);
-                            var downloadLink = angular.element('<a></a>');//create a new  <a> tag element
-                            downloadLink.attr('href', fileURL);
-                            downloadLink.attr('download', scope.fileName);
-                            downloadLink.attr('target', '_self');
-                            downloadLink[0].click();//call click function
-                            url.revokeObjectURL(fileURL);//revoke the object from URL
-                        }
-                        if (isIE) {
-                            console.log('Manage IE download>10');
-                            window.navigator.msSaveOrOpenBlob(scope.fileDownload, scope.fileName);
-                        }
-                        if (isFirefox) {
-                            console.log('Manage Mozilla Firefox download');
-                            var url = window.URL || window.webkitURL;
-                            var fileURL = url.createObjectURL(scope.fileDownload);
-                            var a = elem[0];//recover the <a> tag from directive
-                            a.href = fileURL;
-                            a.download = scope.fileName;
-                            a.target = '_self';
-                            a.click();//we call click function
-                        }
-
-
-                    } else {
-                        alert('SORRY YOUR BROWSER IS NOT COMPATIBLE');
-                    }
-                }
-            });
-
-        }
-    }
-})
