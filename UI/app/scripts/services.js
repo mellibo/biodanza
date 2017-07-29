@@ -18,7 +18,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         $localStorage.biodanzaClases = biodanzaClases;
     }
     context.nuevoEjercicioClase = function(clase) {
-        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null });
+        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, titulo:"" });
         clase.ejercicios.push(ej);
         context.saveClases();
     }
@@ -50,6 +50,17 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         clase.ejercicios[nro - 2].nro = nro - 1;
         clase.ejercicios[nro - 1].nro = nro;
         context.saveClases();
+    }
+
+    context.deleteEjercicioClase = function (clase, ejercicio) {
+        if (ejercicio.nro === 1) return;
+        var index = clase.ejercicios.indexOf(ejercicio);
+        if (index > -1) {
+            clase.ejercicios.splice(index, 1);
+        }
+        for (var i = index; i < clase.ejercicios.length; i++) {
+            clase.ejercicios[i].nro = i + 1;
+        }
     }
 
     context.ejercicioMoveDown = function (clase, ejercicio) {
@@ -85,18 +96,18 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
     //context.clases();
 
-    var _clase = null;
-    context.clase = function(value) {
-        if (typeof value == 'undefined') {
-            var value = _clase;
-            if (value === null) return null;
-            if (value == null) {
-                value = context.nuevaClase();
-            }
-            return value;
-        }
-        _clase = value;
-    };
+    //var _clase = null;
+    //context.clase = function(value) {
+    //    if (typeof value == 'undefined') {
+    //        var value = _clase;
+    //        if (value === null) return null;
+    //        if (value == null) {
+    //            value = context.nuevaClase();
+    //        }
+    //        return value;
+    //    }
+    //    _clase = value;
+    //};
 
     context.playFn = null;
     context.play = function(musica) {

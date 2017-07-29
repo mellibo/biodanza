@@ -18,10 +18,17 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'clasesController',
         templateUrl: 'clases.html'
     }).
-    when('/clase/', {
+    when('/clase/:id', {
         controller: 'claseController',
         templateUrl: 'clase.html'
-    }).
+        ,resolve: {
+                id: [
+                    '$route', function($route) {
+                        return $route.current.params.id;
+                    }
+                ]
+            }
+        }).
     when('/', {
         redirectTo: '/ejercicios'
     }).

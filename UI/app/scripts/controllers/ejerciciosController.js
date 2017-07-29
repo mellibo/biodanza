@@ -35,8 +35,8 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
 
     $scope.nueva = function () {
-        contextService.clase(contextService.nuevaClase());
-        $location.path('/clase');
+        contextService.nuevaClase();
+        $location.path('/clase/0');
     }
 
     $scope.delete = function (clase) {
@@ -51,18 +51,24 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
 
     $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
     $scope.editarClase = function(clase) {
-        contextService.clase(clase);
-        $location.path('/clase');
+        var index = $scope.clases.indexOf(clase);
+        if (index > -1) {
+            $location.path('/clase/' + index);
+        }
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
-    $scope.clase = contextService.clase();
+app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id) {
+    $scope.clase = contextService.clases()[id];
 
     if (!$scope.clase) {
         $location.path("/clases");
         return;
     }
+
+    //angular.forEach($scope.clase.ejercicios, function (ej) {
+    //    ej.titulo = "";
+    //});
 
     $scope.mostrarEjercicio = contextService.modelEjercicios.mostrarEjercicio;
 
@@ -73,6 +79,14 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     };
     $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
 
+    
+    $scope.nuevoEjercicio = function () {
+        contextService.nuevoEjercicioClase($scope.clase);
+    }
+    
+    $scope.deleteEjercicioClase = function (ejercicio) {
+        contextService.deleteEjercicioClase($scope.clase, ejercicio);
+    }
     
     $scope.moveUp = function (ejercicio) {
         contextService.ejercicioMoveUp($scope.clase, ejercicio);
