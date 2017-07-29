@@ -18,62 +18,7 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'c
 }]);
 
 app.controller('musicasController', ['$scope', '$filter', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $filter, $location, contextService, $uibModal, NgTableParams) {
-    $scope.musicas = db.musicas;
-    $scope.data = db.musicas;
-    $scope.ejercicios = db.ejercicios;
-    $scope.model = { selectedEjercicio : "" };
-    $scope.ejerciciosNombre = [];
-    angular.forEach(db.ejercicios, function(value) {
-        $scope.ejerciciosNombre.push(value.nombre);
-    });
-
-    $scope.refreshGrid = function () {
-         $scope.tableParams.reload();
-    };
-
-    $scope.tableParams = new NgTableParams({ count: 15 },
-    {
-        total: $scope.musicas.length,
-        getData: function (params) {
-            // use build-in angular filter
-            var orderedData = params.sorting ?
-                    $filter('orderBy')($scope.data, params.orderBy()) :
-                    $scope.data;
-            orderedData = params.filter ?
-                    $filter('filter')(orderedData, params.filter()) :
-                    orderedData;
-            if ($scope.model.selectedEjercicio) {
-                var arrEjs = $filter('filter')(db.ejercicios, { nombre: $scope.model.selectedEjercicio });
-                var arrFiltrado = [];
-                for (var i = 0; i < arrEjs.length; i++) {
-                    var eje = arrEjs[i];
-                    var filtroMusicas = eje.musicas;
-                    var arrEjMusica = $filter('filter')(orderedData,
-                        function (value, index, array) {
-                            var fil = $filter('filter')(filtroMusicas,
-                                { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista }, true);
-                            //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
-                            if (typeof fil === "undefined") return false;
-                            return fil.length === 1;;
-                        });
-                    angular.extend(arrFiltrado, arrEjMusica);
-                    console.log(arrFiltrado);
-                }
-                orderedData = arrFiltrado;
-            }
-            $scope.musicas = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
-
-            params.total(orderedData.length); // set total for recalc pagination
-            return $scope.musicas;
-        }
-    });
-    $scope.musicaSeleccionada = {};
-    $scope.model = {};
-    $scope.model.pathMusica = contextService.config().pathMusica;
-    $scope.model.buscar = "";
-    $scope.model.playFile = function (musica) {
-        contextService.play(musica);
-    };
+    $scope.modelMusicas = contextService.modelMusicas;
 }]);
 
 app.controller('configController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {

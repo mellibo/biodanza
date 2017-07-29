@@ -42,25 +42,12 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 
             };
 
-            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, NgTableParams) {
+            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', 'contextService', function ($scope, $uibModalInstance, directiveScope, NgTableParams, contextService) {
                 $scope.directiveScope = directiveScope;
-                $scope.musicas = db.musicas;
-                $scope.ejercicios = db.ejercicios;
-                $scope.selectedEjercicio = {};
-                $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.musicas });
 
-                $scope.musicaSeleccionada = {};
-
-                $scope.model = {};
-                $scope.model.select = true;
-                $scope.model.ok = function (musica) {
-                    $uibModalInstance.close(musica);
-                };
-
-
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
+                $scope.modelMusicas = contextService.modelMusicas;
+                $scope.modelMusicas.select = true;
+                $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];
         }]
     };

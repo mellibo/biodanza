@@ -1,6 +1,6 @@
 ﻿var services = angular.module('services', []);
 
-services.factory('contextService', ['$q', '$localStorage', '$uibModal', function ($q, $localStorage, $uibModal) {
+services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', function ($q, $localStorage, $uibModal, NgTableParams, $filter) {
     var context = {};
 
     context.config = function(cfg) {
@@ -183,6 +183,65 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', function
         });
     }
 
+    context.modelMusicas = {
+        ejercicios: db.ejercicios,
+        selectedEjercicio: "",
+        ejerciciosNombre: [],
+        refreshGrid: function () {
+            context.modelMusicas.tableParams.reload();
+        },
+        select: false,
+        $uibModalInstance : null,
+        ok : function (musica) {
+            context.modelMusicas.$uibModalInstance.close(musica);
+        },
+        cancel : function () {
+            context.modelMusicas.$uibModalInstance.dismiss('cancel');
+        },
+        tableParams: new NgTableParams({ count: 15 },
+        {
+            total: db.musicas.length,
+            getData: function (params) {
+                // use build-in angular filter
+                var orderedData = params.sorting ? $filter('orderBy')(db.musicas, params.orderBy()) : db.musicas;
+                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                if (context.modelMusicas.selectedEjercicio) {
+                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: context.modelMusicas.selectedEjercicio });
+                    var arrFiltrado = [];
+                    for (var i = 0; i < arrEjs.length; i++) {
+                        var eje = arrEjs[i];
+                        var filtroMusicas = eje.musicas;
+                        var arrEjMusica = $filter('filter')(orderedData,
+                            function (value, index, array) {
+                                var fil = $filter('filter')(filtroMusicas,
+                                    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
+                                    true);
+                                //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
+                                if (typeof fil === "undefined") return false;
+                                return fil.length === 1;;
+                            });
+                        angular.extend(arrFiltrado, arrEjMusica);
+                    }
+                    orderedData = arrFiltrado;
+                }
+                var musicas = orderedData.slice((params
+                        .page() -
+                        1) *
+                    params.count(),
+                    params.page() * params.count());
+
+                params.total(orderedData.length); // set total for recalc pagination
+                return musicas;
+            }
+        }),
+        musicaSeleccionada: {},
+        playFile: function (musica) {
+            context.play(musica);
+        }
+    };
+    angular.forEach(db.ejercicios, function (value) {
+        context.modelMusicas.ejerciciosNombre.push(value.nombre);
+    });
 
     return context;
 }]);
