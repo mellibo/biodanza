@@ -79,7 +79,7 @@
             <br/>
             <div class="col-sm-4">
                 <div class="form-group ">
-                    <audio controls id="myAudio" autoplay ng-src="{{musicaFile}}"></audio>
+                    <audio controls id="audioControl" autoplay ng-src="{{musicaFile}}"></audio>
                 </div>
             </div>
             <div class="col-sm-4">
@@ -171,7 +171,7 @@
             <label class="form-label">Ejercicio:</label>
             <input type="text" ng-model="modelMusicas.selectedEjercicio" ng-blur="modelMusicas.refreshGrid()" uib-typeahead="nombre for nombre in modelMusicas.ejerciciosNombre | filter:$viewValue | limitTo:15" class="form-control  input-md input-search" style="width:350px;">
         </div>
-        <table id="tblEjercicio" ng-table="modelMusicas.tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+        <table id="tblMusicas" ng-table="modelMusicas.tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
             <tr data-ng-repeat="musica in $data">
                 <td class="col-md-1 col-lg-1 " title="'Col.'" sortable="'coleccion'" filter="{coleccion: 'text'}">
                     {{ musica.coleccion }}
@@ -346,7 +346,7 @@
             <i class="glyphicon glyphicon-chevron-left"></i>
         </button>
         <div ng-repeat="option in modelEjercicios.grupos track by $index">
-            <input type="radio" name="grupos" ng-value="option.idGrupo" ng-model="modelEjercicios.grupo" />
+            <input type="radio" name="grupos" ng-value="option.idGrupo" ng-change="modelEjercicios.refreshGrid()" ng-model="modelEjercicios.grupo" />
             <span>{{ option.nombre }}</span>
         </div>
     </div>
@@ -358,11 +358,11 @@
             <div class="col-sm-4">
                 <div class="form-group ">
                     <label class="control-label" for="inputBuscar">Buscar: </label>
-                    <input id="inputBuscar" type="text" class="form-control" ng-model="modelEjercicios.buscar" />
+                    <input id="inputBuscar" type="text" ng-change="modelEjercicios.refreshGrid()" class="form-control" ng-model="modelEjercicios.buscar" />
                 </div>
             </div>
             <div class="col-sm-12 form-group" >
-                <table id="tblEjercicios" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                <table id="tblEjercicios" ng-table="modelEjercicios.tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
                     <thead>
                         <tr class="success">
                             <td class="col-md-6 col-lg-6 centrado">
@@ -374,7 +374,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-ng-repeat="ejercicio in modelEjercicios.ejercicios" data-ng-show="modelEjercicios.filtrar(ejercicio)">
+                        <tr data-ng-repeat="ejercicio in $data" >
                             <td>
                                 <a data-ng-click="modelEjercicios.mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html"> {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
                                 <div ng-if="modelEjercicios.select === true"><button type="button" class="btn btn-success" ng-click="modelEjercicios.ok(ejercicio)">Seleccionar</button></div>

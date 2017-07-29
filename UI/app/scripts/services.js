@@ -103,10 +103,50 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         this.playFn(musica);
     };
 
-    context.modelEjercicios = {};
+    context.modelEjercicios = {
+        refreshGrid: function () {
+            context.modelEjercicios.tableParams.reload();
+        },
+        tableParams: new NgTableParams({ count: 15 },
+        {
+            total: db.ejercicios.length,
+            getData: function (params) {
+                // use build-in angular filter
+                var orderedData = params.sorting ? $filter('orderBy')(db.ejercicios, params.orderBy()) : db.ejercicios;
+                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                if (context.modelEjercicios.buscar !== "" || context.modelEjercicios.grupo !== 0) {
+                    orderedData = $filter('filter')(orderedData,
+                        function(ejercicio, index, array) {
+                            if (context.modelEjercicios.grupo !== 0 &&
+                                context.modelEjercicios.grupo !== ejercicio.idGrupo) return false;
+                            if (context.modelEjercicios.buscar === '') return true;
+                            var searchString = context.modelEjercicios.buscar.toUpperCase();
+                            if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
+                            if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
+                            var ok = false;
+                            angular.forEach(ejercicio.musicas,
+                                function(value) {
+                                    if (ok) return;
+                                    if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                    if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                });
+                            return ok;
+                        });
+                }
+                var ejercicios = orderedData.slice((params
+                        .page() -
+                        1) *
+                    params.count(),
+                    params.page() * params.count());
+
+                params.total(orderedData.length); 
+                return ejercicios;
+            }
+        })
+    };
     context.modelEjercicios.select = false;
     context.modelEjercicios.grupos = db.grupos;
-    context.modelEjercicios.ejercicios = db.ejercicios;
+    //context.modelEjercicios.ejercicios = db.ejercicios;
     context.musicaSeleccionada = {};
     context.modelEjercicios.ejercicio = {};
     context.modelEjercicios.grupo = 0;
@@ -136,22 +176,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     context.modelEjercicios.hideGrupos = function () {
         context.modelEjercicios.isCollapsed = true;
         context.modelEjercicios.colWidth = "col-md-12";
-    };
-
-    context.modelEjercicios.filtrar = function (ejercicio) {
-        if (context.modelEjercicios.grupo !== 0 && context.modelEjercicios.grupo !== ejercicio.idGrupo) return false;
-        if (context.modelEjercicios.buscar === '') return true;
-        var searchString = context.modelEjercicios.buscar.toUpperCase();
-        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-        var ok = false;
-        angular.forEach(ejercicio.musicas,
-            function (value) {
-                if (ok) return;
-                if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
-            });
-        return ok;
     };
 
     context.modelEjercicios.filtrarMusica = function (musica, ejercicio) {
