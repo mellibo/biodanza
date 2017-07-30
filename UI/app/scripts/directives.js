@@ -169,6 +169,65 @@ directives.directive('arsoftConfirmation',['$uibModal', function ($uibModal) {
     };
 }]);
 
+directives.directive('arsoftInputModal', ['$uibModal', function ($uibModal) {
+    return {
+        restrict : 'A'
+        , template: ''
+        , priority: 1
+        , terminal: true
+        , scope: {
+            arsoftInputModel: '='
+        }
+        , replace: false
+        //, transclude: true
+     , link: function (scope, element, attrs) {
+            return element.bind('click', function (e) {
+                scope.model.label = attrs.arsoftInputLabel || "Ingrese valor:";
+                scope.model.title = attrs.arsoftInputTitle || "";
+                scope.model.inputModel = attrs.arsoftInputModel;
+                scope.model.open();
+            });
+        }
+        , controller:['$scope', '$uibModal', '$log', function ($scope, $uibModal, $log) {
+            $scope.model = {};
+            $scope.model.title = "";
+            $scope.model.label = 'Ingrese Valor';
+            $scope.size = 'sm';
+            $scope.model.input = $scope.arsoftInputModel;
+            $scope.model.open = function() {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'inputModal.html'
+                    , controller: ModalInstanceCtrl
+                    ,size: 'sm'
+                    ,resolve: {
+                        parentScope: function() {
+                            return $scope;
+                        }
+                    }
+                });
+
+                modalInstance.result.then(function (inputValue) {
+                    $scope.arsoftInputModel = inputValue;
+                });
+            };
+
+            var ModalInstanceCtrl =['$scope', '$uibModalInstance' , 'parentScope', function ($scope, $uibModalInstance , parentScope) {
+                $scope.model = {};
+                $scope.model.label = parentScope.model.label;
+                $scope.model.title = parentScope.model.title;
+                $scope.model.input = parentScope.arsoftInputModel;
+                $scope.ok = function () {
+                    $uibModalInstance.close($scope.model.input);
+                };
+
+                $scope.cancel = function () {
+                    $uibModalInstance .dismiss('cancel');
+                };
+            }];
+        }]
+    };
+}]);
+
 directives.directive('ngEnter', [function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {

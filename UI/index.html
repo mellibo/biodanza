@@ -294,9 +294,10 @@
                         <div class="form-group btn-group">
                             <button type="button" class="btn btn-primary"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
                             <button type="button" class="btn btn-danger" ng-click="deleteEjercicio(ejercicio)" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
+                            <button type="button" class="btn btn-primary" title="Cambiar Nombre" arsoft-input-modal arsoft-input-model="ejercicio.nombre" arsoft-input-label="Nombre ejercicio:" arsoft-input-title="Cambio de nombre:"> <span class="glyphicon glyphicon-edit"></span></button>
                         </div>
                         <div class="form-group  align-middle">
-                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.ejercicio)">{{ ejercicio.titulo === "" && ejercicio.ejercicio.nombre || ejercicio.titulo }}</label></a>
+                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.ejercicio)">{{ ejercicio.nombre === "" && ejercicio.ejercicio.nombre || ejercicio.nombre }}</label></a>
                         </div>
                     </td>
                     <td class="col-md-2" title="'Música'">
@@ -404,6 +405,23 @@
         </div>
         <div class="modal-body" ng-bind="message">
 
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Aceptar</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="inputModal.html">
+    <div>
+        <div class="modal-header">
+            <h3 class="modal-title" ng-bind="title"></h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="control-label" for="inputText">{{model.label}}</label>
+                <input id="inputText" type="text" class="form-control" ng-model="model.input" />
+            </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok()">Aceptar</button>

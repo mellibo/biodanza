@@ -18,7 +18,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         $localStorage.biodanzaClases = biodanzaClases;
     }
     context.nuevoEjercicioClase = function(clase) {
-        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, titulo:"" });
+        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, nombre: ""});
         clase.ejercicios.push(ej);
         context.saveClases();
     }

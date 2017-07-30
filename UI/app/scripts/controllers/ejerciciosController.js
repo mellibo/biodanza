@@ -67,7 +67,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     }
 
     //angular.forEach($scope.clase.ejercicios, function (ej) {
-    //    ej.titulo = "";
+    //    ej.nombre = "";
     //});
 
     $scope.mostrarEjercicio = contextService.modelEjercicios.mostrarEjercicio;
@@ -79,15 +79,13 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     };
     $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
 
-    
-    $scope.nuevoEjercicio = function () {
-        contextService.nuevoEjercicioClase($scope.clase);
-    }
-    
     $scope.deleteEjercicioClase = function (ejercicio) {
         contextService.deleteEjercicioClase($scope.clase, ejercicio);
     }
-    
+
+    $scope.nuevoEjercicio = function () {
+        contextService.nuevoEjercicioClase($scope.clase);
+    }
     $scope.moveUp = function (ejercicio) {
         contextService.ejercicioMoveUp($scope.clase, ejercicio);
     }
