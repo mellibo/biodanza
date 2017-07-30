@@ -6,6 +6,7 @@ SELECT  e.idEjercicio, e.nombre, e.idGrupo, replace(replace(ge.nombre,char(13),'
     WHERE  me.IdEjercicio = e.IdEjercicio OR me.IdEjercicio is null  FOR JSON PATH) musicas
   FROM [dbo].[Ejercicios] e 
     inner join GrupoEjercicio ge on ge.IdGrupo = e.IdGrupo
-  where e.IdEjercicio > 300 
-  Order by 1
+    and e.Nombre not IN (SELECT NomBreEjercicio FROM EquivalenciaEjercicios WHERE IdEjercicio < 1000)
+  WHERE e.IdGrupo > 49
+  Order by idgrupo, nombre
   FOR JSON PATH
