@@ -125,6 +125,22 @@ app.controller('audioController', ['$scope', '$rootScope', '$window', '$location
         $scope.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
     }
 
+    $scope.element = angular.element(document.querySelector('#audioControl'));
+    $scope.model = { state : "d" };
+
+    $scope.element.bind('play',
+        function() {
+            $scope.model.state = "playing";
+        });
+    $scope.element.bind('ended',
+        function() {
+            $scope.model.state = "";
+        });
+    $scope.element.bind('error',
+        function($event) {
+            $scope.model.state = $event;
+        });
+
     contextService.playFn = $scope.play;
 
     $scope.musicaSeleccionada = {};

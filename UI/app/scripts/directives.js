@@ -9,6 +9,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
         , scope: {
             selected: '='
             , 'onSelectedMusica': '&onSelectedMusica'// se ejecuta antes de que se actualice el valor
+            , ejercicio : '='
         }
         , link: function(scope, element, attrs) {
             element.parent().bind('click', function () {
@@ -23,7 +24,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                 $scope.selected = $scope.selected || { cancion: "" };
                 $scope.idMusica = 0;
                 $scope.interprete = '';
-                $scope.ejercicio = {}
+                $scope.ejercicio = $scope.ejercicio || {};
                 var modalInstance = $uibModal.open({
                     templateUrl: 'popupBuscarMusica.html'
                                                     , controller: popupMusicaInstance
@@ -46,6 +47,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                 $scope.directiveScope = directiveScope;
 
                 $scope.modelMusicas = contextService.modelMusicas;
+                $scope.modelMusicas.ejercicio = directiveScope.ejercicio;
                 $scope.modelMusicas.select = true;
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];

@@ -220,7 +220,8 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
     context.modelMusicas = {
         ejercicios: db.ejercicios,
-        selectedEjercicio: "",
+        ejercicio: {},
+        ejercicioTextFilter: "",
         ejerciciosNombre: [],
         refreshGrid: function () {
             context.modelMusicas.tableParams.reload();
@@ -237,11 +238,15 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         {
             total: db.musicas.length,
             getData: function (params) {
-                // use build-in angular filter
-                var orderedData = params.sorting ? $filter('orderBy')(db.musicas, params.orderBy()) : db.musicas;
+                var orderedData = db.musicas;
+                if (context.modelMusicas.ejercicio.nombre && context.modelMusicas.ejercicioTextFilter ==="") {
+                    var ej = $filter('filter')(db.ejercicios, { idEjercicio: context.modelMusicas.ejercicio.idEjercicio || context.modelMusicas.ejercicio.IdEjercicio });
+                    orderedData = ej[0].musicas;
+                }
+                orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
                 orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                if (context.modelMusicas.selectedEjercicio) {
-                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: context.modelMusicas.selectedEjercicio });
+                if (context.modelMusicas.ejercicioTextFilter) {
+                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: context.modelMusicas.ejercicioTextFilter });
                     var arrFiltrado = [];
                     for (var i = 0; i < arrEjs.length; i++) {
                         var eje = arrEjs[i];
