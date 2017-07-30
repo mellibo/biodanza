@@ -6,11 +6,11 @@
     }
 }]);
 
-app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'contextService', '$uibModalInstance', 'model', function ($scope, $window, $location, contextService, $uibModalInstance, model) {
+app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'contextService', '$uibModalInstance', 'model', 'playerService', function ($scope, $window, $location, contextService, $uibModalInstance, model, playerService) {
     $scope.ejercicio = model.ejercicio;
     $scope.model = model;
     $scope.playMusica = function(musica) {
-        $scope.model.playFile(musica);
+        playerService.playFile(musica);
     }
     $scope.aceptar = function () {
         $uibModalInstance.close();
@@ -58,7 +58,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id) {
+app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService) {
     $scope.clase = contextService.clases()[id];
 
     if (!$scope.clase) {
@@ -95,7 +95,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     }
 
     $scope.playFile = function (musica) {
-        contextService.play(musica);
+        playerService.playFile(musica);
     };
 
     $scope.deleteEjercicio = function (ejercicio) {
@@ -118,32 +118,9 @@ app.controller('headerController', ['$scope', '$rootScope', '$window', '$locatio
     };
 }]);
 
-app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'contextService', function ($scope, $rootScope, $window, $location, contextService) {
-    $scope.play = function (musica) {
-        if (musica === null) return;
-        $scope.musicaSeleccionada = musica;
-        $scope.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
-    }
-
-    $scope.element = angular.element(document.querySelector('#audioControl'));
-    $scope.model = { state : "d" };
-
-    $scope.element.bind('play',
-        function() {
-            $scope.model.state = "playing";
-        });
-    $scope.element.bind('ended',
-        function() {
-            $scope.model.state = "";
-        });
-    $scope.element.bind('error',
-        function($event) {
-            $scope.model.state = $event;
-        });
-
-    contextService.playFn = $scope.play;
-
-    $scope.musicaSeleccionada = {};
-    $scope.musicaFile = "";
-
+app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'playerService', function ($scope, $rootScope, $window, $location, contextService, playerService) {
+    $scope.model = playerService.controllerModel;
+    $scope.kk = function() {
+        playerService.stop();
+    };
 }]);

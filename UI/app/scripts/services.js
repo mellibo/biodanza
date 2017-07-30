@@ -286,3 +286,77 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     return context;
 }]);
 
+services.factory('playerService',
+[
+    'contextService', '$document',
+    function(contextService, $document) {
+
+        var audioElementAng = angular.element(document.querySelector('#audioControl'));
+        var audio = audioElementAng[0];
+
+        var service = {
+            play: function () {
+                audio.play();
+            },
+            stop: function () {
+            },
+            pause: function () {
+                audio.pause();
+            }
+        };
+
+
+        service.controllerModel = {
+            state: "",
+            play: function() {
+                service.play();
+            },
+            stop: function() {
+                service.stop();
+            },
+            pause: function() {
+                service.pause();
+            },
+            musicaSeleccionada: {},
+            musicaFile: "",
+            playList : []
+        };
+
+        service.stop = function() {
+            service.pause();
+            audio.currentTime = 0;
+        };
+        service.playFile = function (musica) {
+            if (musica === null) return;
+            service.controllerModel.musicaSeleccionada = musica;
+            service.controllerModel.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
+        }
+
+        audioElementAng.bind('play',
+            function () {
+                service.controllerModel.state = "playing";
+            });
+        audioElementAng.bind('playing',
+            function () {
+                service.controllerModel.state = "playing";
+            });
+        audioElementAng.bind('pause',
+            function () {
+                service.controllerModel.state = "pause";
+            });
+        audioElementAng.bind('ended',
+            function () {
+                service.controllerModel.state = "ended";
+            });
+        audioElementAng.bind('error',
+            function ($event) {
+                service.controllerModel.state = "error";
+                console.log($event);
+            });
+
+        contextService.playFn = service.playFile;
+
+
+        return service;
+    }
+]);
