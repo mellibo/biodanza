@@ -20,8 +20,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
         }
         , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                $scope.cancion= '';
-                $scope.selected = $scope.selected || { cancion: "" };
+                $scope.selected = $scope.selected;
                 $scope.idMusica = 0;
                 $scope.interprete = '';
                 $scope.ejercicio = $scope.ejercicio || {};
@@ -74,8 +73,8 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
         }
         , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                $scope.cancion= '';
-                $scope.selected = $scope.selected || { cancion: "" };
+                //$scope.cancion= '';
+                $scope.selected = $scope.selected;
                 $scope.idMusica = 0;
                 $scope.interprete = '';
                 $scope.ejercicio = {}

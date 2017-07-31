@@ -45,6 +45,14 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
         //$scope.clases = contextService.clases();
     }
 
+    $scope.exportarClases = function () {
+        contextService.exportarClases();
+    }
+
+    $scope.exportar = function (clase) {
+        contextService.exportarClase(clase);
+    }
+
     $scope.grabar = function() {
         contextService.saveClases();
     };
@@ -67,7 +75,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     }
 
     //angular.forEach($scope.clase.ejercicios, function (ej) {
-    //    ej.nombre = "";
+    //    if (ej.musica && typeof ej.musica.archivo === "undefined") ej.musica = null;
     //});
 
     $scope.mostrarEjercicio = contextService.modelEjercicios.mostrarEjercicio;
@@ -121,6 +129,6 @@ app.controller('headerController', ['$scope', '$rootScope', '$window', '$locatio
 app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'playerService', function ($scope, $rootScope, $window, $location, contextService, playerService) {
     $scope.model = playerService.controllerModel;
     $scope.kk = function() {
-        playerService.stop();
+        contextService.exportarClase(contextService.clases()[0]);
     };
 }]);

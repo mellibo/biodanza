@@ -283,6 +283,74 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         context.modelMusicas.ejerciciosNombre.push(value.nombre);
     });
 
+    var buildExpClase = function(clase) {
+        var ejercicios = [];
+        angular.forEach(clase.ejercicios,
+            function(value) {
+                var ej = {
+                    comentarios: value.comentarios,
+                    consigna: value.consigna,
+                    nombre: value.nombre,
+                    nro: value.nro,
+                    ejercicio: value.ejercicio === null
+                        ? null
+                        : {
+                            nombre: value.ejercicio.nombre,
+                            grupo: value.ejercicio.grupo
+                        },
+                    musica: value.musica === null
+                        ? null
+                        : {
+                            archivo: value.musica.archivo,
+                            carpeta: value.musica.carpeta,
+                            coleccion: value.musica.coleccion,
+                            interprete: value.musica.interprete,
+                            nombre: value.musica.nombre,
+                            nroCd: value.musica.nroCd,
+                            nroPista: value.musica.nroPista
+                        }
+                };
+                ejercicios.push(ej);
+            });
+        var claseExp = {
+            titulo: clase.titulo,
+            fechaCreacion: clase.fechaCreacion,
+            fechaClase: clase.fechaClase,
+            comentarios: clase.comentarios,
+            ejercicios: ejercicios
+        }
+        return claseExp;
+    };
+
+    var downloadJson = function (obj, filename) {
+        var data = "text/json;charset=utf-8," + angular.toJson(obj, true);
+        var blob = new Blob([data], { type: 'text/json' }),
+            e = document.createEvent('MouseEvents'),
+            a = document.createElement('a');
+
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+
+    };
+
+    context.exportarClases = function() {
+        var clases = [];
+        angular.forEach(context.clases(), function(value) {
+            var clase = buildExpClase(value);
+            clases.push(clase);
+        });
+        downloadJson(clases, "clases biodanza.bio");
+    };
+
+
+    context.exportarClase = function (clase) {
+        var claseExp = buildExpClase(clase);
+        downloadJson(claseExp, claseExp.titulo + ".bio");
+    };
+
     return context;
 }]);
 
