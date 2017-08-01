@@ -42,10 +42,10 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 
             };
 
-            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', 'contextService', function ($scope, $uibModalInstance, directiveScope, NgTableParams, contextService) {
+            var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', 'contextService', 'modelMusicaService', function ($scope, $uibModalInstance, directiveScope, NgTableParams, contextService, modelMusicaService) {
                 $scope.directiveScope = directiveScope;
 
-                $scope.modelMusicas = contextService.modelMusicas;
+                $scope.modelMusicas = modelMusicaService;
                 $scope.modelMusicas.ejercicio = directiveScope.ejercicio;
                 $scope.modelMusicas.select = true;
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
@@ -95,14 +95,14 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                 });
             };
 
-            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'contextService', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, contextService, NgTableParams) {
+            var popupEjercicioInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'contextService', 'modelEjerciciosService', 'NgTableParams', function ($scope, $uibModalInstance, directiveScope, contextService, modelEjerciciosService, NgTableParams) {
                 $scope.directiveScope = directiveScope;
 
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.modelEjercicios = contextService.modelEjercicios;
+                $scope.modelEjercicios = modelEjerciciosService;
                 $scope.modelEjercicios.select = true;
                 $scope.modelEjercicios.$uibModalInstance = $uibModalInstance;
 

@@ -1,5 +1,5 @@
-﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'contextService', '$uibModal', function ($scope, $rootScope, $window, $location, contextService, $uibModal) {
-    $scope.modelEjercicios = contextService.modelEjercicios;
+﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'modelEjerciciosService', '$uibModal', function ($scope, $rootScope, $window, $location, contextService, modelEjerciciosService, $uibModal) {
+    $scope.modelEjercicios = modelEjerciciosService;
 
     if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica === "") {
         $location.path("/config");
@@ -17,8 +17,8 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'c
     }
 }]);
 
-app.controller('musicasController', ['$scope', '$filter', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $filter, $location, contextService, $uibModal, NgTableParams) {
-    $scope.modelMusicas = contextService.modelMusicas;
+app.controller('musicasController', ['$scope', '$filter', '$location', 'contextService', 'modelMusicaService', '$uibModal', 'NgTableParams', function ($scope, $filter, $location, contextService, modelMusicaService, $uibModal, NgTableParams) {
+    $scope.modelMusicas = modelMusicaService;
 }]);
 
 app.controller('configController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
@@ -66,7 +66,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService) {
+app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', 'modelEjerciciosService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService, modelEjerciciosService) {
     $scope.clase = contextService.clases()[id];
 
     if (!$scope.clase) {
@@ -78,13 +78,23 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     //    if (ej.musica && typeof ej.musica.archivo === "undefined") ej.musica = null;
     //});
 
-    $scope.mostrarEjercicio = contextService.modelEjercicios.mostrarEjercicio;
+    $scope.vistaPlayer = false;
+
+    $scope.playAll = function () {
+        playerService.playList.splice(0, playerService.playList.length);
+        angular.forEach($scope.clase.ejercicios, function (item) {
+            if (item.musica !== null) playerService.playList.push(item.musica);
+        });
+        playerService.playAll();
+    };
+    $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
 
     $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
 
     $scope.grabar = function () {
         contextService.saveClases();
     };
+
     $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
 
     $scope.deleteEjercicioClase = function (ejercicio) {
@@ -127,7 +137,7 @@ app.controller('headerController', ['$scope', '$rootScope', '$window', '$locatio
 }]);
 
 app.controller('audioController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'playerService', function ($scope, $rootScope, $window, $location, contextService, playerService) {
-    $scope.model = playerService.controllerModel;
+    $scope.player = playerService;
     $scope.kk = function() {
         contextService.exportarClase(contextService.clases()[0]);
     };

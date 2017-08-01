@@ -94,195 +94,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         return biodanzaClases;
     };
 
-    //context.clases();
-
-    //var _clase = null;
-    //context.clase = function(value) {
-    //    if (typeof value == 'undefined') {
-    //        var value = _clase;
-    //        if (value === null) return null;
-    //        if (value == null) {
-    //            value = context.nuevaClase();
-    //        }
-    //        return value;
-    //    }
-    //    _clase = value;
-    //};
-
-    context.playFn = null;
-    context.play = function(musica) {
-        this.playFn(musica);
-    };
-
-    context.modelEjercicios = {
-        refreshGrid: function () {
-            context.modelEjercicios.tableParams.reload();
-        },
-        tableParams: new NgTableParams({ count: 15 },
-        {
-            total: db.ejercicios.length,
-            getData: function (params) {
-                // use build-in angular filter
-                var orderedData = params.sorting ? $filter('orderBy')(db.ejercicios, params.orderBy()) : db.ejercicios;
-                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                if (context.modelEjercicios.buscar !== "" || context.modelEjercicios.grupo !== 0) {
-                    orderedData = $filter('filter')(orderedData,
-                        function(ejercicio, index, array) {
-                            if (context.modelEjercicios.grupo !== 0 &&
-                                context.modelEjercicios.grupo !== ejercicio.idGrupo) return false;
-                            if (context.modelEjercicios.buscar === '') return true;
-                            var searchString = context.modelEjercicios.buscar.toUpperCase();
-                            if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-                            if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-                            var ok = false;
-                            angular.forEach(ejercicio.musicas,
-                                function(value) {
-                                    if (ok) return;
-                                    if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                                    if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
-                                });
-                            return ok;
-                        });
-                }
-                var ejercicios = orderedData.slice((params
-                        .page() -
-                        1) *
-                    params.count(),
-                    params.page() * params.count());
-
-                params.total(orderedData.length); 
-                return ejercicios;
-            }
-        })
-    };
-    context.modelEjercicios.select = false;
-    context.modelEjercicios.grupos = db.grupos;
-    //context.modelEjercicios.ejercicios = db.ejercicios;
-    context.musicaSeleccionada = {};
-    context.modelEjercicios.ejercicio = {};
-    context.modelEjercicios.grupo = 0;
-    context.modelEjercicios.buscar = "";
-    context.modelEjercicios.$uibModalInstance = null;
-
-    context.modelEjercicios.ok = function (ejercicio) {
-        context.modelEjercicios.$uibModalInstance.close(ejercicio);
-    };
-
-
-    context.modelEjercicios.cancel = function () {
-        context.modelEjercicios.$uibModalInstance.dismiss('cancel');
-    };
-
-    context.modelEjercicios.playFile = function (musica) {
-        context.play(musica);
-    };
-
-    context.modelEjercicios.isCollapsed = true;
-    context.modelEjercicios.colWidth = "col-md-12";
-    context.modelEjercicios.showGrupos = function () {
-        context.modelEjercicios.isCollapsed = false;
-        context.modelEjercicios.colWidth = "col-md-9";
-    };
-
-    context.modelEjercicios.hideGrupos = function () {
-        context.modelEjercicios.isCollapsed = true;
-        context.modelEjercicios.colWidth = "col-md-12";
-    };
-
-    context.modelEjercicios.filtrarMusica = function (musica, ejercicio) {
-        if (context.modelEjercicios.buscar === '') return true;
-        var searchString = context.modelEjercicios.buscar.toUpperCase();
-        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
-
-        if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
-        if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
-        return false;
-    }
-
-
-    context.modelEjercicios.mostrarEjercicio = function (ejercicio) {
-        context.modelEjercicios.ejercicio = ejercicio;
-        var modalInstance = $uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'modalEjercicio.html',
-            controller: 'modalEjercicioController',
-            size: 'lg',
-            resolve: {
-                model: function () {
-                    return context.modelEjercicios;
-                }
-            }
-        });
-    }
-
-    context.modelMusicas = {
-        ejercicios: db.ejercicios,
-        ejercicio: {},
-        ejercicioTextFilter: "",
-        ejerciciosNombre: [],
-        refreshGrid: function () {
-            context.modelMusicas.tableParams.reload();
-        },
-        select: false,
-        $uibModalInstance : null,
-        ok : function (musica) {
-            context.modelMusicas.$uibModalInstance.close(musica);
-        },
-        cancel : function () {
-            context.modelMusicas.$uibModalInstance.dismiss('cancel');
-        },
-        tableParams: new NgTableParams({ count: 15 },
-        {
-            total: db.musicas.length,
-            getData: function (params) {
-                var orderedData = db.musicas;
-                if (context.modelMusicas.ejercicio.nombre && context.modelMusicas.ejercicioTextFilter ==="") {
-                    var ej = $filter('filter')(db.ejercicios, { idEjercicio: context.modelMusicas.ejercicio.idEjercicio || context.modelMusicas.ejercicio.IdEjercicio });
-                    orderedData = ej[0].musicas;
-                }
-                orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                if (context.modelMusicas.ejercicioTextFilter) {
-                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: context.modelMusicas.ejercicioTextFilter });
-                    var arrFiltrado = [];
-                    for (var i = 0; i < arrEjs.length; i++) {
-                        var eje = arrEjs[i];
-                        var filtroMusicas = eje.musicas;
-                        var arrEjMusica = $filter('filter')(orderedData,
-                            function (value, index, array) {
-                                var fil = $filter('filter')(filtroMusicas,
-                                    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
-                                    true);
-                                //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
-                                if (typeof fil === "undefined") return false;
-                                return fil.length === 1;;
-                            });
-                        angular.extend(arrFiltrado, arrEjMusica);
-                    }
-                    orderedData = arrFiltrado;
-                }
-                var musicas = orderedData.slice((params
-                        .page() -
-                        1) *
-                    params.count(),
-                    params.page() * params.count());
-
-                params.total(orderedData.length); // set total for recalc pagination
-                return musicas;
-            }
-        }),
-        musicaSeleccionada: {},
-        playFile: function (musica) {
-            context.play(musica);
-        }
-    };
-    angular.forEach(db.ejercicios, function (value) {
-        context.modelMusicas.ejerciciosNombre.push(value.nombre);
-    });
-
     var buildExpClase = function(clase) {
         var ejercicios = [];
         angular.forEach(clase.ejercicios,
@@ -356,75 +167,269 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
 services.factory('playerService',
 [
-    'contextService', '$document',
-    function(contextService, $document) {
+    'contextService', '$document', '$rootScope',
+    function (contextService, $document, $rootScope) {
 
         var audioElementAng = angular.element(document.querySelector('#audioControl'));
         var audio = audioElementAng[0];
 
         var service = {
-            play: function () {
+            play: function() {
                 audio.play();
             },
-            stop: function () {
-            },
-            pause: function () {
-                audio.pause();
-            }
-        };
-
-
-        service.controllerModel = {
-            state: "",
-            play: function() {
-                service.play();
-            },
-            stop: function() {
-                service.stop();
-            },
             pause: function() {
-                service.pause();
+                audio.pause();
             },
+            playList: [],
+            playIndex: -1,
+            playFromList: function() {
+                if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
+                if (service.playList.length - 1 >= service.playIndex) {
+                    service.playFile(service.playList[service.playIndex]);
+                }
+            },
+            playNext: function() {
+                service.playIndex++;
+                service.playFromList();
+            },
+            playPrevious: function() {
+                service.playIndex--;
+                service.playFromList();
+            },
+            state: "",
+            errorMessage: "",
             musicaSeleccionada: {},
             musicaFile: "",
-            playList : []
+            stop: function() {
+                service.pause();
+                audio.currentTime = 0;
+            },
+            playFile: function(musica) {
+                if (musica === null) return;
+                if (service.playIndex !== -1 && service.playList[service.playIndex] !== musica) {
+                    service.playIndex = -1;
+                    service.playList.splice(0, service.playList.length);
+                }
+                service.musicaSeleccionada = musica;
+                audio.src = contextService.config().pathMusica +
+                    musica.coleccion +
+                    '/' +
+                    musica.carpeta +
+                    '/' +
+                    musica.archivo;
+            },
+            playAll: function() {
+                if (service.playList.length < 1) return;
+                service.playIndex = 0;
+                service.playFile(service.playList[0]);
+            }
         };
-
-        service.stop = function() {
-            service.pause();
-            audio.currentTime = 0;
-        };
-        service.playFile = function (musica) {
-            if (musica === null) return;
-            service.controllerModel.musicaSeleccionada = musica;
-            service.controllerModel.musicaFile = contextService.config().pathMusica + musica.coleccion + '/' + musica.carpeta + '/' + musica.archivo;
-        }
-
         audioElementAng.bind('play',
             function () {
-                service.controllerModel.state = "playing";
+                service.state = "playing";
+                $rootScope.$apply();
             });
         audioElementAng.bind('playing',
             function () {
-                service.controllerModel.state = "playing";
+                service.state = "playing";
+                $rootScope.$apply();
             });
         audioElementAng.bind('pause',
             function () {
-                service.controllerModel.state = "pause";
+                service.state = "pause";
+                $rootScope.$apply();
             });
         audioElementAng.bind('ended',
             function () {
-                service.controllerModel.state = "ended";
+                service.state = "ended";
+                service.playNext();
+                $rootScope.$apply();
             });
         audioElementAng.bind('error',
             function ($event) {
-                service.controllerModel.state = "error";
+                service.state = "error";
+                service.errorMessage = "error: " + $event.srcElement.error.message;
+                $rootScope.$apply();
                 console.log($event);
             });
-
-        contextService.playFn = service.playFile;
-
 
         return service;
     }
 ]);
+
+services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+    var service = {
+        refreshGrid: function () {
+            service.tableParams.reload();
+        },
+        tableParams: new NgTableParams({ count: 15 },
+        {
+            total: db.ejercicios.length,
+            getData: function (params) {
+                // use build-in angular filter
+                var orderedData = params.sorting ? $filter('orderBy')(db.ejercicios, params.orderBy()) : db.ejercicios;
+                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                if (service.buscar !== "" || service.grupo !== 0) {
+                    orderedData = $filter('filter')(orderedData,
+                        function (ejercicio, index, array) {
+                            if (service.grupo !== 0 &&
+                                service.grupo !== ejercicio.idGrupo) return false;
+                            if (service.buscar === '') return true;
+                            var searchString = service.buscar.toUpperCase();
+                            if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
+                            if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
+                            var ok = false;
+                            angular.forEach(ejercicio.musicas,
+                                function (value) {
+                                    if (ok) return;
+                                    if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                    if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                });
+                            return ok;
+                        });
+                }
+                var ejercicios = orderedData.slice((params
+                        .page() -
+                        1) *
+                    params.count(),
+                    params.page() * params.count());
+
+                params.total(orderedData.length);
+                return ejercicios;
+            }
+        })
+    };
+    service.select = false;
+    service.grupos = db.grupos;
+    //service.ejercicios = db.ejercicios;
+    service.musicaSeleccionada = {};
+    service.ejercicio = {};
+    service.grupo = 0;
+    service.buscar = "";
+    service.$uibModalInstance = null;
+
+    service.ok = function (ejercicio) {
+        service.$uibModalInstance.close(ejercicio);
+    };
+
+
+    service.cancel = function () {
+        service.$uibModalInstance.dismiss('cancel');
+    };
+
+    service.playFile = function (musica) {
+        playerService.playFile(musica);
+    };
+
+    service.isCollapsed = true;
+    service.colWidth = "col-md-12";
+    service.showGrupos = function () {
+        service.isCollapsed = false;
+        service.colWidth = "col-md-9";
+    };
+
+    service.hideGrupos = function () {
+        service.isCollapsed = true;
+        service.colWidth = "col-md-12";
+    };
+
+    service.filtrarMusica = function (musica, ejercicio) {
+        if (service.buscar === '') return true;
+        var searchString = service.buscar.toUpperCase();
+        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
+        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
+
+        if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
+        if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
+        return false;
+    }
+
+
+    service.mostrarEjercicio = function (ejercicio) {
+        service.ejercicio = ejercicio;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'modalEjercicio.html',
+            controller: 'modalEjercicioController',
+            size: 'lg',
+            resolve: {
+                model: function () {
+                    return service;
+                }
+            }
+        });
+    }
+        return service;
+    }
+]);
+
+services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+    var service  = {
+        ejercicios: db.ejercicios,
+        ejercicio: {},
+        ejercicioTextFilter: "",
+        ejerciciosNombre: [],
+        refreshGrid: function () {
+            service.tableParams.reload();
+        },
+        select: false,
+        $uibModalInstance: null,
+        ok: function (musica) {
+            service.$uibModalInstance.close(musica);
+        },
+        cancel: function () {
+            service.$uibModalInstance.dismiss('cancel');
+        },
+        tableParams: new NgTableParams({ count: 15 },
+        {
+            total: db.musicas.length,
+            getData: function (params) {
+                var orderedData = db.musicas;
+                if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
+                    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
+                    orderedData = ej[0].musicas;
+                }
+                orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
+                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                if (service.ejercicioTextFilter) {
+                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: service.ejercicioTextFilter });
+                    var arrFiltrado = [];
+                    for (var i = 0; i < arrEjs.length; i++) {
+                        var eje = arrEjs[i];
+                        var filtroMusicas = eje.musicas;
+                        var arrEjMusica = $filter('filter')(orderedData,
+                            function (value, index, array) {
+                                var fil = $filter('filter')(filtroMusicas,
+                                    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
+                                    true);
+                                //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
+                                if (typeof fil === "undefined") return false;
+                                return fil.length === 1;;
+                            });
+                        angular.extend(arrFiltrado, arrEjMusica);
+                    }
+                    orderedData = arrFiltrado;
+                }
+                var musicas = orderedData.slice((params
+                        .page() -
+                        1) *
+                    params.count(),
+                    params.page() * params.count());
+
+                params.total(orderedData.length); // set total for recalc pagination
+                return musicas;
+            }
+        }),
+        musicaSeleccionada: {},
+        playFile: function (musica) {
+            playerService.playFile(musica);
+        }
+    };
+    angular.forEach(db.ejercicios, function (value) {
+        service.ejerciciosNombre.push(value.nombre);
+    });
+
+    return service;
+}]);
