@@ -68,6 +68,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
 
 app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', 'modelEjerciciosService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService, modelEjerciciosService) {
     $scope.clase = contextService.clases()[id];
+    $scope.player = playerService;
 
     if (!$scope.clase) {
         $location.path("/clases");
@@ -77,9 +78,10 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     //angular.forEach($scope.clase.ejercicios, function (ej) {
     //    if (ej.musica && typeof ej.musica.archivo === "undefined") ej.musica = null;
     //});
-
+    $scope.selected = function(ejercicio) {
+        return ejercicio.musica !== null && ejercicio.musica.nombre === $scope.player.musicaSeleccionada.nombre;
+    };
     $scope.vistaPlayer = false;
-
     $scope.playAll = function () {
         playerService.playList.splice(0, playerService.playList.length);
         angular.forEach($scope.clase.ejercicios, function (item) {

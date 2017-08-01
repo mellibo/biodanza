@@ -30,11 +30,8 @@
     <script type="text/javascript" src="app/data/ejercicios.js"></script>
     <script type="text/javascript" src="app/data/musicas.js"></script>
     <link rel="stylesheet" type="text/css" href="app/scripts/vendor/bootstrap.cerulean.css" />
-    <link rel="stylesheet" type="text/css" href="app/scripts/vendor/ui-grid.min.css" />
-    <link rel="stylesheet" type="text/css" href="app/scripts/vendor/uiGridTheme.css" />
-    <link rel="stylesheet" type="text/css" href="app/styles/site.css" />
-    <link rel="stylesheet" type="text/css" href="app/scripts/vendor/toaster.css" />
     <link rel="stylesheet" type="text/css" href="app/scripts/vendor/ng-table.min.css" />
+    <link rel="stylesheet" type="text/css" href="app/styles/site.css" />
 </head>
 <body role="document" ng-app="app" >
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -178,7 +175,7 @@
             <input type="text" ng-model="modelMusicas.ejercicioTextFilter" ng-blur="modelMusicas.refreshGrid()" uib-typeahead="nombre for nombre in modelMusicas.ejerciciosNombre | filter:$viewValue | limitTo:15" class="form-control  input-md input-search" style="width:350px;">
         </div>
         <table id="tblMusicas" ng-table="modelMusicas.tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
-            <tr data-ng-repeat="musica in $data">
+            <tr data-ng-repeat="musica in $data" >
                 <td class="col-md-1 col-lg-1 " title="'Col.'" sortable="'coleccion'" filter="{coleccion: 'text'}">
                     {{ musica.coleccion }}
                 </td>
@@ -290,7 +287,7 @@
             </div>
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
-                <tr data-ng-repeat="ejercicio in clase.ejercicios" data-ng-show="vistaPlayer === false || ejercicio.musica !== null">
+                <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" data-ng-show="vistaPlayer === false || ejercicio.musica !== null">
                     <td class="col-md-1 form-inline " title="'Nº'" >
                         <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"  title="Mover ejercicio hacia arriba"><span class="glyphicon glyphicon-arrow-up"></span></button>
