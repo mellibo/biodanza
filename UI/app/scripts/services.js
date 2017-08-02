@@ -196,6 +196,14 @@ services.factory('playerService',
                 service.playIndex--;
                 service.playFromList();
             },
+            duration: 0,
+            durationString : function() {
+                return (new Date(service.duration * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substring(3);
+            },
+            currentTime: 0,
+            currentTimeString: function () {
+                return (new Date(service.currentTime * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substring(3);
+            },
             state: "",
             errorMessage: "",
             musicaSeleccionada: {},
@@ -243,6 +251,18 @@ services.factory('playerService',
             function () {
                 service.state = "ended";
                 service.playNext();
+                $rootScope.$apply();
+            });
+        audioElementAng.bind('durationchange',
+            function () {
+                service.duration = audio.duration;
+                console.log(service.duration);
+                $rootScope.$apply();
+            });
+        audioElementAng.bind('timeupdate',
+            function () {
+                service.currentTime = audio.currentTime;
+                //console.log(service.currentTime);
                 $rootScope.$apply();
             });
         audioElementAng.bind('error',

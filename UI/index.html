@@ -14,9 +14,9 @@
     <script type="text/javascript" src="app/scripts/vendor/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/ng-table.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/angular-locale_es-ar.js"></script>
+<!--    <script type="text/javascript" src="app/scripts/vendor/moment.js"></script>-->
     <!--<script type="text/javascript" src="app/scripts/vendor/ui-grid.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/toaster.min.js"></script>
-    <script type="text/javascript" src="app/scripts/vendor/moment.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/select.js"></script>-->
     <script type="text/javascript" src="app/scripts/vendor/angular-bootstrap-file-field.min.js"></script>
     <script type="text/javascript" src="app/scripts/services.js"></script>
@@ -82,6 +82,7 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group ">
+                    <label>{{ player.currentTimeString() + ' / ' + player.durationString()   }}</label>
                     <label>{{ player.state === "error" ? player.errorMessage : player.musicaSeleccionada.coleccion + '-' + player.musicaSeleccionada.nroCd + '-' + player.musicaSeleccionada.nroPista + ' ' + player.musicaSeleccionada.nombre + '(' + player.musicaSeleccionada.interprete + ')' }}</label>
                 </div>
             </div>
@@ -440,7 +441,7 @@
         <div class="modal-body">
             <div class="form-group">
                 <label class="control-label" for="inputText">{{model.label}}</label>
-                <input id="inputText" type="text" class="form-control" ng-model="model.input" />
+                <input id="inputText" type="text" ng-enter="ok()" ng-focus class="form-control" ng-model="model.input" />
             </div>
         </div>
         <div class="modal-footer">
@@ -482,6 +483,8 @@
         <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
         <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
         <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.playList.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
+        <label class="btn btn-primary" disabled>{{ player.currentTimeString() + ' / ' + player.durationString()}}</label>
+        <!--<label class="btn btn-primary" disabled>{{ player.durationString()   }}</label>-->
         <!--<button type="button" class="btn btn-primary" ng-class="{'disabled' : model.volume > 0 }"><span class="glyphicon glyphicon-volume-off"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-down"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-up"></span></button>
