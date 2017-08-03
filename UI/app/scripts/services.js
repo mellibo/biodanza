@@ -230,6 +230,14 @@ services.factory('playerService',
                 if (service.playList.length < 1) return;
                 service.playIndex = 0;
                 service.playFile(service.playList[0]);
+            },
+            setCurrentTime: function(value) {
+                audio.currentTime = value;
+            },
+            progressClick: function ($event) {
+                if (typeof $event === "undefined") return;
+                var progress = angular.element(document.querySelector('#playerProgress'))[0];
+                service.setCurrentTime($event.offsetX * service.duration / progress.clientWidth);
             }
         };
         audioElementAng.bind('play',
