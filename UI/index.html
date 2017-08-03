@@ -394,7 +394,7 @@
                     <tbody>
                         <tr data-ng-repeat="ejercicio in $data" >
                             <td>
-                                <a data-ng-click="modelEjercicios.mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html"> {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
+                                <a data-ng-click="modelEjercicios.mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html">({{ ejercicio.coleccion }}) {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
                                 <div ng-if="modelEjercicios.select === true"><button type="button" class="btn btn-success" ng-click="modelEjercicios.ok(ejercicio)">Seleccionar</button></div>
                             </td>
                             <td>
@@ -468,15 +468,15 @@
     </div>
 </script>
 <script type="text/ng-template" id="playerControls.html">
-    <div ng-controller="audioController">
+    <div ng-controller="audioController" ng-show="player.musicaSeleccionada !== null">
         <div class="row" style="height:40px !important;">
             <div class="btn-group col-md-12" >
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.playList.length < 2}" ng-click="player.playPrevious()"><span class="glyphicon glyphicon-step-backward"></span></button>
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.play()"><span class="glyphicon glyphicon-play"></span> </button>
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
-                <button type="button" class="btn btn-primary" ng-class="{'disabled' : player.playList.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
-                <label class="btn btn-primary" disabled>{{ player.durationString()}}</label>
+                <button type="button" class="btn btn-primary" ng-disabled="player.playList.length < 2"  ng-class="{'disabled' : player.playList.length < 2}" ng-click="player.playPrevious()"><span class="glyphicon glyphicon-step-backward"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.state === 'playing'" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.play()"><span class="glyphicon glyphicon-play"></span> </button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.playList.length < 2" ng-class="{'disabled' : player.playList.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
+<!--                <label class="btn btn-primary" disabled>{{ player.durationString()}}</label>-->
                 <!--<button type="button" class="btn btn-primary" ng-class="{'disabled' : model.volume > 0 }"><span class="glyphicon glyphicon-volume-off"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-down"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-up"></span></button>
@@ -484,8 +484,8 @@
             </div>
         </div>
         <div class="row"  style="">
-            <div class="align-top col-md-4">
-                <uib-progressbar id="playerProgress" max="player.duration" value="player.currentTime" style="border-with:1;border-color:blue;border-style: solid;" ng-click="player.progressClick($event)"><span style="color:white; white-space:nowrap;">{{player.currentTimeString()}}</span></uib-progressbar>
+            <div class="align-top col-md-3">
+                <uib-progressbar id="playerProgress" max="player.duration" value="player.currentTime" style="border-width:1px;border-color:black;border-style: solid;background-color:#9ffcc7;" ng-click="player.progressClick($event)"><span style="color:black; white-space:nowrap;">{{ player.currentTimeString() + ' / ' + player.durationString()   }}</span></uib-progressbar>
             </div>
         </div>
         <div class="row">

@@ -79,7 +79,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     //    if (ej.musica && typeof ej.musica.archivo === "undefined") ej.musica = null;
     //});
     $scope.selected = function(ejercicio) {
-        return ejercicio.musica !== null && ejercicio.musica.nombre === $scope.player.musicaSeleccionada.nombre;
+        return (ejercicio.musica !== null && $scope.player.musicaSeleccionada !== null) && ejercicio.musica.nombre === $scope.player.musicaSeleccionada.nombre;
     };
     $scope.vistaPlayer = false;
     $scope.playAll = function () {

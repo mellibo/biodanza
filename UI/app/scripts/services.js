@@ -167,8 +167,8 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
 services.factory('playerService',
 [
-    'contextService', '$document', '$rootScope',
-    function (contextService, $document, $rootScope) {
+    'contextService', '$document', '$rootScope', '$interval',
+    function (contextService, $document, $rootScope, $interval) {
 
         var audioElementAng = angular.element(document.querySelector('#audioControl'));
         var audio = audioElementAng[0];
@@ -206,7 +206,7 @@ services.factory('playerService',
             },
             state: "",
             errorMessage: "",
-            musicaSeleccionada: {},
+            musicaSeleccionada: null,
             musicaFile: "",
             stop: function() {
                 service.pause();
@@ -238,46 +238,62 @@ services.factory('playerService',
                 if (typeof $event === "undefined") return;
                 var progress = angular.element(document.querySelector('#playerProgress'))[0];
                 service.setCurrentTime($event.offsetX * service.duration / progress.clientWidth);
+            }, changeState: function(newState) {
+                service.state = newState;
+                switch (newState) {
+                    case "playing":
+                        service.startStateLoop();
+                        break;
+                    case "ended", "pause", "error":
+                        service.stopStateLoop();
+                        break;
+                default:
+                }
+            }, startStateLoop: function () {
+                service.stopStateLoop();
+                service.intervalState = $interval(service.updateState(), 1000);
+            }, stopStateLoop : function() {
+                if (typeof service.intervalState !== "undefined") $interval.cancel(service.intervalState);
+            }, updateState : function() {
+                service.currentTime = audio.currentTime;
+                service.duration = audio.duration;
+                $rootScope.$apply();
             }
         };
         audioElementAng.bind('play',
             function () {
-                service.state = "playing";
-                $rootScope.$apply();
+                service.changeState("playing");
             });
         audioElementAng.bind('playing',
             function () {
-                service.state = "playing";
-                $rootScope.$apply();
+                service.changeState("playing");
             });
         audioElementAng.bind('pause',
             function () {
-                service.state = "pause";
-                $rootScope.$apply();
+                service.changeState("pause");
             });
         audioElementAng.bind('ended',
             function () {
-                service.state = "ended";
+                service.changeState("ended");
                 service.playNext();
-                $rootScope.$apply();
+                //$rootScope.$apply();
             });
         audioElementAng.bind('durationchange',
             function () {
                 service.duration = audio.duration;
                 console.log(service.duration);
-                $rootScope.$apply();
+                //$rootScope.$apply();
             });
         audioElementAng.bind('timeupdate',
             function () {
                 service.currentTime = audio.currentTime;
                 //console.log(service.currentTime);
-                $rootScope.$apply();
             });
         audioElementAng.bind('error',
             function ($event) {
-                service.state = "error";
+                service.changeState("error");
                 service.errorMessage = "error: " + $event.srcElement.error.message;
-                $rootScope.$apply();
+                //$rootScope.$apply();
                 console.log($event);
             });
 
