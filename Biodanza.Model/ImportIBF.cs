@@ -25,7 +25,9 @@ namespace Biodanza.Model
         {
             var cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText =
-                @"  UPDATE Ejercicios SET Observaciones = REPLACE(Observaciones,'DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA','DANZAS DE SHIVA DE VISHNU Y DE BRAHMA')where Observaciones like '%DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA%'";
+                @"  UPDATE Ejercicios SET Observaciones = REPLACE(Observaciones,'DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA','DANZAS DE SHIVA DE VISHNU Y DE BRAHMA')
+where Observaciones like '%DANZAS DE SHIVA, DE VISHNU Y DE BRAHMA%'
+";
             cmd.CommandType = CommandType.Text;
             db.Database.Connection.Open();
             cmd.ExecuteNonQuery();
@@ -44,14 +46,14 @@ namespace Biodanza.Model
             var campos = ejercicio.Observaciones.Split(',');
             var musicas = campos[3].Split(';');
             var result = new StringBuilder();
+            const int idColeccionIbf = 3;
+            var grupo = campos[2].Replace("\r", "").Replace("\n", "");
+            ejercicio.IdGrupo = db.GrupoEjercicios.First(x => x.Nombre == grupo).IdGrupo;
             foreach (var codMusica in musicas)
             {
                 if (string.IsNullOrEmpty(codMusica.Trim())) continue;
                 var cd = int.Parse(codMusica.Substring(0, 2));
                 var pista = int.Parse(codMusica.Substring(3, 2));
-                const int idColeccionIbf = 3;
-                var grupo = campos[2].Replace("\r", "").Replace("\n", "");
-                ejercicio.IdGrupo = db.GrupoEjercicios.First(x => x.Nombre == grupo).IdGrupo;
                 if (ejercicio.Musicas.Any(x => x.NroCd == cd && x.NroPista == pista && x.IdColeccion == idColeccionIbf)) continue;
                 var musica = db.Musicas.FirstOrDefault(x => x.NroCd == cd && x.NroPista == pista && x.IdColeccion == idColeccionIbf);
                 if (musica == null)

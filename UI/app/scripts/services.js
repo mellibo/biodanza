@@ -3,7 +3,12 @@
 services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', function ($q, $localStorage, $uibModal, NgTableParams, $filter) {
     var context = {};
 
-    context.config = function(cfg) {
+    ////angular.forEach(db.musicas,
+    ////    function(value) {
+    ////        db.musicas['x' + value.idMusica.toString()] = value;
+    ////    });
+
+    context.config = function (cfg) {
         if (typeof cfg == 'undefined') {
             var config = $localStorage.biodanzaConfig;
             if (config == null) {
@@ -431,10 +436,10 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
             total: db.musicas.length,
             getData: function (params) {
                 var orderedData = db.musicas;
-                if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
-                    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
-                    orderedData = ej[0].musicas;
-                }
+                //if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
+                //    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
+                //    orderedData = ej[0].musicas;
+                //}
                 orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
                 orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
                 if (service.ejercicioTextFilter) {

@@ -47,6 +47,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 
                 $scope.modelMusicas = modelMusicaService;
                 $scope.modelMusicas.ejercicio = directiveScope.ejercicio;
+                $scope.modelMusicas.ejercicioTextFilter = $scope.modelMusicas.ejercicio.nombre || "";
                 $scope.modelMusicas.select = true;
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];

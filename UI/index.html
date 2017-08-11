@@ -317,12 +317,12 @@
                             {{ejercicio.consigna}}
                         </div>
                     </td>
-                    <td class="col-md-3 " title="'Comentarios'">
+                    <td class="col-md-3" title="'Comentarios'">
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer === false">
                             <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comentarios" ng-change="grabar()" ></textarea>
                         </div>
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer !== false">
-                            {{ejercicio.consigna}}
+                            {{ejercicio.comentarios}}
                         </div>
                     </td>
 
