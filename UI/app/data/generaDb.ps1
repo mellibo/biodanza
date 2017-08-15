@@ -35,3 +35,27 @@ db.$table  = $json ;
     set-Content  $jsName $js -Encoding UTF8 
 }
 
+<#
+foreach ($check in $checks){
+    $json = ""
+	$sql = get-content $check.FullName
+    $SqlCmd.CommandText = $sql
+    $table = $check.Name.Substring(0, $check.Name.length - 4)
+	$reader = $SqlCmd.ExecuteReader() 
+    $reader.HasRows
+    $js = "
+    if (typeof db === 'undefined') { db = {}; }
+    db.$table = [];
+    ";
+    while ($reader.Read() )
+    {
+        $json = $reader.getvalue(1).ToString().substring(1)
+        $json = $json.substring(0, $json.length - 1) 
+        $id = $reader.getvalue(0).ToString()
+        $js = $js + "db.$table['x$id'] = $json ;" 
+    }
+    $reader.Close()
+    $jsName = $table + ".js"
+    set-Content  $jsName $js -Encoding UTF8 
+}
+#>

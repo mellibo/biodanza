@@ -1,3 +1,8 @@
 ﻿.ng-table tr.selected {
     background: #e8c87d !important;
 }
+
+/*div.modalEjercicioClase .modal-content {
+    max-height: 600px;
+    overflow: auto;
+}*/

@@ -14,7 +14,7 @@
     <script type="text/javascript" src="app/scripts/vendor/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/ng-table.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/angular-locale_es-ar.js"></script>
-<!--    <script type="text/javascript" src="app/scripts/vendor/moment.js"></script>-->
+    <script type="text/javascript" src="app/scripts/vendor/moment.js"></script>
     <!--<script type="text/javascript" src="app/scripts/vendor/ui-grid.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/toaster.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/select.js"></script>-->
@@ -48,7 +48,6 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <!--<li ><a href="/">Inicio</a></li>-->
-                <!--<li ><a href="/Equivalencias/Index">Equivalencias</a></li>-->
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
                 <li ng-class="{active:isActive('/clases')}"><a href="#clases">Clases</a></li>
@@ -68,7 +67,7 @@
             </ul>
         </div><!--/.nav-collapse -->
     </div>
-    <audio controls id="audioControl" autoplay ng-src="{{player.musicaFile}}" hidden="hidden"></audio>
+    <audio controls id="audioControl" ng-src="{{player.musicaFile}}" hidden="hidden"></audio>
 </div>
 <div class="container">
     <br/>
@@ -226,7 +225,7 @@
                             <button type="button" class="btn btn-primary" ng-click="exportar(clase)"  title="Exportar clase a un archivo"> <span class="glyphicon glyphicon-share" ></span></button>
                         </div>
                         <div class="col-md-12">
-                            <input type="text" style="width:100%" class="form-control" ng-model="clase.titulo" ng-change="grabar()" />
+                            <label class="control-label" ng-bind="clase.titulo" />
                         </div>
                     </td>
                     <td class="col-md-2 col-lg-2 " title="'Fecha Clase'" filter="{fechaClase: 'text'}">
@@ -273,6 +272,9 @@
                         </span>
                     </p>
                 </div>
+                <div class="form-group">
+                    <label>Tiempo Total: {{tiempoTotal()}} </label>
+                </div>
             </div>
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
@@ -280,8 +282,8 @@
                     <td class="col-md-1 form-inline " title="'Nº'" >
                         <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"  title="Mover ejercicio hacia arriba"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                            &nbsp;
                             <button type="button" class="btn btn-success" ng-click="moveDown(ejercicio)" title="Mover ejercicio hacia abajo"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                            <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         </div>
                         <div class="form-group align-middle" >
                             <label >&nbsp;{{ ejercicio.nro }}</label>
@@ -290,23 +292,26 @@
                     <td class="col-md-3 " title="'Ejercicio'" >
                         <div class="form-group btn-group" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
-                            <button type="button" class="btn btn-danger" ng-click="deleteEjercicio(ejercicio)"  title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
-                            <button type="button" class="btn btn-primary"  title="Cambiar nombre al ejercicio"  arsoft-input-modal arsoft-input-model="ejercicio.nombre" arsoft-input-label="Nombre ejercicio:" arsoft-input-title="Cambio de nombre:"> <span class="glyphicon glyphicon-edit"></span></button>
-                        </div>
+                            <!--<button type="button" class="btn btn-success"  title="Cambiar nombre al ejercicio"  arsoft-input-modal arsoft-input-model="ejercicio.nombre" arsoft-input-label="Nombre ejercicio:" arsoft-input-title="Cambio de nombre:"> <span class="glyphicon glyphicon-edit"></span></button>-->
+                            <button type="button" class="btn btn-success"  title="Cambiar nombre al ejercicio" ng-click="detalleEjercicioClase(ejercicio)" > <span class="glyphicon glyphicon-edit"></span></button>
+                            <label class="btn"></label>
+                            
+                            <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" ng-click="deleteEjercicio(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
+                        </div><br/>
                         <div class="form-group  align-middle" ng-if="vistaPlayer === false" >
-                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.ejercicio)">{{ ejercicio.nombre === "" && ejercicio.ejercicio.nombre || ejercicio.nombre }}</label></a>
+                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.ejercicio)" ng-bind-html="ejercicio.nombre === '' && ejercicio.ejercicio.nombre || ejercicio.nombre  + '<br />(' + ejercicio.ejercicio.nombre + ')'"></label></a>
                         </div>
                         <div class="form-group  align-middle" ng-if="vistaPlayer === true" >
-                            <a><label class="" data-ng-click="playFile(ejercicio.musica)">{{ ejercicio.nombre === "" && ejercicio.ejercicio.nombre || ejercicio.nombre }}</label></a>
+                            <a><label class="" data-ng-click="playEjercicio(ejercicio)"  ng-bind-html="ejercicio.nombre === '' && ejercicio.ejercicio.nombre || ejercicio.nombre  + '<br />(' + ejercicio.ejercicio.nombre + ')'"></label></a>
                         </div>
                     </td>
                     <td class="col-md-2" title="'Música'">
-                        <div class="btn-group col-md-12" ng-if="vistaPlayer === false" >
+                        <div class="btn-group" ng-if="vistaPlayer === false" >
                             <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica selected="ejercicio.musica" onSelectedMusica="grabar()" ejercicio="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
-                            <button type="button" class="btn btn-danger"  title="Eliminar música" ng-click="deleteMusica(ejercicio)" arsoft-confirmation="¿Esta seguro que quiere eliminar la música?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
-                            <button type="button" class="btn btn-warning"  title="Escuchar música" ng-click="playFile(ejercicio.musica)"><span class="glyphicon glyphicon-play"></span></button>
+                            <button type="button" class="btn btn-warning"  title="Escuchar música" ng-click="playEjercicio(ejercicio)"><span class="glyphicon glyphicon-play"></span></button>
                         </div>
-                        <a ng-click="playFile(ejercicio.musica)"><label class="col-md-12">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ')' }}</label></a>
+                        <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" title="Eliminar música" ng-click="deleteMusica(ejercicio)" arsoft-confirmation="¿Esta seguro que quiere eliminar la música?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
+                        <a ng-click="playFile(ejercicio)"><label class="col-md-12">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ')' }}</label></a>
                         
                     </td>
                     <td class="col-md-3"  title="'Consigna'" >
@@ -317,10 +322,11 @@
                             {{ejercicio.consigna}}
                         </div>
                     </td>
-                    <td class="col-md-3" title="'Comentarios'">
-                        <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer === false">
+                    <td class="col-md-3" title="'Comentarios'" ng-if="vistaPlayer === false">
+                        <div class="form-group col-md-10" style="height:100%;" ng-if="vistaPlayer === false">
                             <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comentarios" ng-change="grabar()" ></textarea>
                         </div>
+                        <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer !== false">
                             {{ejercicio.comentarios}}
                         </div>
@@ -468,7 +474,7 @@
     </div>
 </script>
 <script type="text/ng-template" id="playerControls.html">
-    <div ng-controller="audioController" ng-show="player.musicaSeleccionada !== null">
+    <div ng-controller="audioController" ng-show="player.currentPlaying !== null">
         <div class="row" style="height:40px !important;">
             <div class="btn-group col-md-12" >
                 <button type="button" class="btn btn-primary" ng-disabled="player.playList.length < 2"  ng-class="{'disabled' : player.playList.length < 2}" ng-click="player.playPrevious()"><span class="glyphicon glyphicon-step-backward"></span></button>
@@ -492,10 +498,96 @@
             <div class="">
                 <div class="form-group ">
 <!--                    <label>{{ player.currentTimeString() + ' / ' + player.durationString()   }}</label>-->
-                    <label>{{ player.state === "error" ? player.errorMessage : player.musicaSeleccionada.coleccion + '-' + player.musicaSeleccionada.nroCd + '-' + player.musicaSeleccionada.nroPista + ' ' + player.musicaSeleccionada.nombre + '(' + player.musicaSeleccionada.interprete + ')' }}</label>
+                    <label>{{ player.state === "error" ? player.errorMessage : player.currentPlaying.musica.coleccion + '-' + player.currentPlaying.musica.nroCd + '-' + player.currentPlaying.musica.nroPista + ' ' + player.currentPlaying.musica.nombre + '(' + player.currentPlaying.musica.interprete + ')' }}</label>
                 </div>
             </div>
         </div>
+    </div>
+</script>
+<script type="text/ng-template" id="popupEjercicioClase.html">
+    <div>
+        <form name="form" ng-submit="submit()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-md-10">
+                        <h3>Detalle del Ejercicio</h3>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-success" ng-click="aceptar()"> Cerrar </button>
+                    </div>
+                    <div class="col-md-10">
+                        <div ng-include="'playerControls.html'"></div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row ">
+                        <div class="col-lg-12" style="height:80vh;overflow-y: scroll;">
+                            <div class="row ">
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="lblEjercicioOriginal">Ejercicio Origen:</label>
+                                    <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
+                                    <label class="control-label" id="lblEjercicioOriginal">{{ejercicio.ejercicio.nombre}}</label>
+                                </div>
+                                <div class="form-group col-md-12 ">
+                                    <label class="control-label" for="inputEjercicio">Título Ejercicio:</label>
+                                    <input id="inputEjercicio" type="text" ng-focus class="form-control" ng-model="ejercicio.nombre" />
+                                </div>
+                                <div class="form-group  col-md-12">
+                                    <label class="control-label" for="inputEjercicio">Música Ejercicio:</label>
+                                    <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica selected="ejercicio.musica" onSelectedMusica="grabar()" ejercicio="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
+                                    <button type="button" class="btn btn-warning" title="Escuchar música" ng-click="playFile()"><span class="glyphicon glyphicon-play"></span></button>
+                                    <label>{{ ejercicio.musica.coleccion + '-' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + '(' + ejercicio.musica.interprete + ')' }}</label>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Iniciar a los</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.iniciarSegundos" />
+                                    <span class="help-block">segundos</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Fin a los</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.finalizarSegundos" />
+                                    <span class="help-block">segundos</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Ini. progresivo</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.segundosInicioProgresivo" />
+                                    <span class="help-block">segundos</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Fin progresivo</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.segundosFinProgresivo" />
+                                    <span class="help-block">segundos</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Repetir</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.cantidadRepeticiones" />
+                                    <span class="help-block">veces</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Adiccionar</label>
+                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.minutosAdicionales" />
+                                    <span class="help-block">minutos</span>
+                                </div>
+                                <div class="form-group col-md-6 checkbox">
+                                    <label class="control-label" for="chkEmpalmar"><input id="chkEmpalmar" type="checkbox" ng-model="ejercicio.empalmarTemaSiguiente" />empalmar música siguiente</label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="inputInicio">Consigna</label>
+                                    <textarea id="" class="form-control" rows="3" ng-model="ejercicio.consigna" ></textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="control-label" for="inputInicio">Comentarios</label>
+                                    <textarea id="" class="form-control" rows="3" ng-model="ejercicio.comentarios" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" ng-click="aceptar()"> Cerrar </button>
+                </div>
+            </div>
+        </form>
     </div>
 </script>
 </body>

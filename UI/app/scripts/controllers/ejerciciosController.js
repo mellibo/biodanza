@@ -75,17 +75,37 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         return;
     }
 
-    //angular.forEach($scope.clase.ejercicios, function (ej) {
-    //    if (ej.musica && typeof ej.musica.archivo === "undefined") ej.musica = null;
-    //});
-    $scope.selected = function(ejercicio) {
-        return (ejercicio.musica !== null && $scope.player.musicaSeleccionada !== null) && ejercicio.musica.nombre === $scope.player.musicaSeleccionada.nombre;
+    $scope.grabar = function () {
+        contextService.saveClases();
+    };
+
+    $scope.tiempoTotal = function() {
+        var total = moment.duration();
+        angular.forEach($scope.clase.ejercicios,
+            function(ejercicio) {
+                if (ejercicio.musica === null) {
+                    total.add(ejercicio.minutosAdicionales, 'm');
+                    return;
+                }
+                var tiempo = moment.duration(ejercicio.musica.duracion);
+                if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
+                if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
+                for (var i = 1; i < ejercicio.cantidadRepeticiones; i++) {
+                    total.add(tiempo);
+                }
+                if (ejercicio.minutosAdicionales > 0) total.add(ejercicio.minutosAdicionales, 'm');
+            });
+        return moment().add(total).format("mm:ss");
+    }
+
+    $scope.selected = function (ejercicio) {
+        return (ejercicio.musica !== null && $scope.player.currentPlaying !== null) && ejercicio.musica.nombre === $scope.player.currentPlaying.musica.nombre;
     };
     $scope.vistaPlayer = false;
     $scope.playAll = function () {
         playerService.playList.splice(0, playerService.playList.length);
         angular.forEach($scope.clase.ejercicios, function (item) {
-            if (item.musica !== null) playerService.playList.push(item.musica);
+            if (item.musica !== null) playerService.playList.push(item);
         });
         playerService.playAll();
     };
@@ -114,8 +134,8 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         contextService.ejercicioMoveDown($scope.clase, ejercicio);
     }
 
-    $scope.playFile = function (musica) {
-        playerService.playFile(musica);
+    $scope.playEjercicio = function (ejercicio) {
+        playerService.playEjercicio(ejercicio);
     };
 
     $scope.deleteEjercicio = function (ejercicio) {
@@ -129,6 +149,34 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     $scope.cerrar = function () {
         $window.history.back();
     }
+
+    $scope.detalleEjercicioClase = function(ejercicio) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'popupEjercicioClase.html'
+                                    , controller: detalleEjercicioClaseController
+                                    , size: 'md'
+                                    //, windowClass: 'modalEjercicioClase'
+                                    , resolve: {
+                                        ejercicio: function () {
+                                            return ejercicio;
+                                        }
+                                    }
+        });
+        modalInstance.result.then(function () {
+        });
+    };
+
+    var detalleEjercicioClaseController = ['$scope', '$uibModalInstance', 'NgTableParams', 'contextService', 'modelMusicaService', 'ejercicio', function ($scope, $uibModalInstance, NgTableParams, contextService, modelMusicaService, ejercicio) {
+        $scope.ejercicio = ejercicio;
+        $scope.aceptar = function () {
+            $uibModalInstance.close();
+        }
+        $scope.playFile = function () {
+            playerService.playFile($scope.ejercicio.musica, { iniciarSegundos: $scope.ejercicio.iniciarSegundos });
+        };
+
+    }];
+
 }]);
 
 app.controller('headerController', ['$scope', '$rootScope', '$window', '$location', 'contextService', function ($scope, $rootScope, $window, $location, contextService) {
@@ -144,3 +192,4 @@ app.controller('audioController', ['$scope', '$rootScope', '$window', '$location
         contextService.exportarClase(contextService.clases()[0]);
     };
 }]);
+

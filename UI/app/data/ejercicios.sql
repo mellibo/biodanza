@@ -1,5 +1,5 @@
 SELECT  e.idEjercicio, e.nombre, e.idGrupo, replace(replace(ge.nombre,char(13),'<br/>'),'\r','<br/>') as grupo, replace(replace(e.detalle,char(13),'<br/>'),'\r','<br/>') detalle, cm.nombre coleccion, 
-    (SELECT  m.idMusica as 'idMusica', m.idColeccion as 'idColeccion', cm.Nombre  as 'coleccion', m.nroCd as 'nroCd', m.nroPista as 'nroPista', m.Nombre as 'nombre', m.interprete as 'interprete', m.duracion as 'duracion', m.archivo  as 'archivo', m.carpeta as 'carpeta'
+    (SELECT  m.idMusica as 'idMusica', m.idColeccion as 'idColeccion', cm.Nombre  as 'coleccion', m.nroCd as 'nroCd', m.nroPista as 'nroPista', m.Nombre as 'nombre', m.interprete as 'interprete', coalesce(duracion,'00:00:00') as 'duracion', m.archivo  as 'archivo', m.carpeta as 'carpeta'
         FROM MusicaEjercicio me 
     inner join Musica m on me.IdMusica = m.IdMusica
     inner join ColeccionMusica cm on cm.IdColeccion = m.IdColeccion

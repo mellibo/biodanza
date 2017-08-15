@@ -3,10 +3,10 @@
 services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', function ($q, $localStorage, $uibModal, NgTableParams, $filter) {
     var context = {};
 
-    ////angular.forEach(db.musicas,
-    ////    function(value) {
-    ////        db.musicas['x' + value.idMusica.toString()] = value;
-    ////    });
+    //angular.forEach(db.musicas,
+    //    function(value) {
+    //        if (value.duracion)
+    //    });
 
     context.config = function (cfg) {
         if (typeof cfg == 'undefined') {
@@ -23,7 +23,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         $localStorage.biodanzaClases = biodanzaClases;
     }
     context.nuevoEjercicioClase = function(clase) {
-        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, nombre: ""});
+        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, nombre: "", iniciarSegundos : null, finalizarSegundos : null, segundosInicioProgresivo: null, segundosFinProgresivo: null, empalmarTemaSiguiente: false, cantidadRepeticiones : 1, minutosAdicionales: 0});
         clase.ejercicios.push(ej);
         context.saveClases();
     }
@@ -98,6 +98,25 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             
         return biodanzaClases;
     };
+
+    angular.forEach(context.clases(),
+        function(value) {
+            angular.forEach(value.ejercicios,
+                function(ej) {
+                    if (typeof ej.iniciarSegundos === "undefined") ej.iniciarSegundos = null;
+                    if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
+                    if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
+                    if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
+                    if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
+                    if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
+                    if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
+                    if (ej.musica !== null && typeof ej.musica.duracion === "undefined") {
+                        var musica = $filter('filter')(db.musicas, { idMusica: ej.musica.idMusica });
+                        if (musica.length>0) ej.musica.duracion = musica[0].duracion;
+                    }
+                });
+        });
+    context.saveClases();
 
     var buildExpClase = function(clase) {
         var ejercicios = [];
@@ -179,7 +198,9 @@ services.factory('playerService',
         var audio = audioElementAng[0];
 
         var service = {
-            play: function() {
+            play: function () {
+                if (audio.currentTime === 0)
+                    service.playFile(service.currentPlaying.musica, service.currentPlaying.options);
                 audio.play();
             },
             pause: function() {
@@ -190,7 +211,7 @@ services.factory('playerService',
             playFromList: function() {
                 if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
                 if (service.playList.length - 1 >= service.playIndex) {
-                    service.playFile(service.playList[service.playIndex]);
+                    service.playFile(service.playList[service.playIndex].musica, service.buildOptions(service.playList[service.playIndex]));
                 }
             },
             playNext: function() {
@@ -211,63 +232,145 @@ services.factory('playerService',
             },
             state: "",
             errorMessage: "",
-            musicaSeleccionada: null,
+            currentPlaying: null,
             musicaFile: "",
             stop: function() {
                 service.pause();
                 audio.currentTime = 0;
             },
-            playFile: function(musica) {
+            playEjercicio: function(ejercicio) {
+                service.playFile(ejercicio.musica, service.buildOptions(ejercicio));
+            },
+            playFile: function(musica, options) {
                 if (musica === null) return;
-                if (service.playIndex !== -1 && service.playList[service.playIndex] !== musica) {
+                if (service.playIndex !== -1 && service.playIndex !== 0 && service.playList[service.playIndex] !== musica) {
                     service.playIndex = -1;
                     service.playList.splice(0, service.playList.length);
                 }
-                service.musicaSeleccionada = musica;
+                options = options || { finalizarSegundos: 99999, iniciarSegundos: 0 };
+                options.finalizarSegundos = options.finalizarSegundos || 99999;
+                options.iniciarSegundos = options.iniciarSegundos || 0;
+                options.cantidadRepeticiones = options.cantidadRepeticiones || 1;
+                options.segundosInicioProgresivo = options.segundosInicioProgresivo || 0;
+                audio.volume = 1;
+                if (options.segundosInicioProgresivo > 0) {
+                    audio.volume = 0;
+                    options.volumeStep = 1 / (options.segundosInicioProgresivo * 1000 / 200);
+                    options.intervalInicioVolume = $interval(function () {
+                        if (audio.volume + service.currentPlaying.options.volumeStep >= 1) {
+                            $interval.cancel(service.currentPlaying.options.intervalInicioVolume);
+                            service.currentPlaying.options.intervalInicioVolume = undefined;
+                            audio.volume = 1;
+                            return;
+                        }
+                        audio.volume += service.currentPlaying.options.volumeStep;
+                        },
+                        200);
+                }
+                if (typeof options.repeatCount === "undefined") options.repeatCount = 1;
+                service.currentPlaying = { musica: musica , options : options}
                 audio.src = contextService.config().pathMusica +
                     musica.coleccion +
                     '/' +
                     musica.carpeta +
                     '/' +
                     musica.archivo;
+                if (typeof service.currentPlaying.options !== "undefined") {
+                    audio.currentTime = service.currentPlaying.options.iniciarSegundos;
+                }
+                try {
+                    audio.play();
+                } catch (e) {
+                    service.error = e.message;
+                }
+
             },
             playAll: function() {
                 if (service.playList.length < 1) return;
-                service.playIndex = 0;
-                service.playFile(service.playList[0]);
+                service.playIndex = 1;
+                service.playPrevious();
             },
             setCurrentTime: function(value) {
                 audio.currentTime = value;
+            },
+            buildOptions: function(ejercicio) {
+                return {
+                    iniciarSegundos: ejercicio.iniciarSegundos,
+                    finalizarSegundos: ejercicio.finalizarSegundos,
+                    cantidadRepeticiones: ejercicio.cantidadRepeticiones,
+                    segundosInicioProgresivo: ejercicio.segundosInicioProgresivo,
+                    segundosFinProgresivo: ejercicio.segundosFinProgresivo,
+                    empalmarTemaSiguiente: ejercicio.empalmarTemaSiguiente
+                };
             },
             progressClick: function ($event) {
                 if (typeof $event === "undefined") return;
                 var progress = angular.element(document.querySelector('#playerProgress'))[0];
                 service.setCurrentTime($event.offsetX * service.duration / progress.clientWidth);
-            }, changeState: function(newState) {
-                service.state = newState;
+            }, changeState: function (newState) {
+                console.log(newState);
                 switch (newState) {
                     case "playing":
-                        service.startStateLoop();
+                        //service.startStateLoop();
                         break;
-                    case "ended", "pause", "error":
+                    case "ended":
+                        if (newState === "ended" && service.currentPlaying.options.cantidadRepeticiones >
+                            service.currentPlaying.options.repeatCount) {
+                            service.currentPlaying.options.repeatCount++;
+                            service.playFile(service.currentPlaying.musica, service.currentPlaying.options);
+                            return;
+                        } 
+                        if (!audio.ended) {
+                            service.stop();
+                        }
+                        if (service.currentPlaying.options.empalmarTemaSiguiente) service.playNext();
+                    case "pause":
+                    case "error":
                         service.stopStateLoop();
                         break;
                 default:
                 }
+                service.state = newState;
             }, startStateLoop: function () {
                 service.stopStateLoop();
-                service.intervalState = $interval(service.updateState(), 1000);
+                service.intervalState = $interval(service.updateState, 1000);
             }, stopStateLoop : function() {
-                if (typeof service.intervalState !== "undefined") $interval.cancel(service.intervalState);
+                if (service.intervalState) $interval.cancel(service.intervalState);
             }, updateState : function() {
                 service.currentTime = audio.currentTime;
-                service.duration = audio.duration;
-                $rootScope.$apply();
+                service.duration = audio.duration || 0;
+                if (service.currentPlaying.options.finalizarSegundos <= service.currentTime) {
+                    //service.stop();
+                    service.changeState("ended");
+                }
+                var duration = service.currentPlaying.options.finalizarSegundos > 0
+                    ? service.currentPlaying.options.finalizarSegundos
+                    : service.duration;
+                if (service.currentPlaying.options.segundosFinProgresivo > 0) {
+                    if (service.currentTime >= duration - service.currentPlaying.options.segundosFinProgresivo &&
+                        typeof service.currentPlaying.options.intervalFinProgresivo === "undefined") {
+                        service.currentPlaying.options.volumeStepFin = 1 / (service.currentPlaying.options.segundosFinProgresivo * 1000 / 200);
+                        service.currentPlaying.options.intervalFinProgresivo = $interval(function () {
+                            if (audio.volume - service.currentPlaying.options.volumeStepFin <= 0) {
+                                $interval.cancel(service.currentPlaying.options.intervalFinProgresivo);
+                                service.currentPlaying.options.intervalFinProgresivo = undefined;
+                                service.stop();
+                                audio.volume = 1;
+                                return;
+                            }
+                            if (audio.volume - service.currentPlaying.options.volumeStepFin >= 0) audio.volume -= service.currentPlaying.options.volumeStepFin;
+                        },
+                            200);
+
+                    }
+                }
+                if ($rootScope.$$phase !== "$apply" && $rootScope.$$phase !== "$digest") $rootScope.$apply();
             }
         };
         audioElementAng.bind('play',
             function () {
                 service.changeState("playing");
+                service.startStateLoop();
             });
         audioElementAng.bind('playing',
             function () {
@@ -351,7 +454,6 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     service.select = false;
     service.grupos = db.grupos;
     //service.ejercicios = db.ejercicios;
-    service.musicaSeleccionada = {};
     service.ejercicio = {};
     service.grupo = 0;
     service.buscar = "";
@@ -471,7 +573,6 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                 return musicas;
             }
         }),
-        musicaSeleccionada: {},
         playFile: function (musica) {
             playerService.playFile(musica);
         }
