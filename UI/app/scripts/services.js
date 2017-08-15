@@ -8,6 +8,23 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     //        if (value.duracion)
     //    });
 
+    context.calculaTiempoEjercicio = function (ejercicio) {
+        if (ejercicio.musica === null) {
+            ejercicio.tiempo = moment.duration(ejercicio.minutosAdicionales, 'm');
+            return;
+        }
+        var tiempo = moment.duration(ejercicio.musica.duracion);
+        if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
+        if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
+        var total = moment.duration();
+        for (var i = 1; i <= ejercicio.cantidadRepeticiones; i++) {
+            total.add(tiempo);
+        }
+        if (ejercicio.minutosAdicionales > 0) total.add(ejercicio.minutosAdicionales, 'm');
+        ejercicio.tiempo = total;
+        return;
+    }
+
     context.config = function (cfg) {
         if (typeof cfg == 'undefined') {
             var config = $localStorage.biodanzaConfig;

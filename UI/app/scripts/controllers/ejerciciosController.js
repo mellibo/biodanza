@@ -75,28 +75,28 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         return;
     }
 
+    angular.forEach($scope.clase.ejercicios,
+        function(ejercicio) {
+            contextService.calculaTiempoEjercicio(ejercicio);
+        });
+
+    $scope.tiempoTotalString = "";
+
+    $scope.refreshTotalClase = function () {
+        var total = moment.duration();
+        angular.forEach($scope.clase.ejercicios,
+            function (ejercicio) {
+                total.add(ejercicio.tiempo);
+            });
+        $scope.tiempoTotal = total;
+        $scope.tiempoTotalString = moment(0, 's').add(total).format("H:mm:ss");
+    }
+
+    $scope.refreshTotalClase();
+
     $scope.grabar = function () {
         contextService.saveClases();
     };
-
-    $scope.tiempoTotal = function() {
-        var total = moment.duration();
-        angular.forEach($scope.clase.ejercicios,
-            function(ejercicio) {
-                if (ejercicio.musica === null) {
-                    total.add(ejercicio.minutosAdicionales, 'm');
-                    return;
-                }
-                var tiempo = moment.duration(ejercicio.musica.duracion);
-                if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
-                if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
-                for (var i = 1; i < ejercicio.cantidadRepeticiones; i++) {
-                    total.add(tiempo);
-                }
-                if (ejercicio.minutosAdicionales > 0) total.add(ejercicio.minutosAdicionales, 'm');
-            });
-        return moment().add(total).format("mm:ss");
-    }
 
     $scope.selected = function (ejercicio) {
         return (ejercicio.musica !== null && $scope.player.currentPlaying !== null) && ejercicio.musica.nombre === $scope.player.currentPlaying.musica.nombre;
