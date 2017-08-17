@@ -29,7 +29,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         if (typeof cfg == 'undefined') {
             var config = $localStorage.biodanzaConfig;
             if (config == null) {
-                config = { pathMusica:''}
+                config = { pathMusica:'musica/'}
             }
             return config;
         }
@@ -120,14 +120,14 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         function(value) {
             angular.forEach(value.ejercicios,
                 function(ej) {
-                    if (typeof ej.iniciarSegundos === "undefined") ej.iniciarSegundos = null;
+                    if (typeof ej.iniciarSegundos === "undefined" || ej.iniciarSegundos === null) ej.iniciarSegundos = 0;
                     if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
                     if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
                     if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
                     if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
                     if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
                     if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
-                    if (ej.musica !== null && typeof ej.musica.duracion === "undefined") {
+                    if (ej.musica !== null && ej.musica.duracion === "00:00:00") {
                         var musica = $filter('filter')(db.musicas, { idMusica: ej.musica.idMusica });
                         if (musica.length>0) ej.musica.duracion = musica[0].duracion;
                     }
@@ -208,27 +208,35 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
 services.factory('playerService',
 [
-    'contextService', '$document', '$rootScope', '$interval',
-    function (contextService, $document, $rootScope, $interval) {
+    'contextService', '$document', '$rootScope', '$interval', '$filter',
+    function (contextService, $document, $rootScope, $interval, $filter) {
 
         var audioElementAng = angular.element(document.querySelector('#audioControl'));
         var audio = audioElementAng[0];
 
         var service = {
             play: function () {
-                if (audio.currentTime === 0)
-                    service.playFile(service.currentPlaying.musica, service.currentPlaying.options);
+                if (audio.currentTime === 0 &&
+                    service.currentPlaying === service.clase.ejercicios[service.playIndex].musica) {
+                    service.playEjercicio(service.clase.ejercicios[service.playIndex]);
+                    return;
+                }
                 audio.play();
             },
             pause: function() {
                 audio.pause();
             },
-            playList: [],
+            clase: {},
             playIndex: -1,
             playFromList: function() {
-                if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
-                if (service.playList.length - 1 >= service.playIndex) {
-                    service.playFile(service.playList[service.playIndex].musica, service.buildOptions(service.playList[service.playIndex]));
+                //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
+                audio.repeatCount = undefined;
+                while (service.clase.ejercicios[service.playIndex].musica === null) {
+                    service.playIndex++;
+                    if (service.playIndex > service.clase.ejercicios - 1) return;
+                }
+                if (service.clase.ejercicios.length - 1 >= service.playIndex) {
+                    service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
                 }
             },
             playNext: function() {
@@ -255,46 +263,56 @@ services.factory('playerService',
                 service.pause();
                 audio.currentTime = 0;
             },
+            message : "",
             playEjercicio: function(ejercicio) {
-                service.playFile(ejercicio.musica, service.buildOptions(ejercicio));
+                service.playFile(ejercicio.musica, ejercicio);
             },
-            playFile: function(musica, options) {
+            playFile: function(musica, ejercicio) {
                 if (musica === null) return;
-                if (service.playIndex !== -1 && service.playIndex !== 0 && service.playList[service.playIndex] !== musica) {
+                if (service.playIndex !== -1 && service.playIndex !== 0 && service.clase.ejercicios[service.playIndex].musica !== musica) {
                     service.playIndex = -1;
-                    service.playList.splice(0, service.playList.length);
                 }
-                options = options || { finalizarSegundos: 99999, iniciarSegundos: 0 };
-                options.finalizarSegundos = options.finalizarSegundos || 99999;
-                options.iniciarSegundos = options.iniciarSegundos || 0;
-                options.cantidadRepeticiones = options.cantidadRepeticiones || 1;
-                options.segundosInicioProgresivo = options.segundosInicioProgresivo || 0;
+                var musicaSearch = $filter('filter')(service.clase.ejercicios, { musica: musica });
+                if (musicaSearch && musicaSearch.length > 0) {
+                    service.playIndex = musicaSearch[0].nro -1;
+                }
                 audio.volume = 1;
-                if (options.segundosInicioProgresivo > 0) {
+                if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
-                    options.volumeStep = 1 / (options.segundosInicioProgresivo * 1000 / 200);
-                    options.intervalInicioVolume = $interval(function () {
-                        if (audio.volume + service.currentPlaying.options.volumeStep >= 1) {
-                            $interval.cancel(service.currentPlaying.options.intervalInicioVolume);
-                            service.currentPlaying.options.intervalInicioVolume = undefined;
+                    audio.volumeStep = 1 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
+                    audio.intervalInicioVolume = $interval(function () {
+                        if (audio.volume + audio.volumeStep >= 1) {
+                            $interval.cancel(audio.intervalInicioVolume);
+                            audio.intervalInicioVolume = undefined;
                             audio.volume = 1;
                             return;
                         }
-                        audio.volume += service.currentPlaying.options.volumeStep;
+                        audio.volume += audio.volumeStep;
                         },
                         200);
                 }
-                if (typeof options.repeatCount === "undefined") options.repeatCount = 1;
-                service.currentPlaying = { musica: musica , options : options}
+                if (typeof audio.repeatCount === "undefined") audio.repeatCount = 1;
+                //service.currentPlaying = { musica: musica , options : ejercicio}
                 audio.src = contextService.config().pathMusica +
                     musica.coleccion +
                     '/' +
                     musica.carpeta +
                     '/' +
                     musica.archivo;
-                if (typeof service.currentPlaying.options !== "undefined") {
-                    audio.currentTime = service.currentPlaying.options.iniciarSegundos;
-                }
+                if (ejercicio) audio.currentTime = ejercicio.iniciarSegundos;
+                service.currentPlaying = musica;
+                service.message = musica.coleccion +
+                    '-' +
+                    musica.nroCd +
+                    '-' +
+                    musica.nroPista +
+                    ' ' +
+                    musica.nombre +
+                    '(' +
+                    musica.interprete +
+                    '). ';
+                if(ejercicio) service.message += ejercicio.nombre;
+                if(ejercicio.ejercicio) service.message += ' (' + ejercicio.ejercicio.nombre + ').';
                 try {
                     audio.play();
                 } catch (e) {
@@ -303,23 +321,14 @@ services.factory('playerService',
 
             },
             playAll: function() {
-                if (service.playList.length < 1) return;
+                if (service.clase.ejercicios.length < 1) return;
                 service.playIndex = 1;
                 service.playPrevious();
             },
             setCurrentTime: function(value) {
                 audio.currentTime = value;
-            },
-            buildOptions: function(ejercicio) {
-                return {
-                    iniciarSegundos: ejercicio.iniciarSegundos,
-                    finalizarSegundos: ejercicio.finalizarSegundos,
-                    cantidadRepeticiones: ejercicio.cantidadRepeticiones,
-                    segundosInicioProgresivo: ejercicio.segundosInicioProgresivo,
-                    segundosFinProgresivo: ejercicio.segundosFinProgresivo,
-                    empalmarTemaSiguiente: ejercicio.empalmarTemaSiguiente
-                };
-            },
+            }
+            ,
             progressClick: function ($event) {
                 if (typeof $event === "undefined") return;
                 var progress = angular.element(document.querySelector('#playerProgress'))[0];
@@ -331,16 +340,16 @@ services.factory('playerService',
                         //service.startStateLoop();
                         break;
                     case "ended":
-                        if (newState === "ended" && service.currentPlaying.options.cantidadRepeticiones >
-                            service.currentPlaying.options.repeatCount) {
-                            service.currentPlaying.options.repeatCount++;
-                            service.playFile(service.currentPlaying.musica, service.currentPlaying.options);
+                        if (newState === "ended" && service.playIndex > -1 && service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
+                            audio.repeatCount) {
+                            audio.repeatCount++;
+                            service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
                             return;
                         } 
                         if (!audio.ended) {
                             service.stop();
                         }
-                        if (service.currentPlaying.options.empalmarTemaSiguiente) service.playNext();
+                        if (service.playIndex > -1 && service.clase.ejercicios[service.playIndex].empalmarTemaSiguiente) service.playNext();
                     case "pause":
                     case "error":
                         service.stopStateLoop();
@@ -356,32 +365,33 @@ services.factory('playerService',
             }, updateState : function() {
                 service.currentTime = audio.currentTime;
                 service.duration = audio.duration || 0;
-                if (service.currentPlaying.options.finalizarSegundos <= service.currentTime) {
+                if ($rootScope.$$phase !== "$apply" && $rootScope.$$phase !== "$digest") $rootScope.$apply();
+                if (service.clase === undefined || service.playIndex < 0) return;
+                if (service.playIndex > -1 && (service.clase.ejercicios[service.playIndex].finalizarSegundos || 99999) <= service.currentTime) {
                     //service.stop();
                     service.changeState("ended");
                 }
-                var duration = service.currentPlaying.options.finalizarSegundos > 0
-                    ? service.currentPlaying.options.finalizarSegundos
+                var duration = (service.clase.ejercicios[service.playIndex].finalizarSegundos || 0) > 0
+                    ? service.clase.ejercicios[service.playIndex].finalizarSegundos
                     : service.duration;
-                if (service.currentPlaying.options.segundosFinProgresivo > 0) {
-                    if (service.currentTime >= duration - service.currentPlaying.options.segundosFinProgresivo &&
-                        typeof service.currentPlaying.options.intervalFinProgresivo === "undefined") {
-                        service.currentPlaying.options.volumeStepFin = 1 / (service.currentPlaying.options.segundosFinProgresivo * 1000 / 200);
-                        service.currentPlaying.options.intervalFinProgresivo = $interval(function () {
-                            if (audio.volume - service.currentPlaying.options.volumeStepFin <= 0) {
-                                $interval.cancel(service.currentPlaying.options.intervalFinProgresivo);
-                                service.currentPlaying.options.intervalFinProgresivo = undefined;
+                if ((service.clase.ejercicios[service.playIndex].segundosFinProgresivo || 0) > 0) {
+                    if (service.currentTime >= duration - service.clase.ejercicios[service.playIndex].segundosFinProgresivo &&
+                        typeof audio.intervalFinProgresivo === "undefined") {
+                        audio.volumeStepFin = 1 / (service.clase.ejercicios[service.playIndex].segundosFinProgresivo * 1000 / 200);
+                        audio.intervalFinProgresivo = $interval(function () {
+                            if (audio.volume - audio.volumeStepFin <= 0) {
+                                $interval.cancel(audio.intervalFinProgresivo);
+                                audio.intervalFinProgresivo = undefined;
                                 service.stop();
                                 audio.volume = 1;
                                 return;
                             }
-                            if (audio.volume - service.currentPlaying.options.volumeStepFin >= 0) audio.volume -= service.currentPlaying.options.volumeStepFin;
+                            if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
                         },
                             200);
 
                     }
                 }
-                if ($rootScope.$$phase !== "$apply" && $rootScope.$$phase !== "$digest") $rootScope.$apply();
             }
         };
         audioElementAng.bind('play',
@@ -406,7 +416,10 @@ services.factory('playerService',
         audioElementAng.bind('durationchange',
             function () {
                 service.duration = audio.duration;
-                console.log(service.duration);
+                if (indexMusicas < musicas.length - 1) {
+                    updateDuracion();
+                }
+                //console.log(service.duration);
                 //$rootScope.$apply();
             });
         audioElementAng.bind('timeupdate',
@@ -418,10 +431,42 @@ services.factory('playerService',
             function ($event) {
                 service.changeState("error");
                 service.errorMessage = "error: " + $event.srcElement.error.message;
+                service.message = service.errorMessage;
                 //$rootScope.$apply();
                 console.log($event);
-            });
+                if (indexMusicas < musicas.length - 1) {
+                    updateDuracion();
+                    return;
+                }
 
+            });
+/*
+        var musicas = $filter('filter')(db.musicas, { duracion: "00:00:00" });
+        var indexMusicas = 0;
+
+       audio.src = contextService.config().pathMusica +
+                    musicas[0].coleccion +
+                    '/' +
+                    musicas[0].carpeta +
+                    '/' +
+                    musicas[0].archivo;
+       function updateDuracion() {
+           if (audio.duration > 0) {
+               var time = moment(0, 's').add(moment.duration(audio.duration, 's'))
+                   .format("HH:mm:ss");
+               console.log("UPDATE Musica SET Duracion = cast('" +
+                   time +
+                   "' as time) WHERE IdMusica = " +
+                   musicas[indexMusicas].idMusica);
+           }
+            indexMusicas++;
+            audio.src = contextService.config().pathMusica +
+                musicas[indexMusicas].coleccion +
+                '/' +
+                musicas[indexMusicas].carpeta +
+                '/' +
+                musicas[indexMusicas].archivo;
+        }*/
         return service;
     }
 ]);
@@ -533,70 +578,72 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     }
 ]);
 
-services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
-    var service  = {
-        ejercicios: db.ejercicios,
-        ejercicio: {},
-        ejercicioTextFilter: "",
-        ejerciciosNombre: [],
-        refreshGrid: function () {
-            service.tableParams.reload();
-        },
-        select: false,
-        $uibModalInstance: null,
-        ok: function (musica) {
-            service.$uibModalInstance.close(musica);
-        },
-        cancel: function () {
-            service.$uibModalInstance.dismiss('cancel');
-        },
-        tableParams: new NgTableParams({ count: 15 },
-        {
-            total: db.musicas.length,
-            getData: function (params) {
-                var orderedData = db.musicas;
-                //if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
-                //    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
-                //    orderedData = ej[0].musicas;
-                //}
-                orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
-                if (service.ejercicioTextFilter) {
-                    var arrEjs = $filter('filter')(db.ejercicios, { nombre: service.ejercicioTextFilter });
-                    var arrFiltrado = [];
-                    for (var i = 0; i < arrEjs.length; i++) {
-                        var eje = arrEjs[i];
-                        var filtroMusicas = eje.musicas;
-                        var arrEjMusica = $filter('filter')(orderedData,
-                            function (value, index, array) {
-                                var fil = $filter('filter')(filtroMusicas,
-                                    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
-                                    true);
-                                //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
-                                if (typeof fil === "undefined") return false;
-                                return fil.length === 1;;
-                            });
-                        angular.extend(arrFiltrado, arrEjMusica);
+services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService',
+    function($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+        var service = {
+            ejercicios: db.ejercicios,
+            ejercicio: {},
+            ejercicioTextFilter: "",
+            ejerciciosNombre: [],
+            refreshGrid: function() {
+                service.tableParams.reload();
+            },
+            select: false,
+            $uibModalInstance: null,
+            ok: function(musica) {
+                service.$uibModalInstance.close(musica);
+            },
+            cancel: function() {
+                service.$uibModalInstance.dismiss('cancel');
+            },
+            tableParams: new NgTableParams({ count: 15 },
+            {
+                total: db.musicas.length,
+                getData: function(params) {
+                    var orderedData = db.musicas;
+                    //if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
+                    //    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
+                    //    orderedData = ej[0].musicas;
+                    //}
+                    orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
+                    orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                    if (service.ejercicioTextFilter) {
+                        var arrEjs = $filter('filter')(db.ejercicios, { nombre: service.ejercicioTextFilter });
+                        var arrFiltrado = [];
+                        for (var i = 0; i < arrEjs.length; i++) {
+                            var eje = arrEjs[i];
+                            var filtroMusicas = eje.musicas;
+                            var arrEjMusica = $filter('filter')(orderedData,
+                                function(value, index, array) {
+                                    var fil = $filter('filter')(filtroMusicas,
+                                        { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
+                                        true);
+                                    //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
+                                    if (typeof fil === "undefined") return false;
+                                    return fil.length === 1;;
+                                });
+                            angular.extend(arrFiltrado, arrEjMusica);
+                        }
+                        orderedData = arrFiltrado;
                     }
-                    orderedData = arrFiltrado;
+                    var musicas = orderedData.slice((params
+                            .page() -
+                            1) *
+                        params.count(),
+                        params.page() * params.count());
+
+                    params.total(orderedData.length); // set total for recalc pagination
+                    return musicas;
                 }
-                var musicas = orderedData.slice((params
-                        .page() -
-                        1) *
-                    params.count(),
-                    params.page() * params.count());
-
-                params.total(orderedData.length); // set total for recalc pagination
-                return musicas;
+            }),
+            playFile: function(musica) {
+                playerService.playFile(musica);
             }
-        }),
-        playFile: function (musica) {
-            playerService.playFile(musica);
-        }
-    };
-    angular.forEach(db.ejercicios, function (value) {
-        service.ejerciciosNombre.push(value.nombre);
-    });
+        };
 
+        angular.forEach(db.ejercicios,
+            function(value) {
+                service.ejerciciosNombre.push(value.nombre);
+            });
     return service;
 }]);

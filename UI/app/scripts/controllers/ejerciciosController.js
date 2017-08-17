@@ -86,6 +86,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         var total = moment.duration();
         angular.forEach($scope.clase.ejercicios,
             function (ejercicio) {
+                contextService.calculaTiempoEjercicio(ejercicio);
                 total.add(ejercicio.tiempo);
             });
         $scope.tiempoTotal = total;
@@ -94,19 +95,17 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
 
     $scope.refreshTotalClase();
 
-    $scope.grabar = function () {
-        contextService.saveClases();
-    };
+    playerService.clase = $scope.clase;
 
+    $scope.rowClick = function(ejercicio) {
+        if ($scope.vistaPlayer === false) return;
+        $scope.playEjercicio(ejercicio);
+    };
     $scope.selected = function (ejercicio) {
-        return (ejercicio.musica !== null && $scope.player.currentPlaying !== null) && ejercicio.musica.nombre === $scope.player.currentPlaying.musica.nombre;
+        return (ejercicio.musica !== null && $scope.player.currentPlaying !== null) && ejercicio.musica.nombre === $scope.player.currentPlaying.nombre;
     };
     $scope.vistaPlayer = false;
     $scope.playAll = function () {
-        playerService.playList.splice(0, playerService.playList.length);
-        angular.forEach($scope.clase.ejercicios, function (item) {
-            if (item.musica !== null) playerService.playList.push(item);
-        });
         playerService.playAll();
     };
     $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
@@ -114,6 +113,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
 
     $scope.grabar = function () {
+        $scope.refreshTotalClase();
         contextService.saveClases();
     };
 
@@ -147,6 +147,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     }
 
     $scope.cerrar = function () {
+        playerService.clase = undefined;
         $window.history.back();
     }
 
@@ -155,10 +156,13 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
             templateUrl: 'popupEjercicioClase.html'
                                     , controller: detalleEjercicioClaseController
                                     , size: 'md'
-                                    //, windowClass: 'modalEjercicioClase'
+            //, windowClass: 'modalEjercicioClase'
                                     , resolve: {
                                         ejercicio: function () {
                                             return ejercicio;
+                                        }
+                                        ,parentScope: function () {
+                                            return $scope;
                                         }
                                     }
         });
@@ -166,13 +170,16 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         });
     };
 
-    var detalleEjercicioClaseController = ['$scope', '$uibModalInstance', 'NgTableParams', 'contextService', 'modelMusicaService', 'ejercicio', function ($scope, $uibModalInstance, NgTableParams, contextService, modelMusicaService, ejercicio) {
+    var detalleEjercicioClaseController = ['$scope', '$uibModalInstance', 'NgTableParams', 'contextService', 'modelMusicaService', 'ejercicio', 'parentScope', function ($scope, $uibModalInstance, NgTableParams, contextService, modelMusicaService, ejercicio, parentScope) {
+        $scope.parentScope = parentScope;
         $scope.ejercicio = ejercicio;
+        $scope.grabar = parentScope.grabar;
+
         $scope.aceptar = function () {
             $uibModalInstance.close();
         }
         $scope.playFile = function () {
-            playerService.playFile($scope.ejercicio.musica, { iniciarSegundos: $scope.ejercicio.iniciarSegundos });
+            playerService.playFile($scope.ejercicio.musica, $scope.ejercicio);
         };
 
     }];

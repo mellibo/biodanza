@@ -219,10 +219,12 @@
             <table id="tblClases" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
                 <tr data-ng-repeat="clase in $data">
                     <td class="col-md-2 col-lg-2 " title="'Título'" sortable="'titulo'" filter="{titulo: 'text'}">
-                        <div class="btn-group col-md-12">
+                        <div class="btn-group col-md-8">
                             <button type="button" class="btn btn-success" ng-click="editarClase(clase)" title="Modificar clase"><span class="glyphicon glyphicon-edit"></span></button>
-                            <button type="button" class="btn btn-danger" ng-click="delete(clase)"  title="Eliminar clase" arsoft-confirmation="Esta seguro que quiere eliminar la clase?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash" ></span></button>
-                            <button type="button" class="btn btn-primary" ng-click="exportar(clase)"  title="Exportar clase a un archivo"> <span class="glyphicon glyphicon-share" ></span></button>
+                            <button type="button" class="btn btn-primary" ng-click="exportar(clase)" title="Exportar clase a un archivo"> <span class="glyphicon glyphicon-share"></span></button>
+                        </div>
+                        <div class="btn-group col-md-4">
+                            <button type="button" class="btn btn-danger" ng-click="delete(clase)" title="Eliminar clase" arsoft-confirmation="Esta seguro que quiere eliminar la clase?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         </div>
                         <div class="col-md-12">
                             <label class="control-label" ng-bind="clase.titulo" />
@@ -230,7 +232,7 @@
                     </td>
                     <td class="col-md-2 col-lg-2 " title="'Fecha Clase'" filter="{fechaClase: 'text'}">
                         <p class="input-group">
-                            <input type="text" class="form-control" ng-model="clase.fechaClase" uib-datepicker-popup="dd/MM/yy" is-open="fechaClase.opened"  ng-change="grabar()"  />
+                            <input type="text" class="form-control" ng-model="clase.fechaClase" uib-datepicker-popup="dd/MM/yy" is-open="fechaClase.opened"  ng-blur="grabar()"  />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="fechaClase.open()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -242,7 +244,7 @@
                         </ul>
                     </td>
                     <td class="col-md-4 col-lg-4 " title="'Comentarios'" sortable="'comment'" filter="{comment: 'text'}">
-                        <textarea style="width:100%" rows="10" class="form-control" ng-model="clase.comentarios"  ng-change="grabar()"  />
+                        <textarea style="width:100%" rows="10" class="form-control" ng-model="clase.comentarios"  ng-blur="grabar()"  />
                     </td>
                 </tr>
             </table>
@@ -261,12 +263,12 @@
             </div>
             <div class="form-group">
                 <label>Título Clase</label>
-                <input type="text" class="form-control" ng-model="clase.titulo" ng-change="grabar()" />
+                <input type="text" class="form-control" ng-model="clase.titulo" ng-blur="grabar()" />
             </div>
             <div class="form-group" ng-if="vistaPlayer === false">
                 <label class="">Fecha Clase</label>
                 <p class="input-group " style="width:130px;" >
-                    <input type="text" class="form-control " ng-model="clase.fechaClase" uib-datepicker-popup="dd/MM/yy" is-open="fechaClase.opened" ng-change="grabar()" />
+                    <input type="text" class="form-control " ng-model="clase.fechaClase" uib-datepicker-popup="dd/MM/yy" is-open="fechaClase.opened" ng-blur="grabar()" />
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="fechaClase.open()"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
@@ -277,7 +279,7 @@
             </div>
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
-                <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" data-ng-show="vistaPlayer === false || ejercicio.musica !== null">
+                <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" ng-click="rowClick(ejercicio)" data-ng-show="vistaPlayer === false || ejercicio.musica !== null">
                     <td class="col-md-1 form-inline " title="'Nº'" >
                         <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"  title="Mover ejercicio hacia arriba"><span class="glyphicon glyphicon-arrow-up"></span></button>
@@ -292,7 +294,7 @@
                         <div class="form-group btn-group" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
                             <!--<button type="button" class="btn btn-success"  title="Cambiar nombre al ejercicio"  arsoft-input-modal arsoft-input-model="ejercicio.nombre" arsoft-input-label="Nombre ejercicio:" arsoft-input-title="Cambio de nombre:"> <span class="glyphicon glyphicon-edit"></span></button>-->
-                            <button type="button" class="btn btn-success"  title="Cambiar nombre al ejercicio" ng-click="detalleEjercicioClase(ejercicio)" > <span class="glyphicon glyphicon-edit"></span></button>
+                            <button type="button" class="btn btn-success"  title="Editar detalles del ejercicio" ng-click="detalleEjercicioClase(ejercicio)" > <span class="glyphicon glyphicon-edit"></span></button>
                             <label class="btn"></label>
                             
                             <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" ng-click="deleteEjercicio(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
@@ -315,7 +317,7 @@
                     </td>
                     <td class="col-md-3"  title="'Consigna'" >
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer === false" >
-                            <textarea class="form-control " rows="4" style="width:100%;height:auto !important;" ng-model="ejercicio.consigna" ng-change="grabar()" ></textarea>
+                            <textarea class="form-control " rows="4" style="width:100%;height:auto !important;" ng-model="ejercicio.consigna" ng-blur="grabar()" ></textarea>
                         </div>
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer !== false" >
                             {{ejercicio.consigna}}
@@ -323,11 +325,36 @@
                     </td>
                     <td class="col-md-3" title="'Comentarios'" ng-if="vistaPlayer === false">
                         <div class="form-group col-md-10" style="height:100%;" ng-if="vistaPlayer === false">
-                            <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comentarios" ng-change="grabar()" ></textarea>
+                            <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comentarios" ng-blur="grabar()" ></textarea>
                         </div>
                         <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer !== false">
                             {{ejercicio.comentarios}}
+                        </div>
+                    </td>
+                    <td class="col-md-3" title="'Configuración Música'" ng-if="vistaPlayer !== false">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <span >Inciar a: {{ejercicio.iniciarSegundos}}</span>
+                            </div>
+                            <div class="form-group">
+                                <span >Finalizar a: {{ejercicio.finalizarSegundos || '--'}}</span><br/>
+                            </div>
+                            <div class="form-group">
+                                <span >Segs inicio progresivo: {{ejercicio.segundosInicioProgresivo || '--'}}</span>
+                            </div>
+                            <div class="form-group">
+                                <span >Segs fin progresivo: {{ejercicio.segundosFinProgresivo || '--'}}</span>
+                            </div>
+                            <div class="form-group">
+                                <span >Repeticiones: {{ejercicio.cantidadRepeticiones}}</span>
+                            </div>
+                            <div class="form-group">
+                                <span >Empalmar tema siguiente: {{ejercicio.empalmarTemaSiguiente ? 'si': 'no'}}</span>
+                            </div>
+                            <div class="form-group">
+                                <span >Minutos adicionales: {{ejercicio.minutosAdicionales}}</span>
+                            </div>
                         </div>
                     </td>
 
@@ -473,14 +500,14 @@
     </div>
 </script>
 <script type="text/ng-template" id="playerControls.html">
-    <div ng-controller="audioController" ng-show="player.currentPlaying !== null">
+    <div ng-controller="audioController" ng-show="player.state !== ''">
         <div class="row" style="height:40px !important;">
             <div class="btn-group col-md-12" >
-                <button type="button" class="btn btn-primary" ng-disabled="player.playList.length < 2"  ng-class="{'disabled' : player.playList.length < 2}" ng-click="player.playPrevious()"><span class="glyphicon glyphicon-step-backward"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.clase.ejercicios.length < 2"  ng-class="{'disabled' : player.clase.ejercicios.length < 2}" ng-click="player.playPrevious()"><span class="glyphicon glyphicon-step-backward"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state === 'playing'" ng-class="{'disabled' : player.state === 'playing' }" ng-click="player.play()"><span class="glyphicon glyphicon-play"></span> </button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
-                <button type="button" class="btn btn-primary" ng-disabled="player.playList.length < 2" ng-class="{'disabled' : player.playList.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.clase.ejercicios.length < 2" ng-class="{'disabled' : player.clase.ejercicios.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
 <!--                <label class="btn btn-primary" disabled>{{ player.durationString()}}</label>-->
                 <!--<button type="button" class="btn btn-primary" ng-class="{'disabled' : model.volume > 0 }"><span class="glyphicon glyphicon-volume-off"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-down"></span></button>
@@ -497,7 +524,7 @@
             <div class="">
                 <div class="form-group ">
 <!--                    <label>{{ player.currentTimeString() + ' / ' + player.durationString()   }}</label>-->
-                    <label>{{ player.state === "error" ? player.errorMessage : player.currentPlaying.musica.coleccion + '-' + player.currentPlaying.musica.nroCd + '-' + player.currentPlaying.musica.nroPista + ' ' + player.currentPlaying.musica.nombre + '(' + player.currentPlaying.musica.interprete + ')' }}</label>
+                    <label>{{ player.message }}</label>
                 </div>
             </div>
         </div>
@@ -529,54 +556,54 @@
                                 </div>
                                 <div class="form-group col-md-12 ">
                                     <label class="control-label" for="inputEjercicio">Título Ejercicio:</label>
-                                    <input id="inputEjercicio" type="text" ng-focus class="form-control" ng-model="ejercicio.nombre" />
+                                    <input id="inputEjercicio" type="text" ng-blur="grabar()" class="form-control" ng-model="ejercicio.nombre" />
                                 </div>
                                 <div class="form-group  col-md-12">
                                     <label class="control-label" for="inputEjercicio">Música Ejercicio:</label>
                                     <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica selected="ejercicio.musica" onSelectedMusica="grabar()" ejercicio="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
                                     <button type="button" class="btn btn-warning" title="Escuchar música" ng-click="playFile()"><span class="glyphicon glyphicon-play"></span></button>
-                                    <label>{{ ejercicio.musica.coleccion + '-' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + '(' + ejercicio.musica.interprete + ')' }}</label>
+                                    <label>{{ ejercicio.musica.coleccion + '-' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + '(' + ejercicio.musica.interprete + ') - ' + ejercicio.musica.duracion.substring(3) }}</label>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Iniciar a los</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.iniciarSegundos" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.iniciarSegundos" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Fin a los</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.finalizarSegundos" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.finalizarSegundos" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Ini. progresivo</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.segundosInicioProgresivo" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.segundosInicioProgresivo" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Fin progresivo</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.segundosFinProgresivo" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.segundosFinProgresivo" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Repetir</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.cantidadRepeticiones" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.cantidadRepeticiones" />
                                     <span class="help-block">veces</span>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Adiccionar</label>
-                                    <input id="inputInicio" type="number" ng-focus class="form-control" ng-model="ejercicio.minutosAdicionales" />
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.minutosAdicionales" />
                                     <span class="help-block">minutos</span>
                                 </div>
                                 <div class="form-group col-md-6 checkbox">
-                                    <label class="control-label" for="chkEmpalmar"><input id="chkEmpalmar" type="checkbox" ng-model="ejercicio.empalmarTemaSiguiente" />empalmar música siguiente</label>
+                                    <label class="control-label" for="chkEmpalmar"><input id="chkEmpalmar" type="checkbox"  ng-blur="grabar()" ng-model="ejercicio.empalmarTemaSiguiente" />empalmar música siguiente</label>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="control-label" for="inputInicio">Consigna</label>
-                                    <textarea id="" class="form-control" rows="3" ng-model="ejercicio.consigna" ></textarea>
+                                    <textarea id="" class="form-control" ng-blur="grabar()" rows="3" ng-model="ejercicio.consigna" ></textarea>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="control-label" for="inputInicio">Comentarios</label>
-                                    <textarea id="" class="form-control" rows="3" ng-model="ejercicio.comentarios" ></textarea>
+                                    <textarea id="" class="form-control" rows="3" ng-blur="grabar()" ng-model="ejercicio.comentarios" ></textarea>
                                 </div>
                             </div>
                         </div>

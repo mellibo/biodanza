@@ -30,7 +30,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             }
         }).
     when('/', {
-        redirectTo: '/ejercicios'
+        redirectTo: '/clases'
     }).
     otherwise({
         redirectTo: '/'
