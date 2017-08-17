@@ -66,7 +66,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', 'modelEjerciciosService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService, modelEjerciciosService) {
+app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', 'modelEjerciciosService', '$interval', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService, modelEjerciciosService, $interval) {
     $scope.clase = contextService.clases()[id];
     $scope.player = playerService;
 
@@ -91,12 +91,27 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
             });
         $scope.tiempoTotal = total;
         $scope.tiempoTotalString = moment(0, 's').add(total).format("H:mm:ss");
+        $scope.horaFin = moment(0, 's').add(playerService.tiempoRestanteClase).format("H:mm:ss");
+        $scope.clase.tiempo = total;
     }
-
+    
     $scope.refreshTotalClase();
 
     playerService.clase = $scope.clase;
-
+    $scope.horaFin = "";
+    $scope.$watch('vistaPlayer',
+        function (newVal, oldVal) {
+            if ($scope.intervalHoraFin) $interval.cancel($scope.intervalHoraFin);
+            if (newVal === true) {
+                $scope.intervalHoraFin = $interval($scope.tiempoRestanteClase, 30000);
+                $scope.tiempoRestanteClase();
+            }
+        });
+    
+    $scope.tiempoRestanteClase = function() {
+        $scope.horaFin = moment().add(playerService.tiempoRestanteClase()).format("HH:mm");
+        if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
+    }
     $scope.rowClick = function(ejercicio) {
         if ($scope.vistaPlayer === false) return;
         $scope.playEjercicio(ejercicio);

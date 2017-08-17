@@ -227,15 +227,32 @@ services.factory('playerService',
                 audio.pause();
             },
             clase: {},
+            tiempoRestanteClase: function () {
+                if (service.playIndex < 0) return service.clase.tiempo;
+                var total = moment.duration();
+                for (var i = service.playIndex + 1; i < service.clase.ejercicios.length; i++) {
+                    total.add(service.clase.ejercicios[i].tiempo);
+                }
+                var ejActual = service.clase.ejercicios[service.playIndex];
+
+                var tiempoEjercicio = moment.duration(ejActual.tiempo);
+                if (ejActual.minutosAdicionales > 0) tiempoEjercicio.subtract(ejActual.minutosAdicionales, 'm');
+                tiempoEjercicio.subtract(audio.currentTime, 's');
+                total.add(tiempoEjercicio);
+                return total;
+            },
             playIndex: -1,
             playFromList: function() {
                 //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
-                audio.repeatCount = undefined;
                 while (service.clase.ejercicios[service.playIndex].musica === null) {
+                    if (service.playIndex >= service.clase.ejercicios.length - 1) {
+                        service.playIndex = audio.ejercicio.nro - 1;
+                        return;
+                    }
                     service.playIndex++;
-                    if (service.playIndex > service.clase.ejercicios - 1) return;
                 }
                 if (service.clase.ejercicios.length - 1 >= service.playIndex) {
+                    audio.repeatCount = undefined;
                     service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
                 }
             },
@@ -277,6 +294,7 @@ services.factory('playerService',
                     service.playIndex = musicaSearch[0].nro -1;
                 }
                 audio.volume = 1;
+                audio.ejercicio = ejercicio;
                 if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
                     audio.volumeStep = 1 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
@@ -292,7 +310,7 @@ services.factory('playerService',
                         200);
                 }
                 if (typeof audio.repeatCount === "undefined") audio.repeatCount = 1;
-                //service.currentPlaying = { musica: musica , options : ejercicio}
+                service.tiempoRestanteClase();
                 audio.src = contextService.config().pathMusica +
                     musica.coleccion +
                     '/' +
@@ -311,14 +329,15 @@ services.factory('playerService',
                     '(' +
                     musica.interprete +
                     '). ';
-                if(ejercicio) service.message += ejercicio.nombre;
-                if(ejercicio.ejercicio) service.message += ' (' + ejercicio.ejercicio.nombre + ').';
+                if (ejercicio) {
+                    service.message += ejercicio.nombre;
+                    if (ejercicio.ejercicio) service.message += ' (' + ejercicio.ejercicio.nombre + ').';
+                }
                 try {
                     audio.play();
                 } catch (e) {
                     service.error = e.message;
                 }
-
             },
             playAll: function() {
                 if (service.clase.ejercicios.length < 1) return;
@@ -340,6 +359,7 @@ services.factory('playerService',
                         //service.startStateLoop();
                         break;
                     case "ended":
+                        if (service.clase) service.tiempoRestanteClase();
                         if (newState === "ended" && service.playIndex > -1 && service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
                             audio.repeatCount) {
                             audio.repeatCount++;
@@ -416,9 +436,9 @@ services.factory('playerService',
         audioElementAng.bind('durationchange',
             function () {
                 service.duration = audio.duration;
-                if (indexMusicas < musicas.length - 1) {
-                    updateDuracion();
-                }
+                //if (indexMusicas < musicas.length - 1) {
+                //    updateDuracion();
+                //}
                 //console.log(service.duration);
                 //$rootScope.$apply();
             });
@@ -434,10 +454,10 @@ services.factory('playerService',
                 service.message = service.errorMessage;
                 //$rootScope.$apply();
                 console.log($event);
-                if (indexMusicas < musicas.length - 1) {
-                    updateDuracion();
-                    return;
-                }
+                //if (indexMusicas < musicas.length - 1) {
+                //    updateDuracion();
+                //    return;
+                //}
 
             });
 /*
