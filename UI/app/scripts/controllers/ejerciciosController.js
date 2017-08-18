@@ -34,6 +34,7 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     $scope.clases = contextService.clases();
     $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
 
+    $scope.vistaCompacta = true;
     $scope.nueva = function () {
         contextService.nuevaClase();
         $location.path('/clase/0');
@@ -117,7 +118,7 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         $scope.playEjercicio(ejercicio);
     };
     $scope.selected = function (ejercicio) {
-        return (ejercicio.musica !== null && $scope.player.currentPlaying !== null) && ejercicio.musica.nombre === $scope.player.currentPlaying.nombre;
+        return playerService.playIndex === ejercicio.nro -1 || (ejercicio.musica !== null && $scope.player.currentPlaying !== null && ejercicio.musica.nombre === $scope.player.currentPlaying.nombre);
     };
     $scope.vistaPlayer = false;
     $scope.playAll = function () {

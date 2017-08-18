@@ -244,23 +244,18 @@ services.factory('playerService',
             playIndex: -1,
             playFromList: function() {
                 //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
-                while (service.clase.ejercicios[service.playIndex].musica === null) {
-                    if (service.playIndex >= service.clase.ejercicios.length - 1) {
-                        service.playIndex = audio.ejercicio.nro - 1;
-                        return;
-                    }
-                    service.playIndex++;
-                }
                 if (service.clase.ejercicios.length - 1 >= service.playIndex) {
                     audio.repeatCount = undefined;
                     service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
                 }
             },
-            playNext: function() {
+            playNext: function () {
+                if (service.playIndex === service.clase.ejercicios.length - 1) return;
                 service.playIndex++;
                 service.playFromList();
             },
             playPrevious: function() {
+                if (service.playIndex === 0) return;
                 service.playIndex--;
                 service.playFromList();
             },
@@ -281,11 +276,20 @@ services.factory('playerService',
                 audio.currentTime = 0;
             },
             message : "",
-            playEjercicio: function(ejercicio) {
-                service.playFile(ejercicio.musica, ejercicio);
+            playEjercicio: function (ejercicio) {
+                service.playIndex = ejercicio.nro - 1;
+                service.playFromList();
             },
             playFile: function(musica, ejercicio) {
-                if (musica === null) return;
+                audio.volume = 1;
+                audio.ejercicio = ejercicio;
+                service.tiempoRestanteClase();
+                service.currentPlaying = musica;
+                service.message = "";
+                if (musica === null) {
+                    service.stop();
+                    return;
+                }
                 if (service.playIndex !== -1 && service.playIndex !== 0 && service.clase.ejercicios[service.playIndex].musica !== musica) {
                     service.playIndex = -1;
                 }
@@ -293,8 +297,6 @@ services.factory('playerService',
                 if (musicaSearch && musicaSearch.length > 0) {
                     service.playIndex = musicaSearch[0].nro -1;
                 }
-                audio.volume = 1;
-                audio.ejercicio = ejercicio;
                 if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
                     audio.volumeStep = 1 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
@@ -310,7 +312,6 @@ services.factory('playerService',
                         200);
                 }
                 if (typeof audio.repeatCount === "undefined") audio.repeatCount = 1;
-                service.tiempoRestanteClase();
                 audio.src = contextService.config().pathMusica +
                     musica.coleccion +
                     '/' +
@@ -318,7 +319,6 @@ services.factory('playerService',
                     '/' +
                     musica.archivo;
                 if (ejercicio) audio.currentTime = ejercicio.iniciarSegundos;
-                service.currentPlaying = musica;
                 service.message = musica.coleccion +
                     '-' +
                     musica.nroCd +
@@ -359,13 +359,15 @@ services.factory('playerService',
                         //service.startStateLoop();
                         break;
                     case "ended":
-                        if (service.clase) service.tiempoRestanteClase();
-                        if (newState === "ended" && service.playIndex > -1 && service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
-                            audio.repeatCount) {
-                            audio.repeatCount++;
-                            service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
-                            return;
-                        } 
+                        if (service.clase) {
+                            service.tiempoRestanteClase();
+                            if (newState === "ended" && service.playIndex > -1 && service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
+                                audio.repeatCount) {
+                                audio.repeatCount++;
+                                service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
+                                return;
+                            }
+                        }
                         if (!audio.ended) {
                             service.stop();
                         }
