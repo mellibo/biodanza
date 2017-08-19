@@ -215,7 +215,7 @@ services.factory('playerService',
         var audio = audioElementAng[0];
 
         var service = {
-            play: function () {
+            play: function() {
                 if (audio.currentTime === 0 &&
                     service.currentPlaying === service.clase.ejercicios[service.playIndex].musica) {
                     service.playEjercicio(service.clase.ejercicios[service.playIndex]);
@@ -226,8 +226,9 @@ services.factory('playerService',
             pause: function() {
                 audio.pause();
             },
-            clase: {},
-            tiempoRestanteClase: function () {
+            clase: null,
+            tiempoRestanteClase: function() {
+                if (!service.clase) return moment.duration(0, 's');
                 if (service.playIndex < 0) return service.clase.tiempo;
                 var total = moment.duration();
                 for (var i = service.playIndex + 1; i < service.clase.ejercicios.length; i++) {
@@ -246,10 +247,11 @@ services.factory('playerService',
                 //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
                 if (service.clase.ejercicios.length - 1 >= service.playIndex) {
                     audio.repeatCount = undefined;
-                    service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
+                    service.playFile(service.clase.ejercicios[service.playIndex].musica,
+                        service.clase.ejercicios[service.playIndex]);
                 }
             },
-            playNext: function () {
+            playNext: function() {
                 if (service.playIndex === service.clase.ejercicios.length - 1) return;
                 service.playIndex++;
                 service.playFromList();
@@ -259,12 +261,15 @@ services.factory('playerService',
                 service.playIndex--;
                 service.playFromList();
             },
+            finProgresivo: function(segundos) {
+                service.segundosFinProgresivo = segundos;
+            },
             duration: 0,
-            durationString : function() {
+            durationString: function() {
                 return (new Date(service.duration * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substring(3);
             },
             currentTime: 0,
-            currentTimeString: function () {
+            currentTimeString: function() {
                 return (new Date(service.currentTime * 1000)).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0].substring(3);
             },
             state: "",
@@ -275,8 +280,8 @@ services.factory('playerService',
                 service.pause();
                 audio.currentTime = 0;
             },
-            message : "",
-            playEjercicio: function (ejercicio) {
+            message: "",
+            playEjercicio: function(ejercicio) {
                 service.playIndex = ejercicio.nro - 1;
                 service.playFromList();
             },
@@ -286,28 +291,33 @@ services.factory('playerService',
                 service.tiempoRestanteClase();
                 service.currentPlaying = musica;
                 service.message = "";
+                service.segundosFinProgresivo = 0;
                 if (musica === null) {
                     service.stop();
                     return;
                 }
-                if (service.playIndex !== -1 && service.playIndex !== 0 && service.clase.ejercicios[service.playIndex].musica !== musica) {
+                if (service.playIndex !== -1 &&
+                    service.playIndex !== 0 &&
+                    service.clase.ejercicios[service.playIndex].musica !== musica) {
                     service.playIndex = -1;
                 }
-                var musicaSearch = $filter('filter')(service.clase.ejercicios, { musica: musica });
-                if (musicaSearch && musicaSearch.length > 0) {
-                    service.playIndex = musicaSearch[0].nro -1;
+                if (service.clase) {
+                    var musicaSearch = $filter('filter')(service.clase.ejercicios, { musica: musica });
+                    if (musicaSearch && musicaSearch.length > 0) {
+                        service.playIndex = musicaSearch[0].nro - 1;
+                    }
                 }
                 if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
                     audio.volumeStep = 1 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
-                    audio.intervalInicioVolume = $interval(function () {
-                        if (audio.volume + audio.volumeStep >= 1) {
-                            $interval.cancel(audio.intervalInicioVolume);
-                            audio.intervalInicioVolume = undefined;
-                            audio.volume = 1;
-                            return;
-                        }
-                        audio.volume += audio.volumeStep;
+                    audio.intervalInicioVolume = $interval(function() {
+                            if (audio.volume + audio.volumeStep >= 1) {
+                                $interval.cancel(audio.intervalInicioVolume);
+                                audio.intervalInicioVolume = undefined;
+                                audio.volume = 1;
+                                return;
+                            }
+                            audio.volume += audio.volumeStep;
                         },
                         200);
                 }
@@ -346,76 +356,93 @@ services.factory('playerService',
             },
             setCurrentTime: function(value) {
                 audio.currentTime = value;
-            }
-            ,
-            progressClick: function ($event) {
+            },
+            progressClick: function($event) {
                 if (typeof $event === "undefined") return;
                 var progress = angular.element(document.querySelector('#playerProgress'))[0];
                 service.setCurrentTime($event.offsetX * service.duration / progress.clientWidth);
-            }, changeState: function (newState) {
+            },
+            changeState: function(newState) {
                 console.log(newState);
                 switch (newState) {
-                    case "playing":
-                        //service.startStateLoop();
-                        break;
-                    case "ended":
-                        if (service.clase) {
-                            service.tiempoRestanteClase();
-                            if (newState === "ended" && service.playIndex > -1 && service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
-                                audio.repeatCount) {
-                                audio.repeatCount++;
-                                service.playFile(service.clase.ejercicios[service.playIndex].musica, service.clase.ejercicios[service.playIndex]);
-                                return;
-                            }
+                case "playing":
+                    //service.startStateLoop();
+                    break;
+                case "ended":
+                    if (service.clase) {
+                        service.tiempoRestanteClase();
+                        if (newState === "ended" &&
+                            service.playIndex > -1 &&
+                            service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
+                            audio.repeatCount) {
+                            audio.repeatCount++;
+                            service.playFile(service.clase.ejercicios[service.playIndex].musica,
+                                service.clase.ejercicios[service.playIndex]);
+                            return;
                         }
-                        if (!audio.ended) {
-                            service.stop();
-                        }
-                        if (service.playIndex > -1 && service.clase.ejercicios[service.playIndex].empalmarTemaSiguiente) service.playNext();
-                    case "pause":
-                    case "error":
-                        service.stopStateLoop();
-                        break;
+                    }
+                    if (!audio.ended) {
+                        service.stop();
+                    }
+                    if (service
+                        .playIndex >
+                        -1 &&
+                        service.clase.ejercicios[service.playIndex].empalmarTemaSiguiente) service.playNext();
+                case "pause":
+                case "error":
+                    service.stopStateLoop();
+                    break;
                 default:
                 }
                 service.state = newState;
-            }, startStateLoop: function () {
+            },
+            startStateLoop: function() {
                 service.stopStateLoop();
                 service.intervalState = $interval(service.updateState, 1000);
-            }, stopStateLoop : function() {
+            },
+            stopStateLoop: function() {
                 if (service.intervalState) $interval.cancel(service.intervalState);
-            }, updateState : function() {
+            },
+            updateState: function() {
                 service.currentTime = audio.currentTime;
                 service.duration = audio.duration || 0;
+                if ((service.segundosFinProgresivo || 0) > 0) {
+                    activarFinProgresivo(service.segundosFinProgresivo);
+                    service.segundosFinProgresivo = 0;
+                }
                 if ($rootScope.$$phase !== "$apply" && $rootScope.$$phase !== "$digest") $rootScope.$apply();
                 if (service.clase === undefined || service.playIndex < 0) return;
-                if (service.playIndex > -1 && (service.clase.ejercicios[service.playIndex].finalizarSegundos || 99999) <= service.currentTime) {
+                if (service.playIndex > -1 &&
+                    (service.clase.ejercicios[service.playIndex].finalizarSegundos || 99999) <= service.currentTime) {
                     //service.stop();
                     service.changeState("ended");
                 }
-                var duration = (service.clase.ejercicios[service.playIndex].finalizarSegundos || 0) > 0
+                var duracionTotal = (service.clase.ejercicios[service.playIndex].finalizarSegundos || 0) > 0
                     ? service.clase.ejercicios[service.playIndex].finalizarSegundos
                     : service.duration;
                 if ((service.clase.ejercicios[service.playIndex].segundosFinProgresivo || 0) > 0) {
-                    if (service.currentTime >= duration - service.clase.ejercicios[service.playIndex].segundosFinProgresivo &&
+                    if (service.currentTime >= duracionTotal - service.clase.ejercicios[service.playIndex].segundosFinProgresivo &&
                         typeof audio.intervalFinProgresivo === "undefined") {
-                        audio.volumeStepFin = 1 / (service.clase.ejercicios[service.playIndex].segundosFinProgresivo * 1000 / 200);
-                        audio.intervalFinProgresivo = $interval(function () {
-                            if (audio.volume - audio.volumeStepFin <= 0) {
-                                $interval.cancel(audio.intervalFinProgresivo);
-                                audio.intervalFinProgresivo = undefined;
-                                service.stop();
-                                audio.volume = 1;
-                                return;
-                            }
-                            if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
-                        },
-                            200);
-
+                        activarFinProgresivo(service.clase.ejercicios[service.playIndex].segundosFinProgresivo);
                     }
                 }
             }
         };
+
+        function activarFinProgresivo(segundosFinProgresivo) {
+            audio.volumeStepFin = 1 / (segundosFinProgresivo * 1000 / 200);
+            audio.intervalFinProgresivo = $interval(function () {
+                    if (audio.volume - audio.volumeStepFin <= 0.1) {
+                        $interval.cancel(audio.intervalFinProgresivo);
+                        audio.intervalFinProgresivo = undefined;
+                        service.stop();
+                        audio.volume = 1;
+                        return;
+                    }
+                    if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
+                }, 200);
+        };
+
         audioElementAng.bind('play',
             function () {
                 service.changeState("playing");

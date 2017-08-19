@@ -48,9 +48,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <!--<li ><a href="/">Inicio</a></li>-->
+                <li ng-class="{active:isActive('/clases')}"><a href="#clases">Clases</a></li>
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
-                <li ng-class="{active:isActive('/clases')}"><a href="#clases">Clases</a></li>
                 <li ng-class="{active:isActive('/config')}"><a href="#config">Configuración</a></li>
                 <!--                  <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -272,7 +272,7 @@
             </div>
             <div class="form-group">
                 <label>Título Clase</label>
-                <input type="text" class="form-control" ng-model="clase.titulo" ng-blur="grabar()" />
+                <input type="text" autofocus class="form-control" ng-model="clase.titulo" ng-blur="grabar()" />
             </div>
             <div class="form-group" ng-if="vistaPlayer === false">
                 <label class="">Fecha Clase</label>
@@ -333,14 +333,16 @@
                             {{ejercicio.consigna}}
                         </div>
                     </td>
-                    <td class="col-md-3" title="'Comentarios'" ng-if="vistaPlayer === false">
-                        <div class="form-group col-md-10" style="height:100%;" ng-if="vistaPlayer === false">
+                    <td class="col-md-2" title="'Comentarios'" ng-if="vistaPlayer === false">
+                        <div class="form-group " style="height:100%;" ng-if="vistaPlayer === false">
                             <textarea class="form-control col-md-12" style="width:100%" rows="4" ng-model="ejercicio.comentarios" ng-blur="grabar()" ></textarea>
                         </div>
-                        <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer !== false">
                             {{ejercicio.comentarios}}
                         </div>
+                    </td>
+                    <td class="col-md-1" title="" ng-if="vistaPlayer === false">
+                            <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                     </td>
                     <td class="col-md-3" title="'Configuración Música'" ng-if="vistaPlayer !== false">
                         <div class="form-inline">
@@ -518,6 +520,7 @@
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.clase.ejercicios.length < 2" ng-class="{'disabled' : player.clase.ejercicios.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
+                <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.finProgresivo(15)"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
 <!--                <label class="btn btn-primary" disabled>{{ player.durationString()}}</label>-->
                 <!--<button type="button" class="btn btn-primary" ng-class="{'disabled' : model.volume > 0 }"><span class="glyphicon glyphicon-volume-off"></span></button>
         <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-volume-down"></span></button>
