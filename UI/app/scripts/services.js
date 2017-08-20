@@ -1,12 +1,23 @@
 ﻿var services = angular.module('services', []);
 
+function addMusicasAEjercicio(ejercicio) {
+    if (typeof ejercicio.musicas !== "undefined") return;
+    ejercicio.musicas = [];
+    angular.forEach(ejercicio.musicasId,
+        function (value) {
+            var musica = eval("db.musicas.x" + value);
+            ejercicio.musicas.push(musica);
+        });
+}
+
 services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', function ($q, $localStorage, $uibModal, NgTableParams, $filter) {
     var context = {};
 
-    //angular.forEach(db.musicas,
-    //    function(value) {
-    //        if (value.duracion)
-    //    });
+    angular.forEach(db.musicas,
+        function(musica, index) {
+            var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
+            eval(str);
+        });
 
     context.calculaTiempoEjercicio = function (ejercicio) {
         if (ejercicio.musica === null) {
@@ -128,8 +139,10 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                     if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
                     if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
                     if (ej.musica !== null && ej.musica.duracion === "00:00:00") {
-                        var musica = $filter('filter')(db.musicas, { idMusica: ej.musica.idMusica });
-                        if (musica.length>0) ej.musica.duracion = musica[0].duracion;
+                        var musica = eval("db.musicas.x" +  ej.musica.idMusica);
+                        if (musica) {
+                            ej.musica.duracion = musica.duracion;
+                        }
                     }
                 });
         });
@@ -293,7 +306,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 service.message = "";
                 service.segundosFinProgresivo = 0;
                 service.finalizarLeftPx = null;
-                if (ejercicio.finalizarSegundos) {
+                if (ejercicio && ejercicio.finalizarSegundos) {
                     var progress = angular.element(document.querySelector('#playerProgress'))[0];
                     var duration = moment.duration(musica.duracion).asSeconds();
                     service.finalizarLeftPx = ejercicio.finalizarSegundos * progress.clientWidth / duration;
@@ -526,6 +539,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
 ]);
 
 services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+
     var service = {
         refreshGrid: function () {
             service.tableParams.reload();
@@ -534,9 +548,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
         {
             total: db.ejercicios.length,
             getData: function (params) {
-                // use build-in angular filter
-                var orderedData = params.sorting ? $filter('orderBy')(db.ejercicios, params.orderBy()) : db.ejercicios;
-                orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                var orderedData =  db.ejercicios;
                 if (service.buscar !== "" || service.grupo !== 0) {
                     orderedData = $filter('filter')(orderedData,
                         function (ejercicio, index, array) {
@@ -547,11 +559,12 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                             if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
                             if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
                             var ok = false;
+                            addMusicasAEjercicio(ejercicio);
                             angular.forEach(ejercicio.musicas,
                                 function (value) {
                                     if (ok) return;
-                                    if (value.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                                    if (value.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                    if (musica.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                    if (musica.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
                                 });
                             return ok;
                         });
@@ -561,7 +574,8 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                         1) *
                     params.count(),
                     params.page() * params.count());
-
+                angular.forEach(ejercicios, function(value) { addMusicasAEjercicio(value); });
+                
                 params.total(orderedData.length);
                 return ejercicios;
             }
@@ -666,6 +680,7 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                         var arrFiltrado = [];
                         for (var i = 0; i < arrEjs.length; i++) {
                             var eje = arrEjs[i];
+                            addMusicasAEjercicio(eje);
                             var filtroMusicas = eje.musicas;
                             var arrEjMusica = $filter('filter')(orderedData,
                                 function(value, index, array) {
