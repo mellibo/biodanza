@@ -208,8 +208,8 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
 services.factory('playerService',
 [
-    'contextService', '$document', '$rootScope', '$interval', '$filter',
-    function (contextService, $document, $rootScope, $interval, $filter) {
+    'contextService', '$document', '$rootScope', '$interval', '$filter', '$timeout',
+function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
 
         var audioElementAng = angular.element(document.querySelector('#audioControl'));
         var audio = audioElementAng[0];
@@ -431,17 +431,16 @@ services.factory('playerService',
 
         function activarFinProgresivo(segundosFinProgresivo) {
             audio.volumeStepFin = 1 / (segundosFinProgresivo * 1000 / 200);
-            audio.intervalFinProgresivo = $interval(function () {
-                    if (audio.volume - audio.volumeStepFin <= 0.1) {
-                        $interval.cancel(audio.intervalFinProgresivo);
-                        audio.intervalFinProgresivo = undefined;
-                        service.stop();
-                        audio.volume = 1;
-                        return;
-                    }
+            audio.intervalFinProgresivo = $interval(function() {
                     if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
-                }, 200);
-        };
+                },
+                200);
+            $timeout(function() {
+                    $interval.cancel(audio.intervalFinProgresivo);
+                    audio.intervalFinProgresivo = undefined;
+                },
+                segundosFinProgresivo * 1000);
+        }
 
         audioElementAng.bind('play',
             function () {
