@@ -530,7 +530,8 @@
         </div>
         <div class="row"  style="">
             <div class="align-top col-md-3">
-                <uib-progressbar id="playerProgress" max="player.duration" value="player.currentTime" style="border-width:1px;border-color:black;border-style: solid;background-color:#9ffcc7;" ng-click="player.progressClick($event)"><span style="color:black; white-space:nowrap;">{{ player.currentTimeString() + ' / ' + player.durationString()   }}</span></uib-progressbar>
+                <div ng-if="player.finalizarLeftPx" style="position:relative;z-index:1000; height:10px;border-style:solid;border-width:1px;width:5px;border-color:red;left:{{player.finalizarLeftPx}}px;top:0px;"><span>|</span></div>
+                <uib-progressbar id="playerProgress" max="player.duration" value="player.currentTime" style="z-index:999;border-width:1px;border-color:black;border-style: solid;background-color:#9ffcc7;" ng-click="player.progressClick($event)"><span style="color:black; white-space:nowrap;">{{ player.currentTimeString() + ' / ' + player.durationString()   }}</span> </uib-progressbar>
             </div>
         </div>
         <div class="row">

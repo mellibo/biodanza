@@ -275,7 +275,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             state: "",
             errorMessage: "",
             currentPlaying: null,
-            musicaFile: "",
+            finalizarLeftPx: null,
             stop: function() {
                 service.pause();
                 audio.currentTime = 0;
@@ -292,6 +292,12 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 service.currentPlaying = musica;
                 service.message = "";
                 service.segundosFinProgresivo = 0;
+                service.finalizarLeftPx = null;
+                if (ejercicio.finalizarSegundos) {
+                    var progress = angular.element(document.querySelector('#playerProgress'))[0];
+                    var duration = moment.duration(musica.duracion).asSeconds();
+                    service.finalizarLeftPx = ejercicio.finalizarSegundos * progress.clientWidth / duration;
+                }
                 if (musica === null) {
                     service.stop();
                     return;
