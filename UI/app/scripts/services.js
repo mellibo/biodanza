@@ -457,8 +457,9 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             $timeout(function() {
                     $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = undefined;
+                    service.stop();
                 },
-                segundosFinProgresivo * 1000);
+                segundosFinProgresivo * 1000 - 0.3);
         }
 
         audioElementAng.bind('play',
@@ -561,7 +562,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                             var ok = false;
                             addMusicasAEjercicio(ejercicio);
                             angular.forEach(ejercicio.musicas,
-                                function (value) {
+                                function (musica) {
                                     if (ok) return;
                                     if (musica.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
                                     if (musica.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
