@@ -218,30 +218,33 @@
                 <button type="button" class="btn btn-primary" ng-click="nueva()" title="Crear una nueva clase">Crear Clase   <span class="glyphicon glyphicon-file"></span></button>
                 <button type="button" class="btn btn-primary" ng-click="exportarClases()" title="Exportar todas las clases aun archivo">Exportar Clases  <span class="glyphicon glyphicon-export"></span></button>
                 <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar clases de un archivo">Importar Clases  <span class="glyphicon glyphicon-import"></span></button>
-                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="false" uncheckable><span class="glyphicon glyphicon-resize-full"></span></label>
-                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span></label>
+                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="false" ng-show="vistaCompacta === true" uncheckable><span class="glyphicon glyphicon-resize-full"></span></label>
+                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="true"  ng-show="vistaCompacta !== true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span></label>
             </div>
             <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarClases(this)" />
             <table id="tblClases" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
                 <tr data-ng-repeat="clase in $data">
                     <td class="col-md-2 col-lg-2 " title="'Título'" sortable="'titulo'" filter="{titulo: 'text'}">
-                        <div class="btn-group col-md-8">
+                        <div class="btn-group col-md-8"  ng-show="vistaCompacta !== true">
                             <button type="button" class="btn btn-success" ng-click="editarClase(clase)" title="Modificar clase"><span class="glyphicon glyphicon-edit"></span></button>
                             <button type="button" class="btn btn-primary" ng-click="exportar(clase)" title="Exportar clase a un archivo"> <span class="glyphicon glyphicon-share"></span></button>
                         </div>
-                        <div class="btn-group col-md-4">
+                        <div class="btn-group col-md-4"  ng-show="vistaCompacta !== true">
                             <button type="button" class="btn btn-danger" ng-click="delete(clase)" title="Eliminar clase" arsoft-confirmation="Esta seguro que quiere eliminar la clase?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12"  ng-click="editarClase(clase)">
                             <label class="control-label" ng-bind="clase.titulo" />
                         </div>
                     </td>
                     <td class="col-md-2 col-lg-2 " title="'Fecha Clase'" filter="{fechaClase: 'text'}">
-                        <p class="input-group">
+                        <p class="input-group"  ng-show="vistaCompacta !== true">
                             <input type="text" class="form-control" ng-model="clase.fechaClase" uib-datepicker-popup="dd/MM/yy" is-open="fechaClase.opened"  ng-blur="grabar()"  />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="fechaClase.open()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
+                        </p>
+                        <p ng-show="vistaCompacta === true" ng-click="editarClase(clase)">
+                            {{ clase.fechaClase | date : format : shortDate }}
                         </p>
                     </td>
                     <td class="col-md-4 col-lg-4 " title="'Ejercicios'" ng-click="editarClase(clase)">
@@ -254,8 +257,11 @@
                             Cantidad ejercicios: {{ clase.ejercicios.length }}
                         </div>
                     </td>
-                    <td class="col-md-4 col-lg-4 " title="'Comentarios'" sortable="'comment'" filter="{comment: 'text'}">
-                        <textarea style="width:100%" rows="{{ vistaCompacta ? '2' : clase.ejercicios.length  }}" class="form-control" ng-model="clase.comentarios"  ng-blur="grabar()"  />
+                    <td class="col-md-1 col-lg-1 " title="'Lineas'" ng-click="editarClase(clase)">
+                        {{ clase.V ? 'V':''}}{{ clase.A ? 'A':''}}{{ clase.C ? 'C':''}}{{ clase.S ? 'S':''}}{{ clase.T ? 'T':''}}
+                    </td>
+                    <td class="col-md-3 col-lg-3 " title="'Comentarios'" sortable="'comment'" filter="{comment: 'text'}">
+                        <textarea style="width:100%" rows="{{ vistaCompacta ? '1' : clase.ejercicios.length  }}" class="form-control" ng-model="clase.comentarios"  ng-blur="grabar()"  ></textarea>
                     </td>
                 </tr>
             </table>
@@ -288,6 +294,14 @@
             <div class="form-group">
                 <span>Total: {{tiempoTotalString}} </span>
                 <span ng-if="vistaPlayer !== false" ><br/>Hora Estimada De Finalización: <strong> {{horaFin}} </strong></span>
+            </div>
+            <div class="form-group checkbox">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>V<br /><input type="checkbox" ng-model="clase.V" ng-change="grabar()" /></label>
+                <label>A<br /><input type="checkbox" ng-model="clase.A" ng-change="grabar()" /></label>
+                <label>C<br /><input type="checkbox" ng-model="clase.C" ng-change="grabar()" /></label>
+                <label>S<br /><input type="checkbox" ng-model="clase.S" ng-change="grabar()" /></label>
+                <label>T<br /><input type="checkbox" ng-model="clase.T" ng-change="grabar()" /></label>
             </div>
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
