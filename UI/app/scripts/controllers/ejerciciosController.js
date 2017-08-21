@@ -1,5 +1,6 @@
 ﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'modelEjerciciosService', '$uibModal', function ($scope, $rootScope, $window, $location, contextService, modelEjerciciosService, $uibModal) {
     $scope.modelEjercicios = modelEjerciciosService;
+    $scope.isMobileOrTablet = contextService.isMobileOrTablet();
 
     if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica === "") {
         $location.path("/config");
@@ -48,6 +49,18 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
 
     $scope.exportarClases = function () {
         contextService.exportarClases();
+    }
+
+    $scope.importarClases = function (file) {
+        contextService.importarClases(file.files[0]);
+        $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
+        $scope.tableParams.reload();
+    }
+
+    $scope.pickImportFile = function () {
+        var fileElementAng = angular.element(document.querySelector('#fileImport'));
+        var fileElement = fileElementAng[0];
+        fileElement.click();
     }
 
     $scope.exportar = function (clase) {

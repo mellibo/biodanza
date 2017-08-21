@@ -10,12 +10,22 @@ function addMusicasAEjercicio(ejercicio) {
         });
 }
 
-services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', function ($q, $localStorage, $uibModal, NgTableParams, $filter) {
+services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location) {
     var context = {};
+
+    var biodanzaClases = null;
+
+    context.isMobileOrTablet = function () { return ismobile || istablet };
 
     angular.forEach(db.musicas,
         function(musica, index) {
             var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
+            eval(str);
+        });
+
+    angular.forEach(db.ejercicios,
+        function(ejercicio, index) {
+            var str = "db.ejercicios.x" + ejercicio.idEjercicio + " = db.ejercicios[ " + index + "];";
             eval(str);
         });
 
@@ -120,33 +130,58 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     context.clases = function () {
         biodanzaClases = $localStorage.biodanzaClases;
         if (biodanzaClases == null) {
-            biodanzaClases = [];
             biodanzaClases = [context.nuevaClase()];
         }
             
         return biodanzaClases;
     };
+    context.clases();
 
-    angular.forEach(context.clases(),
-        function(value) {
-            angular.forEach(value.ejercicios,
-                function(ej) {
-                    if (typeof ej.iniciarSegundos === "undefined" || ej.iniciarSegundos === null) ej.iniciarSegundos = 0;
-                    if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
-                    if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
-                    if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
-                    if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
-                    if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
-                    if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
-                    if (ej.musica !== null && ej.musica.duracion === "00:00:00") {
-                        var musica = eval("db.musicas.x" +  ej.musica.idMusica);
-                        if (musica) {
-                            ej.musica.duracion = musica.duracion;
+    function loadClases() {
+        angular.forEach(biodanzaClases,
+            function (value) {
+                angular.forEach(value.ejercicios,
+                    function (ej) {
+                        if (typeof ej.iniciarSegundos === "undefined" || ej.iniciarSegundos === null) ej.iniciarSegundos = 0;
+                        if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
+                        if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
+                        if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
+                        if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
+                        if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
+                        if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
+                        if (ej.musica !== null) {
+                            var musica = eval("db.musicas.x" + ej.musica.idMusica);
+                            if (musica) {
+                                ej.musica = musica;
+                            }
                         }
-                    }
-                });
-        });
-    context.saveClases();
+                        if (ej.ejercicio !== null) {
+                            var ejercicio = eval("db.ejercicios.x" + ej.ejercicio.idEjercicio);
+                            if (ejercicio) {
+                                ej.ejercicio = ejercicio;
+                            }
+                        }
+                    });
+            });
+        context.saveClases();
+    }
+    loadClases();
+
+    context.importarClases = function (file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+            if (evt.target.readyState === FileReader.DONE) {
+                console.log(evt.target.result);
+                var json = eval(evt.target.result.substring(evt.target.result.indexOf('[')));
+                angular.forEach(json,
+                    function(item) {
+                        biodanzaClases.unshift(item);
+                    });
+                loadClases();
+            }
+        };
+        reader.readAsText(file);
+    };
 
     var buildExpClase = function(clase) {
         var ejercicios = [];
@@ -200,7 +235,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         a.dispatchEvent(e);
 
     };
-
     context.exportarClases = function() {
         var clases = [];
         angular.forEach(context.clases(), function(value) {
@@ -212,8 +246,11 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
 
     context.exportarClase = function (clase) {
+        var clases = [];
         var claseExp = buildExpClase(clase);
-        downloadJson(claseExp, claseExp.titulo + ".bio");
+        clases.push(clase);
+
+        downloadJson(clases, claseExp.titulo + ".bio");
     };
 
     return context;
@@ -542,6 +579,10 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
 services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
 
     var service = {
+        txtBuscarChange: function () {
+            if (ismobile || istablet) return;
+                service.refreshGrid();
+        },
         refreshGrid: function () {
             service.tableParams.reload();
         },

@@ -1,4 +1,7 @@
-﻿var removeByAttr = function (arr, attr, value) {
+﻿var ismobile = (/iphone|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile/i.test(navigator.userAgent.toLowerCase()));
+var istablet = (/ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()));
+
+var removeByAttr = function (arr, attr, value) {
     var i = arr.length;
     while (i--) {
         if (arr[i] && arr[i].hasOwnProperty(attr) && (arguments.length > 2 && arr[i][attr] === value)) {
