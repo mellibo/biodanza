@@ -272,11 +272,11 @@
     <div class="row">
         <form class="form-inline">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="cerrar()" title="Volver al listado de clases">Volver</button>
-                <button type="button" class="btn btn-primary" ng-if="vistaPlayer === false" ng-click="nuevoEjercicio()" title="Agregar un ejercicio a la clase">Agregar Ejercicio</button>
-                <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="false" uncheckable>Edición</label>
-                <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="true" uib-uncheckable="uncheckable">Play</label>
-                <button type="button" class="btn btn-primary" ng-if="vistaPlayer === true" ng-click="playAll()" title="Reproducir toda la música sin cortes">Escuchar clase completa</button>
+                <button type="button" class="btn btn-primary" ng-click="cerrar()" title="Volver al listado de clases"><span class="glyphicon glyphicon-menu-left"></span>   Volver</button>
+                <button type="button" class="btn btn-primary" ng-if="vistaPlayer === false" ng-click="nuevoEjercicio()" title="Agregar un ejercicio a la clase"><span class="glyphicon glyphicon-plus-sign"></span>   Agregar Ejercicio</button>
+                <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="false" ng-show="vistaPlayer === true"  uncheckable><span class="glyphicon glyphicon-resize-full"></span>   Edición</label>
+                <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="true" ng-show="vistaPlayer !== true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span>   Play</label>
+                <button type="button" class="btn btn-primary" ng-if="vistaPlayer === true" ng-click="playAll()" title="Reproducir toda la música sin cortes"><span class="glyphicon glyphicon-play"></span>   Escuchar</button>
             </div>
             <div class="form-group">
                 <label>Título Clase</label>

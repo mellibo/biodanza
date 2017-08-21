@@ -271,7 +271,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
 
         var service = {
             play: function() {
-                if (audio.currentTime === 0 &&
+                if (audio.currentTime === 0 && service.clase &&
                     service.currentPlaying === service.clase.ejercicios[service.playIndex].musica) {
                     service.playEjercicio(service.clase.ejercicios[service.playIndex]);
                     return;
@@ -300,19 +300,19 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             playIndex: -1,
             playFromList: function() {
                 //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
-                if (service.clase.ejercicios.length - 1 >= service.playIndex) {
+                if (service.clase && service.clase.ejercicios.length - 1 >= service.playIndex) {
                     audio.repeatCount = undefined;
                     service.playFile(service.clase.ejercicios[service.playIndex].musica,
                         service.clase.ejercicios[service.playIndex]);
                 }
             },
             playNext: function() {
-                if (service.playIndex === service.clase.ejercicios.length - 1) return;
+                if (service.clase && service.playIndex === service.clase.ejercicios.length - 1) return;
                 service.playIndex++;
                 service.playFromList();
             },
             playPrevious: function() {
-                if (service.playIndex === 0) return;
+                if (service.clase && service.playIndex === 0) return;
                 service.playIndex--;
                 service.playFromList();
             },
