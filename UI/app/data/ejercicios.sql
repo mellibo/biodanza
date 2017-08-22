@@ -1,3 +1,4 @@
+DECLARE @col int = 0
 SELECT e.idEjercicio, e.nombre, e.idGrupo, replace(replace(ge.nombre,char(13),'<br/>'),'\r','<br/>') as grupo, replace(replace(e.detalle,char(13),'<br/>'),'\r','<br/>') detalle, cm.nombre coleccion, 
 JSON_QUERY(dbo.ufnToRawJsonArray(
     (SELECT  convert(varchar(19), m.idMusica) as 'idMusica'
@@ -9,6 +10,6 @@ JSON_QUERY(dbo.ufnToRawJsonArray(
     inner join GrupoEjercicio ge on ge.IdGrupo = e.IdGrupo
     inner join ColeccionMusica cm on cm.IdColeccion = e.IdColeccion
     and e.Nombre not IN (SELECT NomBreEjercicio FROM EquivalenciaEjercicios WHERE IdEjercicio < 1000)
-  WHERE e.IdGrupo > 49
+  WHERE e.IdGrupo > 49 and (e.IdColeccion =@col OR @col =0) 
   Order by idgrupo, e.nombre
   FOR JSON PATH
