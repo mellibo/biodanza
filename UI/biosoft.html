@@ -162,6 +162,7 @@
         <div class="col-md-6">
             <label class="form-label">Ejercicio:</label>
             <input type="text" ng-model="modelMusicas.ejercicioTextFilter" ng-blur="modelMusicas.refreshGrid()" uib-typeahead="nombre for nombre in modelMusicas.ejerciciosNombre | filter:$viewValue | limitTo:15" class="form-control  input-md input-search" style="width:350px;">
+            <button type="button" class="btn btn-primary btn-sm" ng-if="isMobileOrTablet" ng-click="modelMusicas.refreshGrid()"><i class="glyphicon glyphicon-search"></i></button>
         </div>
         <table id="tblMusicas" ng-table="modelMusicas.tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
             <tr data-ng-repeat="musica in $data" >

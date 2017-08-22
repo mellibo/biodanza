@@ -20,6 +20,7 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'c
 
 app.controller('musicasController', ['$scope', '$filter', '$location', 'contextService', 'modelMusicaService', '$uibModal', 'NgTableParams', function ($scope, $filter, $location, contextService, modelMusicaService, $uibModal, NgTableParams) {
     $scope.modelMusicas = modelMusicaService;
+    $scope.isMobileOrTablet = contextService.isMobileOrTablet();
 }]);
 
 app.controller('configController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
