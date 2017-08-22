@@ -229,3 +229,6 @@ app.controller('audioController', ['$scope', '$rootScope', '$window', '$location
     };
 }]);
 
+app.controller('aboutController', ['$scope', function($scope) {
+    $scope.mail = "biodanza" + "@" + "arsoft.com.ar";
+}]);

@@ -18,6 +18,10 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'clasesController',
         templateUrl: 'clases.html'
     }).
+    when('/acercade/', {
+        controller: 'aboutController',
+        templateUrl: 'about.html'
+    }).
     when('/clase/:id', {
         controller: 'claseController',
         templateUrl: 'clase.html'

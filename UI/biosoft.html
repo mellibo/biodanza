@@ -52,6 +52,7 @@
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
                 <li ng-class="{active:isActive('/config')}"><a href="#config">Configuración</a></li>
+                <li ng-class="{active:isActive('/acercade')}"><a href="#acercade">Acerca De...</a></li>
                 <!--                  <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                                           <ul class="dropdown-menu">
@@ -215,11 +216,11 @@
     <div class="row">
         <form class="form-inline">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" ng-click="nueva()" title="Crear una nueva clase">Crear Clase   <span class="glyphicon glyphicon-file"></span></button>
-                <button type="button" class="btn btn-primary" ng-click="exportarClases()" title="Exportar todas las clases aun archivo">Exportar Clases  <span class="glyphicon glyphicon-export"></span></button>
-                <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar clases de un archivo">Importar Clases  <span class="glyphicon glyphicon-import"></span></button>
-                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="false" ng-show="vistaCompacta === true" uncheckable><span class="glyphicon glyphicon-resize-full"></span></label>
-                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="true"  ng-show="vistaCompacta !== true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span></label>
+                <button type="button" class="btn btn-primary" ng-click="nueva()" title="Crear una nueva clase"><span class="glyphicon glyphicon-file"></span>   Crear Clase</button>
+                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="false" ng-show="vistaCompacta"><span class="glyphicon glyphicon-resize-full"></span></label>
+                <label class="btn btn-success" ng-model="vistaCompacta" uib-btn-radio="true" ng-show="!vistaCompacta"><span class="glyphicon glyphicon-resize-small"></span></label>
+                <button type="button" class="btn btn-primary" ng-click="exportarClases()" title="Exportar todas las clases aun archivo"><span class="glyphicon glyphicon-export"></span>   Exportar Clases</button>
+                <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar clases de un archivo"><span class="glyphicon glyphicon-import"></span>   Importar Clases</button>
             </div>
             <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarClases(this)" />
             <table id="tblClases" ng-table="tableParams" show-filter="true" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
@@ -646,6 +647,16 @@
             </div>
         </form>
     </div>
+</script>
+<script type="text/ng-template" id="about.html">
+    <h2>Copyright (C) 2017 Marcos Mellibovsky<br /><br />
+
+    Este programa es software libre. Puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de GNU según es publicada por la Free Software Foundation, bien de la versión 2 de dicha Licencia o bien (según su elección) de cualquier versión posterior.
+        <br /><br />
+    Este programa se distribuye con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA NI SOPORTE, incluso sin la garantía MERCANTIL implícita o sin garantizar la CONVENIENCIA PARA UN PROPÓSITO PARTICULAR. Véase la Licencia Pública General de GNU para más detalles.
+        <br />
+</h2>
+    <h3>Para sugerencias o reporte de bugs puedes contactarme a {{mail}}</h3>
 </script>
 </body>
 </html>
