@@ -101,8 +101,10 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         var total = moment.duration();
         angular.forEach($scope.clase.ejercicios,
             function (ejercicio) {
-                contextService.calculaTiempoEjercicio(ejercicio);
-                total.add(ejercicio.tiempo);
+                if (!ejercicio.deshabilitado) {
+                    contextService.calculaTiempoEjercicio(ejercicio);
+                    total.add(ejercicio.tiempo);
+                }
             });
         $scope.tiempoTotal = total;
         $scope.tiempoTotalString = moment(0, 's').add(total).format("H:mm:ss");
