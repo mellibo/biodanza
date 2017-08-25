@@ -278,7 +278,7 @@
                 <button type="button" class="btn btn-primary" ng-if="vistaPlayer === false" ng-click="nuevoEjercicio()" title="Agregar un ejercicio a la clase"><span class="glyphicon glyphicon-plus-sign"></span>   Agregar Ejercicio</button>
                 <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="false" ng-show="vistaPlayer === true"  uncheckable><span class="glyphicon glyphicon-resize-full"></span>   Edición</label>
                 <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="true" ng-show="vistaPlayer !== true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span>   Play</label>
-                <button type="button" class="btn btn-primary" ng-if="vistaPlayer === true" ng-click="playAll()" title="Reproducir toda la música sin cortes"><span class="glyphicon glyphicon-play"></span>   Escuchar</button>
+                <button type="button" class="btn btn-primary" ng-click="playAll()" title="Reproducir toda la música sin cortes"><span class="glyphicon glyphicon-play"></span>   Escuchar Todos</button>
             </div>
             <div class="form-group">
                 <label>Título Clase</label>
@@ -542,6 +542,7 @@
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.pause()"><span class="glyphicon glyphicon-pause"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.stop()"><span class="glyphicon glyphicon-stop"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.clase.ejercicios.length < 2" ng-class="{'disabled' : player.clase.ejercicios.length < 2 }" ng-click="player.playNext()"><span class="glyphicon glyphicon-step-forward"></span></button>
+                <button type="button" class="btn btn-primary" title="Play Continuo" uib-btn-checkbox ng-model="player.playContinuo"><span class="glyphicon glyphicon-play-circle"></span></button>
                 <button type="button" class="btn btn-primary" ng-disabled="player.state !== 'playing'" ng-class="{'disabled' : player.state !== 'playing' }" ng-click="player.finProgresivo(15)"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
 <!--                <label class="btn btn-primary" disabled>{{ player.durationString()}}</label>-->
                 <!--<button type="button" class="btn btn-primary" ng-class="{'disabled' : model.volume > 0 }"><span class="glyphicon glyphicon-volume-off"></span></button>

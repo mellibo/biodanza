@@ -141,7 +141,8 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     };
     $scope.vistaPlayer = false;
     $scope.playAll = function () {
-        playerService.playAll();
+        $scope.player.playContinuo = true;
+        $scope.player.playAll();
     };
     $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
 

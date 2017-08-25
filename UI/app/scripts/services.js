@@ -238,6 +238,14 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                     consigna: value.consigna,
                     nombre: value.nombre,
                     nro: value.nro,
+                    iniciarSegundos : value.iniciarSegundos,
+                    finalizarSegundos : value.finalizarSegundos,
+                    segundosInicioProgresivo : value.segundosInicioProgresivo,
+                    segundosFinProgresivo : value.segundosFinProgresivo,
+                    empalmarTemaSiguiente : value.empalmarTemaSiguiente,
+                    minutosAdicionales : value.minutosAdicionales,
+                    cantidadRepeticiones : value.cantidadRepeticiones,
+                    deshabilitado : value.deshabilitado,
                     ejercicio: value.ejercicio === null
                         ? null
                         : {
@@ -263,8 +271,13 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             fechaCreacion: clase.fechaCreacion,
             fechaClase: clase.fechaClase,
             comentarios: clase.comentarios,
-            ejercicios: ejercicios
-        }
+            ejercicios: ejercicios,
+            V : value.V,
+            A: value.A,
+            C : value.C,
+            S : value.S,
+            T : value.T
+    }
         return claseExp;
     };
 
@@ -397,6 +410,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             playFile: function(musica, ejercicio) {
                 audio.volume = 1;
                 audio.ejercicio = ejercicio;
+                if (!ejercicio) service.playContinuo = false;
                 service.tiempoRestanteClase();
                 service.currentPlaying = musica;
                 service.message = "";
@@ -467,6 +481,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             playAll: function() {
                 if (service.clase.ejercicios.length < 1) return;
                 service.playIndex = 0;
+                service.playContinuo = true;
                 service.playNext();
             },
             setCurrentTime: function(value) {
@@ -477,6 +492,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 var progress = angular.element(document.querySelector('#playerProgress'))[0];
                 service.setCurrentTime($event.offsetX * service.duration / progress.clientWidth);
             },
+            playContinuo : false,
             changeState: function(newState) {
                 console.log(newState);
                 switch (newState) {
@@ -574,7 +590,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
         audioElementAng.bind('ended',
             function () {
                 service.changeState("ended");
-                service.playNext();
+                if (service.playContinuo) service.playNext();
                 //$rootScope.$apply();
             });
         audioElementAng.bind('durationchange',
