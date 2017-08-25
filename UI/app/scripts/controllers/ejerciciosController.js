@@ -127,6 +127,9 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
         $scope.horaFin = moment().add(playerService.tiempoRestanteClase()).format("HH:mm");
         if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
     }
+    $scope.insertar = function (ejercicio) {
+        contextService.insertarEjercicio($scope.clase, ejercicio);
+    };
     $scope.rowClick = function(ejercicio) {
         if ($scope.vistaPlayer === false) return;
         $scope.playEjercicio(ejercicio);

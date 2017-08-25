@@ -60,9 +60,10 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     context.saveClases = function() {
         $localStorage.biodanzaClases = biodanzaClases;
     }
-    context.nuevoEjercicioClase = function(clase) {
-        var ej = angular.copy({
-            nro: clase.ejercicios.length + 1,
+
+    function nuevoEjercicio(nro) {
+        return angular.copy({
+            nro: nro,
             ejercicio: null,
             musica: null,
             consigna: null,
@@ -77,6 +78,10 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             minutosAdicionales: 0,
             deshabilitado: false
         });
+    }
+
+    context.nuevoEjercicioClase = function(clase) {
+        var ej = nuevoEjercicio(clase.ejercicios.length + 1);
         clase.ejercicios.push(ej);
         context.saveClases();
     }
@@ -129,6 +134,15 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         var nro = ejercicio.nro;
         clase.ejercicios[nro - 1].nro = nro;
         clase.ejercicios[nro].nro = nro + 1;
+        context.saveClases();
+    }
+
+    context.insertarEjercicio = function (clase, ejercicio) {
+        var nro = ejercicio.nro;
+        clase.ejercicios.splice(nro -1, 0, nuevoEjercicio(nro));
+        for (var i = nro-1; i < clase.ejercicios.length; i++) {
+            clase.ejercicios[i].nro = i + 1;
+        }
         context.saveClases();
     }
 

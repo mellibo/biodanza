@@ -362,8 +362,8 @@
                     <td class="col-md-1" title="" ng-if="vistaPlayer === false">
                         <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         <br/>
-                        <br/>
-                        <label class="checkbox"><input type="checkbox" ng-model="ejercicio.deshabilitado" />Deshabilit.</label>
+                        <label class="checkbox"><input type="checkbox" title="Deshabilitar ejercicio" ng-model="ejercicio.deshabilitado" />Deshab.</label>
+                        <button class="btn btn-primary" title="Insertar ejercicio" type="button" ng-click="insertar(ejercicio)"><span class="glyphicon glyphicon-plus-sign"></span></button>
                     </td>
                     <td class="col-md-3" title="'Configuración Música'" ng-if="vistaPlayer !== false">
                         <div class="form-inline">
