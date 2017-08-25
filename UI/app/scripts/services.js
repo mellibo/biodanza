@@ -466,8 +466,8 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             },
             playAll: function() {
                 if (service.clase.ejercicios.length < 1) return;
-                service.playIndex = 1;
-                service.playPrevious();
+                service.playIndex = 0;
+                service.playNext();
             },
             setCurrentTime: function(value) {
                 audio.currentTime = value;
