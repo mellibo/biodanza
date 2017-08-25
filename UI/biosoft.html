@@ -307,7 +307,7 @@
             </div>
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
-                <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" ng-click="rowClick(ejercicio)" >
+                <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" style="{{ ejercicio.deshabilitado ? 'background-color:#b3b7bc;' : ''}}" ng-click="rowClick(ejercicio)" >
                     <td class="col-md-1 form-inline " title="'Nº'" >
                         <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false">
                             <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"  title="Mover ejercicio hacia arriba"><span class="glyphicon glyphicon-arrow-up"></span></button>
@@ -360,7 +360,10 @@
                         </div>
                     </td>
                     <td class="col-md-1" title="" ng-if="vistaPlayer === false">
-                            <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
+                        <button type="button" class="btn btn-danger" ng-click="deleteEjercicioClase(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
+                        <br/>
+                        <br/>
+                        <label class="checkbox"><input type="checkbox" ng-model="ejercicio.deshabilitado" />Deshabilit.</label>
                     </td>
                     <td class="col-md-3" title="'Configuración Música'" ng-if="vistaPlayer !== false">
                         <div class="form-inline">

@@ -61,7 +61,22 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         $localStorage.biodanzaClases = biodanzaClases;
     }
     context.nuevoEjercicioClase = function(clase) {
-        var ej = angular.copy({ nro: clase.ejercicios.length + 1, ejercicio: null, musica: null, consigna: null, cometarios: null, nombre: "", iniciarSegundos : null, finalizarSegundos : null, segundosInicioProgresivo: null, segundosFinProgresivo: null, empalmarTemaSiguiente: false, cantidadRepeticiones : 1, minutosAdicionales: 0});
+        var ej = angular.copy({
+            nro: clase.ejercicios.length + 1,
+            ejercicio: null,
+            musica: null,
+            consigna: null,
+            cometarios: null,
+            nombre: "",
+            iniciarSegundos: null,
+            finalizarSegundos: null,
+            segundosInicioProgresivo: null,
+            segundosFinProgresivo: null,
+            empalmarTemaSiguiente: false,
+            cantidadRepeticiones: 1,
+            minutosAdicionales: 0,
+            deshabilitado: false
+        });
         clase.ejercicios.push(ej);
         context.saveClases();
     }
@@ -154,6 +169,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                         if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
                         if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
                         if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
+                        if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
                         if (ej.musica !== null) {
                             var musica = eval("db.musicas.x" + ej.musica.idMusica);
                             if (musica) {
@@ -306,14 +322,27 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                         service.clase.ejercicios[service.playIndex]);
                 }
             },
-            playNext: function() {
-                if (service.clase && service.playIndex === service.clase.ejercicios.length - 1) return;
-                service.playIndex++;
+            playNext: function () {
+                var index = service.playIndex;
+                do {
+                    if (service.clase && service.playIndex === service.clase.ejercicios.length - 1) {
+                        service.playIndex = index;
+                        return;
+                    }
+                    service.playIndex++;
+                } while (service.clase.ejercicios[service.playIndex].deshabilitado);
+
                 service.playFromList();
             },
             playPrevious: function() {
-                if (service.clase && service.playIndex === 0) return;
-                service.playIndex--;
+                var index = service.playIndex;
+                do {
+                    if (service.clase && service.playIndex === 0) {
+                        service.playIndex = index;
+                        return;
+                    }
+                    service.playIndex--;
+                } while (service.clase.ejercicios[service.playIndex].deshabilitado);
                 service.playFromList();
             },
             finProgresivo: function(segundos) {
