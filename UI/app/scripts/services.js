@@ -186,12 +186,23 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                         if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
                         if (ej.musica !== null) {
                             var musica = eval("db.musicas.x" + ej.musica.idMusica);
+                            if (typeof musica === "undefined") {
+                                var musicas = $filter('filter')(db.musicas, { coleccion: ej.musica.coleccion, nroCd: ej.musica.nroCd, nroPista: ej.musica.nroPista }, true);
+                                if (musicas.length === 1) musica = musicas[0];
+                            }
+                            if (!musica) {
+                                console.log("musica no encontrada:" + ej.musica.nombre);
+                            }
                             if (musica) {
                                 ej.musica = musica;
                             }
                         }
                         if (ej.ejercicio !== null) {
                             var ejercicio = eval("db.ejercicios.x" + ej.ejercicio.idEjercicio);
+                            if (typeof ejercicio === "undefined") {
+                                var ejercicios = $filter('filter')(db.ejercicios, { nombre: ej.ejercicio.nombre }, true);
+                                if (ejercicios.length === 1) ejercicio = ejercicios[0];
+                            }
                             if (ejercicio) {
                                 ej.ejercicio = ejercicio;
                             }
