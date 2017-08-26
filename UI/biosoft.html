@@ -438,11 +438,11 @@
             <i class="glyphicon glyphicon-chevron-right"></i>
         </button>
         <div class="row">
-            <div class="col-sm-8">
-                <div class="form-group ">
+            <div class="col-sm-12">
+                <div class="form-group form-inline">
                     <label class="control-label" for="inputBuscar">Buscar: </label>
-                    <input id="inputBuscar" type="text" ng-change="modelEjercicios.txtBuscarChange()" class="form-control" ng-model="modelEjercicios.buscar" />
-                    <button type="button" class="btn btn-primary btn-sm" ng-if="isMobileOrTablet" ng-click="modelEjercicios.refreshGrid()"><i class="glyphicon glyphicon-search"></i></button>
+                    <input id="inputBuscar" type="text" ng-change="modelEjercicios.txtBuscarChange()"  class="form-control" ng-model="modelEjercicios.buscar" />
+                    <button type="button" class="btn btn-primary btn-sm" ng-if="modelEjercicios.isMobileOrTablet" ng-click="modelEjercicios.refreshGrid()"><i class="glyphicon glyphicon-search"></i></button>
                 </div>
             </div>
             <div class="col-sm-12 form-group" >

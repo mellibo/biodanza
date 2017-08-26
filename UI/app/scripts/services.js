@@ -651,7 +651,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
     }
 ]);
 
-services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', 'contextService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, contextService) {
 
     var service = {
         txtBuscarChange: function () {
@@ -661,6 +661,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
         refreshGrid: function () {
             service.tableParams.reload();
         },
+        isMobileOrTablet: contextService.isMobileOrTablet(),
         tableParams: new NgTableParams({ count: 15 },
         {
             total: db.ejercicios.length,

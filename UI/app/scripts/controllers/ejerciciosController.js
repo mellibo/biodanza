@@ -1,6 +1,5 @@
 ﻿app.controller('ejerciciosController', ['$scope', '$rootScope', '$window', '$location', 'contextService', 'modelEjerciciosService', '$uibModal', function ($scope, $rootScope, $window, $location, contextService, modelEjerciciosService, $uibModal) {
     $scope.modelEjercicios = modelEjerciciosService;
-    $scope.isMobileOrTablet = contextService.isMobileOrTablet();
 
     if (typeof contextService.config().pathMusica == "undefined" | contextService.config().pathMusica === "") {
         $location.path("/config");
