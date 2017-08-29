@@ -238,3 +238,25 @@ app.controller('audioController', ['$scope', '$rootScope', '$window', '$location
 app.controller('aboutController', ['$scope', function($scope) {
     $scope.mail = "biodanza" + "@" + "arsoft.com.ar";
 }]);
+
+app.controller('importMusicaController', ['$scope', 'contextService', 'NgTableParams', function ($scope, contextService, NgTableParams) {
+    $scope.data = [];
+    $scope.importarMusica = function (file) {
+        contextService.importarMusicas(file.files[0], $scope.refresh);
+            $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.data });
+        $scope.tableParams.reload();
+    }
+
+    $scope.pickImportFile = function () {
+        var fileElementAng = angular.element(document.querySelector('#fileImport'));
+        var fileElement = fileElementAng[0];
+        fileElement.click();
+    }
+
+    $scope.refresh = function (data) {
+        $scope.data.splice(0, $scope.data.length);
+        angular.forEach(data, function(item) { $scope.data.push(item); });
+        $scope.tableParams.reload();
+        if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
+    }
+}]);
