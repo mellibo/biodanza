@@ -384,7 +384,7 @@
                                 <span >Repeticiones: {{ejercicio.cantidadRepeticiones}}</span>
                             </div>
                             <div class="form-group">
-                                <span >Empalmar tema siguiente: {{ejercicio.empalmarTemaSiguiente ? 'si': 'no'}}</span>
+                                <span >Pausa empalme: {{ejercicio.pauseEmpalme || '--'}}</span>
                             </div>
                             <div class="form-group">
                                 <span >Minutos adicionales: {{ejercicio.minutosAdicionales}}</span>
@@ -608,13 +608,13 @@
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="control-label" for="inputInicio">Fin a los</label>
-                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.finalizarSegundos" />
+                                    <label class="control-label" for="inputInicio">Ini. progresivo</label>
+                                    <input id="inputInicio" type="number" ng-blur="grabar()" class="form-control" ng-model="ejercicio.segundosInicioProgresivo" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="control-label" for="inputInicio">Ini. progresivo</label>
-                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.segundosInicioProgresivo" />
+                                    <label class="control-label" for="inputInicio">Fin a los</label>
+                                    <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.finalizarSegundos" />
                                     <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -632,8 +632,18 @@
                                     <input id="inputInicio" type="number"  ng-blur="grabar()" class="form-control" ng-model="ejercicio.minutosAdicionales" />
                                     <span class="help-block">minutos</span>
                                 </div>
-                                <div class="form-group col-md-6 checkbox">
-                                    <label class="control-label" for="chkEmpalmar"><input id="chkEmpalmar" type="checkbox"  ng-blur="grabar()" ng-model="ejercicio.empalmarTemaSiguiente" />empalmar música siguiente</label>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label" for="inputInicio">Vol. máximo</label>
+                                    <input id="inputInicio" type="number" min="0" max="100" ng-blur="grabar()" class="form-control" ng-model="ejercicio.volumen" />
+                                    <span class="help-block">de 0 a 100</span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <!--<div class="checkbox">
+                                        <label class="control-label" for="chkEmpalmar"><input id="chkEmpalmar" type="checkbox" ng-blur="grabar()" ng-model="ejercicio.empalmarTemaSiguiente" />empalmar</label>
+                                    </div>-->
+                                    <label class="control-label" for="inputInicio">Pausa empalme</label>
+                                    <input id="inputInicio" type="number" ng-blur="grabar()" class="form-control" ng-model="ejercicio.pauseEmpalme" />
+                                    <span class="help-block">segundos</span>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label class="control-label" for="inputInicio">Consigna</label>

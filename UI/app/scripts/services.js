@@ -145,6 +145,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         var tiempo = moment.duration(ejercicio.musica.duracion);
         if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
         if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
+        if (ejercicio.pauseEmpalme > 0) tiempo.add(ejercicio.pauseEmpalme, 's');
         var total = moment.duration();
         for (var i = 1; i <= ejercicio.cantidadRepeticiones; i++) {
             total.add(tiempo);
@@ -181,7 +182,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             finalizarSegundos: null,
             segundosInicioProgresivo: null,
             segundosFinProgresivo: null,
-            empalmarTemaSiguiente: false,
+            pauseEmpalme: null,
             cantidadRepeticiones: 1,
             minutosAdicionales: 0,
             deshabilitado: false
@@ -288,13 +289,13 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                         if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
                         if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
                         if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
-                        if (typeof ej.empalmarTemaSiguiente === "undefined") ej.empalmarTemaSiguiente = false;
+                        if (typeof ej.pauseEmpalme === "undefined") ej.pauseEmpalme = null;
                         if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
                         if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
                         if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
                         if (ej.musica !== null) {
                             var musica = eval("db.musicas.x" + ej.musica.idMusica);
-                            if (typeof musica === "undefined") {
+                            if (typeof musica === "undefined" || musica.coleccion !== ej.musica.coleccion || musica.nroCd !== ej.musica.nroCd || musica.nroPista !== ej.musica.nroPista) {
                                 var musicas = $filter('filter')(db.musicas, { coleccion: ej.musica.coleccion, nroCd: ej.musica.nroCd, nroPista: ej.musica.nroPista }, true);
                                 if (musicas.length === 1) musica = musicas[0];
                             }
@@ -350,7 +351,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                     finalizarSegundos : value.finalizarSegundos,
                     segundosInicioProgresivo : value.segundosInicioProgresivo,
                     segundosFinProgresivo : value.segundosFinProgresivo,
-                    empalmarTemaSiguiente : value.empalmarTemaSiguiente,
+                    pauseEmpalme: value.pauseEmpalme,
                     minutosAdicionales : value.minutosAdicionales,
                     cantidadRepeticiones : value.cantidadRepeticiones,
                     deshabilitado : value.deshabilitado,
@@ -431,6 +432,8 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
         var audioElementAng = angular.element(document.querySelector('#audioControl'));
         var audio = audioElementAng[0];
 
+        var timeoutEmpalme = null;
+        var timeoutFinProgresivo = null;
         var service = {
             play: function() {
                 if (audio.currentTime === 0 && service.clase &&
@@ -515,7 +518,19 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 service.playIndex = ejercicio.nro - 1;
                 service.playFromList();
             },
-            playFile: function(musica, ejercicio) {
+            playFile: function (musica, ejercicio) {
+                if (timeoutEmpalme) {
+                    $timeout.cancel(timeoutEmpalme);
+                    timeoutEmpalme = null;
+                }
+                if (timeoutFinProgresivo) {
+                    $timeout.cancel(timeoutFinProgresivo);
+                    timeoutFinProgresivo = null;
+                }
+                if (audio.intervalFinProgresivo) {
+                    $interval.cancel(audio.intervalFinProgresivo);
+                    audio.intervalFinProgresivo = null;
+                }
                 audio.volume = 1;
                 audio.ejercicio = ejercicio;
                 if (!ejercicio) service.playContinuo = false;
@@ -626,7 +641,12 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     if (service
                         .playIndex >
                         -1 &&
-                        service.clase.ejercicios[service.playIndex].empalmarTemaSiguiente) service.playNext();
+                        service.clase.ejercicios[service.playIndex].pauseEmpalme > 0)
+                        timeoutEmpalme = $timeout(function() {
+                            timeoutEmpalme = null;
+                            service.playNext();
+                            },
+                            service.clase.ejercicios[service.playIndex].pauseEmpalme * 1000);
                 case "pause":
                 case "error":
                     service.stopStateLoop();
@@ -674,7 +694,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
                 },
                 200);
-            $timeout(function() {
+            timeoutFinProgresivo=  $timeout(function() {
                     $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = undefined;
                     service.stop();
@@ -978,7 +998,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1013,7 +1033,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1048,7 +1068,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1083,7 +1103,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1118,7 +1138,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1153,7 +1173,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1188,7 +1208,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1223,7 +1243,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1258,7 +1278,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -1293,7 +1313,7 @@ var claseEjemplo = {
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
-            "empalmarTemaSiguiente": false,
+            "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         }
