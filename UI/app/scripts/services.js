@@ -178,6 +178,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             consigna: null,
             cometarios: null,
             nombre: "",
+            volumen: 100,
             iniciarSegundos: null,
             finalizarSegundos: null,
             segundosInicioProgresivo: null,
@@ -290,6 +291,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                         if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
                         if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
                         if (typeof ej.pauseEmpalme === "undefined") ej.pauseEmpalme = null;
+                        if (typeof ej.volumen === "undefined") ej.volumen = 100;
                         if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
                         if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
                         if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
@@ -352,6 +354,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                     segundosInicioProgresivo : value.segundosInicioProgresivo,
                     segundosFinProgresivo : value.segundosFinProgresivo,
                     pauseEmpalme: value.pauseEmpalme,
+                    volumen: value.volumen,
                     minutosAdicionales : value.minutosAdicionales,
                     cantidadRepeticiones : value.cantidadRepeticiones,
                     deshabilitado : value.deshabilitado,
@@ -531,7 +534,11 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = null;
                 }
-                audio.volume = 1;
+                if (audio.intervalInicioVolume) {
+                    $interval.cancel(audio.intervalInicioVolume);
+                    audio.intervalInicioVolume = null;
+                }
+                audio.volume = ejercicio.volumen/100;
                 audio.ejercicio = ejercicio;
                 if (!ejercicio) service.playContinuo = false;
                 service.tiempoRestanteClase();
@@ -561,12 +568,12 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 }
                 if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
-                    audio.volumeStep = 1 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
+                    audio.volumeStep = ejercicio.volumen /100 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
                     audio.intervalInicioVolume = $interval(function() {
-                            if (audio.volume + audio.volumeStep >= 1) {
+                        if (audio.volume + audio.volumeStep >= ejercicio.volumen /100) {
                                 $interval.cancel(audio.intervalInicioVolume);
                                 audio.intervalInicioVolume = undefined;
-                                audio.volume = 1;
+                                audio.volume = ejercicio.volumen/ 100;
                                 return;
                             }
                             audio.volume += audio.volumeStep;
