@@ -384,11 +384,11 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             fechaClase: clase.fechaClase,
             comentarios: clase.comentarios,
             ejercicios: ejercicios,
-            V : value.V,
-            A: value.A,
-            C : value.C,
-            S : value.S,
-            T : value.T
+            V: clase.V,
+            A: clase.A,
+            C: clase.C,
+            S: clase.S,
+            T: clase.T
     }
         return claseExp;
     };
@@ -538,7 +538,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     $interval.cancel(audio.intervalInicioVolume);
                     audio.intervalInicioVolume = undefined;
                 }
-                audio.volume = ejercicio.volumen/100;
+                audio.volume = ejercicio ? ejercicio.volumen / 100 : 1;
                 audio.ejercicio = ejercicio;
                 if (!ejercicio) service.playContinuo = false;
                 service.tiempoRestanteClase();
