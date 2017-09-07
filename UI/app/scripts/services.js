@@ -532,11 +532,11 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 }
                 if (audio.intervalFinProgresivo) {
                     $interval.cancel(audio.intervalFinProgresivo);
-                    audio.intervalFinProgresivo = null;
+                    audio.intervalFinProgresivo = undefined;
                 }
                 if (audio.intervalInicioVolume) {
                     $interval.cancel(audio.intervalInicioVolume);
-                    audio.intervalInicioVolume = null;
+                    audio.intervalInicioVolume = undefined;
                 }
                 audio.volume = ejercicio.volumen/100;
                 audio.ejercicio = ejercicio;
