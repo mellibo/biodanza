@@ -283,7 +283,7 @@
             </div>
             <div class="form-group">
                 <label>Título Clase</label>
-                <input type="text" autofocus class="form-control" ng-model="clase.titulo" ng-blur="grabar()" />
+                <input type="text" class="form-control" ng-model="clase.titulo" ng-blur="grabar()" />
             </div>
             <div class="form-group" ng-if="vistaPlayer === false">
                 <label class="">Fecha Clase</label>
@@ -341,8 +341,7 @@
                             <button type="button" class="btn btn-warning"  title="Escuchar música" ng-click="playEjercicio(ejercicio)"><span class="glyphicon glyphicon-play"></span></button>
                         </div>
                         <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" title="Eliminar música" ng-click="deleteMusica(ejercicio)" arsoft-confirmation="¿Esta seguro que quiere eliminar la música?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
-                        <a ng-click="playEjercicio(ejercicio)"><label class="col-md-12">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ')' }}</label></a>
-                        
+                        <a ng-click="playEjercicio(ejercicio)"><label class="col-md-12">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ') - ' + ejercicio.musica.duracion.substring(3) }}</label></a>
                     </td>
                     <td class="col-md-3"  title="'Consigna'" >
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer === false" >
