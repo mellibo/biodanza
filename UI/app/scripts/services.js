@@ -523,18 +523,27 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
             },
             playFile: function (musica, ejercicio) {
                 if (timeoutEmpalme) {
+                    console.log("cancel timeoutEmpalme ");
                     $timeout.cancel(timeoutEmpalme);
                     timeoutEmpalme = null;
                 }
+                if (audio.timerInicio) {
+                    console.log("cancel audio.timerInicio ");
+                    $timeout.cancel(audio.timerInicio);
+                    audio.timerInicio = undefined;
+                }
                 if (timeoutFinProgresivo) {
+                    console.log("cancel timeoutFinProgresivo");
                     $timeout.cancel(timeoutFinProgresivo);
                     timeoutFinProgresivo = null;
                 }
                 if (audio.intervalFinProgresivo) {
+                    console.log("cancel audio.intervalFinProgresivo ");
                     $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = undefined;
                 }
                 if (audio.intervalInicioVolume) {
+                    console.log("cancel timeoutEmpalme ");
                     $interval.cancel(audio.intervalInicioVolume);
                     audio.intervalInicioVolume = undefined;
                 }
@@ -629,31 +638,39 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 case "playing":
                     //service.startStateLoop();
                     break;
-                case "ended":
+                    case "ended":
+                        if (audio.timerInicio) return;
+                    if (!audio.ended) {
+                        service.stop();
+                    }
                     if (service.clase) {
                         service.tiempoRestanteClase();
-                        if (newState === "ended" &&
-                            service.playIndex > -1 &&
+                        if (service.playIndex > -1 &&
                             service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
                             audio.repeatCount) {
                             audio.repeatCount++;
-                            service.playFile(service.clase.ejercicios[service.playIndex].musica,
-                                service.clase.ejercicios[service.playIndex]);
+                            console.log("start audio.timerInicio " + 30);
+                            audio.timerInicio = $timeout(function() {
+                                console.log("elapsed audio.timerInicio ");
+                                service.playFile(service.clase.ejercicios[service.playIndex].musica,
+                                        service.clase.ejercicios[service.playIndex]);
+                                },
+                                30 * 1000);
                             return;
                         }
-                    }
-                    if (!audio.ended) {
-                        service.stop();
                     }
                     if (service
                         .playIndex >
                         -1 &&
                         service.clase.ejercicios[service.playIndex].pauseEmpalme > 0)
-                        timeoutEmpalme = $timeout(function() {
+                    {
+                        console.log("start timeoutEmpalme " + service.clase.ejercicios[service.playIndex].pauseEmpalme);
+                        if (!timeoutEmpalme) timeoutEmpalme = $timeout(function () {
+                            console.log("elapsed timeoutEmpalme " + service.clase.ejercicios[service.playIndex].pauseEmpalme);
                             timeoutEmpalme = null;
                             service.playNext();
                             },
-                            service.clase.ejercicios[service.playIndex].pauseEmpalme * 1000);
+                            service.clase.ejercicios[service.playIndex].pauseEmpalme * 1000);}
                 case "pause":
                 case "error":
                     service.stopStateLoop();
@@ -696,15 +713,17 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
         };
 
         function activarFinProgresivo(segundosFinProgresivo) {
+            console.log("start activarFinProgresivo " + segundosFinProgresivo);
             audio.volumeStepFin = 1 / (segundosFinProgresivo * 1000 / 200);
             audio.intervalFinProgresivo = $interval(function() {
                     if (audio.volume - audio.volumeStepFin >= 0) audio.volume -= audio.volumeStepFin;
                 },
                 200);
             timeoutFinProgresivo=  $timeout(function() {
-                    $interval.cancel(audio.intervalFinProgresivo);
+                console.log("elapsed activarFinProgresivo ");
+                $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = undefined;
-                    service.stop();
+                    service.changeState('ended');
                 },
                 segundosFinProgresivo * 1000 - 0.3);
         }
