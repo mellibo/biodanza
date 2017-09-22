@@ -17,7 +17,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
     context.isMobileOrTablet = function () { return ismobile || istablet };
 
-    var maxIdMusica = 0;
+    var maxIdMusica = 1000000;
     function addMusica(musica, index) {
         if (typeof index === 'undefined') {
             db.musicas.push(musica);
@@ -577,10 +577,12 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 }
                 if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
                     audio.volume = 0;
-                    audio.volumeStep = ejercicio.volumen /100 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
+                    audio.volumeStep = ejercicio.volumen / 100 / (ejercicio.segundosInicioProgresivo * 1000 / 200);
+                    console.log("start audio.intervalInicioVolume " + ejercicio.segundosInicioProgresivo);
                     audio.intervalInicioVolume = $interval(function() {
                         if (audio.volume + audio.volumeStep >= ejercicio.volumen /100) {
                                 $interval.cancel(audio.intervalInicioVolume);
+                                console.log("cancel audio.intervalInicioVolume ");
                                 audio.intervalInicioVolume = undefined;
                                 audio.volume = ejercicio.volumen/ 100;
                                 return;
@@ -607,10 +609,10 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     '(' +
                     musica.interprete +
                     '). ';
-                if (ejercicio) {
-                    service.message += ejercicio.nombre;
-                    if (ejercicio.ejercicio) service.message += ' (' + ejercicio.ejercicio.nombre + ').';
-                }
+                //if (ejercicio) {
+                //    service.message += ejercicio.nombre;
+                //    if (ejercicio.ejercicio) service.message += ' (' + ejercicio.ejercicio.nombre + ').';
+                //}
                 try {
                     audio.play();
                 } catch (e) {
@@ -643,6 +645,8 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     if (!audio.ended) {
                         service.stop();
                     }
+                    console.log("cancel timeoutFinProgresivo");
+                    if (timeoutFinProgresivo) $timeout.cancel(timeoutFinProgresivo);
                     if (service.clase) {
                         service.tiempoRestanteClase();
                         if (service.playIndex > -1 &&
@@ -670,7 +674,9 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                             timeoutEmpalme = null;
                             service.playNext();
                             },
-                            service.clase.ejercicios[service.playIndex].pauseEmpalme * 1000);}
+                            service.clase.ejercicios[service.playIndex].pauseEmpalme * 1000);
+                        service.segundosParaEmpalme = service.clase.ejercicios[service.playIndex].pauseEmpalme;
+                    }
                 case "pause":
                 case "error":
                     service.stopStateLoop();
@@ -680,15 +686,16 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 service.state = newState;
             },
             startStateLoop: function() {
-                service.stopStateLoop();
-                service.intervalState = $interval(service.updateState, 1000);
+                //service.stopStateLoop();
+                if (!service.intervalState) service.intervalState  = $interval(service.updateState, 1000);
             },
             stopStateLoop: function() {
-                if (service.intervalState) $interval.cancel(service.intervalState);
+                //if (service.intervalState) $interval.cancel(service.intervalState);
             },
             updateState: function() {
                 service.currentTime = audio.currentTime;
                 service.duration = audio.duration || 0;
+                if (timeoutEmpalme) service.segundosParaEmpalme--;
                 if ((service.segundosFinProgresivo || 0) > 0) {
                     activarFinProgresivo(service.segundosFinProgresivo);
                     service.segundosFinProgresivo = 0;
@@ -713,6 +720,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
         };
 
         function activarFinProgresivo(segundosFinProgresivo) {
+            if (timeoutEmpalme) return;
             console.log("start activarFinProgresivo " + segundosFinProgresivo);
             audio.volumeStepFin = 1 / (segundosFinProgresivo * 1000 / 200);
             audio.intervalFinProgresivo = $interval(function() {
@@ -720,7 +728,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                 },
                 200);
             timeoutFinProgresivo=  $timeout(function() {
-                console.log("elapsed activarFinProgresivo ");
+                console.log("elapsed-cancel activarFinProgresivo ");
                 $interval.cancel(audio.intervalFinProgresivo);
                     audio.intervalFinProgresivo = undefined;
                     service.changeState('ended');

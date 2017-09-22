@@ -113,6 +113,11 @@ app.controller('claseController', ['$scope', '$window', '$location', 'contextSer
     
     $scope.refreshTotalClase();
 
+    $scope.exportar = function (clase) {
+        contextService.exportarClase(clase);
+    }
+
+
     playerService.clase = $scope.clase;
     $scope.horaFin = "";
     $scope.$watch('vistaPlayer',
