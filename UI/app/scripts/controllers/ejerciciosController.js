@@ -265,3 +265,40 @@ app.controller('importMusicaController', ['$scope', 'contextService', 'NgTablePa
         if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
     }
 }]);
+
+app.controller('agregarMusicaManualController', ['$scope', 'contextService', 'testMusicaService', function ($scope, contextService, testMusicaService) {
+
+    $scope.model = {
+        message: ""
+        , valid : false
+        , musica : contextService.nuevaMusica()
+        , validar:function () {
+            testMusicaService.test($scope.model.musica,
+                function(result) {
+                    $scope.model.message = result.msg;
+                    $scope.model.valid = result.ok;
+                    if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
+                });
+        }
+        , importar : function() {
+            db.miMusica.push($scope.model.musica);
+            $scope.model.musica = contextService.nuevaMusica();
+            contextService.exportMiMusica();
+        }
+        , change: function () { $scope.model.valid = false; }
+        , updLineas: function() {
+            $scope.model.musica.lineas = ($scope.model.lineas.V === true
+                    ? "V"
+                    : "") +
+                ($scope.model.lineas.A === true
+                    ? "A"
+                    : "") +
+                ($scope.model.lineas.C === true
+                    ? "C"
+                    : "") +
+                ($scope.model.lineas.S === true ? "S" : "") +
+                ($scope.model.lineas.T === true ? "T" : "");
+            $scope.model.change();
+        }
+    };
+}]);

@@ -26,6 +26,10 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'importMusicaController',
         templateUrl: 'importMusica.html'
     }).
+    when('/agregarMusicaManual/', {
+        controller: 'agregarMusicaManualController',
+        templateUrl: 'agregarMusicaManual.html'
+    }).
     when('/clase/:id', {
         controller: 'claseController',
         templateUrl: 'clase.html'

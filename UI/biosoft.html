@@ -29,7 +29,7 @@
     <script type="text/javascript" src="app/data/grupos.js"></script>
     <script type="text/javascript" src="app/data/ejercicios.js"></script>
     <script type="text/javascript" src="app/data/musicas.js"></script>
-    <script type="text/javascript" src="app/data/mimusica.js"></script>
+    <script type="text/javascript" src="mimusica.js"></script>
     <link rel="stylesheet" type="text/css" href="app/scripts/vendor/bootstrap.cerulean.css" />
     <link rel="stylesheet" type="text/css" href="app/scripts/vendor/ng-table.min.css" />
     <link rel="stylesheet" type="text/css" href="app/styles/site.css" />
@@ -53,7 +53,7 @@
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
                 <li ng-class="{active:isActive('/config')}"><a href="#config">Configuración</a></li>
-                <li ng-class="{active:isActive('/importarMusica')}"><a href="#importarMusica">Agregar Música</a></li>
+                <li ng-class="{active:isActive('/agregarMusicaManual')}"><a href="#agregarMusicaManual">Agregar Música</a></li>
                 <li ng-class="{active:isActive('/acercade')}"><a href="#acercade">Acerca De...</a></li>
                 <!--                  <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -289,7 +289,7 @@
                 <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="false" ng-show="vistaPlayer === true"  uncheckable><span class="glyphicon glyphicon-resize-full"></span>   Edición</label>
                 <label class="btn btn-success" ng-model="vistaPlayer" uib-btn-radio="true" ng-show="vistaPlayer !== true" uib-uncheckable="uncheckable"><span class="glyphicon glyphicon-resize-small"></span>   Play</label>
                 <button type="button" class="btn btn-primary" ng-click="exportar(clase)" title="Exportar clase a un archivo"  ng-show="vistaPlayer !== true"> <span class="glyphicon glyphicon-share"></span></button>
-                <button type="button" class="btn btn-primary" ng-click="playAll()" title="Reproducir toda la música sin cortes"><span class="glyphicon glyphicon-play"></span>   Todos</button>
+                <button type="button" class="btn btn-primary" ng-click="playAll()" title="Reproducir toda la clase sin cortes"><span class="glyphicon glyphicon-play"></span>   Todos</button>
             </div>
             <div class="form-group">
                 <label>Título Clase</label>
@@ -737,6 +737,56 @@
             </tr>
         </tbody>
     </table>
+</script>
+<script type="text/ng-template" id="agregarMusicaManual.html">
+    <div class="alert" >{{model.message}}</div>
+    <div class="row form">
+        <div class="form-group col-md-1">
+            <label class="control-label">Colección</label>
+            <input type="text" ng-model="model.musica.coleccion" ng-change="model.change()" class="form-control">
+        </div>
+        <div class="form-group col-md-1">
+            <label class="control-label">Nro. CD</label>
+            <input type="number" ng-model="model.musica.nroCd"  ng-change="model.change()" class="form-control">
+        </div>
+        <div class="form-group col-md-1">
+            <label class="control-label">Nro. Pista</label>
+            <input type="number" ng-model="model.musica.nroPista"  ng-change="model.change()" class="form-control">
+        </div>
+        <div class="form-group col-md-3">
+            <label class="control-label">Nombre</label>
+            <input type="text" ng-model="model.musica.nombre"  ng-change="model.change()" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label">Interprete</label>
+            <input type="text" ng-model="model.musica.interprete"  ng-change="model.change()" class="form-control">
+        </div>
+        <div class="form-group col-md-2">
+            <label class="control-label">Lineas</label>
+            <div class="checkbox">
+                <label>V<input type="checkbox" ng-model="model.lineas.V" ng-change="model.updLineas()" /></label>
+                <label>A<input type="checkbox" ng-model="model.lineas.A" ng-change="model.updLineas()" /></label>
+                <label>C<input type="checkbox" ng-model="model.lineas.C" ng-change="model.updLineas()" /></label>
+                <label>S<input type="checkbox" ng-model="model.lineas.S" ng-change="model.updLineas()" /></label>
+                <label>T<input type="checkbox" ng-model="model.lineas.T" ng-change="model.updLineas()" /></label>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label">Carpeta</label>
+            <input type="text" ng-model="model.musica.carpeta" class="form-control">
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label">Archivo</label>
+            <input type="text" ng-model="model.musica.archivo"  class="form-control">
+        </div>
+    </div>
+    <div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" ng-click="model.validar()">Verificar <i class="glyphicon glyphicon-eye-open"></i></button>
+            <button type="button" class="btn btn-primary {{model.valid ? '' : 'disabled'}}" ng-disabled="!model.valid" ng-click="model.importar()()">Agregar <i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+    </div>
+
 </script>
 </body>
 </html>

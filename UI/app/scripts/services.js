@@ -17,7 +17,39 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
     context.isMobileOrTablet = function () { return ismobile || istablet };
 
+    var downloadString = function (string, filename) {
+        var data = string;
+        var blob = new Blob([data], { type: 'text/js' }),
+            e = document.createEvent('MouseEvents'),
+            a = document.createElement('a');
+
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/js', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+    };
+
+    var downloadJson = function (obj, filename) {
+        var data = "text/json;charset=utf-8," + angular.toJson(obj, true);
+        var blob = new Blob([data], { type: 'text/json' }),
+            e = document.createEvent('MouseEvents'),
+            a = document.createElement('a');
+
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        a.dispatchEvent(e);
+
+    };
+
     var maxIdMusica = 1000000;
+    function setIdMusica(musica) {
+        maxIdMusica++;
+        musica.idMusica = maxIdMusica;
+    }
+
     function addMusica(musica, index) {
         if (typeof index === 'undefined') {
             db.musicas.push(musica);
@@ -25,11 +57,24 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         }
         var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
         eval(str);
+        if (musica.idMusica === 0 || typeof musica.idMusica === "undefined") setIdMusica(musica);
         if (maxIdMusica < musica.idMusica) maxIdMusica = musica.idMusica;
     }
 
-    var musicasPersonales = $localStorage.musicas || [];
-    angular.forEach(musicasPersonales, function (item) { db.musicas.push(item) });
+    context.exportMiMusica = function() {
+        var code = "if (typeof db === 'undefined') { db = {}; }\n\ndb.miMusica = [";
+
+        var coma = "";
+        angular.forEach(db.miMusica, function (item) {
+            if (item.idMusica === 0 || typeof item.idMusica === "undefined") setIdMusica(item);
+            code += coma +
+                "{ idMusica : " + item.idMusica + ", coleccion : '" + item.coleccion + "', nroCd : " + item.nroCd + ", nroPista : " + item.nroPista + ", nombre: '" + item.nombre + "', interprete : '" + item.interprete + "', duracion : '" + item.duracion + "', archivo : '" + item.archivo + "', carpeta : '" + item.carpeta + "', lineas : '" + item.lineas + "' }";
+        });
+        code += "];";
+        downloadString(code, "mimusica.js");
+    }
+
+    angular.forEach(db.miMusica, function (item) { db.musicas.push(item) });
     angular.forEach(db.musicas, addMusica);
 
     context.importarMusicas = function (file, cb) {
@@ -105,22 +150,21 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     };
 
 
-    function testMusica(audio) {
+    context.testMusica = function (audio) {
         if (audio.musicas.length === 0) {
             return;
         }
         var item = audio.musicas.pop();
-        var musica = {
-            "coleccion": item.coleccion,
-            "nroCd": item.nroCd,
-            "nroPista": item.nroPista,
-            "nombre": item.titulo || "titulo incorrecto",
-            "interprete": item.interprete,
-            "duracion": item.duracion,
-            "archivo": item.archivo || "archivo incorrecto",
-            "carpeta": item.carpeta || "carpeta incorrecta",
-            "lineas": item.lineas
-        };
+        var musica = context.nuevaMusica();
+        musica.coleccion = item.coleccion;
+        musica.nroCd = item.nroCd;
+        musica.nroPista = item.nroPista,
+            musica.nombre = item.titulo || "titulo incorrecto";
+        musica.interprete = item.interprete;
+        musica.duracion = item.duracion;
+        musica.archivo = item.archivo || "archivo incorrecto";
+        musica.carpeta = item.carpeta || "carpeta incorrecta";
+        musica.lineas = item.lineas;
         audio.musica = musica;
         audio.src = context.config().pathMusica +
             musica.coleccion +
@@ -204,6 +248,21 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         biodanzaClases.unshift(clase);
         context.saveClases();
         return clase;
+    }
+
+    context.nuevaMusica = function() {
+        return angular.copy({
+            "coleccion": 'personal',
+            "nroCd": 1,
+            "nroPista": 1,
+            "nombre": "",
+            "interprete": "",
+            "duracion": "",
+            "archivo": "",
+            "carpeta": "",
+            "lineas": ""
+        });
+        
     }
 
     context.deleteClase = function (clase) {
@@ -393,19 +452,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         return claseExp;
     };
 
-    var downloadJson = function (obj, filename) {
-        var data = "text/json;charset=utf-8," + angular.toJson(obj, true);
-        var blob = new Blob([data], { type: 'text/json' }),
-            e = document.createEvent('MouseEvents'),
-            a = document.createElement('a');
-
-        a.download = filename;
-        a.href = window.URL.createObjectURL(blob);
-        a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(e);
-
-    };
     context.exportarClases = function() {
         var clases = [];
         angular.forEach(context.clases(), function(value) {
@@ -997,7 +1043,60 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
     return service;
 }]);
 
-var claseEjemplo = {
+
+services.factory('testMusicaService',
+[
+    '$q', '$filter', 'contextService', function ($q, $filter, contextService) {
+
+        var service = {
+            test : function(musica, cb) {
+                var audio = new Audio();
+                audio.onerror = function (error) {
+                    cb({
+                        ok: false,
+                        msg: "error al cargar archivo: " + contextService.config().pathMusica +
+                                musica.coleccion +
+                                '/' +
+                                musica.carpeta +
+                                '/' +
+                                musica.archivo
+                    });
+                    console.log("error en archivo " + musica.archivo);
+                }
+                audio.onplaying = function () {
+                    musica.duracion = moment(moment(0, 's').add(moment.duration(audio.duration, 's')))
+                        .format("HH:mm:ss");
+                    audio.pause();
+                    var search = $filter('filter')(db.musicas,
+                        {
+                            nroCd: musica.nroCd,
+                            nroPista: musica.nroPista,
+                            coleccion: musica.coleccion
+                        },
+                        true);
+                    if (search.length === 0) search = $filter('filter')(db.musicas,
+                        {
+                            carpeta: musica.carpeta,
+                            archivo: musica.archivo,
+                            coleccion: musica.coleccion
+                        },
+                        true);
+                    audio = null;
+                    cb({
+                        ok: search.length === 0,
+                        msg: search.length === 0 ? "música validada correctamente. Presione Agregar para incorporarla a las músicas del sistema" : "ya existe el título en la colección"
+                    });
+                }
+                audio.src = contextService.config().pathMusica + musica.coleccion + "/" + musica.carpeta + "/" + musica.archivo;
+                audio.play();
+            }
+        }
+
+        return service;
+    }
+]);
+
+        var claseEjemplo = {
     "titulo": "Clase de prueba",
     "fechaCreacion": "2017-08-01T00:44:49.801Z",
     "fechaClase": "2017-08-01T00:44:49.801Z",
