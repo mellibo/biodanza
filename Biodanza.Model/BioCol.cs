@@ -112,6 +112,10 @@ namespace Biodanza.Model
             var folder = cdPista.Substring(0, 2);
             var pista = cdPista.Substring(3, 2);
             var colFolder = Directory.GetDirectories(root, folder + "*").FirstOrDefault();
+            if (colFolder == null)
+            {
+                colFolder = Directory.GetDirectories(root, "BsAs " + folder + "*").FirstOrDefault();
+            }
             if (colFolder == null) return null;
 
             var files = Directory.GetFiles(colFolder, pista + "*");

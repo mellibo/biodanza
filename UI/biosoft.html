@@ -319,13 +319,13 @@
 
             <table id="tblEjercicios" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
                 <tr data-ng-repeat="ejercicio in clase.ejercicios" ng-class="{ 'selected' : selected(ejercicio)}" style="{{ ejercicio.deshabilitado ? 'background-color:#b3b7bc;' : ''}}"  >
-                    <td class="col-md-1 form-inline " title="'Nº'" ng-click="rowClick(ejercicio)">
-                        <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false">
+                    <td class="col-md-1 form-inline " title="'Nº'" >
+                        <div class="form-group btn-group-vertical" ng-if="vistaPlayer === false" ng-click="rowClick(ejercicio)">
                             <button type="button" class="btn btn-success" ng-click="moveUp(ejercicio)"  title="Mover ejercicio hacia arriba"><span class="glyphicon glyphicon-arrow-up"></span></button>
                             &nbsp;
                             <button type="button" class="btn btn-success" ng-click="moveDown(ejercicio)" title="Mover ejercicio hacia abajo"><span class="glyphicon glyphicon-arrow-down"></span></button>
                         </div>
-                        <div class="form-group align-middle" >
+                        <div class="form-group align-middle" ng-click="rowClick(ejercicio)">
                             <label >&nbsp;{{ ejercicio.nro }}</label>
                         </div>
                         <div class="form-group align-middle"  ng-if="vistaPlayer !== false">
@@ -594,7 +594,7 @@
 <script type="text/ng-template" id="popupEjercicioClase.html">
     <div >
         <form name="form" ng-submit="submit()">
-            <div class="modal-content" style="height: 600px;">
+            <div class="modal-content" style="">
                 <div class="modal-header">
                     <div class="col-md-10">
                         <h3>Detalle del Ejercicio</h3>
@@ -606,9 +606,9 @@
                         <div ng-include="'playerControls.html'"></div>
                     </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="height: 60vh;overflow-y: scroll;">
                     <div class="row ">
-                        <div class="col-lg-12" style="overflow-y: scroll;">
+                        <div class="col-lg-12" style="">
                             <div class="row ">
                                 <div class="form-group col-md-12">
                                     <label class="control-label" for="lblEjercicioOriginal">Ejercicio Origen:</label>

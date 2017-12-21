@@ -1,0 +1,1 @@
+"c:\Program Files\7-Zip\7z" u "D:\Google Drive\Biodanza\biosoft\Musica IBF.zip" "D:\Google Drive\Biodanza\Musica\IBF" -r 
