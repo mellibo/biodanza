@@ -175,6 +175,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         audio.play();
     }
 
+
     angular.forEach(db.ejercicios,
         function(ejercicio, index) {
             var str = "db.ejercicios.x" + ejercicio.idEjercicio + " = db.ejercicios[ " + index + "];";
@@ -1043,6 +1044,19 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
     return service;
 }]);
 
+services.factory('loadJsService', [function() {
+        var service = {
+            load : function(src) {
+                var head = angular.getElementsByTagName('head')[0];
+                var js = angular.createElement("script");
+
+                js.type = "text/javascript";
+                js.src = src;
+                head.appendChild(js);
+            }
+        };
+        return service;
+    }]);
 
 services.factory('testMusicaService',
 [

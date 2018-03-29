@@ -9,16 +9,17 @@ namespace HyperlinkTests
     [TestClass]
     public class HyperTests
     {
-        private const string root = @"D:\Google Drive\Biodanza\Musica\BsAs\";
+        private const string root = @"H:\biodanza\MUSICA BS AS.    1  al 73\";
 
         [TestMethod]
         public void GetFileFromCD_PistaString_2Digitos()
         {
             var cd_pista = "43.10";
 
-            var result = BioCol.GetFileFromCD_Pista(root, cd_pista);
+            var result = BioCol.GetFileFromCD_Pista(root, cd_pista, new []{ "BsAs {cd}*" }, new []{"{pista}*"});
 
             Console.WriteLine(result);
+            result.Should().NotBeNull();
             File.Exists(Path.Combine(root, result)).Should().BeTrue();
         }
 
@@ -29,10 +30,11 @@ namespace HyperlinkTests
             var cd_pista = "43.01";
 
             //act
-            var result = BioCol.GetFileFromCD_Pista(root, cd_pista);
+            var result = BioCol.GetFileFromCD_Pista(root, cd_pista, new[] { "BsAs {cd}*" }, new[] { "{pista}*" });
 
             //assert
             Console.WriteLine(result);
+            result.Should().NotBeNull();
             File.Exists(Path.Combine(root, result)).Should().BeTrue();
         }
 

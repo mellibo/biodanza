@@ -67,7 +67,7 @@ namespace Biodanza.Model
                 row++;
                 var cdPista = cell?.StringCellValue;
                 if (cdPista?.Length != 5) break;
-                var file = GetFileFromCD_Pista(PathColeccion, cdPista);
+                var file = GetFileFromCD_Pista(PathColeccion, cdPista, new[] { "{cd}*" }, new[] { "{pista}*" });
                 if (string.IsNullOrEmpty(file))
                 {
                     Console.WriteLine("musica no encontrada. Pista: {0}. FilaExcel: {1}", cdPista, row);
@@ -107,26 +107,35 @@ namespace Biodanza.Model
             }
         }
 
-        public static string GetFileFromCD_Pista(string root, string cdPista)
+        public static string GetFileFromCD_Pista(string root, string cdPista, string[] folderPatterns, string[] filePatterns)
         {
             var folder = cdPista.Substring(0, 2);
             var pista = cdPista.Substring(3, 2);
-            var colFolder = Directory.GetDirectories(root, folder + "*").FirstOrDefault();
-            if (colFolder == null)
+            string colFolder = null;
+            foreach (var pattern in folderPatterns)
             {
-                colFolder = Directory.GetDirectories(root, "BsAs " + folder + "*").FirstOrDefault();
+                colFolder = Directory.GetDirectories(root, GetPattern(pattern, folder)).FirstOrDefault();
+                if (colFolder != null) break;
             }
             if (colFolder == null) return null;
+            foreach (var pattern in filePatterns)
+            {
+                var files = Directory.GetFiles(colFolder, GetPattern(pattern, folder, pista));
+                if (files.Length == 1) return files[0].Substring(root.Length);
+            }
+            return null;
+            //if (!pista.StartsWith("0")) return null;
+            //files = Directory.GetFiles(colFolder, pista.Substring(1) + "*");
+            //if (files.Length == 1) return files[0].Substring(root.Length);
+            //if (files.Length <= 1) return null;
+            //int i;
+            //var file = files.FirstOrDefault(x => !int.TryParse(x.Substring(1, 1), out i));
+            //return file.Substring(root.Length);
+        }
 
-            var files = Directory.GetFiles(colFolder, pista + "*");
-            if (files.Length == 1) return files[0].Substring(root.Length);
-            if (!pista.StartsWith("0")) return null;
-            files = Directory.GetFiles(colFolder, pista.Substring(1) + "*");
-            if (files.Length == 1) return files[0].Substring(root.Length);
-            if (files.Length <= 1) return null;
-            int i;
-            var file = files.FirstOrDefault(x => !int.TryParse(x.Substring(1, 1), out i));
-            return file.Substring(root.Length);
+        private static string GetPattern(string pattern, string cd, string pista = "")
+        {
+            return pattern.ToLower().Replace("{cd}", cd).Replace("{pista}", pista);
         }
 
         public string UpdateCarpetaYArchivoEnDb(string root)
@@ -139,7 +148,7 @@ namespace Biodanza.Model
             foreach (var musica in musicas)
             {
                 var file = GetFileFromCD_Pista(root,
-                    musica.NroCd.ToString().PadLeft(2, '0') + "." + musica.NroPista.ToString().PadLeft(2, '0'));
+                    musica.NroCd.ToString().PadLeft(2, '0') + "." + musica.NroPista.ToString().PadLeft(2, '0'), new[] { "{cd}*" }, new[] { "{pista}*" });
                 var archivo = Path.GetFileName(file);
                 var carpeta = Path.GetDirectoryName(file);
                 musica.Archivo = archivo;
