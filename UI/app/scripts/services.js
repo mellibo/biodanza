@@ -10,9 +10,105 @@ function addMusicasAEjercicio(ejercicio) {
         });
 }
 
-services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', '$rootScope', function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location, $rootScope) {
-    var context = {};
+services.factory('loaderService', ['loadJsService', function(loadJsService) {
+        var service = { init : function () { console.log("init"); }};
 
+        var maxIdMusica = 1000000;
+        function setIdMusica(musica) {
+            maxIdMusica++;
+            musica.idMusica = maxIdMusica;
+        }
+
+        function addMusica(musica, index) {
+            if (typeof index === 'undefined') {
+                db.musicas.push(musica);
+                index = db.musicas.length - 1;
+            }
+            var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
+            eval(str);
+            if (musica.idMusica === 0 || typeof musica.idMusica === "undefined") setIdMusica(musica);
+            if (maxIdMusica < musica.idMusica) maxIdMusica = musica.idMusica;
+        }
+
+        db.musicas = [];
+        var coleccionesCount = db.colecciones.length;
+        angular.forEach(db.colecciones, function (col) {
+            loadJsService.load("app/data/musica_" + col + '.js', function () {
+                var musicas = eval('db.musica_' + col);
+                Array.prototype.push.apply(db.musicas, musicas);
+                coleccionesCount--;
+                if (coleccionesCount === 0) {
+                    loadClases();
+                }
+            }, function () {
+                coleccionesCount--;
+                if (coleccionesCount === 0) {
+                    loadClases();
+                }
+            });
+        });
+
+
+
+        angular.forEach(db.ejercicios,
+            function (ejercicio, index) {
+                var str = "db.ejercicios.x" + ejercicio.idEjercicio + " = db.ejercicios[ " + index + "];";
+                eval(str);
+            });
+
+        function loadClases() {
+            angular.forEach(db.musicas, addMusica);
+            angular.forEach(biodanzaClases,
+                function (value) {
+                    if (typeof value.V === 'undefined') value.V = false;
+                    if (typeof value.A === 'undefined') value.A = false;
+                    if (typeof value.C === 'undefined') value.C = false;
+                    if (typeof value.S === 'undefined') value.S = false;
+                    if (typeof value.T === 'undefined') value.T = false;
+                    angular.forEach(value.ejercicios,
+                        function (ej) {
+                            if (typeof ej.iniciarSegundos === "undefined" || ej.iniciarSegundos === null) ej.iniciarSegundos = 0;
+                            if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
+                            if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
+                            if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
+                            if (typeof ej.pauseEmpalme === "undefined") ej.pauseEmpalme = null;
+                            if (typeof ej.volumen === "undefined") ej.volumen = 100;
+                            if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
+                            if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
+                            if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
+                            if (ej.musica !== null) {
+                                var musica = eval("db.musicas.x" + ej.musica.idMusica);
+                                if (typeof musica === "undefined" || musica.coleccion !== ej.musica.coleccion || musica.nroCd !== ej.musica.nroCd || musica.nroPista !== ej.musica.nroPista) {
+                                    var musicas = $filter('filter')(db.musicas, { coleccion: ej.musica.coleccion, nroCd: ej.musica.nroCd, nroPista: ej.musica.nroPista }, true);
+                                    if (musicas.length === 1) musica = musicas[0];
+                                }
+                                if (!musica) {
+                                    console.log("musica no encontrada:" + ej.musica.nombre);
+                                }
+                                if (musica) {
+                                    ej.musica = musica;
+                                }
+                            }
+                            if (ej.ejercicio !== null) {
+                                var ejercicio = eval("db.ejercicios.x" + ej.ejercicio.idEjercicio);
+                                if (typeof ejercicio === "undefined") {
+                                    var ejercicios = $filter('filter')(db.ejercicios, { nombre: ej.ejercicio.nombre }, true);
+                                    if (ejercicios.length === 1) ejercicio = ejercicios[0];
+                                }
+                                if (ejercicio) {
+                                    ej.ejercicio = ejercicio;
+                                }
+                            }
+                        });
+                });
+        }
+
+    return service;
+}]);
+
+services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', '$rootScope', 'loaderService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location, $rootScope, loaderService) {
+    var context = {};
+    loaderService.init();
     var biodanzaClases = null;
 
     context.isMobileOrTablet = function () { return ismobile || istablet };
@@ -44,22 +140,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
 
     };
 
-    var maxIdMusica = 1000000;
-    function setIdMusica(musica) {
-        maxIdMusica++;
-        musica.idMusica = maxIdMusica;
-    }
-
-    function addMusica(musica, index) {
-        if (typeof index === 'undefined') {
-            db.musicas.push(musica);
-            index = db.musicas.length - 1;
-        }
-        var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
-        eval(str);
-        if (musica.idMusica === 0 || typeof musica.idMusica === "undefined") setIdMusica(musica);
-        if (maxIdMusica < musica.idMusica) maxIdMusica = musica.idMusica;
-    }
 
     context.exportMiMusica = function() {
         var code = "if (typeof db === 'undefined') { db = {}; }\n\ndb.miMusica = [";
@@ -74,8 +154,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         downloadString(code, "mimusica.js");
     }
 
-    angular.forEach(db.miMusica, function (item) { db.musicas.push(item) });
-    angular.forEach(db.musicas, addMusica);
 
     context.importarMusicas = function (file, cb) {
         var result = [];
@@ -175,12 +253,6 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         audio.play();
     }
 
-
-    angular.forEach(db.ejercicios,
-        function(ejercicio, index) {
-            var str = "db.ejercicios.x" + ejercicio.idEjercicio + " = db.ejercicios[ " + index + "];";
-            eval(str);
-        });
 
     context.calculaTiempoEjercicio = function (ejercicio) {
         if (ejercicio.musica === null) {
@@ -336,53 +408,8 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     };
     context.clases();
 
-    function loadClases() {
-        angular.forEach(biodanzaClases,
-            function (value) {
-                if (typeof value.V === 'undefined') value.V = false;
-                if (typeof value.A === 'undefined') value.A = false;
-                if (typeof value.C === 'undefined') value.C = false;
-                if (typeof value.S === 'undefined') value.S = false;
-                if (typeof value.T === 'undefined') value.T = false;
-                angular.forEach(value.ejercicios,
-                    function (ej) {
-                        if (typeof ej.iniciarSegundos === "undefined" || ej.iniciarSegundos === null) ej.iniciarSegundos = 0;
-                        if (typeof ej.finalizarSegundos === "undefined") ej.finalizarSegundos = null;
-                        if (typeof ej.segundosInicioProgresivo === "undefined") ej.segundosInicioProgresivo = null;
-                        if (typeof ej.segundosFinProgresivo === "undefined") ej.segundosFinProgresivo = null;
-                        if (typeof ej.pauseEmpalme === "undefined") ej.pauseEmpalme = null;
-                        if (typeof ej.volumen === "undefined") ej.volumen = 100;
-                        if (typeof ej.minutosAdicionales === "undefined") ej.minutosAdicionales = 0;
-                        if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
-                        if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
-                        if (ej.musica !== null) {
-                            var musica = eval("db.musicas.x" + ej.musica.idMusica);
-                            if (typeof musica === "undefined" || musica.coleccion !== ej.musica.coleccion || musica.nroCd !== ej.musica.nroCd || musica.nroPista !== ej.musica.nroPista) {
-                                var musicas = $filter('filter')(db.musicas, { coleccion: ej.musica.coleccion, nroCd: ej.musica.nroCd, nroPista: ej.musica.nroPista }, true);
-                                if (musicas.length === 1) musica = musicas[0];
-                            }
-                            if (!musica) {
-                                console.log("musica no encontrada:" + ej.musica.nombre);
-                            }
-                            if (musica) {
-                                ej.musica = musica;
-                            }
-                        }
-                        if (ej.ejercicio !== null) {
-                            var ejercicio = eval("db.ejercicios.x" + ej.ejercicio.idEjercicio);
-                            if (typeof ejercicio === "undefined") {
-                                var ejercicios = $filter('filter')(db.ejercicios, { nombre: ej.ejercicio.nombre }, true);
-                                if (ejercicios.length === 1) ejercicio = ejercicios[0];
-                            }
-                            if (ejercicio) {
-                                ej.ejercicio = ejercicio;
-                            }
-                        }
-                    });
-            });
-        context.saveClases();
-    }
-    loadClases();
+    //loadClases();
+    context.saveClases();
 
     context.importarClases = function (file) {
         var reader = new FileReader();
@@ -1046,13 +1073,15 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
 
 services.factory('loadJsService', [function() {
         var service = {
-            load : function(src) {
-                var head = angular.getElementsByTagName('head')[0];
-                var js = angular.createElement("script");
+            load : function(src, onload, onerror) {
+                var head = document.getElementsByTagName('head')[0];
+                var js = document.createElement("script");
 
                 js.type = "text/javascript";
                 js.src = src;
                 head.appendChild(js);
+                if (onload) js.onload = onload;
+                if (onerror) js.onerror = onerror;
             }
         };
         return service;
