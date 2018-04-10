@@ -1,6 +1,5 @@
 ﻿
 services.factory('loaderService', ['loadJsService', '$q', function (loadJsService, $q) {
-    var biodanzaClases = null;
     var coleccionesPromises = [];
     db.musicas = [];
 
@@ -27,7 +26,6 @@ services.factory('loaderService', ['loadJsService', '$q', function (loadJsServic
             return promise;
         }
     };
-    return service;
 
     var maxIdMusica = 1000000;
     function setIdMusica(musica) {
@@ -97,6 +95,5 @@ services.factory('loaderService', ['loadJsService', '$q', function (loadJsServic
                     });
             });
     }
-
     return service;
 }]);

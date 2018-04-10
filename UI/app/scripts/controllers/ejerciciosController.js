@@ -33,28 +33,28 @@ app.controller('configController', ['$scope', '$window', '$location', 'contextSe
     }
 }]);
 
-app.controller('clasesController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, contextService, $uibModal, NgTableParams) {
-    $scope.clases = contextService.clases();
+app.controller('clasesController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'clasesService', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, clasesService) {
+    $scope.clases = clasesService.clases();
     $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
 
     $scope.vistaCompacta = true;
     $scope.nueva = function () {
-        contextService.nuevaClase();
+        clasesService.nuevaClase();
         $location.path('/clase/0');
     }
 
     $scope.delete = function (clase) {
-        contextService.deleteClase(clase);
+        clasesService.deleteClase(clase);
         $scope.tableParams.reload();
         //$scope.clases = contextService.clases();
     }
 
     $scope.exportarClases = function () {
-        contextService.exportarClases();
+        clasesService.exportarClases();
     }
 
     $scope.importarClases = function (file) {
-        contextService.importarClases(file.files[0]);
+        clasesService.importarClases(file.files[0]);
         $scope.tableParams = new NgTableParams({ count: 15 }, { dataset: $scope.clases });
         $scope.tableParams.reload();
     }
@@ -66,11 +66,11 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     }
 
     $scope.exportar = function (clase) {
-        contextService.exportarClase(clase);
+        clasesService.exportarClase(clase);
     }
 
     $scope.grabar = function() {
-        contextService.saveClases();
+        clasesService.saveClases();
     };
 
     $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
@@ -82,151 +82,179 @@ app.controller('clasesController', ['$scope', '$window', '$location', 'contextSe
     }
 }]);
 
-app.controller('claseController', ['$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService', 'modelEjerciciosService', '$interval', function ($scope, $window, $location, contextService, $uibModal, NgTableParams, id, playerService, modelEjerciciosService, $interval) {
-    $scope.clase = contextService.clases()[id];
-    $scope.player = playerService;
+app.controller('claseController',
+[
+    '$scope', '$window', '$location', 'contextService', '$uibModal', 'NgTableParams', 'id', 'playerService',
+    'modelEjerciciosService', '$interval', 'clasesService',
+    function($scope,
+        $window,
+        $location,
+        contextService,
+        $uibModal,
+        NgTableParams,
+        id,
+        playerService,
+        modelEjerciciosService,
+        $interval,
+        clasesService) {
+        $scope.clase = clasesService.clases()[id];
+        $scope.player = playerService;
 
-    if (!$scope.clase) {
-        $location.path("/clases");
-        return;
-    }
+        if (!$scope.clase) {
+            $location.path("/clases");
+            return;
+        }
 
-    angular.forEach($scope.clase.ejercicios,
-        function(ejercicio) {
-            contextService.calculaTiempoEjercicio(ejercicio);
-        });
-
-    $scope.tiempoTotalString = "";
-
-    $scope.refreshTotalClase = function () {
-        var total = moment.duration();
         angular.forEach($scope.clase.ejercicios,
-            function (ejercicio) {
-                if (!ejercicio.deshabilitado) {
-                    contextService.calculaTiempoEjercicio(ejercicio);
-                    total.add(ejercicio.tiempo);
+            function(ejercicio) {
+                clasesService.calculaTiempoEjercicio(ejercicio);
+            });
+
+        $scope.tiempoTotalString = "";
+
+        $scope.refreshTotalClase = function() {
+            var total = moment.duration();
+            angular.forEach($scope.clase.ejercicios,
+                function(ejercicio) {
+                    if (!ejercicio.deshabilitado) {
+                        clasesService.calculaTiempoEjercicio(ejercicio);
+                        total.add(ejercicio.tiempo);
+                    }
+                });
+            $scope.tiempoTotal = total;
+            $scope.tiempoTotalString = moment(0, 's').add(total).format("H:mm:ss");
+            $scope.horaFin = moment(0, 's').add(playerService.tiempoRestanteClase).format("H:mm:ss");
+            $scope.clase.tiempo = total;
+        }
+
+        $scope.refreshTotalClase();
+
+        $scope.exportar = function(clase) {
+            clasesService.exportarClase(clase);
+        }
+
+
+        playerService.clase = $scope.clase;
+        $scope.horaFin = "";
+        $scope.$watch('vistaPlayer',
+            function(newVal, oldVal) {
+                if ($scope.intervalHoraFin) $interval.cancel($scope.intervalHoraFin);
+                if (newVal === true) {
+                    $scope.intervalHoraFin = $interval($scope.tiempoRestanteClase, 30000);
+                    $scope.tiempoRestanteClase();
                 }
             });
-        $scope.tiempoTotal = total;
-        $scope.tiempoTotalString = moment(0, 's').add(total).format("H:mm:ss");
-        $scope.horaFin = moment(0, 's').add(playerService.tiempoRestanteClase).format("H:mm:ss");
-        $scope.clase.tiempo = total;
-    }
-    
-    $scope.refreshTotalClase();
 
-    $scope.exportar = function (clase) {
-        contextService.exportarClase(clase);
-    }
-
-
-    playerService.clase = $scope.clase;
-    $scope.horaFin = "";
-    $scope.$watch('vistaPlayer',
-        function (newVal, oldVal) {
-            if ($scope.intervalHoraFin) $interval.cancel($scope.intervalHoraFin);
-            if (newVal === true) {
-                $scope.intervalHoraFin = $interval($scope.tiempoRestanteClase, 30000);
-                $scope.tiempoRestanteClase();
-            }
-        });
-    
-    $scope.tiempoRestanteClase = function() {
-        $scope.horaFin = moment().add(playerService.tiempoRestanteClase()).format("HH:mm");
-        if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
-    }
-    $scope.insertar = function (ejercicio) {
-        contextService.insertarEjercicio($scope.clase, ejercicio);
-    };
-    $scope.rowClick = function(ejercicio) {
-        if ($scope.vistaPlayer === false) return;
-        $scope.playEjercicio(ejercicio);
-    };
-    $scope.selected = function (ejercicio) {
-        return playerService.playIndex === ejercicio.nro -1 || (ejercicio.musica !== null && $scope.player.currentPlaying !== null && ejercicio.musica.nombre === $scope.player.currentPlaying.nombre);
-    };
-    $scope.vistaPlayer = false;
-    $scope.playAll = function () {
-        $scope.player.playContinuo = true;
-        $scope.player.playAll();
-    };
-    $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
-
-    $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
-
-    $scope.grabar = function () {
-        $scope.refreshTotalClase();
-        contextService.saveClases();
-    };
-
-    $scope.fechaClase = { opened: false, open: function () { $scope.fechaClase.opened = true } };
-
-    $scope.deleteEjercicioClase = function (ejercicio) {
-        contextService.deleteEjercicioClase($scope.clase, ejercicio);
-    }
-
-    $scope.nuevoEjercicio = function () {
-        contextService.nuevoEjercicioClase($scope.clase);
-    }
-    $scope.moveUp = function (ejercicio) {
-        contextService.ejercicioMoveUp($scope.clase, ejercicio);
-    }
-
-    $scope.moveDown = function (ejercicio) {
-        contextService.ejercicioMoveDown($scope.clase, ejercicio);
-    }
-
-    $scope.playEjercicio = function (ejercicio) {
-        playerService.playEjercicio(ejercicio);
-    };
-
-    $scope.deleteEjercicio = function (ejercicio) {
-        contextService.deleteEjercicio(ejercicio);
-    }
-
-    $scope.deleteMusica = function (ejercicio) {
-        contextService.deleteMusica(ejercicio);
-    }
-
-    $scope.cerrar = function () {
-        playerService.clase = undefined;
-        $window.history.back();
-    }
-
-    $scope.detalleEjercicioClase = function(ejercicio) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'popupEjercicioClase.html'
-                                    , controller: detalleEjercicioClaseController
-                                    , size: 'md'
-            //, windowClass: 'modalEjercicioClase'
-                                    , resolve: {
-                                        ejercicio: function () {
-                                            return ejercicio;
-                                        }
-                                        ,parentScope: function () {
-                                            return $scope;
-                                        }
-                                    }
-        });
-        modalInstance.result.then(function () {
-        });
-    };
-
-    var detalleEjercicioClaseController = ['$scope', '$uibModalInstance', 'NgTableParams', 'contextService', 'modelMusicaService', 'ejercicio', 'parentScope', function ($scope, $uibModalInstance, NgTableParams, contextService, modelMusicaService, ejercicio, parentScope) {
-        $scope.parentScope = parentScope;
-        $scope.ejercicio = ejercicio;
-        $scope.grabar = parentScope.grabar;
-
-        $scope.aceptar = function () {
-            $uibModalInstance.close();
+        $scope.tiempoRestanteClase = function() {
+            $scope.horaFin = moment().add(playerService.tiempoRestanteClase()).format("HH:mm");
+            if ($scope.$$phase !== "$apply" && $scope.$$phase !== "$digest") $scope.$apply();
         }
-        $scope.playFile = function () {
-            playerService.playFile($scope.ejercicio.musica, $scope.ejercicio);
+        $scope.insertar = function(ejercicio) {
+            clasesService.insertarEjercicio($scope.clase, ejercicio);
+        };
+        $scope.rowClick = function(ejercicio) {
+            if ($scope.vistaPlayer === false) return;
+            $scope.playEjercicio(ejercicio);
+        };
+        $scope.selected = function(ejercicio) {
+            return playerService.playIndex === ejercicio.nro - 1 ||
+            (ejercicio.musica !== null &&
+                $scope.player.currentPlaying !== null &&
+                ejercicio.musica.nombre === $scope.player.currentPlaying.nombre);
+        };
+        $scope.vistaPlayer = false;
+        $scope.playAll = function() {
+            $scope.player.playContinuo = true;
+            $scope.player.playAll();
+        };
+        $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
+
+        $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
+
+        $scope.grabar = function() {
+            $scope.refreshTotalClase();
+            clasesService.saveClases();
         };
 
-    }];
+        $scope.fechaClase = { opened: false, open: function() { $scope.fechaClase.opened = true } };
 
-}]);
+        $scope.deleteEjercicioClase = function(ejercicio) {
+            clasesService.deleteEjercicioClase($scope.clase, ejercicio);
+        }
+
+        $scope.nuevoEjercicio = function() {
+            clasesService.nuevoEjercicioClase($scope.clase);
+        }
+        $scope.moveUp = function(ejercicio) {
+            clasesService.ejercicioMoveUp($scope.clase, ejercicio);
+        }
+
+        $scope.moveDown = function(ejercicio) {
+            clasesService.ejercicioMoveDown($scope.clase, ejercicio);
+        }
+
+        $scope.playEjercicio = function(ejercicio) {
+            playerService.playEjercicio(ejercicio);
+        };
+
+        $scope.deleteEjercicio = function(ejercicio) {
+            clasesService.deleteEjercicio(ejercicio);
+        }
+
+        $scope.deleteMusica = function(ejercicio) {
+            clasesService.deleteMusica(ejercicio);
+        }
+
+        $scope.cerrar = function() {
+            playerService.clase = undefined;
+            $window.history.back();
+        }
+
+        $scope.detalleEjercicioClase = function(ejercicio) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'popupEjercicioClase.html',
+                controller: detalleEjercicioClaseController,
+                size: 'md'
+                //, windowClass: 'modalEjercicioClase'
+                ,
+                resolve: {
+                    ejercicio: function() {
+                        return ejercicio;
+                    },
+                    parentScope: function() {
+                        return $scope;
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+            });
+        };
+
+        var detalleEjercicioClaseController = [
+            '$scope', '$uibModalInstance', 'NgTableParams', 'contextService', 'modelMusicaService', 'ejercicio',
+            'parentScope', function($scope,
+                $uibModalInstance,
+                NgTableParams,
+                contextService,
+                modelMusicaService,
+                ejercicio,
+                parentScope) {
+                $scope.parentScope = parentScope;
+                $scope.ejercicio = ejercicio;
+                $scope.grabar = parentScope.grabar;
+
+                $scope.aceptar = function() {
+                    $uibModalInstance.close();
+                }
+                $scope.playFile = function() {
+                    playerService.playFile($scope.ejercicio.musica, $scope.ejercicio);
+                };
+
+            }
+        ];
+
+    }
+]);
 
 app.controller('headerController', ['$scope', '$rootScope', '$window', '$location', 'contextService', function ($scope, $rootScope, $window, $location, contextService) {
     $scope.isActive = function (route) {
