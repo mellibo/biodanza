@@ -1,5 +1,5 @@
 ﻿
-services.factory('loaderService', ['loadJsService', '$q', function (loadJsService, $q) {
+services.factory('loaderService', ['loadJsService', '$q', '$localStorage', function (loadJsService, $q, $localStorage) {
     var coleccionesPromises = [];
     db.musicas = [];
 
@@ -24,6 +24,16 @@ services.factory('loaderService', ['loadJsService', '$q', function (loadJsServic
                 angular.forEach(db.musicas, addMusica);
             });
             return promise;
+        }
+        , config : function(cfg) {
+            if (typeof cfg == 'undefined') {
+                var config = $localStorage.biodanzaConfig;
+                if (config == null) {
+                    config = { pathMusica: 'musica/' }
+                }
+                return config;
+            }
+            $localStorage.biodanzaConfig = cfg;
         }
     };
 

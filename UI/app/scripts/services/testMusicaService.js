@@ -1,6 +1,6 @@
 ﻿services.factory('testMusicaService',
 [
-    '$q', '$filter', 'contextService', function ($q, $filter, contextService) {
+    '$q', '$filter', 'loaderService', function ($q, $filter, loaderService) {
 
         var service = {
             test: function (musica, cb) {
@@ -8,7 +8,7 @@
                 audio.onerror = function (error) {
                     cb({
                         ok: false,
-                        msg: "error al cargar archivo: " + contextService.config().pathMusica +
+                        msg: "error al cargar archivo: " + loaderService.config().pathMusica +
                                 musica.coleccion +
                                 '/' +
                                 musica.carpeta +
@@ -41,7 +41,7 @@
                         msg: search.length === 0 ? "música validada correctamente. Presione Agregar para incorporarla a las músicas del sistema" : "ya existe el título en la colección"
                     });
                 }
-                audio.src = contextService.config().pathMusica + musica.coleccion + "/" + musica.carpeta + "/" + musica.archivo;
+                audio.src = loaderService.config().pathMusica + musica.coleccion + "/" + musica.carpeta + "/" + musica.archivo;
                 audio.play();
             }
         }
