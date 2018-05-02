@@ -6,7 +6,7 @@ function addMusicasAEjercicio(ejercicio) {
     angular.forEach(ejercicio.musicasId,
         function (value) {
             var musica = eval("db.musicas.x" + value);
-            ejercicio.musicas.push(musica);
+            if (musica) ejercicio.musicas.push(musica);
         });
 }
 
@@ -54,7 +54,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
                         coleccion: audio.musica.coleccion,
                         archivo: audio.musica.archivo,
                         ok: false,
-                        msg: "error al cargar archivo: " + context.config().pathMusica +
+                        msg: "error al cargar archivo: " + loaderService.config().pathMusica +
                                 audio.musica.coleccion +
                                 '/' +
                                 audio.musica.carpeta +
@@ -119,7 +119,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
         musica.carpeta = item.carpeta || "carpeta incorrecta";
         musica.lineas = item.lineas;
         audio.musica = musica;
-        audio.src = context.config().pathMusica +
+        audio.src = loaderService.config().pathMusica +
             musica.coleccion +
             '/' +
             musica.carpeta +
@@ -136,11 +136,17 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
 
     var service = {
         txtBuscarChange: function () {
+            service.tableParams.page(1);
             if (ismobile || istablet) return;
                 service.refreshGrid();
         },
         refreshGrid: function () {
             service.tableParams.reload();
+        },
+        reset: function () {
+            service.tableParams.page(1);
+            service.grupo = 0;
+            service.buscar = "";
         },
         isMobileOrTablet: contextService.isMobileOrTablet(),
         tableParams: new NgTableParams({ count: 15 },
@@ -189,11 +195,13 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     service.$uibModalInstance = null;
 
     service.ok = function (ejercicio) {
+        service.reset();
         service.$uibModalInstance.close(ejercicio);
     };
 
 
     service.cancel = function () {
+        service.reset();
         service.$uibModalInstance.dismiss('cancel');
     };
 

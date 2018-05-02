@@ -17,6 +17,9 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', funct
 
     var service = {
         colecciones: function () {
+            if (coleccionesPromises.length > 0) {
+                return $q.all(coleccionesPromises);
+            }
             console.log("colecciones");
             loadCols();
             var promise = $q.all(coleccionesPromises);

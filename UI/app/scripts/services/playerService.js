@@ -1,7 +1,7 @@
 ﻿services.factory('playerService',
 [
-    'contextService', '$document', '$rootScope', '$interval', '$filter', '$timeout',
-function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
+    'loaderService', '$document', '$rootScope', '$interval', '$filter', '$timeout',
+function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
 
     var audioElementAng = angular.element(document.querySelector('#audioControl'));
     var audio = audioElementAng[0];
@@ -163,7 +163,7 @@ function (contextService, $document, $rootScope, $interval, $filter, $timeout) {
                     200);
             }
             if (typeof audio.repeatCount === "undefined") audio.repeatCount = 1;
-            audio.src = contextService.config().pathMusica +
+            audio.src = loaderService.config().pathMusica +
                 musica.coleccion +
                 '/' +
                 musica.carpeta +
