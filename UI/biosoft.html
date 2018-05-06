@@ -6,6 +6,8 @@
     <!--<script src="app/scripts/vendor/jquery-2.2.0.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="app/scripts/vendor/underscore-min.js"></script>-->
     <script type="text/javascript" src="app/scripts/vendor/angular.min.js"></script>
+    <script type="text/javascript" src="app/scripts/vendor/jszip.js"></script>
+    <script type="text/javascript" src="app/scripts/vendor/xlsx.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/angular-route.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/angular-animate.min.js"></script>
     <script type="text/javascript" src="app/scripts/vendor/angular-sanitize.min.js"></script>
@@ -228,6 +230,18 @@
                 </div>
                 <button type="button" class="btn btn-primary" ng-click="grabar()">Grabar</button>
             </div>
+            <div class="row">
+                <br/>
+                <div class="form-group col-md-12">
+                    <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar colección de música"><span class="glyphicon glyphicon-import"></span>   Importar Colección</button>
+                    <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="btn-group">
+                    <button data-ng-repeat="sheet in data.sheets">{{sheet}}</button>
+                </div>
+             </div>
         </form>
     </div>
 </script>

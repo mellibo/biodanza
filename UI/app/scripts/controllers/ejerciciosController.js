@@ -35,6 +35,44 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         if ($scope.config.pathMusica[$scope.config.pathMusica.length - 1] !== "/") $scope.config.pathMusica += "/";
         loaderService.config($scope.config);
     }
+
+    $scope.data = { wb: null, sheets: [] };
+    $scope.importarColeccion = function (file) {
+        var f = file.files[0];
+        var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var arr;
+            var readtype = { type: rABS ? 'binary' : 'base64' };
+            if (!rABS) {
+                arr = fixdata(data);
+                data = btoa(arr);
+            }
+
+            $scope.data.wb = XLSX.read(data, readtype);
+            $scope.data.sheets = $scope.data.wb.SheetNames;
+            console.log($scope.data.sheets);
+            $scope.$apply();
+        };
+        if (rABS) reader.readAsBinaryString(f);
+        else reader.readAsArrayBuffer(f);
+    }
+
+    function fixdata(data) {
+        var o = "", l = 0, w = 10240;
+        for (; l < data.byteLength / w; ++l)
+            o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(o.length)));
+        return o;
+    }
+
+    $scope.pickImportFile = function () {
+        var fileElementAng = angular.element(document.querySelector('#fileImport'));
+        var fileElement = fileElementAng[0];
+        fileElement.click();
+    }
+
 }]);
 
 app.controller('clasesController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', 'clasesService', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams, clasesService) {
