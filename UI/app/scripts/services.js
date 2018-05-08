@@ -5,8 +5,19 @@ function addMusicasAEjercicio(ejercicio) {
     ejercicio.musicas = [];
     angular.forEach(ejercicio.musicasId,
         function (value) {
-            var musica = eval("db.musicas.x" + value);
-            if (musica) ejercicio.musicas.push(musica);
+            var musica;
+            if (typeof value === "number") { // para cuando idMusica es numerico
+                angular.forEach(db.musicas, function(item) {
+                    if (item.oldId === value) {
+                        musica = item;
+                        ejercicio.musicas.push(musica);
+                        return;
+                    }
+                });
+            } else {
+                musica = eval("db.musicas." + value);
+                if (musica) ejercicio.musicas.push(musica);
+            }
         });
 }
 
@@ -16,91 +27,91 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     context.isMobileOrTablet = function () { return ismobile || istablet };
 
 
-    context.exportMiMusica = function() {
-        var code = "if (typeof db === 'undefined') { db = {}; }\n\ndb.miMusica = [";
+    //context.exportMiMusica = function() {
+    //    var code = "if (typeof db === 'undefined') { db = {}; }\n\ndb.miMusica = [";
 
-        var coma = "";
-        angular.forEach(db.miMusica, function (item) {
-            if (item.idMusica === 0 || typeof item.idMusica === "undefined") setIdMusica(item);
-            code += coma +
-                "{ idMusica : " + item.idMusica + ", coleccion : '" + item.coleccion + "', nroCd : " + item.nroCd + ", nroPista : " + item.nroPista + ", nombre: '" + item.nombre + "', interprete : '" + item.interprete + "', duracion : '" + item.duracion + "', archivo : '" + item.archivo + "', carpeta : '" + item.carpeta + "', lineas : '" + item.lineas + "' }";
-        });
-        code += "];";
-        downloadString(code, "mimusica.js");
-    }
+    //    var coma = "";
+    //    angular.forEach(db.miMusica, function (item) {
+    //        if (item.idMusica === 0 || typeof item.idMusica === "undefined") setIdMusica(item);
+    //        code += coma +
+    //            "{ idMusica : " + item.idMusica + ", coleccion : '" + item.coleccion + "', nroCd : " + item.nroCd + ", nroPista : " + item.nroPista + ", nombre: '" + item.nombre + "', interprete : '" + item.interprete + "', duracion : '" + item.duracion + "', archivo : '" + item.archivo + "', carpeta : '" + item.carpeta + "', lineas : '" + item.lineas + "' }";
+    //    });
+    //    code += "];";
+    //    downloadString(code, "mimusica.js");
+    //}
 
 
-    context.importarMusicas = function (file, cb) {
-        var result = [];
-        var reader = new FileReader();
-        reader.onloadend = function (evt) {
-            console.log("reader.onloadend");
-            if (evt.target.readyState === FileReader.DONE) {
-                var json="";
-                try {
-                    json = eval(evt.target.result);
-                } catch (e) {
-                }
-                if (!Array.isArray(json)) {
-                    result.push({ msg: "el archivo de importación es incorrecto." });
-                    cb(result);
-                    return;
-                }
-                var audio = new Audio();
-                audio.musicas = json;
-                audio.onerror = function (error) {
-                    result.push({
-                        titulo: audio.musica.nombre,
-                        coleccion: audio.musica.coleccion,
-                        archivo: audio.musica.archivo,
-                        ok: false,
-                        msg: "error al cargar archivo: " + loaderService.config().pathMusica +
-                                audio.musica.coleccion +
-                                '/' +
-                                audio.musica.carpeta +
-                                '/' +
-                                audio.musica.archivo
-                });
-                    console.log("error en archivo " + audio.musica.archivo);
-                    if (audio.musicas.length === 0) {
-                        cb(result);
-                        return;
-                    }
-                    testMusica(audio);
-                }
-                audio.onplaying = function () {
-                    var search = $filter('filter')(db.musicas,
-                        {
-                            nroCd: audio.musica.nroCd,
-                            nroPista: audio.musica.nroPista,
-                            coleccion: audio.musica.coleccion
-                        },
-                        true);
-                    result.push({
-                        titulo: audio.musica.nombre,
-                        coleccion: audio.musica.coleccion,
-                        archivo: audio.musica.archivo,
-                        ok: search.length === 0,
-                        msg: search.length === 0 ? "importado correctamente" : "ya existe el título en la colección"
-                });
-                    if (search.length === 0) {
-                        maxIdMusica++;
-                        audio.musica.idMusica = maxIdMusica;
-                        musicasPersonales.push(audio.musica);
-                        $localStorage.musicas = musicasPersonales;
-                        addMusica(audio.musica);
-                    }
-                    testMusica(audio);
-                }
-                if (audio.musicas.length === 0) {
-                    cb(result);
-                    return;
-                }
-                testMusica(audio);
-            }
-        };
-        reader.readAsText(file);
-    };
+    //context.importarMusicas = function (file, cb) {
+    //    var result = [];
+    //    var reader = new FileReader();
+    //    reader.onloadend = function (evt) {
+    //        console.log("reader.onloadend");
+    //        if (evt.target.readyState === FileReader.DONE) {
+    //            var json="";
+    //            try {
+    //                json = eval(evt.target.result);
+    //            } catch (e) {
+    //            }
+    //            if (!Array.isArray(json)) {
+    //                result.push({ msg: "el archivo de importación es incorrecto." });
+    //                cb(result);
+    //                return;
+    //            }
+    //            var audio = new Audio();
+    //            audio.musicas = json;
+    //            audio.onerror = function (error) {
+    //                result.push({
+    //                    titulo: audio.musica.nombre,
+    //                    coleccion: audio.musica.coleccion,
+    //                    archivo: audio.musica.archivo,
+    //                    ok: false,
+    //                    msg: "error al cargar archivo: " + loaderService.config().pathMusica +
+    //                            audio.musica.coleccion +
+    //                            '/' +
+    //                            audio.musica.carpeta +
+    //                            '/' +
+    //                            audio.musica.archivo
+    //            });
+    //                console.log("error en archivo " + audio.musica.archivo);
+    //                if (audio.musicas.length === 0) {
+    //                    cb(result);
+    //                    return;
+    //                }
+    //                testMusica(audio);
+    //            }
+    //            audio.onplaying = function () {
+    //                var search = $filter('filter')(db.musicas,
+    //                    {
+    //                        nroCd: audio.musica.nroCd,
+    //                        nroPista: audio.musica.nroPista,
+    //                        coleccion: audio.musica.coleccion
+    //                    },
+    //                    true);
+    //                result.push({
+    //                    titulo: audio.musica.nombre,
+    //                    coleccion: audio.musica.coleccion,
+    //                    archivo: audio.musica.archivo,
+    //                    ok: search.length === 0,
+    //                    msg: search.length === 0 ? "importado correctamente" : "ya existe el título en la colección"
+    //            });
+    //                if (search.length === 0) {
+    //                    maxIdMusica++;
+    //                    audio.musica.idMusica = maxIdMusica;
+    //                    musicasPersonales.push(audio.musica);
+    //                    $localStorage.musicas = musicasPersonales;
+    //                    addMusica(audio.musica);
+    //                }
+    //                testMusica(audio);
+    //            }
+    //            if (audio.musicas.length === 0) {
+    //                cb(result);
+    //                return;
+    //            }
+    //            testMusica(audio);
+    //        }
+    //    };
+    //    reader.readAsText(file);
+    //};
 
 
     context.testMusica = function (audio) {

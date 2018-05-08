@@ -1,5 +1,5 @@
 ﻿
-services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', function (loadJsService, $q, $localStorage, $filter) {
+services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
     var coleccionesPromises = [];
     db.musicas = [];
 
@@ -42,13 +42,21 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             var ejercicios = $filter('filter')(db.ejercicios, { nombre: nombre }, true);
             if (ejercicios.length === 1) return ejercicios[0];
             return undefined;
+        },
+        getMusicaById : function(idMusica) {
+            var str = "db.musicas." + idMusica;
+            return eval(str);
+        },
+        getMusicaByColCdPista: function (col, cd, pista) {
+            var idMusica = "x" + col + "_" + "cd" + "_" + pista;
+            return service.getMusicaById(idMusica);
         }
     };
 
-    var maxIdMusica = 1000000;
+    //var maxIdMusica = 1000000;
     function setIdMusica(musica) {
-        maxIdMusica++;
-        musica.idMusica = maxIdMusica;
+        if (typeof musica.idMusica !== "undefined") musica.oldId = musica.idMusica;
+        musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
     }
 
     function addMusica(musica, index) {
@@ -56,10 +64,9 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             db.musicas.push(musica);
             index = db.musicas.length - 1;
         }
-        var str = "db.musicas.x" + musica.idMusica + " = db.musicas[ " + index + "];";
+        var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = db.musicas[ " + index + "];";
         eval(str);
-        if (musica.idMusica === 0 || typeof musica.idMusica === "undefined") setIdMusica(musica);
-        if (maxIdMusica < musica.idMusica) maxIdMusica = musica.idMusica;
+        setIdMusica(musica);
     }
 
     angular.forEach(db.ejercicios,
@@ -88,13 +95,13 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                         if (typeof ej.cantidadRepeticiones === "undefined") ej.cantidadRepeticiones = 1;
                         if (typeof ej.deshabilitado === "undefined") ej.deshabilitado = false;
                         if (ej.musica !== null) {
-                            var musica = eval("db.musicas.x" + ej.musica.idMusica);
+                            var musica = service.getMusicaById(ej.musica.idMusica);
                             if (typeof musica === "undefined" || musica.coleccion !== ej.musica.coleccion || musica.nroCd !== ej.musica.nroCd || musica.nroPista !== ej.musica.nroPista) {
-                                var musicas = $filter('filter')(db.musicas, { coleccion: ej.musica.coleccion, nroCd: ej.musica.nroCd, nroPista: ej.musica.nroPista }, true);
-                                if (musicas.length === 1) musica = musicas[0];
+                                musica = service.getMusicaByColCdPista(musica.coleccion, musica.nroCd, musica.nroPista);
                             }
                             if (!musica) {
                                 console.log("musica no encontrada:" + ej.musica.nombre);
+                                alertService.addAlert("danger", "musica no encontrada:" + ej.musica.nombre + "." + musica.idMusica || "");
                             }
                             if (musica) {
                                 ej.musica = musica;
