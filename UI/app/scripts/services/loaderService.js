@@ -1,5 +1,5 @@
 ﻿
-services.factory('loaderService', ['loadJsService', '$q', '$localStorage', function (loadJsService, $q, $localStorage) {
+services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', function (loadJsService, $q, $localStorage, $filter) {
     var coleccionesPromises = [];
     db.musicas = [];
 
@@ -37,6 +37,11 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', funct
                 return config;
             }
             $localStorage.biodanzaConfig = cfg;
+        },
+        getEjercicio : function(nombre) {
+            var ejercicios = $filter('filter')(db.ejercicios, { nombre: nombre }, true);
+            if (ejercicios.length === 1) return ejercicios[0];
+            return undefined;
         }
     };
 

@@ -28,7 +28,7 @@ app.controller('musicasController', ['$scope', 'loaderService', '$location', 'co
     });
 }]);
 
-app.controller('configController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams) {
+app.controller('configController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams, alertService) {
     $scope.config = loaderService.config();
 
     $scope.grabar = function () {
@@ -36,12 +36,19 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         loaderService.config($scope.config);
     }
 
-    $scope.data = { wb: null, sheets: [] };
-    $scope.importarColeccion = function (file) {
+    $scope.data = {
+        wb: null,
+        sheets: [],
+        sampleRows : [],
+        tableParams: new NgTableParams({ count: 15 }),
+        totalOk:0
+    };
+
+    $scope.importarColeccion = function(file) {
         var f = file.files[0];
         var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
         var reader = new FileReader();
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             var data = e.target.result;
             var arr;
             var readtype = { type: rABS ? 'binary' : 'base64' };
@@ -52,12 +59,117 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
 
             $scope.data.wb = XLSX.read(data, readtype);
             $scope.data.sheets = $scope.data.wb.SheetNames;
-            console.log($scope.data.sheets);
-            $scope.$apply();
+            $scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
+            //sheet['!ref'] = "A1:L11";
+            $scope.loadSheet();
         };
         if (rABS) reader.readAsBinaryString(f);
         else reader.readAsArrayBuffer(f);
-    }
+    };
+
+    $scope.loadSheet = function () {
+        var sheet = $scope.data.sheet;
+        $scope.data.sampleRows = XLSX.utils.sheet_to_json(sheet);
+        console.log($scope.data.sampleRows);
+        $scope.data.tableParams = new NgTableParams({ count: 10 }, { dataset: $scope.data.sampleRows });
+        var colsError = "";
+        if ($scope.data.sampleRows.length === 0) {
+            colsError += "No hay datos en la hoja excel.";
+        } else {
+            var linkCol = -1;
+            for (var i = 0; i < 10; i++) {
+                for (var j = 0; j < 10; j++) {
+                    var cell = sheet[XLSX.utils.encode_cell({ r: i, c: j })];
+                    if (typeof cell !== "undefined" && typeof cell.l !== "undefined") {
+                        linkCol = j;
+                        break;
+                    }
+                }
+                if (linkCol !== -1) break;
+            }
+            if (linkCol !== -1) {
+                angular.forEach($scope.data.sampleRows,
+                    function (item, index) {
+                        var cell = sheet[XLSX.utils.encode_cell({ r: index + 1, c: linkCol })];
+                        if (typeof cell === "undefined" || typeof cell.l === "undefined") return;
+                        var target = cell.l.Target;
+                        if (typeof item.Carpeta === "undefined" || item.Carpeta.length === 0) {
+                            var parts = target.split('/');
+                            if (parts.length < 2) return;
+                            item.Carpeta = parts[parts.length - 2];
+                            item.Archivo = parts[parts.length - 1];
+                        }
+                    });
+            }
+            var props = Object.keys($scope.data.sampleRows[0]);
+            if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
+            if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
+            if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
+            if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
+            if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
+            if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
+        }
+        if (colsError.length > 1) {
+            alertService.addAlert("danger", "Error:" + colsError);
+        } else {
+            //alertService.addAlert('success', 'excel cargado ok.');
+        }
+        $scope.data.totalOk = 0;
+        angular.forEach($scope.data.sampleRows, function (item) {
+            if (typeof item.CdPista !== "string") {
+                item.estado = "Error: CdPista Incorrecto.";
+                return;
+            }
+            if (item.CdPista.length !== 5) {
+                item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                return;
+            }
+            if (typeof item.Ejercicio !== "string") {
+                item.estado = "Error: Columna Ejercicio Incorrecta.";
+                return;
+            }
+            if (typeof item.Titulo !== "string" || item.Titulo.length < 3) {
+                item.estado = "Error: Columna Titulo Incorrecta.";
+                return;
+            }
+            if (typeof item.Interprete !== "string" || item.Interprete.length < 3) {
+                item.estado = "Error: Columna Interprete Incorrecta.";
+                return;
+            }
+            if (item.CdPista.length !== 5) {
+                item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                return;
+            }
+            var ejercicio = loaderService.getEjercicio(item.Ejercicio);
+            if (typeof ejercicio === "undefined") {
+                item.estado = "Error: Ejercicio inexistente. Debe agregar primero el ejercicio.";
+                return;
+            }
+            if (typeof item.Carpeta !== "string" || item.Interprete.length < 1) {
+                item.estado = "Error: Columna Carpeta Incorrecta.";
+                return;
+            }
+            if (typeof item.Archivo !== "string" || item.Interprete.length < 4) {
+                item.estado = "Error: Columna Archivo Incorrecta.";
+                return;
+            }
+            item.estado = "ok";
+            $scope.data.totalOk++;
+        });
+        alertService.addAlert($scope.data.totalOk === $scope.data.sampleRows.length ? "success" : "warning",
+            "hay " +
+            $scope.data.totalOk +
+            " músicas para importar de un total de " +
+            $scope.data.sampleRows
+            .length);
+        $scope.$apply();
+    };
+
+    $scope.changeSheet = function (sheet) {
+        $scope.data.sampleRows = [];
+        $scope.data.sheet = $scope.data.wb.Sheets[sheet];
+        $scope.loadSheet();
+    };
 
     function fixdata(data) {
         var o = "", l = 0, w = 10240;

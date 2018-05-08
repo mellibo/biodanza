@@ -31,6 +31,8 @@
     <script type="text/javascript" src="app/scripts/directives.js"></script>
 <!--    <script type="text/javascript" src="app/scripts/loadingStatusDirective.js"></script>-->
     <script type="text/javascript" src="app/scripts/main.js"></script>
+    <script type="text/javascript" src="app/scripts/services/alertService.js"></script>
+    <script type="text/javascript" src="app/scripts/controllers/alertController.js"></script>
     <!--<script type="text/javascript" src="app/scripts/filters.js"></script>-->
     <script type="text/javascript" src="app/scripts/controllers/ejerciciosController.js"></script>
     <script type="text/javascript" src="app/scripts/utils.js"></script>
@@ -85,9 +87,12 @@
 </div>
 <div id="divPlayer" class="navbar navbar-default navbar-fixed-top" style="top: 50px; padding-top: 1px; background-image: none ;background-color: white; min-height: 0px;">
     <div class="container" style="background-image: none ;">
-        <div class="navbar-collapse collapse" style=" background-image: none ;">
+        <div class="navbar-collapse collapse" style="background-image:none;">
             <audio controls id="audioControl" ng-src="{{player.musicaFile}}" hidden="hidden"></audio>
             <div ng-include="'playerControls.html'" ></div>
+        </div>
+        <div ng-controller="alertController" class="row">
+            <div uib-alert ng-repeat="al in service.alerts" type="{{al.type}}" class="{{'alert-' + al.type}}" close="service.closeAlert($index)">{{al.msg}}</div>
         </div>
     </div>
 </div>
@@ -225,21 +230,53 @@
             <div class="row">
                 <br/>
                 <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Carpeta de las colecciones de musica:</label>
-                    <input type="text" ng-model="config.pathMusica" class="col-md-6">
+                    <label class="control-label ">Carpeta donde se encuentran las colecciones de música:</label>
+                    <input type="text" ng-model="config.pathMusica" class="form-control " style="width:300px;">
+                    <button type="button" class="btn btn-primary " ng-click="grabar()">Grabar</button>
                 </div>
-                <button type="button" class="btn btn-primary" ng-click="grabar()">Grabar</button>
             </div>
             <div class="row">
                 <br/>
-                <div class="form-group col-md-12">
-                    <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar colección de música"><span class="glyphicon glyphicon-import"></span>   Importar Colección</button>
-                    <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
+                <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
+                <div class="form-group col-md-12 btn-group" role="toolbar">
+                    <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
+                    <button type="button" class="btn btn-primary" ng-click="validarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
                 </div>
             </div>
             <div class="row">
-                <div class="btn-group">
-                    <button data-ng-repeat="sheet in data.sheets">{{sheet}}</button>
+                <label class="control-label col-md-3">Hoja a importar:</label>
+                <div class="btn-group col-md-12" role="group">
+                    <button data-ng-repeat="sheet in data.sheets" class="btn btn-primary" ng-click="changeSheet(sheet)" >{{sheet}}</button>
+                </div>
+                <div class="col-md-12">
+                    <table id="tblImport" ng-table="data.tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;">
+                        <tr data-ng-repeat="row in $data">
+                            <td class="col-md-1 col-lg-1 " sortable="CdPista" filter="{cdPista: 'text'}" data-title="'Cd:Pista'">
+                                {{ row.CdPista }}
+                            </td>
+                            <td class="col-md-2 col-lg-2 " sortable="Ejercicio" filter="{Ejercicio: 'text'}" data-title="'Ejercicio'">
+                                {{ row.Ejercicio }}
+                            </td>
+                            <td class="col-md-2 col-lg-2 " sortable="Titulo" filter="{Titulo: 'text'}" data-title="'Titulo'">
+                                {{ row.Titulo }}
+                            </td>
+                            <td class="col-md-1 col-lg-1 " sortable="Interprete" filter="{Interprete: 'text'}" data-title="'Interprete'">
+                                {{ row.Interprete }}
+                            </td>
+                            <td class="col-md-1 col-lg-1 " sortable="Lineas" filter="{Lineas: 'text'}" data-title="'Lineas'">
+                                {{ row.Lineas }}
+                            </td>
+                            <td class="col-md-1 col-lg-1 " sortable="Carpeta" filter="{Carpeta: 'text'}" data-title="'Carpeta'">
+                                {{ row.Carpeta }}
+                            </td>
+                            <td class="col-md-2 col-lg-2 " sortable="Archivo" filter="{Archivo: 'text'}" data-title="'Archivo'">
+                                {{ row.Archivo }}
+                            </td>
+                            <td class="col-md-2 col-lg-2 " sortable="estado" filter="{estado: 'text'}" data-title="'Estado'" style="color:white" ng-style="{'background-color': (row.estado === 'ok') ? '#04f95a' : 'orange'}">
+                                {{ row.estado }}
+                            </td>
+                        </tr>
+                    </table>
                 </div>
              </div>
         </form>
