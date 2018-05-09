@@ -113,3 +113,7 @@ app.service('httpWrapper', ['$http', '$location', 'contextService', function ($h
 
     return httpWrapper;
 }]);
+
+function toValidJsVariableName(nombre) {
+    return nombre.replace(/ /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|./g, "");
+}

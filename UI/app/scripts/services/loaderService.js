@@ -39,9 +39,8 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             $localStorage.biodanzaConfig = cfg;
         },
         getEjercicio : function(nombre) {
-            var ejercicios = $filter('filter')(db.ejercicios, { nombre: nombre }, true);
-            if (ejercicios.length === 1) return ejercicios[0];
-            return undefined;
+            var ejercicio = eval("db.ejercicios.x" + toValidJsVariableName(nombre));
+            return ejercicio;
         },
         getMusicaById : function(idMusica) {
             var str = "db.musicas." + idMusica;
@@ -71,8 +70,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
 
     angular.forEach(db.ejercicios,
         function (ejercicio, index) {
-            var str = "db.ejercicios.x" + ejercicio.idEjercicio + " = db.ejercicios[ " + index + "];";
-            eval(str);
+            var str = "db.ejercicios.x" + toValidJsVariableName(ejercicio.nombre) + " = db.ejercicios[ " + index + "];";
+            try {
+                eval(str);
+            } catch (e) {
+                console.log(e);
+            }
         });
 
     function loadClases() {
@@ -108,11 +111,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                             }
                         }
                         if (ej.ejercicio !== null) {
-                            var ejercicio = eval("db.ejercicios.x" + ej.ejercicio.idEjercicio);
-                            if (typeof ejercicio === "undefined") {
-                                var ejercicios = $filter('filter')(db.ejercicios, { nombre: ej.ejercicio.nombre }, true);
-                                if (ejercicios.length === 1) ejercicio = ejercicios[0];
-                            }
+                            var ejercicio = service.getEjercicio(ej.ejercicio.nombre);
                             if (ejercicio) {
                                 ej.ejercicio = ejercicio;
                             }
