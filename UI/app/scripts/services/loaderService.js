@@ -3,17 +3,36 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     var coleccionesPromises = [];
     db.musicas = [];
 
+    if (typeof $localStorage.biosoft_colecciones === "undefined") {
+        $localStorage.biosoft_colecciones = db.colecciones;
+    } else {
+        db.colecciones = $localStorage.biosoft_colecciones;
+    }
+
+    if (typeof $localStorage.biosoft_grupos === "undefined") {
+        $localStorage.biosoft_grupos = db.grupos;
+    } else {
+        db.grupos = $localStorage.biosoft_grupos;
+    }
+
     function loadCols() {
         angular.forEach(db.colecciones,
             function (col) {
-                var promise = loadJsService.load("app/data/musica_" + col + '.js');
-                promise.then(function () {
-                    var musicas = eval('db.musica_' + col);
+                var musicas = eval("$localStorage.biosoft_musica_" + col);
+                if (typeof musicas === "undefined") {
+                    var promise = loadJsService.load("app/data/musica_" + col + '.js');
+                    promise.then(function () {
+                        var musicas = eval('db.musica_' + col);
+                        eval("$localStorage.biosoft_musica_" + col + "= musicas");
+                        Array.prototype.push.apply(db.musicas, musicas);
+                    });
+                    coleccionesPromises.push(promise);
+                } else {
                     Array.prototype.push.apply(db.musicas, musicas);
-                });
-                coleccionesPromises.push(promise);
+                }
             });
     }
+
 
     var service = {
         colecciones: function () {
@@ -52,7 +71,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         }
     };
 
-    //var maxIdMusica = 1000000;
     function setIdMusica(musica) {
         if (typeof musica.idMusica !== "undefined") musica.oldId = musica.idMusica;
         musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
@@ -70,6 +88,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
 
     angular.forEach(db.ejercicios,
         function (ejercicio, index) {
+            ejercicio.idEjercicio = undefined;
             var str = "db.ejercicios.x" + toValidJsVariableName(ejercicio.nombre) + " = db.ejercicios[ " + index + "];";
             try {
                 eval(str);
@@ -77,6 +96,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 console.log(e);
             }
         });
+
+    if (typeof $localStorage.biosoft_ejercicios === "undefined") {
+        $localStorage.biosoft_ejercicios = db.ejercicios;
+    } else {
+        db.ejercicios = $localStorage.biosoft_ejercicios;
+    }
 
     function loadClases() {
         angular.forEach(biodanzaClases,
