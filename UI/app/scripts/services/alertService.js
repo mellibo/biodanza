@@ -7,6 +7,9 @@
             addAlert: function(type, msg) {
                 service.alerts.push({ type: type, msg: msg });
             },
+            addDangerAlert: function(msg) {
+                service.alerts.push({ type: "danger", msg: msg });
+            },
             closeAlert: function(index) {
                 service.alerts.splice(index, 1);
             }

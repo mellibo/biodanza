@@ -1,25 +1,25 @@
 ﻿var services = angular.module('services', []);
 
-function addMusicasAEjercicio(ejercicio) {
-    if (typeof ejercicio.musicas !== "undefined") return;
-    ejercicio.musicas = [];
-    angular.forEach(ejercicio.musicasId,
-        function (value) {
-            var musica;
-            if (typeof value === "number") { // para cuando idMusica es numerico
-                angular.forEach(db.musicas, function(item) {
-                    if (item.oldId === value) {
-                        musica = item;
-                        ejercicio.musicas.push(musica);
-                        return;
-                    }
-                });
-            } else {
-                musica = eval("db.musicas." + value);
-                if (musica) ejercicio.musicas.push(musica);
-            }
-        });
-}
+//function addMusicasAEjercicio(ejercicio) {
+//    if (typeof ejercicio.musicas !== "undefined") return;
+//    ejercicio.musicas = [];
+//    angular.forEach(ejercicio.musicasId,
+//        function (value) {
+//            var musica;
+//            if (typeof value === "number") { // para cuando idMusica es numerico
+//                angular.forEach(db.musicas, function(item) {
+//                    if (item.oldId === value) {
+//                        musica = item;
+//                        ejercicio.musicas.push(musica);
+//                        return;
+//                    }
+//                });
+//            } else {
+//                musica = eval("db.musicas." + value);
+//                if (musica) ejercicio.musicas.push(musica);
+//            }
+//        });
+//}
 
 services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', '$rootScope', 'loaderService', function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location, $rootScope, loaderService) {
     var context = {};
@@ -175,7 +175,6 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                             if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
                             if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
                             var ok = false;
-                            addMusicasAEjercicio(ejercicio);
                             angular.forEach(ejercicio.musicas,
                                 function (musica) {
                                     if (ok) return;
@@ -190,7 +189,6 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                         1) *
                     params.count(),
                     params.page() * params.count());
-                angular.forEach(ejercicios, function(value) { addMusicasAEjercicio(value); });
                 
                 params.total(orderedData.length);
                 return ejercicios;
@@ -298,7 +296,6 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                         var arrFiltrado = [];
                         for (var i = 0; i < arrEjs.length; i++) {
                             var eje = arrEjs[i];
-                            addMusicasAEjercicio(eje);
                             var filtroMusicas = eje.musicas;
                             var arrEjMusica = $filter('filter')(orderedData,
                                 function(value, index, array) {

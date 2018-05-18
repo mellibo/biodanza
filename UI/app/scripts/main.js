@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', ['bootstrap.fileField','ngStorage','ngTable','services', 'directives', 'ngRoute', 'ngAnimate', 'ngMessages', 'ngSanitize', 'ui.bootstrap']);
+﻿var app = angular.module('app', ['bootstrap.fileField', 'ngStorage', 'ngTable', 'services', 'directives', 'ngRoute', 'ngAnimate', 'ngMessages', 'ngSanitize', 'ui.bootstrap', 'loadingStatus']);
 
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
@@ -115,5 +115,13 @@ app.service('httpWrapper', ['$http', '$location', 'contextService', function ($h
 }]);
 
 function toValidJsVariableName(nombre) {
-    return nombre.replace(/ /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|./g, "");
+    return nombre.replace(/ | /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|\/|~|\./g, "");
 }
+
+function clearStorage() {
+    window.localStorage.removeItem("ngStorage-biosoft_musica_BsAs");
+    window.localStorage.removeItem("ngStorage-biosoft_musica_IBF");
+    window.localStorage.removeItem("ngStorage-biosoft_ejercicios");
+}
+
+//clearStorage();

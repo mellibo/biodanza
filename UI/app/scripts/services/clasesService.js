@@ -144,7 +144,21 @@
             if (biodanzaClases == null) {
                 biodanzaClases = [claseEjemplo];
             }
-
+            angular.forEach(biodanzaClases, (clase) => {
+                angular.forEach(clase.ejercicios, (ejercicio) => {
+                    if (ejercicio.ejercicio) {
+                        var ej = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
+                        if (ej) ejercicio.ejercicio = ej;
+                    }
+                    if (ejercicio.musica) {
+                        var musica = loaderService
+                            .getMusicaByColCdPista(ejercicio.musica.coleccion,
+                                ejercicio.musica.nroCd,
+                                ejercicio.musica.nroPista);
+                        if (musica) ejercicio.musica = musica;
+                    }
+                });
+            });
             return biodanzaClases;
         };
         service.clases();

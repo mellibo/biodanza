@@ -1,4 +1,4 @@
-﻿var loadingStatus = angular.module('loadingStatus',['toaster']);
+﻿var loadingStatus = angular.module('loadingStatus',[]);
 
 loadingStatus.directive('loadingStatusMessage', function() {
     return {
@@ -16,7 +16,7 @@ loadingStatus.directive('loadingStatusMessage', function() {
     };
 });
  
-loadingStatus.factory('loadingStatusInterceptor', ['$q', '$rootScope', 'toaster', function ($q, $rootScope, toaster) {
+loadingStatus.factory('loadingStatusInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
   var activeRequests = 0;
   var started = function() {
     if(activeRequests==0) {
@@ -41,13 +41,9 @@ loadingStatus.factory('loadingStatusInterceptor', ['$q', '$rootScope', 'toaster'
     },
     responseError: function(rejection) {
         ended();
-        toaster.pop('error', 'error', 'Error de comunicación: ' + rejection.data, 15000);
       return $q.reject(rejection);
     }
   };
 }]);
 
-loadingStatus.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('loadingStatusInterceptor');
-}]);
 

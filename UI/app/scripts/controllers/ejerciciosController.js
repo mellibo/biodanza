@@ -28,7 +28,7 @@ app.controller('musicasController', ['$scope', 'loaderService', '$location', 'co
     });
 }]);
 
-app.controller('configController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams, alertService) {
+app.controller('configController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', '$rootScope', 'playerService', '$localStorage', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams, alertService, $rootScope, playerService, $localStorage) {
     $scope.config = loaderService.config();
 
     $scope.grabar = function () {
@@ -41,11 +41,21 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         sheets: [],
         sampleRows : [],
         tableParams: new NgTableParams({ count: 15 }),
-        totalOk:0
+        totalOk: 0,
+        totalLeidos:0,
+        totalError: 0,
+        validado: false
     };
 
     $scope.importarColeccion = function(file) {
+        $rootScope.$broadcast('loadingStatusActive');
         var f = file.files[0];
+        $scope.data.wb = null;
+        $scope.data.sheets = [];
+        $scope.data.sampleRows = [];
+        $scope.data.sheet = null;
+
+        $scope.data.coleccion = f.name.substring(0, f.name.indexOf("."));
         var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -67,7 +77,12 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         else reader.readAsArrayBuffer(f);
     };
 
+    $scope.importarExcelMusicas = function() {
+        var result = loaderService.importarColeccionMusicas($scope.data.coleccion, $scope.data.sampleRows);
+    };
+
     $scope.loadSheet = function () {
+        $rootScope.$broadcast('loadingStatusActive');
         var sheet = $scope.data.sheet;
         $scope.data.sampleRows = XLSX.utils.sheet_to_json(sheet);
         console.log($scope.data.sampleRows);
@@ -101,71 +116,142 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
                         }
                     });
             }
-            var props = Object.keys($scope.data.sampleRows[0]);
-            if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
-            if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
-            if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
-            if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
-            if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
-            if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
         }
         if (colsError.length > 1) {
             alertService.addAlert("danger", "Error:" + colsError);
-        } else {
-            //alertService.addAlert('success', 'excel cargado ok.');
-        }
+        } 
         $scope.data.totalOk = 0;
-        angular.forEach($scope.data.sampleRows, function (item) {
+        $scope.data.totalLeidos = 0;
+        $scope.data.totalError = 0;
+        var listaACheckMusica = [];
+        angular.forEach($scope.data.sampleRows, function (item, index) {
+            $scope.data.totalLeidos++;
+            item.Lineas = item.Lineas || item.L || item.L;
+            item.CdPista = item.CdPista || item.Nro;
             if (typeof item.CdPista !== "string") {
                 item.estado = "Error: CdPista Incorrecto.";
+                $scope.data.totalError++;
                 return;
             }
             if (item.CdPista.length !== 5) {
                 item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                $scope.data.totalError++;
                 return;
             }
+            var nroCd = item.CdPista.substring(0, 2);
+            nroCd = parseInt(nroCd);
+            if (isNaN(nroCd)) {
+                item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                $scope.data.totalError++;
+                return;
+            }
+            item.nroCd = nroCd;
+
+            var nroPista = item.CdPista.substring(3, 5);
+            nroPista = parseInt(nroPista);
+            if (isNaN(nroPista)) {
+                item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                $scope.data.totalError++;
+                return;
+            }
+            item.nroPista = nroPista;
+
             if (typeof item.Ejercicio !== "string") {
                 item.estado = "Error: Columna Ejercicio Incorrecta.";
+                $scope.data.totalError++;
                 return;
             }
-            if (typeof item.Titulo !== "string" || item.Titulo.length < 3) {
-                item.estado = "Error: Columna Titulo Incorrecta.";
-                return;
+            if (typeof item.Titulo !== "string" || item.Titulo === "") {
+                item.Titulo = "Desconocido";
             }
-            if (typeof item.Interprete !== "string" || item.Interprete.length < 3) {
-                item.estado = "Error: Columna Interprete Incorrecta.";
-                return;
+
+            if (typeof item.Interprete !== "string" || item.Interprete === "") {
+                item.Interprete = "Desconocido";
             }
             if (item.CdPista.length !== 5) {
                 item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
+                $scope.data.totalError++;
                 return;
             }
-            var ejercicio = loaderService.getEjercicio(item.Ejercicio);
-            if (typeof ejercicio === "undefined") {
-                item.estado = "Error: Ejercicio inexistente. Debe agregar primero el ejercicio.";
-                return;
-            }
-            if (typeof item.Carpeta !== "string" || item.Interprete.length < 1) {
+            //var ejercicio = loaderService.getEjercicio(item.Ejercicio);
+            //if (typeof ejercicio === "undefined") {
+            //    item.estado = "Error: Ejercicio inexistente. Debe agregar primero el ejercicio.";
+            //    return;
+            //}
+            if (typeof item.Carpeta !== "string" || item.Carpeta.length < 1) {
                 item.estado = "Error: Columna Carpeta Incorrecta.";
+                $scope.data.totalError++;
                 return;
             }
-            if (typeof item.Archivo !== "string" || item.Interprete.length < 4) {
+            if (typeof item.Archivo !== "string" || item.Archivo.length < 4) {
                 item.estado = "Error: Columna Archivo Incorrecta.";
+                $scope.data.totalError++;
                 return;
             }
-            item.estado = "ok";
-            $scope.data.totalOk++;
+            item.grupo = item.grupo || "Otros";
+            item.idGrupo = item.idGrupo || 76;
+            listaACheckMusica.push(item);
         });
-        alertService.addAlert($scope.data.totalOk === $scope.data.sampleRows.length ? "success" : "warning",
-            "hay " +
-            $scope.data.totalOk +
-            " músicas para importar de un total de " +
-            $scope.data.sampleRows
-            .length);
-        $scope.$apply();
+        checkMusicas(listaACheckMusica);
+        var props = Object.keys($scope.data.sampleRows[0]);
+        if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
+        if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
+        if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
+        if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
+        if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
+        if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
+        if (colsError.length > 1) {
+            alertService.addAlert("danger", "Error:" + colsError);
+        }
+        $rootScope.$broadcast('loadingStatusInactive');
+        $scope.safeApply();
+    };
+
+    function checkMusicas(musicas) {
+        $rootScope.$broadcast('loadingStatusActive');
+        var item = musicas.shift();
+        var musica = { coleccion: $scope.data.coleccion, carpeta: item.Carpeta, archivo: item.Archivo };
+        loaderService.testMusica(musica)
+            .then(function(result) {
+                if (result === true) {
+                    item.estado = "ok";
+                    item.duracion = musica.duracion;
+                    $scope.data.totalOk++;
+                }
+                checkNextMusica(musicas);
+            }, function (reject) {
+                item.estado = "Error. " + reject.e.message + "." + decodeURI(reject.src);
+                $scope.data.totalError++;
+                checkNextMusica(musicas);
+            });
+
+    }
+
+    function checkNextMusica(musicas) {
+        $scope.safeApply();
+        if (musicas.length > 0) {
+            checkMusicas(musicas);
+        } else {
+            $scope.data.validado = true;
+            $rootScope.$broadcast('loadingStatusInactive');
+            playerService.stop();
+        }
+
+    }
+
+    $scope.safeApply = function (fn) {
+        var phase = this.$root.$$phase;
+        if (phase == '$apply' || phase == '$digest') {
+            if (fn && (typeof (fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
     };
 
     $scope.changeSheet = function (sheet) {
+        $scope.data.validado = false;
         $scope.data.sampleRows = [];
         $scope.data.sheet = $scope.data.wb.Sheets[sheet];
         $scope.loadSheet();

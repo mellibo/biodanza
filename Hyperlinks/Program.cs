@@ -11,11 +11,22 @@ namespace Hyperlinks
     {
         static void Main(string[] args)
         {
-            var bio = new BioCol();
-            if (!CommandLine.Parser.Default.ParseArguments(args, bio))
+            var parametros = new Parametros();
+            if (!CommandLine.Parser.Default.ParseArguments(args, parametros))
             {
-                return;
+                Console.WriteLine(parametros.GetUsage());
+//                return;
             }
+            var bio = new BioCol()
+            {
+                Action = parametros.Action,
+                ColumnCdPista = parametros.ColumnCdPista,
+                ColumnTitulo = parametros.ColumnTitulo,
+                Excel = parametros.Excel,
+                Hoja = parametros.Hoja,
+                PathColeccion = parametros.PathColeccion
+            };
+
             if (string.IsNullOrEmpty(bio.PathColeccion)) bio.PathColeccion = Directory.GetCurrentDirectory();
             if (string.IsNullOrEmpty(bio.Excel))
             {

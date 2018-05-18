@@ -11,79 +11,69 @@ namespace Biodanza.Model
 {
     public class BioCol
     {
-        private HSSFWorkbook hssfWorkbook;
+    private HSSFWorkbook hssfWorkbook;
 
-        [Option('p',"path", HelpText = "Path raiz de la colección", Required = false)]
-        public string PathColeccion { get; set; }
+    public string PathColeccion { get; set; }
 
-        [Option('e', "excel", HelpText = "nombre del excel de la colección", Required = false)]
-        public string Excel { get; set; }
+    public string Excel { get; set; }
 
-        [Option('t', "coltitulo", HelpText = "Número de columna con el nombre del tema (arranca de 0)", Required = true)]
-        public int ColumnTitulo { get; set; }
+    public int ColumnTitulo { get; set; }
 
-        [Option('n', "colnumero", HelpText = "Número de columna con el número de tema (arranca de 0)", Required = true)]
-        public int ColumnCdPista { get; set; }
+    public int ColumnCdPista { get; set; }
 
-        [Option('h', "hoja", HelpText = "Número de hoja del excel a procesar (arranca de 0)", Required = true)]
-        public int Hoja { get; set; }
+    public int Hoja { get; set; }
 
-        [Option('a', "accion", HelpText = "accion a realizar: h = agregar links, x = quitar links", Required = false)]
-        public string Action { get; set; }
+    public string Action { get; set; }
 
-        [HelpOption]
-        public string GetUsage()
-        {
-            var help = new HelpText
-            {
-                AdditionalNewLineAfterOption = true,
-                AddDashesToOption = true
-            };
-            help.AddPreOptionsLine("<>");
-            help.AddPreOptionsLine("Usage: ");
-            help.AddOptions(this);
-            return help;
-        }
     
     public void HyperLinks()
+    {
+        var filePatterns = File.ReadAllLines("FormatosArchivosMusica.txt");
+        var folderPatterns = File.ReadAllLines("FormatosCarpetas.txt");
+        var searchFile = new FileSearch()
         {
-            using (var fs = File.OpenRead(Path.Combine(PathColeccion, Excel)))
-            {
-                hssfWorkbook = new HSSFWorkbook(fs);
-            }
-            var sheet = hssfWorkbook.GetSheetAt(Hoja);
-            var row = 1;
-            var linkStyle = hssfWorkbook.CreateCellStyle();
-            linkStyle.Alignment = HorizontalAlignment.Center;
-            var fontWindings3 = hssfWorkbook.CreateFont();
-            fontWindings3.FontName = "Wingdings 3";
-            fontWindings3.FontHeightInPoints = 16;
-            linkStyle.SetFont(fontWindings3);
-            while (true)
-            {
-                var xlRow = sheet.GetRow(row);
-                if (xlRow == null) break;
-                var cell = xlRow.GetCell(ColumnCdPista);
-                row++;
-                var cdPista = cell?.StringCellValue;
-                if (cdPista?.Length != 5) break;
-                var file = GetFileFromCD_Pista(PathColeccion, cdPista, new[] { "{cd}*" }, new[] { "{pista}*" });
-                if (string.IsNullOrEmpty(file))
-                {
-                    Console.WriteLine("musica no encontrada. Pista: {0}. FilaExcel: {1}", cdPista, row);
-                    continue;
-                }
-                cell = xlRow.GetCell(ColumnTitulo) ?? xlRow.CreateCell(ColumnTitulo, CellType.String);
-                var cellHyperlink = new HSSFHyperlink(HyperlinkType.File) {Address = file};
-                cell.Hyperlink = cellHyperlink;
-                cell.SetCellValue("u"); //en font Windings 3 es play
-                cell.CellStyle = linkStyle;
-            }
-            using (var fs = File.OpenWrite(Path.Combine(PathColeccion, Excel)))
-            {
-                hssfWorkbook.Write(fs);
-            }
+            FilePatterns = filePatterns,
+            FolderPatterns = folderPatterns,
+            PathMusicas = PathColeccion
+        };
+        using (var fs = File.OpenRead(Path.Combine(PathColeccion, Excel)))
+        {
+            hssfWorkbook = new HSSFWorkbook(fs);
         }
+        var sheet = hssfWorkbook.GetSheetAt(Hoja);
+        var row = 1;
+        var linkStyle = hssfWorkbook.CreateCellStyle();
+        linkStyle.Alignment = HorizontalAlignment.Center;
+        var fontWindings3 = hssfWorkbook.CreateFont();
+        fontWindings3.FontName = "Wingdings 3";
+        fontWindings3.FontHeightInPoints = 16;
+        linkStyle.SetFont(fontWindings3);
+        while (true)
+        {
+            var xlRow = sheet.GetRow(row);
+            if (xlRow == null) break;
+            var cell = xlRow.GetCell(ColumnCdPista);
+            row++;
+            var cdPista = cell?.StringCellValue;
+            if (cdPista?.Length != 5) break;
+            var itemdata = new ItemData() {CdPista = cdPista, Coleccion = ""};
+            var resultadoOperacion = searchFile.GetFile(itemdata);
+            if (!resultadoOperacion.Ok)
+            {
+                Console.WriteLine("FilaExcel: {1}. {0}.", resultadoOperacion.Mensaje, row);
+                continue;
+            }
+            cell = xlRow.GetCell(ColumnTitulo) ?? xlRow.CreateCell(ColumnTitulo, CellType.String);
+            var cellHyperlink = new HSSFHyperlink(HyperlinkType.File) {Address = resultadoOperacion.Mensaje.Substring(1)};
+            cell.Hyperlink = cellHyperlink;
+            cell.SetCellValue("u"); //en font Windings 3 es play
+            cell.CellStyle = linkStyle;
+        }
+        using (var fs = File.OpenWrite(Path.Combine(PathColeccion, Excel)))
+        {
+            hssfWorkbook.Write(fs);
+        }
+    }
         public void CleanHyperLinks(int col)
         {
             using (var fs = File.OpenRead(Path.Combine(PathColeccion, Excel)))
