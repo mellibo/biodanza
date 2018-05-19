@@ -61,7 +61,9 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 };
                 if (rABS) reader.readAsBinaryString(f);
                 else reader.readAsArrayBuffer(f);
+                angular.element(document.querySelector('#fileImport')).val(null);
             }, (a) => {
+                angular.element(document.querySelector('#fileImport')).val(null);
                 alertService.addAlert("danger", "No se encontro el archivo excel en la ubicación esperada: " + filePath + "<br/>Verifique que la carpeta del archivo sea la indicada arriba.<br/>Verifique que el nombre del archivo excel sea igual al nombre de la carpeta.<br/>");
             });
         return;

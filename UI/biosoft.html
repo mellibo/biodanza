@@ -243,7 +243,7 @@
                     <label class="control-label ">Carpeta de la coleccion a importar:</label>
                     <input type="text" ng-model="data.carpetaColeccion" class="form-control " style="width:500px;">
                 </div>
-                <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
+                <input type="file" id="fileImport"  style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
                 <div class="form-group col-md-12 btn-group" role="toolbar">
                     <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
                     <button type="button" class="btn btn-primary" ng-show="data.validado" ng-click="importarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
