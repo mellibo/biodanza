@@ -10,9 +10,9 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'musicasController',
         templateUrl: 'musicas.html'
     }).
-    when('/config/', {
-        controller: 'configController',
-        templateUrl: 'config.html'
+    when('/cargarMusica/', {
+        controller: 'cargarMusicaController',
+        templateUrl: 'cargarMusica.html'
     }).
     when('/clases/', {
         controller: 'clasesController',

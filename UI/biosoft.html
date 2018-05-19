@@ -35,6 +35,7 @@
     <script type="text/javascript" src="app/scripts/controllers/alertController.js"></script>
     <!--<script type="text/javascript" src="app/scripts/filters.js"></script>-->
     <script type="text/javascript" src="app/scripts/controllers/ejerciciosController.js"></script>
+    <script type="text/javascript" src="app/scripts/controllers/cargarMusicaController.js"></script>
     <script type="text/javascript" src="app/scripts/utils.js"></script>
     <script type="text/javascript" src="app/data/grupos.js"></script>
     <script type="text/javascript" src="app/data/colecciones.js"></script>
@@ -64,7 +65,7 @@
                 <li ng-class="{active:isActive('/clases')}"><a href="#clases">Clases</a></li>
                 <li ng-class="{active:isActive('/ejercicios')}"><a href="#ejercicios">Ejercicios</a></li>
                 <li ng-class="{active:isActive('/musica')}"><a href="#musicas">Música</a></li>
-                <li ng-class="{active:isActive('/config')}"><a href="#config">Configuración</a></li>
+                <li ng-class="{active:isActive('/cargarMusica')}"><a href="#cargarMusica">Cargar Música</a></li>
                 <!--<li ng-class="{active:isActive('/agregarMusicaManual')}"><a href="#agregarMusicaManual">Agregar Música</a></li>-->
                 <li ng-class="{active:isActive('/acercade')}"><a href="#acercade">Acerca De...</a></li>
                 <!--                  <li class="dropdown">
@@ -225,7 +226,7 @@
         <div ng-include="'grillaMusica.html'"></div>
     </div>
 </script>
-<script type="text/ng-template" id="config.html">
+<script type="text/ng-template" id="cargarMusica.html">
     <div class="row">
         <form class="form-inline">
             <div class="row">
@@ -769,97 +770,6 @@
         <br />
 </h2>
     <h3>Para sugerencias o reporte de bugs puedes contactarme a {{mail}}</h3>
-</script>
-<script type="text/ng-template" id="importMusica.html">
-    <h2>Agregar Música<br /><br /></h2>
-    <p>Para agregar música, primero debe completar un excel con las musicsa a agregar.<br />
-    Haga <a href="docs/importaMusicas.xlsm"> clic aqui</a> para descargar el archivo excel con el cual se genera el archivo de importación.</p>
-    <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Importar música de un archivo"><span class="glyphicon glyphicon-import"></span>   Importar Música</button>
-    <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarMusica(this)" />
-    <table id="tblImport" ng-table="tableParams" class="table table-striped table-hover" style="margin-bottom: 0px !important;" >
-        <thead>
-            <tr class="success">
-                <td class="col-md-2 col-lg-2">
-                    <label>Titulo</label>
-                </td>
-                <td class="col-md-2 col-lg-2">
-                    <label>Archivo</label>
-                </td>
-                <td class="col-md-1 col-lg-1">
-                    <label>Resultado</label>
-                </td>
-                <td class="col-md-7 col-lg-7">
-                    <label>Mensaje</label>
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-ng-repeat="item in $data">
-                <td>
-                    {{item.titulo}} ({{item.coleccion}})
-                </td>
-                <td>
-                    {{item.archivo}}
-                </td>
-                <td>
-                    {{item.ok ? 'ok' : 'error' }}
-                </td>
-                <td>
-                    {{item.msg}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</script>
-<script type="text/ng-template" id="agregarMusicaManual.html">
-    <div class="alert" >{{model.message}}</div>
-    <div class="row form">
-        <div class="form-group col-md-1">
-            <label class="control-label">Colección</label>
-            <input type="text" ng-model="model.musica.coleccion" ng-change="model.change()" class="form-control">
-        </div>
-        <div class="form-group col-md-1">
-            <label class="control-label">Nro. CD</label>
-            <input type="number" ng-model="model.musica.nroCd"  ng-change="model.change()" class="form-control">
-        </div>
-        <div class="form-group col-md-1">
-            <label class="control-label">Nro. Pista</label>
-            <input type="number" ng-model="model.musica.nroPista"  ng-change="model.change()" class="form-control">
-        </div>
-        <div class="form-group col-md-3">
-            <label class="control-label">Nombre</label>
-            <input type="text" ng-model="model.musica.nombre"  ng-change="model.change()" class="form-control">
-        </div>
-        <div class="form-group col-md-4">
-            <label class="control-label">Interprete</label>
-            <input type="text" ng-model="model.musica.interprete"  ng-change="model.change()" class="form-control">
-        </div>
-        <div class="form-group col-md-2">
-            <label class="control-label">Lineas</label>
-            <div class="checkbox">
-                <label>V<input type="checkbox" ng-model="model.lineas.V" ng-change="model.updLineas()" /></label>
-                <label>A<input type="checkbox" ng-model="model.lineas.A" ng-change="model.updLineas()" /></label>
-                <label>C<input type="checkbox" ng-model="model.lineas.C" ng-change="model.updLineas()" /></label>
-                <label>S<input type="checkbox" ng-model="model.lineas.S" ng-change="model.updLineas()" /></label>
-                <label>T<input type="checkbox" ng-model="model.lineas.T" ng-change="model.updLineas()" /></label>
-            </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label class="control-label">Carpeta</label>
-            <input type="text" ng-model="model.musica.carpeta" class="form-control">
-        </div>
-        <div class="form-group col-md-6">
-            <label class="control-label">Archivo</label>
-            <input type="text" ng-model="model.musica.archivo"  class="form-control">
-        </div>
-    </div>
-    <div>
-        <div class="form-group">
-            <button type="button" class="btn btn-primary" ng-click="model.validar()">Verificar <i class="glyphicon glyphicon-eye-open"></i></button>
-            <button type="button" class="btn btn-primary {{model.valid ? '' : 'disabled'}}" ng-disabled="!model.valid" ng-click="model.importar()()">Agregar <i class="glyphicon glyphicon-plus"></i></button>
-        </div>
-    </div>
-
 </script>
 </body>
 </html>
