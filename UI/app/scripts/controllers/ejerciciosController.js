@@ -28,14 +28,13 @@ app.controller('musicasController', ['$scope', 'loaderService', '$location', 'co
     });
 }]);
 
-app.controller('configController', ['$scope', '$window', '$location', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', '$rootScope', 'playerService', '$localStorage', function ($scope, $window, $location, loaderService, $uibModal, NgTableParams, alertService, $rootScope, playerService, $localStorage) {
+app.controller('configController', ['$scope', '$window', '$location', 'loadJsService', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', '$rootScope', 'playerService', '$localStorage', function ($scope, $window, $location, loadJsService, loaderService, $uibModal, NgTableParams, alertService, $rootScope, playerService, $localStorage) {
     $scope.config = loaderService.config();
 
     $scope.grabar = function () {
         if ($scope.config.pathMusica[$scope.config.pathMusica.length - 1] !== "/") $scope.config.pathMusica += "/";
         loaderService.config($scope.config);
     }
-
     $scope.data = {
         wb: null,
         sheets: [],
@@ -45,36 +44,60 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         totalLeidos:0,
         totalError: 0,
         validado: false
+        , carpetaColeccion:getCurrentPath() + "musica/"
+        , coleccion: {
+            nombre: "",
+            carpeta: "",
+            excel: "",
+            hojaEjercicios: "Por Nro",
+            cargar: true
+        }
     };
 
-    $scope.importarColeccion = function(file) {
-        $rootScope.$broadcast('loadingStatusActive');
+    $scope.importarColeccion = function (file) {
         var f = file.files[0];
-        $scope.data.wb = null;
-        $scope.data.sheets = [];
-        $scope.data.sampleRows = [];
-        $scope.data.sheet = null;
+        $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf("."));
+        var filePath;
+        if ($scope.data.carpetaColeccion.length > 1) {
+            if ($scope.data.carpetaColeccion[$scope.data.carpetaColeccion.length - 1] !== "/") $scope.data.carpetaColeccion += "/";
+            filePath = $scope.data.carpetaColeccion + $scope.data.coleccion.nombre + "/" + f.name;
+        } else {
+            filePath = $scope.config.pathMusica + $scope.data.coleccion.nombre + "/" + f.name;
+        }
+        loadJsService.load(filePath)
+            .then((a) => {
+                $scope.data.coleccion.carpeta = $scope.data.carpetaColeccion;
 
-        $scope.data.coleccion = f.name.substring(0, f.name.indexOf("."));
-        var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var data = e.target.result;
-            var arr;
-            var readtype = { type: rABS ? 'binary' : 'base64' };
-            if (!rABS) {
-                arr = fixdata(data);
-                data = btoa(arr);
-            }
+                $scope.data.wb = null;
+                $scope.data.sheets = [];
+                $scope.data.sampleRows = [];
+                $scope.data.sheet = null;
 
-            $scope.data.wb = XLSX.read(data, readtype);
-            $scope.data.sheets = $scope.data.wb.SheetNames;
-            $scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
-            //sheet['!ref'] = "A1:L11";
-            $scope.loadSheet();
-        };
-        if (rABS) reader.readAsBinaryString(f);
-        else reader.readAsArrayBuffer(f);
+                $rootScope.$broadcast('loadingStatusActive');
+
+                var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    var arr;
+                    var readtype = { type: rABS ? 'binary' : 'base64' };
+                    if (!rABS) {
+                        arr = fixdata(data);
+                        data = btoa(arr);
+                    }
+
+                    $scope.data.wb = XLSX.read(data, readtype);
+                    $scope.data.sheets = $scope.data.wb.SheetNames;
+                    $scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
+                    //sheet['!ref'] = "A1:L11";
+                    $scope.loadSheet();
+                };
+                if (rABS) reader.readAsBinaryString(f);
+                else reader.readAsArrayBuffer(f);
+            }, (a) => {
+                alertService.addAlert("danger", "No se encontro el archivo excel en la ubicación esperada: " + filePath + "<br/>Verifique que la carpeta del archivo sea la indicada arriba.<br/>Verifique que el nombre del archivo excel sea igual al nombre de la carpeta.<br/>");
+            });
+        return;
     };
 
     $scope.importarExcelMusicas = function() {
@@ -210,7 +233,7 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
     function checkMusicas(musicas) {
         $rootScope.$broadcast('loadingStatusActive');
         var item = musicas.shift();
-        var musica = { coleccion: $scope.data.coleccion, carpeta: item.Carpeta, archivo: item.Archivo };
+        var musica = { coleccion: $scope.data.coleccion.nombre, carpeta: item.Carpeta, archivo: item.Archivo };
         loaderService.testMusica(musica)
             .then(function(result) {
                 if (result === true) {
@@ -254,6 +277,7 @@ app.controller('configController', ['$scope', '$window', '$location', 'loaderSer
         $scope.data.validado = false;
         $scope.data.sampleRows = [];
         $scope.data.sheet = $scope.data.wb.Sheets[sheet];
+        $scope.data.coleccion.hojaEjercicios = sheet;
         $scope.loadSheet();
     };
 

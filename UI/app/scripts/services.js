@@ -113,7 +113,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
     //    reader.readAsText(file);
     //};
 
-
+    /*
     context.testMusica = function (audio) {
         if (audio.musicas.length === 0) {
             return;
@@ -138,7 +138,7 @@ services.factory('contextService', ['$q', '$localStorage', '$uibModal', 'NgTable
             musica.archivo;
         audio.play();
     }
-
+    */
     return context;
 }]);
 

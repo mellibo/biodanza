@@ -81,19 +81,18 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     }
 
     function addColeccion(col, musicas, save) {
-        if (col.indexOf(" ") > -1) {
+        if (col.nombre.indexOf(" ") > -1) {
             alertService.addDangerAlert("El nombre de la colección no puede tener espacios. " + col);
             return;
         }
-        if (db.colecciones.indexOf(col) === -1) {
+        if (db.colecciones.filter((c) => c.nombre === col.nombre).length === 0)  {
             db.colecciones.push(col);
-            saveColecciones();
             save = true;
         }
         if (save) {
             saveColeccion(col, musicas);
         }
-        db.musicas = db.musicas.filter(function (m) { return m.coleccion !== col });
+        db.musicas = db.musicas.filter(function (m) { return m.coleccion !== col.nombre });
         //angular.extend(db.musicas, col);
         Array.prototype.push.apply(db.musicas, musicas);        
     }
@@ -101,12 +100,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     function loadCols() {
         angular.forEach(db.colecciones,
             function (col) {
-                var musicas = eval("$localStorage.biosoft_musica_" + col);
+                var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
                 if (typeof musicas === "undefined") {
-                    var promise = loadJsService.load("app/data/musica_" + col + '.js');
+                    var promise = loadJsService.load("app/data/musica_" + col.nombre + '.js');
                     coleccionesPromises.push(promise);
                 } else {
-                    eval("db.musica_" + col + " = musicas");
+                    eval("db.musica_" + col.nombre + " = musicas");
                 }
             });
         //si cargo todas desde localstorage genero un promise ficticio en coleccionesPromises
@@ -118,7 +117,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     }
 
     function saveColeccion(col, musicas) {
-        eval("$localStorage.biosoft_musica_" + col + "= musicas");
+        eval("$localStorage.biosoft_musica_" + col.nombre + "= musicas");
     }
 
     function loadAll() {
@@ -126,11 +125,11 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         $q.all(coleccionesPromises).then(function () {
             angular.forEach(db.colecciones,
                 (col) => {
-                    var musicas = eval('db.musica_' + col);
+                    var musicas = eval('db.musica_' + col.nombre);
                     
                     addColeccion(col, musicas);
-                    eval('db.musica_' + col + ' = undefined;');
-                    if (!eval("$localStorage.biosoft_musica_" + col)) saveColeccion(col, musicas);
+                    eval('db.musica_' + col.nombre + ' = undefined;');
+                    if (!eval("$localStorage.biosoft_musica_" + col.nombre)) saveColeccion(col, musicas);
                 });
             angular.forEach(db.musicas, addMusica);
             if (typeof $localStorage.biosoft_ejercicios === "undefined") {
@@ -242,12 +241,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         var col = [];
         angular.forEach(rows, function (row, index) {
             if (row.estado !==  "ok") return;
-            var musica = service.getMusicaByColCdPista(coleccion, row.nroCd, row.nroPista);
+            var musica = service.getMusicaByColCdPista(coleccion.nombre, row.nroCd, row.nroPista);
             if (!musica) {
                 musica = {};
                 musica.archivo = row.Archivo;
                 musica.carpeta = row.Carpeta;
-                musica.coleccion = coleccion;
+                musica.coleccion = coleccion.nombre;
                 musica.duracion = row.duracion;
                 musica.interprete = row.Interprete;
                 musica.Lineas = row.Lineas;
@@ -263,7 +262,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                     nombre: row.Ejercicio
                     , grupo: row.grupo 
                     , idGrupo: row.idGrupo 
-                    , coleccion: coleccion
+                    , coleccion: coleccion.nombre
                     , detalle: ""
                     , musicas: []
                     , musicasId :[]
@@ -278,5 +277,10 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         return col;
     }
 
+    service.fileExists = (path) => {
+        return loadJsService.load(path);
+    }
+
+    service.carpetaColeccion = (col) => { return db.colecciones.filter((x) => x.nombre === col)[0].carpeta }
     return service;
 }]);

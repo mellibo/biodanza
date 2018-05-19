@@ -230,14 +230,18 @@
         <form class="form-inline">
             <div class="row">
                 <br/>
-                <div class="form-group col-md-12">
-                    <label class="control-label ">Carpeta donde se encuentran las colecciones de música:</label>
+                <!--<div class="form-group col-md-12">
+                    <label class="control-label ">Carpeta por defecto de las colecciones de música:</label>
                     <input type="text" ng-model="config.pathMusica" class="form-control " style="width:300px;">
                     <button type="button" class="btn btn-primary " ng-click="grabar()">Grabar</button>
-                </div>
+                </div>-->
             </div>
             <div class="row">
                 <br/>
+                <div class="form-group col-md-12">
+                    <label class="control-label ">Carpeta de la coleccion a importar:</label>
+                    <input type="text" ng-model="data.carpetaColeccion" class="form-control " style="width:500px;">
+                </div>
                 <input type="file" id="fileImport" style="visibility:hidden;" onchange="angular.element(this).scope().importarColeccion(this)" />
                 <div class="form-group col-md-12 btn-group" role="toolbar">
                     <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>

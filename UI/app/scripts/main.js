@@ -121,7 +121,16 @@ function toValidJsVariableName(nombre) {
 function clearStorage() {
     window.localStorage.removeItem("ngStorage-biosoft_musica_BsAs");
     window.localStorage.removeItem("ngStorage-biosoft_musica_IBF");
+    window.localStorage.removeItem("ngStorage-biosoft_colecciones");
     window.localStorage.removeItem("ngStorage-biosoft_ejercicios");
 }
 
 //clearStorage();
+
+function getCurrentPath() {
+    if (window.location.href.substring(0, 4) !== "file") return;
+    var path = window.location.href.substring(8);
+    path = path.substring(0, path.lastIndexOf("#"));
+    path = path.substring(0, path.lastIndexOf("/") +1);
+    return path;
+}

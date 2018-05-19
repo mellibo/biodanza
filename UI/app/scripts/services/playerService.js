@@ -163,10 +163,7 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
                     200);
             }
             if (typeof audio.repeatCount === "undefined") audio.repeatCount = 1;
-            audio.src = loaderService.config().pathMusica +
-                musica.coleccion +
-                '/' +
-                musica.carpeta +
+            audio.src = loaderService.carpetaColeccion(musica.coleccion) + musica.carpeta +
                 '/' +
                 musica.archivo;
             if (ejercicio) audio.currentTime = ejercicio.iniciarSegundos;
