@@ -14,6 +14,10 @@ app.config(['$routeProvider', function ($routeProvider) {
         controller: 'cargarMusicaController',
         templateUrl: 'cargarMusica.html'
     }).
+    when('/cargarEjercicios/', {
+        controller: 'cargarEjerciciosController',
+        templateUrl: 'cargarEjercicios.html'
+    }).
     when('/clases/', {
         controller: 'clasesController',
         templateUrl: 'clases.html'
@@ -115,7 +119,7 @@ app.service('httpWrapper', ['$http', '$location', 'contextService', function ($h
 }]);
 
 function toValidJsVariableName(nombre) {
-    return nombre.replace(/ | /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|\/|~|\./g, "");
+    return nombre.toLowerCase().replace(/ | /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|\/|~|\./g, "");
 }
 
 function clearStorage() {

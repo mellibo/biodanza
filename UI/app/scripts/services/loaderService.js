@@ -60,26 +60,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
 
     }
 
-    function saveEjercicios() {
-        for (i = 0; i < db.ejercicios.length; i++) {
-            for (j = i + 1; j < db.ejercicios.length; j++) {
-                if (db.ejercicios[i].nombre === db.ejercicios[j].nombre) {
-                    console.log(" ejercicio duplicado: " + db.ejercicios[i].nombre);
-                    db.ejercicios.splice(j, 1);
-                }
-            }
-        }
-        angular.forEach(db.ejercicios, function (ejercicio) {
-            delete ejercicio.musicas;
-            delete ejercicio.idEjercicio;
-        });
-        $localStorage.biosoft_ejercicios = db.ejercicios;
-        angular.forEach(db.ejercicios,
-            function (ejercicio, index) {
-                addEjercicio(ejercicio, index);
-            });
-    }
-
     function addColeccion(col, musicas, save) {
         if (col.nombre.indexOf(" ") > -1) {
             alertService.addDangerAlert("El nombre de la colección no puede tener espacios. " + col);
@@ -134,7 +114,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             angular.forEach(db.musicas, addMusica);
             if (typeof $localStorage.biosoft_ejercicios === "undefined") {
                 angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
-                saveEjercicios();
+                service.saveEjercicios();
             } else {
                 db.ejercicios = $localStorage.biosoft_ejercicios;
                 angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
@@ -190,6 +170,26 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             return service.getMusicaById(idMusica);
         }
     };
+
+    service.saveEjercicios = () => {
+        for (i = 0; i < db.ejercicios.length; i++) {
+            for (j = i + 1; j < db.ejercicios.length; j++) {
+                if (db.ejercicios[i].nombre === db.ejercicios[j].nombre) {
+                    console.log(" ejercicio duplicado: " + db.ejercicios[i].nombre);
+                    db.ejercicios.splice(j, 1);
+                }
+            }
+        }
+        angular.forEach(db.ejercicios, function (ejercicio) {
+            delete ejercicio.musicas;
+            delete ejercicio.idEjercicio;
+        });
+        $localStorage.biosoft_ejercicios = db.ejercicios;
+        angular.forEach(db.ejercicios,
+            function (ejercicio, index) {
+                addEjercicio(ejercicio, index);
+            });
+    }
 
     function setIdMusica(musica) {
         if (typeof musica.idMusica !== "undefined" &&  !isNaN(musica.idMusica)) musica.oldId = musica.idMusica;
@@ -282,5 +282,10 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     }
 
     service.carpetaColeccion = (col) => { return db.colecciones.filter((x) => x.nombre === col)[0].carpeta }
+
+    service.addEjercicio = (ejercicio) => {
+        addEjercicio(ejercicio);
+    }
+
     return service;
 }]);
