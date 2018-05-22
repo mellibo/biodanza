@@ -122,7 +122,7 @@ app.controller('cargarEjerciciosController', ['$scope', 'downloadService', 'mode
             delete item.Coleccion;
             item.nombre = item.Ejercicio || "";
             delete item.Ejercicio;
-            item.detalle = item.Detalle.replace(/\r\n/g, "<br/>") || "";
+            item.detalle = (item.Detalle || "").replace(/\r\n/g, "<br/>") || "";
             delete item.Detalle;
             if (item.nombre === "") {
                 item.estado = "error: falta nombre ejercicio.";
