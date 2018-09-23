@@ -2,6 +2,7 @@
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
     var coleccionesPromises = [];
     db.musicas = [];
+    db.ejercicios = [];
 
     function saveColecciones() {
         $localStorage.biosoft_colecciones = db.colecciones;
@@ -249,7 +250,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 musica.coleccion = coleccion.nombre;
                 musica.duracion = row.duracion;
                 musica.interprete = row.Interprete;
-                musica.Lineas = row.Lineas;
+                musica.lineas = row.Lineas;
                 musica.nombre = row.Titulo;
                 musica.nroCd = row.nroCd;
                 musica.nroPista = row.nroPista;

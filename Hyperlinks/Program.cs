@@ -21,10 +21,12 @@ namespace Hyperlinks
             {
                 Action = parametros.Action,
                 ColumnCdPista = parametros.ColumnCdPista,
-                ColumnTitulo = parametros.ColumnTitulo,
                 Excel = parametros.Excel,
                 Hoja = parametros.Hoja,
                 PathColeccion = parametros.PathColeccion
+                , ColumnLink = parametros.ColumnLink
+                , ColumnCarpeta = parametros.ColumnCarpeta
+                , ColumnMusica = parametros.ColumnMusica
             };
 
             if (string.IsNullOrEmpty(bio.PathColeccion)) bio.PathColeccion = Directory.GetCurrentDirectory();
@@ -46,7 +48,7 @@ namespace Hyperlinks
                     bio.HyperLinks();
                     break;
                 case "x":
-                    bio.CleanHyperLinks(bio.ColumnTitulo);
+                    bio.CleanHyperLinks(bio.ColumnLink);
                     break;
             }
 

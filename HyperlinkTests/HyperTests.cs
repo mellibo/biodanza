@@ -9,33 +9,68 @@ namespace HyperlinkTests
     [TestClass]
     public class HyperTests
     {
-        private const string root = @"H:\biodanza\MUSICA BS AS.    1  al 73\";
+        private const string root = @"D:\Google Drive\Biodanza\Musica\";
+
+        private FileSearch getFileSearch()
+        {
+            return new FileSearch
+            {
+                PathMusicas = root,
+                FilePatterns = new[] {"0{pista}*", "{pista}*"},
+                FolderPatterns = new[] {"BsAs 0{cd}*","BsAs {cd}*"}
+            };
+        }
+
+        [TestMethod]
+        public void GetFileFromCD_Bug01por10_HoldOn()
+        {
+            var fs = getFileSearch();
+            var itemData = new ItemData {CdPista = "09.10", Coleccion = "BsAs"};
+
+            var result = fs.GetFile(itemData);
+
+            Console.WriteLine(result.Mensaje);
+            result.Ok.Should().Be(true);
+            result.Mensaje.Should().Be(@"BsAs\BsAs 09\10 10 Hold on.mp3");
+        }
+
+        [TestMethod]
+        public void GetFileFromCD_Bug10por1_HoldOn()
+        {
+            var fs = getFileSearch();
+            var itemData = new ItemData { CdPista = "07.10", Coleccion = "BsAs" };
+
+            var result = fs.GetFile(itemData);
+
+            Console.WriteLine(result.Mensaje);
+            result.Ok.Should().Be(true);
+            result.Mensaje.Should().Be(@"BsAs\BsAs 07\10 10 My darling child.mp3");
+        }
 
         [TestMethod]
         public void GetFileFromCD_PistaString_2Digitos()
         {
-            var cd_pista = "43.10";
+            var fs = getFileSearch();
+            var itemData = new ItemData { CdPista = "43.10", Coleccion = "BsAs" };
 
-            var result = BioCol.GetFileFromCD_Pista(root, cd_pista, new []{ "BsAs {cd}*" }, new []{"{pista}*"});
+            var result = fs.GetFile(itemData);
 
-            Console.WriteLine(result);
-            result.Should().NotBeNull();
-            File.Exists(Path.Combine(root, result)).Should().BeTrue();
+            Console.WriteLine(result.Mensaje);
+            result.Ok.Should().Be(true);
+            File.Exists(Path.Combine(root, result.Mensaje)).Should().BeTrue();
         }
 
         [TestMethod]
         public void GetFileFromCD_PistaString_1DigitoPista()
         {
-            //arrange
-            var cd_pista = "43.01";
+            var fs = getFileSearch();
+            var itemData = new ItemData { CdPista = "43.01", Coleccion = "BsAs" };
 
-            //act
-            var result = BioCol.GetFileFromCD_Pista(root, cd_pista, new[] { "BsAs {cd}*" }, new[] { "{pista}*" });
+            var result = fs.GetFile(itemData);
 
-            //assert
-            Console.WriteLine(result);
-            result.Should().NotBeNull();
-            File.Exists(Path.Combine(root, result)).Should().BeTrue();
+            Console.WriteLine(result.Mensaje);
+            result.Ok.Should().Be(true);
+            File.Exists(Path.Combine(root, result.Mensaje)).Should().BeTrue();
         }
 
 
@@ -47,7 +82,7 @@ namespace HyperlinkTests
             bio.PathColeccion = @"D:\Google Drive\Biodanza\Otras Musicas\Buenos Aires";
             bio.Excel = "CDs_BsAs_54 Danzas.xls";
             bio.ColumnCdPista = 0;
-            bio.ColumnTitulo = 2;
+            bio.ColumnLink = 2;
             bio.Hoja = 4;
 
             //act
@@ -56,15 +91,15 @@ namespace HyperlinkTests
             //assert
         }
 
-        [TestMethod]
-        public void UpdateCarpetaYArchivo()
-        {
-            //arrange
-            var bio = new BioCol();
+        //[TestMethod]
+        //public void UpdateCarpetaYArchivo()
+        //{
+        //    //arrange
+        //    var bio = new BioCol();
 
-            //act
-            bio.UpdateCarpetaYArchivoEnDb(@"D:\Google Drive\Biodanza\Musica\BsAs\");
-            //assert
-        }
+        //    //act
+        //    bio.UpdateCarpetaYArchivoEnDb(@"D:\Google Drive\Biodanza\Musica\BsAs\");
+        //    //assert
+        //}
     }
 }

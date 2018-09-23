@@ -133,7 +133,7 @@ app.controller('cargarEjerciciosController', ['$scope', 'downloadService', 'mode
             if (typeof dbEj === "undefined") {
                 item.estado = "Nuevo.";
                 $scope.data.totalNuevos++;
-                if (item.detalle === "") item.estado += "Si detalle.";
+                if (item.detalle === "") item.estado += "Sin detalle.";
                 return;
             }
             

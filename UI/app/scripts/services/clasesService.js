@@ -140,6 +140,7 @@
         };
 
         service.clases = function () {
+            if (biodanzaClases) return biodanzaClases;
             biodanzaClases = $localStorage.biodanzaClases;
             if (biodanzaClases == null) {
                 biodanzaClases = [claseEjemplo];
@@ -150,6 +151,8 @@
                         var ej = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
                         if (ej) ejercicio.ejercicio = ej;
                     }
+                    if (typeof ejercicio.volumen === "undefined") ejercicio.volumen = 100;
+
                     if (ejercicio.musica) {
                         var musica = loaderService
                             .getMusicaByColCdPista(ejercicio.musica.coleccion,
@@ -173,7 +176,7 @@
                         function (item) {
                             biodanzaClases.unshift(item);
                         });
-                    loaderService.loadClases();
+                    //service.clases();
                 }
             };
             reader.readAsText(file);

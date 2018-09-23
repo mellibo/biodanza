@@ -2,6 +2,6 @@
 BsAs {cd}*
 {coleccion} {cd}*
 {cd}*
-IBF?{cd}*
+0{cd}*
 {carpeta}
 

@@ -34,7 +34,7 @@ namespace Biodanza.Model
                 if (files.Length == 1)
                 {
                     itemData.Archivo = Path.GetFileName(files[0]);
-                    itemData.Carpeta = Path.GetDirectoryName(files[0]);
+                    itemData.Carpeta = Path.GetDirectoryName(files[0].Substring(PathMusicas.Length + 1));
                     return new ResultadoOperacion { Mensaje = files[0].Substring(PathMusicas.Length) };
                 }
                 if (string.IsNullOrWhiteSpace(msg))
@@ -60,6 +60,14 @@ namespace Biodanza.Model
         }
         private static string GetPattern(string pattern, ItemData itemData)
         {
+            if (itemData.NroPista > 9)
+            {
+                pattern = pattern.Replace("0{pista}", "{pista}");
+            }
+            if (itemData.NroCd > 9)
+            {
+                pattern = pattern.Replace("0{cd}", "{cd}");
+            }
             var search = pattern.ToLower().Replace("{cd}", itemData.NroCd.ToString()).Replace("{pista}", itemData.NroPista.ToString()).Replace("{carpeta}", itemData.Carpeta).Replace("{titulo}", itemData.Titulo).Replace("{tipoejercicio}", itemData.TipoEjercicio).Replace("{lineas}", itemData.Lineas).Replace("{interprete}", itemData.Interprete).Replace("{ejercicio}", itemData.Ejercicio);
             return search.Replace(":", "").Replace(@"/", "").Replace(@"\", "");
         }

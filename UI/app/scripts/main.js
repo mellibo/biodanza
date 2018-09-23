@@ -119,7 +119,7 @@ app.service('httpWrapper', ['$http', '$location', 'contextService', function ($h
 }]);
 
 function toValidJsVariableName(nombre) {
-    return nombre.toLowerCase().replace(/ | /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|\/|~|\./g, "");
+    return nombre.toLowerCase().replace(/ | /g, "_").replace(/\"|\'|,|\(|\)|“|”|-|:|\/|~|\./g, "").normalize('NFD').replace(/[\u0300-\u036f]/g, "").trim();
 }
 
 function clearStorage() {

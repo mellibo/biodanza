@@ -30,6 +30,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf("."));
         var filePath;
         if ($scope.data.carpetaColeccion[$scope.data.carpetaColeccion.length - 1] !== "/") $scope.data.carpetaColeccion += "/";
+        $scope.data.carpetaColeccion += $scope.data.coleccion.nombre + "/";
         filePath = $scope.data.carpetaColeccion + f.name;
         loadJsService.load(filePath)
             .then((a) => {
@@ -119,7 +120,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         var listaACheckMusica = [];
         angular.forEach($scope.data.sampleRows, function (item, index) {
             $scope.data.totalLeidos++;
-            item.Lineas = item.Lineas || item.L || item.L;
+            item.Lineas = item.Lineas || item.L;
             item.CdPista = item.CdPista || item.Nro;
             if (typeof item.CdPista !== "string") {
                 item.estado = "Error: CdPista Incorrecto.";
