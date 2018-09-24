@@ -1,7 +1,6 @@
 ﻿BsAs 0{cd}*
 BsAs {cd}*
 {coleccion} {cd}*
-{cd}*
 0{cd}*
 {carpeta}
 

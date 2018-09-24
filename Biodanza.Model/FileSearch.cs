@@ -68,7 +68,7 @@ namespace Biodanza.Model
             {
                 pattern = pattern.Replace("0{cd}", "{cd}");
             }
-            var search = pattern.ToLower().Replace("{cd}", itemData.NroCd.ToString()).Replace("{pista}", itemData.NroPista.ToString()).Replace("{carpeta}", itemData.Carpeta).Replace("{titulo}", itemData.Titulo).Replace("{tipoejercicio}", itemData.TipoEjercicio).Replace("{lineas}", itemData.Lineas).Replace("{interprete}", itemData.Interprete).Replace("{ejercicio}", itemData.Ejercicio);
+            var search = pattern.ToLower().Replace("{cd}", itemData.NroCd.ToString()).Replace("{pista}", itemData.NroPista.ToString()).Replace("{carpeta}", itemData.Carpeta).Replace("{titulo}".Replace(" ","?"), itemData.Titulo).Replace("{tipoejercicio}", itemData.TipoEjercicio).Replace("{lineas}", itemData.Lineas).Replace("{interprete}".Replace(" ", "?"), itemData.Interprete).Replace("{ejercicio}", itemData.Ejercicio);
             return search.Replace(":", "").Replace(@"/", "").Replace(@"\", "");
         }
 

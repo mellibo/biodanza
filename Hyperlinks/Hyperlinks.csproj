@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FormatosArchivosMusica.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="FormatosCarpetas.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

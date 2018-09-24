@@ -23,6 +23,12 @@ namespace Biodanza.Model
         [Option('c', "colCarpeta", HelpText = "Número de columna donde poner el nombre de la carpeta del archivo de musica (arranca de 0)", Required = false, DefaultValue = -1)]
         public int ColumnCarpeta { get; set; }
 
+        [Option('t', "colTitulo", HelpText = "Número de columna del titulo de la música (arranca de 0)", Required = false, DefaultValue = -1)]
+        public int ColumnTitulo { get; set; }
+
+        [Option('i', "colInterprete", HelpText = "Número de columna del Interprete de la música (arranca de 0)", Required = false, DefaultValue = -1)]
+        public int ColumnInterprete { get; set; }
+
         [Option('h', "hoja", HelpText = "Número de hoja del excel a procesar (arranca de 0)", Required = false)]
         public int Hoja { get; set; }
 

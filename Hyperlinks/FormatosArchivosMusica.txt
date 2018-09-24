@@ -1,4 +1,5 @@
 ﻿0{pista}*
-{pista}*
-BA{cd}*0{pista}*
-BA{cd}*{pista}*
+* 0{pista} *
+*0{pista}*
+*{pista}*{titulo}*
+*{titulo}*

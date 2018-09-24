@@ -27,6 +27,8 @@ namespace Hyperlinks
                 , ColumnLink = parametros.ColumnLink
                 , ColumnCarpeta = parametros.ColumnCarpeta
                 , ColumnMusica = parametros.ColumnMusica
+                , ColumnTitulo = parametros.ColumnTitulo
+                , ColumnInterprete = parametros.ColumnInterprete
             };
 
             if (string.IsNullOrEmpty(bio.PathColeccion)) bio.PathColeccion = Directory.GetCurrentDirectory();

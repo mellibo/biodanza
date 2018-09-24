@@ -22,6 +22,8 @@ namespace Biodanza.Model
         public int ColumnCdPista { get; set; }
 
         public int Hoja { get; set; }
+        public int ColumnTitulo { get; set; }
+        public int ColumnInterprete { get; set; }
 
         public string Action { get; set; }
 
@@ -51,19 +53,32 @@ namespace Biodanza.Model
             fontWindings3.FontName = "Wingdings 3";
             fontWindings3.FontHeightInPoints = 16;
             linkStyle.SetFont(fontWindings3);
+            var filas = 0; var filasError = 0;
             while (true)
             {
                 var xlRow = sheet.GetRow(row);
                 if (xlRow == null) break;
+                filas++;
                 var cell = xlRow.GetCell(ColumnCdPista);
                 row++;
                 var cdPista = cell?.StringCellValue;
                 if (cdPista?.Length != 5) continue;
                 if (row >= 10000) break;
                 var itemdata = new ItemData() { CdPista = cdPista, Coleccion = "" };
+                if (ColumnInterprete > -1)
+                {
+                    cell = xlRow.GetCell(ColumnInterprete);
+                    itemdata.Interprete = cell?.StringCellValue;
+                }
+                if (ColumnTitulo > -1)
+                {
+                    cell = xlRow.GetCell(ColumnTitulo);
+                    itemdata.Titulo = cell?.StringCellValue;
+                }
                 var resultadoOperacion = searchFile.GetFile(itemdata);
                 if (!resultadoOperacion.Ok)
                 {
+                    filasError++;
                     Console.WriteLine("FilaExcel: {1}. {0}.", resultadoOperacion.Mensaje, row);
                     continue;
                 }
@@ -86,6 +101,7 @@ namespace Biodanza.Model
                     cell.SetCellValue(itemdata.Archivo);
                 }
             }
+            Console.WriteLine($"Se procesaron {filas} del excel, de las cuales {filasError} filas no se encontro el archivo de música.");
             using (var fs = File.OpenWrite(Path.Combine(PathColeccion, Excel)))
             {
                 hssfWorkbook.Write(fs);
