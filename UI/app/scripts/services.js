@@ -289,8 +289,6 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                     //    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
                     //    orderedData = ej[0].musicas;
                     //}
-                    orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-                    orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
                     if (service.ejercicioTextFilter) {
                         var arrEjs = $filter('filter')(db.ejercicios, { nombre: service.ejercicioTextFilter });
                         var arrFiltrado = [];
@@ -311,15 +309,8 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                         }
                         orderedData = arrFiltrado;
                     }
-                    //orderedData.sort((a,b)=> { if (a.idMusica === b.idMusica) return 0;
-                    //    return a.idMusica > b.idMusica ? 1 : -1;
-                    //});
-                    //var results = [];
-                    //for (var i = 0; i < orderedData.length - 1; i++) {
-                    //    if (orderedData[i + 1].idMusica === orderedData[i].idMusica) {
-                    //        results.push(orderedData[i]);
-                    //    }
-                    //}
+                    orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
+                    orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
                     var musicas = orderedData.slice((params
                             .page() -
                             1) *
