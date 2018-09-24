@@ -297,19 +297,29 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
                         for (var i = 0; i < arrEjs.length; i++) {
                             var eje = arrEjs[i];
                             var filtroMusicas = eje.musicas;
-                            var arrEjMusica = $filter('filter')(orderedData,
-                                function(value, index, array) {
-                                    var fil = $filter('filter')(filtroMusicas,
-                                        { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
-                                        true);
-                                    //console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
-                                    if (typeof fil === "undefined") return false;
-                                    return fil.length === 1;;
+                            var arrEjMusica = $filter('filter')(eje.musicas,
+                                function (value, index, array) {
+                                    if (!arrFiltrado.includes(value)) arrFiltrado.push(value);
+                                    //var fil = $filter('filter')(filtroMusicas,
+                                    //    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
+                                    //    true);
+                                    ////console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
+                                    //if (typeof fil === "undefined") return false;
+                                    //return fil.length === 1;;
                                 });
-                            angular.extend(arrFiltrado, arrEjMusica);
+                            //angular.extend(arrFiltrado, arrEjMusica);
                         }
                         orderedData = arrFiltrado;
                     }
+                    //orderedData.sort((a,b)=> { if (a.idMusica === b.idMusica) return 0;
+                    //    return a.idMusica > b.idMusica ? 1 : -1;
+                    //});
+                    //var results = [];
+                    //for (var i = 0; i < orderedData.length - 1; i++) {
+                    //    if (orderedData[i + 1].idMusica === orderedData[i].idMusica) {
+                    //        results.push(orderedData[i]);
+                    //    }
+                    //}
                     var musicas = orderedData.slice((params
                             .page() -
                             1) *

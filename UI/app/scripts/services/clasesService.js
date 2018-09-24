@@ -148,8 +148,10 @@
             angular.forEach(biodanzaClases, (clase) => {
                 angular.forEach(clase.ejercicios, (ejercicio) => {
                     if (ejercicio.ejercicio) {
-                        var ej = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
-                        if (ej) ejercicio.ejercicio = ej;
+                        if (ejercicio.ejercicio.nombre) {
+                            var ej = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
+                            if (ej) ejercicio.ejercicio = ej;
+                        }
                     }
                     if (typeof ejercicio.volumen === "undefined") ejercicio.volumen = 100;
 
