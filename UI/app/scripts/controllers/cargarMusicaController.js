@@ -79,7 +79,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $rootScope.$broadcast('loadingStatusActive');
         var sheet = $scope.data.sheet;
         $scope.data.sampleRows = XLSX.utils.sheet_to_json(sheet);
-        console.log($scope.data.sampleRows);
+        //console.log($scope.data.sampleRows);
         $scope.data.tableParams = new NgTableParams({ count: 10 }, { dataset: $scope.data.sampleRows });
         var colsError = "";
         if ($scope.data.sampleRows.length === 0) {

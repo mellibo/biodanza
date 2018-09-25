@@ -263,7 +263,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
 ]);
 
 services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService',
-    function($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+    function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
         var service = {
             ejercicios: db.ejercicios,
             ejercicio: {},
@@ -274,10 +274,13 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
             },
             select: false,
             $uibModalInstance: null,
-            ok: function(musica) {
+            cleanSearch: () => { service.tableParams.page(1) },
+            ok: function (musica) {
+                service.cleanSearch();
                 service.$uibModalInstance.close(musica);
             },
             cancel: function() {
+                service.cleanSearch();
                 service.$uibModalInstance.dismiss('cancel');
             },
             tableParams: new NgTableParams({ count: 15 },

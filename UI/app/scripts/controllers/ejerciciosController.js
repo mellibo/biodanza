@@ -11,6 +11,7 @@
 app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'loaderService', '$uibModalInstance', 'model', 'playerService', function ($scope, $window, $location, loaderService, $uibModalInstance, model, playerService) {
     loaderService.colecciones().then(function () {
         $scope.ejercicio = model.ejercicio;
+        $scope.ejercicio.reset();
         $scope.model = model;
     });
     $scope.playMusica = function(musica) {
@@ -24,6 +25,7 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'l
 app.controller('musicasController', ['$scope', 'loaderService', '$location', 'contextService', 'modelMusicaService', '$uibModal', 'NgTableParams', function ($scope, loaderService, $location, contextService, modelMusicaService, $uibModal, NgTableParams) {
     loaderService.colecciones().then(function () {
         $scope.modelMusicas = modelMusicaService;
+        $scope.modelMusicas.cleanSearch();
         $scope.isMobileOrTablet = contextService.isMobileOrTablet();
     });
 }]);

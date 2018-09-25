@@ -38,6 +38,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                     $scope.selected = selectedItem;
                     $rootScope.$broadcast('buscarMusicaSelected', selectedItem);
                     if ($scope.onSelectedMusica()) $scope.onSelectedMusica()(selectedItem); // se ejecuta antes de que se actualice el valor
+                    //$scope.modelMusicas.cleanSearch();
                 });
 
             };
@@ -46,6 +47,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                 $scope.directiveScope = directiveScope;
 
                 $scope.modelMusicas = modelMusicaService;
+                //$scope.modelMusicas.cleanSearch();
                 $scope.modelMusicas.ejercicio = directiveScope.ejercicio;
                 $scope.modelMusicas.ejercicioTextFilter = $scope.modelMusicas.ejercicio.nombre || "";
                 $scope.modelMusicas.select = true;
@@ -90,6 +92,7 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                                                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
+                    //$scope.modelEjercicios.reset();
                     $scope.selected = selectedItem;
                     $rootScope.$broadcast('buscarEjercicioSelected', selectedItem);
                     if ($scope.onSelectedEjercicio()) $scope.onSelectedEjercicio()(selectedItem); // se ejecuta antes de que se actualice el valor
@@ -106,6 +109,7 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                 $scope.modelEjercicios = modelEjerciciosService;
                 $scope.modelEjercicios.select = true;
                 $scope.modelEjercicios.$uibModalInstance = $uibModalInstance;
+                //$scope.modelEjercicios.reset();
 
             }];
         }]
