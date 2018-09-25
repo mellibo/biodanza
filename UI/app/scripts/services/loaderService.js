@@ -2,7 +2,7 @@
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
     var coleccionesPromises = [];
     db.musicas = [];
-    db.ejercicios = [];
+    //db.ejercicios = [];
 
     function saveColecciones() {
         $localStorage.biosoft_colecciones = db.colecciones;
@@ -129,7 +129,19 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         });
     }
 
-    loadCols();
+    if (typeof $localStorage.biosoft_ejercicios === "undefined") {
+        var promiseEjs = loadJsService.load("app/data/ejercicios.js");
+        promiseEjs.then(() => {
+            $localStorage.biosoft_ejercicios = db.ejercicios;
+            loadCols();
+        });
+    } else {
+        db.ejercicios = $localStorage.biosoft_ejercicios;
+        loadCols();
+    }
+
+
+
     var promise = $q.all(coleccionesPromises);
     promise.then(function () {
         loadAll();
