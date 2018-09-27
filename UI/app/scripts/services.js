@@ -246,6 +246,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
         service.ejercicio = ejercicio;
         var modalInstance = $uibModal.open({
             animation: true,
+            keyboard: false,
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
             templateUrl: 'modalEjercicio.html',
@@ -274,7 +275,10 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
             },
             select: false,
             $uibModalInstance: null,
-            cleanSearch: () => { service.tableParams.page(1) },
+            cleanSearch: () => {
+                service.tableParams.page(1);
+                service.tableParams.filter({ coleccion: "", nroCd: "", nombre: "", interprete: "", lineas: "" });
+            },
             ok: function (musica) {
                 service.cleanSearch();
                 service.$uibModalInstance.close(musica);
