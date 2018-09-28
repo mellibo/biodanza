@@ -1,6 +1,6 @@
 ﻿
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
-    var coleccionesPromises = [];
+    //var coleccionesPromises = [];
     db.musicas = [];
     //db.ejercicios = [];
 
@@ -14,51 +14,10 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         db.colecciones = $localStorage.biosoft_colecciones;
     }
 
-    function addEjercicio(ejercicio) {
-        var index = db.ejercicios.indexOf(ejercicio);
-        if (index === -1) {
-            db.ejercicios.push(ejercicio);
-            index = db.ejercicios.length - 1;
-        }
-        delete ejercicio.idEjercicio;
-        var i, j;
-        if (ejercicio.musicasId) {
-            if (ejercicio.musicasId !== null) {
-                for (i = 0; i < ejercicio.musicasId.length; i++) {
-                    for (j = i + 1; j < ejercicio.musicasId.length; j++) {
-                        if (ejercicio.musicasId[i] === ejercicio.musicasId[j])
-                            ejercicio.musicasId.splice(j, 1);
-                    }
-                }
-            }
-        }
-        var str = "db.ejercicios.x" + toValidJsVariableName(ejercicio.nombre) + " = db.ejercicios[ " + index + "];";
-        try {
-            eval(str);
-        } catch (e) {
-            console.log(e);
-        }
-        ejercicio.musicas = [];
-        angular.forEach(ejercicio.musicasId,
-            function (value, index) {
-                try {
-//                    var string = "db.musicas." + (value.charAt(0) === "x" ? "" :"x") + value;
-                    var musica;
-                    if (isNaN(value)) {
-                        musica = service.getMusicaById(value);
-                    } else {
-                        var arr = db.musicas.filter((m) => { return m.oldId === value });
-                        if (arr.length > 0) {
-                            musica = arr[0];
-                            ejercicio.musicasId[index] = musica.idMusica;
-                        }
-                    }
-                    if (musica) ejercicio.musicas.push(musica);
-                } catch (e) {
-                    console.log("eval error: " + "db.musicas.x" + value);
-                } 
-            });
-
+    if (typeof $localStorage.biosoft_grupos === "undefined") {
+        $localStorage.biosoft_grupos = db.grupos;
+    } else {
+        db.grupos = $localStorage.biosoft_grupos;
     }
 
     function addColeccion(col, musicas, save) {
@@ -75,87 +34,16 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         }
         db.musicas = db.musicas.filter(function (m) { return m.coleccion !== col.nombre });
         //angular.extend(db.musicas, col);
-        Array.prototype.push.apply(db.musicas, musicas);        
+        angular.forEach(musicas,
+            (musica) => { addMusica(musica) });
+        //Array.prototype.push.apply(db.musicas, musicas);        
     }
-
-    function loadCols() {
-        angular.forEach(db.colecciones,
-            function (col) {
-                var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
-                if (typeof musicas === "undefined") {
-                    var promise = loadJsService.load("app/data/musica_" + col.nombre + '.js');
-                    coleccionesPromises.push(promise);
-                } else {
-                    eval("db.musica_" + col.nombre + " = musicas");
-                }
-            });
-        //si cargo todas desde localstorage genero un promise ficticio en coleccionesPromises
-        if (coleccionesPromises.length === 0) {
-            var deferred = $q.defer();
-            coleccionesPromises.push(deferred.promise);
-            deferred.resolve();
-        }
-    }
-
-    function saveColeccion(col, musicas) {
-        eval("$localStorage.biosoft_musica_" + col.nombre + "= musicas");
-    }
-
-    function loadAll() {
-        console.log("loadAll");
-        $q.all(coleccionesPromises).then(function () {
-            angular.forEach(db.colecciones,
-                (col) => {
-                    var musicas = eval('db.musica_' + col.nombre);
-                    
-                    addColeccion(col, musicas);
-                    eval('db.musica_' + col.nombre + ' = undefined;');
-                    if (!eval("$localStorage.biosoft_musica_" + col.nombre)) saveColeccion(col, musicas);
-                });
-            angular.forEach(db.musicas, addMusica);
-            if (typeof $localStorage.biosoft_ejercicios === "undefined") {
-                angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
-                service.saveEjercicios();
-            } else {
-                db.ejercicios = $localStorage.biosoft_ejercicios;
-                angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
-            }
-
-            if (typeof $localStorage.biosoft_grupos === "undefined") {
-                $localStorage.biosoft_grupos = db.grupos;
-            } else {
-                db.grupos = $localStorage.biosoft_grupos;
-            }
-        });
-    }
-
-    if (typeof $localStorage.biosoft_ejercicios === "undefined") {
-        var promiseEjs = loadJsService.load("app/data/ejercicios.js");
-        promiseEjs.then(() => {
-            $localStorage.biosoft_ejercicios = db.ejercicios;
-            loadCols();
-        });
-    } else {
-        db.ejercicios = $localStorage.biosoft_ejercicios;
-        loadCols();
-    }
-
-
-
-    var promise = $q.all(coleccionesPromises);
-    promise.then(function () {
-        loadAll();
-    });
 
     var service = {
         colecciones: function () {
-            if (coleccionesPromises.length > 0) {
-                return $q.all(coleccionesPromises);
-            }
-            
-            return promise;
+            return promiseEjs;
         }
-        , config : function(cfg) {
+        , config: function (cfg) {
             if (typeof cfg == 'undefined') {
                 var config = $localStorage.biodanzaConfig;
                 if (config == null) {
@@ -165,10 +53,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             }
             $localStorage.biodanzaConfig = cfg;
         },
-        getEjercicio : function(nombre) {
+        getEjercicioById: (id) => { return eval("db.ejercicios.x" + id) },
+        getEjercicio: function (nombre) {
             var ejercicio;
             try {
-                ejercicio = eval("db.ejercicios.x" + toValidJsVariableName(nombre));
+                var idEjercicio = getIdEjercicio(nombre);
+                ejercicio = service.getEjercicioById(idEjercicio);
             } catch (e) {
                 console.log(e);
             }
@@ -183,6 +73,40 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             return service.getMusicaById(idMusica);
         }
     };
+
+    var promiseEjs;
+    if (typeof $localStorage.biosoft_ejercicios === "undefined") {
+        promiseEjs = loadJsService.load("app/data/ejercicios.js");
+        promiseEjs.then(() => {
+            $localStorage.biosoft_ejercicios = db.ejercicios;
+            loadCols();
+        });
+    } else {
+        db.ejercicios = $localStorage.biosoft_ejercicios;
+        var q = $q.defer();
+        promiseEjs = q.promise;
+        q.resolve();
+        loadCols();
+    }
+
+
+    function loadCols() {
+        angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
+        angular.forEach(db.colecciones,
+            function (col) {
+                var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
+                eval("db.musica_" + col.nombre + " = musicas");
+                addColeccion(col, musicas);
+                eval('db.musica_' + col.nombre + ' = undefined;');
+            });
+    }
+
+    function saveColeccion(col, musicas) {
+        eval("$localStorage.biosoft_musica_" + col.nombre + "= musicas");
+    }
+
+    function getIdEjercicio(nombre)  { return toValidJsVariableName(nombre); };
+
 
     service.saveEjercicios = () => {
         for (i = 0; i < db.ejercicios.length; i++) {
@@ -209,16 +133,65 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
     }
 
-    function addMusica(musica, index) {
-        if (typeof index === 'undefined') {
-            db.musicas.push(musica);
-            index = db.musicas.length - 1;
-        }
-        var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = db.musicas[ " + index + "];";
+    function addMusica(musica) {
+        if (!db.musicas.includes(musica)) db.musicas.push(musica); 
+        var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = musica;";
         eval(str);
         setIdMusica(musica);
+        delete musica.ejercicios;
+        angular.forEach(musica.ejerciciosId, (id) => {
+            var ej = service.getEjercicioById(id);
+            if (ej) {
+                if (!ej.musicas.includes(musica)) ej.musicas.push(musica);
+            }
+        });
     }
 
+    function addEjercicio(ejercicio) {
+        var index = db.ejercicios.indexOf(ejercicio);
+        if (index === -1) {
+            db.ejercicios.push(ejercicio);
+            index = db.ejercicios.length - 1;
+        }
+        delete ejercicio.idEjercicio;
+        var i, j;
+        if (ejercicio.musicasId) {
+            if (ejercicio.musicasId !== null) {
+                for (i = 0; i < ejercicio.musicasId.length; i++) {
+                    for (j = i + 1; j < ejercicio.musicasId.length; j++) {
+                        if (ejercicio.musicasId[i] === ejercicio.musicasId[j])
+                            ejercicio.musicasId.splice(j, 1);
+                    }
+                }
+            }
+        }
+        var str = "db.ejercicios.x" + getIdEjercicio(ejercicio.nombre) + " = db.ejercicios[ " + index + "];";
+        try {
+            eval(str);
+        } catch (e) {
+            console.log(e);
+        }
+        ejercicio.musicas = [];
+        angular.forEach(ejercicio.musicasId,
+            function (value, index) {
+                try {
+                    //                    var string = "db.musicas." + (value.charAt(0) === "x" ? "" :"x") + value;
+                    var musica;
+                    if (isNaN(value)) {
+                        musica = service.getMusicaById(value);
+                    } else {
+                        var arr = db.musicas.filter((m) => { return m.oldId === value });
+                        if (arr.length > 0) {
+                            musica = arr[0];
+                            ejercicio.musicasId[index] = musica.idMusica;
+                        }
+                    }
+                    if (musica) ejercicio.musicas.push(musica);
+                } catch (e) {
+                    console.log("eval error: " + "db.musicas.x" + value);
+                } 
+            });
+    }
 
 
     service.testMusica = function (musica) {
@@ -253,9 +226,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     service.importarColeccionMusicas = function (coleccion, rows) {
         var col = [];
         angular.forEach(rows, function (row, index) {
-            if (row.estado !==  "ok") return;
-            var musica = service.getMusicaByColCdPista(coleccion.nombre, row.nroCd, row.nroPista);
-            if (!musica) {
+            if (row.estado !== "ok") return;
+            var arr = $filter('filter')(col, { nroCd: row.nroCd, nroPista: row.nroPista });
+            var musica;
+            if (arr.length === 1) {
+                musica = arr[0];
+            } else {
                 musica = {};
                 musica.archivo = row.Archivo;
                 musica.carpeta = row.Carpeta;
@@ -266,9 +242,11 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 musica.nombre = row.Titulo;
                 musica.nroCd = row.nroCd;
                 musica.nroPista = row.nroPista;
+                musica.ejerciciosId = [];
                 setIdMusica(musica);
+                col.push(musica);
             }
-
+            if (row.Ejercicio === "") return;
             var ejercicio = service.getEjercicio(row.Ejercicio);
             if (typeof ejercicio === "undefined") {
                 ejercicio = {
@@ -282,9 +260,10 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 }
                 addEjercicio(ejercicio);
             }
-            col.push(musica);
             if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
             if (ejercicio.musicasId.filter((m) => m === musica.idMusica).length === 0) ejercicio.musicasId.push(musica.idMusica);
+            var idEjercicio = getIdEjercicio(ejercicio.nombre);
+            if (!musica.ejerciciosId.includes(idEjercicio)) musica.ejerciciosId.push(idEjercicio);
         });
         addColeccion(coleccion, col, true);
         return col;

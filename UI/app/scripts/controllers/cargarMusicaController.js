@@ -1,6 +1,7 @@
 ﻿
 app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loadJsService', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', '$rootScope', 'playerService', '$localStorage', function ($scope, $window, $location, loadJsService, loaderService, $uibModal, NgTableParams, alertService, $rootScope, playerService, $localStorage) {
     $scope.config = loaderService.config();
+    $scope.pathMusicas = getCurrentPath() + "musica/";
 
     $scope.grabar = function () {
         if ($scope.config.pathMusica[$scope.config.pathMusica.length - 1] !== "/") $scope.config.pathMusica += "/";
@@ -15,7 +16,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         totalLeidos: 0,
         totalError: 0,
         validado: false
-        , carpetaColeccion: getCurrentPath() + "musica/"
+        , carpetaColeccion: ""
         , coleccion: {
             nombre: "",
             carpeta: "",
@@ -25,12 +26,11 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         }
     };
 
-    $scope.importarColeccion = function (file) {
+    $scope.leerColeccion = function (file) {
         var f = file.files[0];
         $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf("."));
         var filePath;
-        if ($scope.data.carpetaColeccion[$scope.data.carpetaColeccion.length - 1] !== "/") $scope.data.carpetaColeccion += "/";
-        $scope.data.carpetaColeccion += $scope.data.coleccion.nombre + "/";
+        $scope.data.carpetaColeccion = getCurrentPath() + "musica/" + $scope.data.coleccion.nombre + "/";
         filePath = $scope.data.carpetaColeccion + f.name;
         loadJsService.load(filePath)
             .then((a) => {

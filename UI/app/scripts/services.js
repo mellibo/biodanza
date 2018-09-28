@@ -162,7 +162,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
         isMobileOrTablet: contextService.isMobileOrTablet(),
         tableParams: new NgTableParams({ count: 15 },
         {
-            total: db.ejercicios.length,
+            total: db.ejercicios ? db.ejercicios.length: 0,
             getData: function (params) {
                 var orderedData =  db.ejercicios;
                 if (service.buscar !== "" || service.grupo !== 0) {
@@ -263,8 +263,8 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     }
 ]);
 
-services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService',
-    function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService) {
+services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', 'loaderService',
+function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, loaderService) {
         var service = {
             ejercicios: db.ejercicios,
             ejercicio: {},
@@ -273,11 +273,14 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
             refreshGrid: function() {
                 service.tableParams.reload();
             },
+            getEjercicioById: (id) => {
+                return loaderService.getEjercicioById(id);
+            },
             select: false,
             $uibModalInstance: null,
             cleanSearch: () => {
                 service.tableParams.page(1);
-                service.tableParams.filter({ coleccion: "", nroCd: "", nombre: "", interprete: "", lineas: "" });
+                service.tableParams.filter({});
             },
             ok: function (musica) {
                 service.cleanSearch();
