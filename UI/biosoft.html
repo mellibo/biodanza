@@ -95,16 +95,14 @@
             <audio preload="none" controls id="audioControl" ng-src="{{player.musicaFile}}" hidden="hidden"></audio>
             <div ng-include="'playerControls.html'" ></div>
         </div>
-        <div ng-controller="alertController" class="row">
-            <div uib-alert ng-repeat="al in service.alerts" type="{{al.type}}" class="{{'alert-' + al.type}}" close="service.closeAlert($index)">{{al.msg}}</div>
-        </div>
     </div>
 </div>
 <div class="container" >
-    <br/>
-    <br/>
-    <br/>
-    <div class="row"  style="padding-top: 60px;" ng-view=""></div>
+    <div ng-controller="alertController" class="row" style="padding-top: 110px;">
+        <div uib-alert ng-repeat="al in service.alerts" type="{{al.type}}" class="{{'alert-' + al.type}}" close="service.closeAlert($index)">{{al.msg}}</div>
+    </div>
+
+    <div class="row"  style="padding-top: 6px;" ng-view=""></div>
 </div>
 
 <script type="text/ng-template" id="ejercicios.html">
@@ -248,8 +246,10 @@
                     <input type="text" ng-model="data.carpetaColeccion" class="form-control " style="width:500px;">
                 </div>
                 <input type="file" id="fileImport"  style="visibility:hidden;" onchange="angular.element(this).scope().leerColeccion(this)" />
+                <input type="file" id="fileEquivalencias"  style="visibility:hidden;" onchange="angular.element(this).scope().leerEquivalencias(this)" />
                 <div class="form-group col-md-12 btn-group" role="toolbar">
-                    <button type="button" class="btn btn-primary" ng-click="pickImportFile()" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
+                    <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileEquivalencias')" title="Leer Excel Equivalencias Nombres"><span class="glyphicon glyphicon-import"></span>   Leer Excel Equivalencias Nombres</button>
+                    <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileImport')" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
                     <button type="button" class="btn btn-primary" ng-disabled="data.validado === false" ng-class="{'disabled' : data.validado === false }" ng-click="importarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
                 </div>
             </div>
@@ -525,7 +525,7 @@
             <i class="glyphicon glyphicon-chevron-left"></i>
         </button>
         <div ng-repeat="option in modelEjercicios.grupos track by $index">
-            <input type="radio" name="grupos" ng-value="option.idGrupo" ng-change="modelEjercicios.refreshGrid()" ng-model="modelEjercicios.grupo" />
+            <input type="radio" name="grupos" ng-value="option.nombre" ng-change="modelEjercicios.refreshGrid()" ng-model="modelEjercicios.grupo" />
             <span>{{ option.nombre }}</span>
         </div>
     </div>

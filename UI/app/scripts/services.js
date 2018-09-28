@@ -168,8 +168,8 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
                 if (service.buscar !== "" || service.grupo !== 0) {
                     orderedData = $filter('filter')(orderedData,
                         function (ejercicio, index, array) {
-                            if (service.grupo !== 0 &&
-                                service.grupo !== ejercicio.idGrupo) return false;
+                            if (service.grupo !== "TODOS" &&
+                                service.grupo !== ejercicio.grupo) return false;
                             if (service.buscar === '') return true;
                             var searchString = service.buscar.toUpperCase();
                             if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;

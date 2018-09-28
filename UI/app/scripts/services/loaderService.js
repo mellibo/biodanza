@@ -142,7 +142,14 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         angular.forEach(musica.ejerciciosId, (id) => {
             var ej = service.getEjercicioById(id);
             if (ej) {
-                if (!ej.musicas.includes(musica)) ej.musicas.push(musica);
+                var exists = false;
+                for (var i = 0; i < ej.musicas; i++) {
+                    if (service.getMusicaById(ej.musicas[i]) === service.getMusicaById(musica)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists) ej.musicas.push(musica);
             }
         });
     }
@@ -252,7 +259,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 ejercicio = {
                     nombre: row.Ejercicio
                     , grupo: row.grupo 
-                    , idGrupo: row.idGrupo 
                     , coleccion: coleccion.nombre
                     , detalle: ""
                     , musicas: []
@@ -273,7 +279,14 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         return loadJsService.load(path);
     }
 
-    service.carpetaColeccion = (col) => { return db.colecciones.filter((x) => x.nombre === col)[0].carpeta }
+    service.carpetaColeccion = (colName) => {
+        var col = db.colecciones.filter((x) => x.nombre === colName)[0];
+        if (!col) {
+            alertService.addDangerAlert("la colección: " + colName + " no esta cargada.");
+            return undefined;
+        }
+        return col.carpeta;
+    }
 
     service.addEjercicio = (ejercicio) => {
         addEjercicio(ejercicio);

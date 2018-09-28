@@ -1,36 +1,72 @@
 ﻿
 app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loadJsService', 'loaderService', '$uibModal', 'NgTableParams', 'alertService', '$rootScope', 'playerService', '$localStorage', function ($scope, $window, $location, loadJsService, loaderService, $uibModal, NgTableParams, alertService, $rootScope, playerService, $localStorage) {
-    $scope.config = loaderService.config();
     $scope.pathMusicas = getCurrentPath() + "musica/";
 
-    $scope.grabar = function () {
-        if ($scope.config.pathMusica[$scope.config.pathMusica.length - 1] !== "/") $scope.config.pathMusica += "/";
-        loaderService.config($scope.config);
-    }
-    $scope.data = {
-        wb: null,
-        sheets: [],
-        sampleRows: [],
-        tableParams: new NgTableParams({ count: 15 }),
-        totalOk: 0,
-        totalLeidos: 0,
-        totalError: 0,
-        validado: false
-        , carpetaColeccion: ""
-        , coleccion: {
-            nombre: "",
-            carpeta: "",
-            excel: "",
-            hojaEjercicios: "Por Nro",
-            cargar: true
-        }
+    $scope.reset = () => {
+        $scope.data = {
+            wb: null,
+            sheets: [],
+            sampleRows: [],
+            tableParams: new NgTableParams({ count: 15 }),
+            totalOk: 0,
+            totalLeidos: 0,
+            totalError: 0,
+            validado: false
+            , carpetaColeccion: ""
+            , coleccion: {
+                nombre: "",
+                carpeta: "",
+                excel: "",
+                hojaEjercicios: "Por Nro",
+                cargar: true
+            }
+        };
     };
+    $scope.reset();
+
+    $scope.equivalenciaEjercicios = [];
+    $scope.equivalenciaGrupo = [];
+    $scope.equivalenciaInterpretes = [];
+    $scope.leerEquivalencias = function (file) {
+        var f = file.files[0];
+        var rABS = typeof FileReader !== 'undefined' && FileReader.prototype && FileReader.prototype.readAsBinaryString;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var data = e.target.result;
+            var arr;
+            var readtype = { type: rABS ? 'binary' : 'base64' };
+            if (!rABS) {
+                arr = fixdata(data);
+                data = btoa(arr);
+            }
+
+            var wb = XLSX.read(data, readtype);
+            var sheets = wb.SheetNames;
+            var sheet = wb.Sheets["Ejercicios"];
+            var rows = XLSX.utils.sheet_to_json(sheet);
+            $scope.equivalenciaEjercicios = rows.slice();
+
+            sheet = wb.Sheets["Interpretes"];
+            rows = XLSX.utils.sheet_to_json(sheet);
+            $scope.equivalenciaInterpretes = rows.slice();
+            sheet = wb.Sheets["Grupo"];
+            rows = XLSX.utils.sheet_to_json(sheet);
+            $scope.equivalenciaGrupo = rows.slice();
+            alertService.addInfoAlert("Archivo de Equivalencias Cargado.");
+        };
+        if (rABS) reader.readAsBinaryString(f);
+        else reader.readAsArrayBuffer(f);
+        angular.element(document.querySelector('#fileEquivalencias')).val(null);
+
+        return;
+    };
+
 
     $scope.leerColeccion = function (file) {
         var f = file.files[0];
         $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf("."));
         var filePath;
-        $scope.data.carpetaColeccion = getCurrentPath() + "musica/" + $scope.data.coleccion.nombre + "/";
+        $scope.data.carpetaColeccion = "musica/" + $scope.data.coleccion.nombre + "/";
         filePath = $scope.data.carpetaColeccion + f.name;
         loadJsService.load(filePath)
             .then((a) => {
@@ -73,6 +109,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
     $scope.importarExcelMusicas = function () {
         var result = loaderService.importarColeccionMusicas($scope.data.coleccion, $scope.data.sampleRows);
         alertService.addInfoAlert("se importaron " + result.length + " importados de la coleccion " + $scope.data.coleccion.nombre);
+        $scope.reset();
     };
 
     $scope.loadSheet = function () {
@@ -127,6 +164,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 $scope.data.totalError++;
                 return;
             }
+            item.CdPista = item.CdPista.trim();
             if (item.CdPista.length !== 5) {
                 item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
                 $scope.data.totalError++;
@@ -155,13 +193,17 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 $scope.data.totalError++;
                 return;
             }
+            item.Ejercicio = item.Ejercicio.trim();
             if (typeof item.Titulo !== "string" || item.Titulo === "") {
                 item.Titulo = "Desconocido";
             }
+            item.Titulo = item.Titulo.trim();
 
             if (typeof item.Interprete !== "string" || item.Interprete === "") {
                 item.Interprete = "Desconocido";
             }
+            item.Interprete = item.Interprete.trim();
+
             if (item.CdPista.length !== 5) {
                 item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'";
                 $scope.data.totalError++;
@@ -182,8 +224,30 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 $scope.data.totalError++;
                 return;
             }
-            item.grupo = item.grupo || "Otros";
-            item.idGrupo = item.idGrupo || 76;
+            for (var k = 0; k < $scope.equivalenciaEjercicios.length; k++) {
+                var eq = $scope.equivalenciaEjercicios[k];
+                if (item.Ejercicio.toLowerCase().indexOf(eq.Ejercicio.toLowerCase()) > -1) {
+                    item.Ejercicio = eq.CorrespondeA;
+                    break;
+                }
+            }
+            for (var k = 0; k < $scope.equivalenciaInterpretes.length; k++) {
+                var eq = $scope.equivalenciaInterpretes[k];
+                if (item.Interprete.toLowerCase().indexOf(eq.Interprete.toLowerCase()) > -1) {
+                    item.Interprete = eq.CorrespondeA;
+                    break;
+                }
+            }
+            if (!item.grupo) {
+                for (var k = 0; k < $scope.equivalenciaGrupo.length; k++) {
+                    var eq = $scope.equivalenciaGrupo[k];
+                    if (item.Ejercicio.toLowerCase().indexOf(eq.EjercicioContiene.toLowerCase()) > -1) {
+                        item.grupo = eq.CorrespondeA;
+                        break;
+                    }
+                }
+            }
+            item.grupo = item.grupo || "OTROS";
             listaACheckMusica.push(item);
         });
         checkMusicas(listaACheckMusica);
@@ -260,8 +324,8 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         return o;
     }
 
-    $scope.pickImportFile = function () {
-        var fileElementAng = angular.element(document.querySelector('#fileImport'));
+    $scope.pickImportFile = function (fileImport) {
+        var fileElementAng = angular.element(document.querySelector('#' + fileImport ));
         var fileElement = fileElementAng[0];
         fileElement.click();
     }
