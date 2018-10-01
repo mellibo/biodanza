@@ -2,7 +2,7 @@
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
     //var coleccionesPromises = [];
     db.musicas = [];
-    //db.ejercicios = [];
+    db.colecciones = [];
 
     function saveColecciones() {
         $localStorage.biosoft_colecciones = db.colecciones;
