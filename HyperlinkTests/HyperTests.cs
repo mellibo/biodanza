@@ -83,7 +83,7 @@ namespace HyperlinkTests
             bio.Excel = "CDs_BsAs_54 Danzas.xls";
             bio.ColumnCdPista = 0;
             bio.ColumnLink = 2;
-            bio.Hoja = 4;
+            //bio.Hoja = 4;
 
             //act
             bio.HyperLinks();

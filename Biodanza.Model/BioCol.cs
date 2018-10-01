@@ -21,7 +21,7 @@ namespace Biodanza.Model
 
         public int ColumnCdPista { get; set; }
 
-        public int Hoja { get; set; }
+        public string Hoja { get; set; }
         public int ColumnTitulo { get; set; }
         public int ColumnInterprete { get; set; }
 
@@ -31,7 +31,7 @@ namespace Biodanza.Model
         public int ColumnMusica { get; set; }
 
 
-        public void HyperLinks()
+        public ResultadoOperacion HyperLinks()
         {
             var filePatterns = File.ReadAllLines("FormatosArchivosMusica.txt");
             var folderPatterns = File.ReadAllLines("FormatosCarpetas.txt");
@@ -41,11 +41,14 @@ namespace Biodanza.Model
                 FolderPatterns = folderPatterns,
                 PathMusicas = PathColeccion
             };
-            using (var fs = File.OpenRead(Path.Combine(PathColeccion, Excel)))
+            var ro= GetExcel();
+            if (!ro.Ok) return ro;
+            using (var fs = File.OpenRead(Excel))
             {
                 hssfWorkbook = new HSSFWorkbook(fs);
             }
-            var sheet = hssfWorkbook.GetSheetAt(Hoja);
+            var sheet = hssfWorkbook.GetSheet(Hoja);
+            if (sheet == null) return ResultadoOperacion.Fail($"La hoja {Hoja} no existe en el archivo {Excel}");
             var row = 1;
             var linkStyle = hssfWorkbook.CreateCellStyle();
             linkStyle.Alignment = HorizontalAlignment.Center;
@@ -62,7 +65,22 @@ namespace Biodanza.Model
                 var cell = xlRow.GetCell(ColumnCdPista);
                 row++;
                 var cdPista = cell?.StringCellValue;
-                if (cdPista?.Length != 5) continue;
+                if (cdPista?.Length != 5)
+                {
+                    Console.WriteLine("FilaExcel: {1}. {0}.", $"cdPista Incorrecto ({cdPista})", row);
+                    continue;
+                }
+                int i;
+                if (!int.TryParse(cdPista.Substring(0,2), out i))
+                {
+                    Console.WriteLine("FilaExcel: {1}. {0}.", $"cdPista Incorrecto ({cdPista})", row);
+                    continue;
+                }
+                if (!int.TryParse(cdPista.Substring(3,2), out i))
+                {
+                    Console.WriteLine("FilaExcel: {1}. {0}.", $"cdPista Incorrecto ({cdPista})", row);
+                    continue;
+                }
                 if (row >= 10000) break;
                 var itemdata = new ItemData() { CdPista = cdPista, Coleccion = "" };
                 if (ColumnInterprete > -1)
@@ -101,20 +119,41 @@ namespace Biodanza.Model
                     cell.SetCellValue(itemdata.Archivo);
                 }
             }
-            Console.WriteLine($"Se procesaron {filas} del excel, de las cuales {filasError} filas no se encontro el archivo de música.");
-            using (var fs = File.OpenWrite(Path.Combine(PathColeccion, Excel)))
+            
+            using (var fs = File.OpenWrite(Excel))
             {
                 hssfWorkbook.Write(fs);
             }
+            return new ResultadoOperacion { Ok = true,Mensaje = $"Se procesaron {filas} del excel, de las cuales {filasError} filas no se encontro el archivo de música."};
         }
 
-        public void CleanHyperLinks(int col)
+        private ResultadoOperacion GetExcel()
         {
-            using (var fs = File.OpenRead(Path.Combine(PathColeccion, Excel)))
+            Excel = Path.Combine(PathColeccion, Path.GetFileName(PathColeccion) + ".xls");
+            if (!File.Exists(Excel))
+            {
+                Excel = Path.Combine(PathColeccion, Path.GetFileName(PathColeccion) + ".xlsx");
+                if (!File.Exists(Excel))
+                {
+                    {
+                        return ResultadoOperacion.Fail("No se encontro el archivo excel de la coleccion: " +
+                                                       Path.GetDirectoryName(PathColeccion) + ".xls");
+                        
+                    }
+                }
+            }
+            return new ResultadoOperacion {Ok = true};
+        }
+
+        public ResultadoOperacion CleanHyperLinks(int col)
+        {
+            var ro = GetExcel();
+            if (!ro.Ok) return ro;
+            using (var fs = File.OpenRead(Excel))
             {
                 hssfWorkbook = new HSSFWorkbook(fs);
             }
-            var sheet = hssfWorkbook.GetSheetAt(Hoja);
+            var sheet = hssfWorkbook.GetSheet(Hoja);
             var row = 1;
             while (true)
             {
@@ -125,10 +164,11 @@ namespace Biodanza.Model
                 if (cell == null) continue;
                 cell.Hyperlink = null;
             }
-            using (var fs = File.OpenWrite(Path.Combine(PathColeccion, Excel)))
+            using (var fs = File.OpenWrite(Excel))
             {
                 hssfWorkbook.Write(fs);
             }
+            return new ResultadoOperacion() {Ok = true};
         }
 
         //public static string GetFileFromCD_Pista(string root, string cdPista, string[] folderPatterns,

@@ -5,34 +5,31 @@ namespace Biodanza.Model
 {
     public class Parametros
     {
-        [Option('p', "path", HelpText = "Path raiz de la colección", Required = false)]
+        [Option(shortName: 'p', longName:  "path", HelpText = "Carpeta de la colección de música" , Required = true)]
         public string PathColeccion { get; set; }
 
-        [Option('e', "excel", HelpText = "nombre del excel de la colección", Required = false)]
-        public string Excel { get; set; }
+        [Option('l', "colLink", HelpText = "columna en donde poner el hyperlink al archivo de musica", Required = true)]
+        public char ColumnLink { get; set; }
 
-        [Option('l', "colLink", HelpText = "Número de columna con el hyperlink a la archivo de musica (arranca de 0)", Required = false)]
-        public int ColumnLink { get; set; }
+        [Option('n', "colnumero", HelpText = "columna con el CdPista de tema", Required = true)]
+        public char ColumnCdPista { get; set; }
 
-        [Option('n', "colnumero", HelpText = "Número de columna con el CdPista de tema (arranca de 0)", Required = false)]
-        public int ColumnCdPista { get; set; }
+        [Option('m', "colMusica", HelpText = "columna donde poner el nombre del archivo de musica", Required = false)]
+        public char ColumnMusica { get; set; }
 
-        [Option('m', "colMusica", HelpText = "Número de columna donde poner el nombre del archivo de musica (arranca de 0)", Required = false, DefaultValue = -1)]
-        public int ColumnMusica { get; set; }
+        [Option('c', "colCarpeta", HelpText = "columna donde poner el nombre de la carpeta del archivo de musica", Required = false)]
+        public char ColumnCarpeta { get; set; }
 
-        [Option('c', "colCarpeta", HelpText = "Número de columna donde poner el nombre de la carpeta del archivo de musica (arranca de 0)", Required = false, DefaultValue = -1)]
-        public int ColumnCarpeta { get; set; }
+        [Option('t', "colTitulo", HelpText = "columna del titulo de la música (nombre de la canción)", Required = false)]
+        public char ColumnTitulo { get; set; }
 
-        [Option('t', "colTitulo", HelpText = "Número de columna del titulo de la música (arranca de 0)", Required = false, DefaultValue = -1)]
-        public int ColumnTitulo { get; set; }
+        [Option('i', "colInterprete", HelpText = "columna del Interprete de la música", Required = false)]
+        public char ColumnInterprete { get; set; }
 
-        [Option('i', "colInterprete", HelpText = "Número de columna del Interprete de la música (arranca de 0)", Required = false, DefaultValue = -1)]
-        public int ColumnInterprete { get; set; }
+        [Option('h', "hoja", HelpText = "Nombre de la hoja del excel a procesar", Required = true)]
+        public string Hoja { get; set; }
 
-        [Option('h', "hoja", HelpText = "Número de hoja del excel a procesar (arranca de 0)", Required = false)]
-        public int Hoja { get; set; }
-
-        [Option('a', "accion", HelpText = "accion a realizar: h = agregar links, x = quitar links", Required = false)]
+        [Option('a', "accion", HelpText = "accion a realizar: h = agregar links, x = quitar links", Required = false, DefaultValue = "h")]
         public string Action { get; set; }
 
         [HelpOption]
