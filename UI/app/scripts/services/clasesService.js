@@ -156,6 +156,7 @@
                     if (typeof ejercicio.volumen === "undefined") ejercicio.volumen = 100;
 
                     if (ejercicio.musica) {
+                        //ejercicio.musica.coleccion = ejercicio.musica.coleccion.toUpperCase();
                         var musica = loaderService
                             .getMusicaByColCdPista(ejercicio.musica.coleccion,
                                 ejercicio.musica.nroCd,

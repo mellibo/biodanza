@@ -156,7 +156,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
         },
         reset: function () {
             service.tableParams.page(1);
-            service.grupo = 0;
+            service.grupo = 'TODOS';
             service.buscar = "";
         },
         isMobileOrTablet: contextService.isMobileOrTablet(),
@@ -165,21 +165,30 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
             total: db.ejercicios ? db.ejercicios.length: 0,
             getData: function (params) {
                 var orderedData =  db.ejercicios;
-                if (service.buscar !== "" || service.grupo !== 0) {
+                if (service.buscar !== "" || service.grupo !== 'TODOS') {
+                    var searchStrings = service.buscar.toUpperCase().split(" ");
+                    for (var i = 0; i < searchStrings.length; i++) {
+                        searchStrings[i] = searchStrings[i].normalize('NFD').replace(/[\u0300-\u036f]/g, "").trim();
+                    }
+                    searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== "" });
                     orderedData = $filter('filter')(orderedData,
                         function (ejercicio, index, array) {
                             if (service.grupo !== "TODOS" &&
                                 service.grupo !== ejercicio.grupo) return false;
-                            if (service.buscar === '') return true;
+                            if (service.buscar === "") return true;
                             var searchString = service.buscar.toUpperCase();
-                            if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-                            if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
+                            for (var i = 0; i < searchStrings.length; i++) {
+                                if (ejercicio.nombreNormalized.indexOf(searchStrings[i]) !== -1) return true;
+                                if (ejercicio.grupoNormalized.indexOf(searchStrings[i]) !== -1) return true;
+                            }
                             var ok = false;
                             angular.forEach(ejercicio.musicas,
                                 function (musica) {
                                     if (ok) return;
-                                    if (musica.nombre.toUpperCase().indexOf(searchString) > -1) ok = true;
-                                    if (musica.interprete.toUpperCase().indexOf(searchString) > -1) ok = true;
+                                    for (var i = 0; i < searchStrings.length; i++) {
+                                        if (musica.nombre.toUpperCase().indexOf(searchStrings[i]) > -1) ok = true;
+                                        if (musica.interprete.toUpperCase().indexOf(searchStrings[i]) > -1) ok = true;
+                                    }
                                 });
                             return ok;
                         });
@@ -199,7 +208,7 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     service.grupos = db.grupos;
     //service.ejercicios = db.ejercicios;
     service.ejercicio = {};
-    service.grupo = 0;
+    service.grupo = "TODOS";
     service.buscar = "";
     service.$uibModalInstance = null;
 
@@ -232,12 +241,17 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
 
     service.filtrarMusica = function (musica, ejercicio) {
         if (service.buscar === '') return true;
-        var searchString = service.buscar.toUpperCase();
-        if (ejercicio.nombre.toUpperCase().indexOf(searchString) !== -1) return true;
-        if (ejercicio.grupo.toUpperCase().indexOf(searchString) !== -1) return true;
 
-        if (musica.nombre.toUpperCase().indexOf(searchString) > -1) return true;
-        if (musica.interprete.toUpperCase().indexOf(searchString) > -1) return true;
+        var searchStrings = service.buscar.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
+        for (var i = 0; i < searchStrings.length; i++) {
+            if (searchStrings[i] === '') continue;
+            if (ejercicio.nombreNormalized.indexOf(searchStrings[i]) !== -1) return true;
+            if (ejercicio.grupo.indexOf(searchStrings[i]) !== -1) return true;
+
+            if (musica.nombreNormalized.indexOf(searchStrings[i]) > -1) return true;
+            if (musica.interpreteNormalized.indexOf(searchStrings[i]) > -1) return true;
+
+        }
         return false;
     }
 
@@ -295,12 +309,19 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
                 total: db.musicas.length,
                 getData: function(params) {
                     var orderedData = db.musicas;
-                    //if (service.ejercicio.nombre && service.ejercicioTextFilter === "") {
-                    //    var ej = $filter('filter')(db.ejercicios, { idEjercicio: service.ejercicio.idEjercicio || service.ejercicio.IdEjercicio });
-                    //    orderedData = ej[0].musicas;
-                    //}
                     if (service.ejercicioTextFilter) {
-                        var arrEjs = $filter('filter')(db.ejercicios, { nombre: service.ejercicioTextFilter });
+                        var searchStrings = service.ejercicioTextFilter.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").match(/\w+|"[^"]+"/g);
+                        for (var l = 0; l < searchStrings.length; l++) {
+                            searchStrings[l] = searchStrings[l].replace(/\"/g, "");
+                        }
+                        var arrEjs = $filter('filter')(db.ejercicios, (obj) => {
+                            for (var k = 0; k < searchStrings.length; k++) {
+                                if (obj.nombreNormalized.indexOf(searchStrings[k]) !== -1 || obj.grupo.indexOf(searchStrings[k]) !== -1) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
                         var arrFiltrado = [];
                         for (var i = 0; i < arrEjs.length; i++) {
                             var eje = arrEjs[i];
@@ -308,19 +329,39 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
                             var arrEjMusica = $filter('filter')(eje.musicas,
                                 function (value, index, array) {
                                     if (!arrFiltrado.includes(value)) arrFiltrado.push(value);
-                                    //var fil = $filter('filter')(filtroMusicas,
-                                    //    { coleccion: value.coleccion, nroCd: value.nroCd, nroPista: value.nroPista },
-                                    //    true);
-                                    ////console.log(value.coleccion + value.nroCd + '-' +value.nroPista + ':' + ret);
-                                    //if (typeof fil === "undefined") return false;
-                                    //return fil.length === 1;;
                                 });
                             //angular.extend(arrFiltrado, arrEjMusica);
                         }
                         orderedData = arrFiltrado;
                     }
                     orderedData = params.sorting ? $filter('orderBy')(orderedData, params.orderBy()) : orderedData;
-                    orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                    //orderedData = params.filter ? $filter('filter')(orderedData, params.filter()) : orderedData;
+                    var filter = params.filter();
+                    orderedData = params.filter ? $filter('filter')(orderedData, (obj) => {
+                        if (filter.coleccion && filter.coleccion.length > 0) {
+                            if (obj.coleccion.indexOf(filter.coleccion.toUpperCase()) === -1) return false;
+                        }
+                        if (filter.nroCd && filter.nroCd.length > 0) {
+                            if (obj.cdPista.indexOf(filter.nroCd.toUpperCase()) === -1) return false;
+                        }
+                        if (filter.nombre && filter.nombre.length > 0) {
+                            var searchStrings = filter.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
+                            searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== "" });
+                            var match = false;
+                            for (var j = 0; j < searchStrings.length; j++) {
+                                if (obj.nombreNormalized.indexOf(searchStrings[j]) !== -1 ||
+                                    obj.interpreteNormalized.indexOf(searchStrings[j]) !== -1) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                            if (!match) return false;
+                        }
+                        if (filter.lineas && filter.lineas.length > 0) {
+                            if (!obj.lineas || obj.lineas.indexOf(filter.lineas.toUpperCase()) === -1) return false;
+                        }
+                        return true;
+                    } ) : orderedData;
                     var musicas = orderedData.slice((params
                             .page() -
                             1) *
