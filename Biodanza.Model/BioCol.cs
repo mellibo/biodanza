@@ -43,9 +43,17 @@ namespace Biodanza.Model
             };
             var ro= GetExcel();
             if (!ro.Ok) return ro;
-            using (var fs = File.OpenRead(Excel))
+            try
             {
-                hssfWorkbook = new HSSFWorkbook(fs);
+                using (var fs = File.OpenRead(Excel))
+                {
+                    hssfWorkbook = new HSSFWorkbook(fs);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return ResultadoOperacion.Fail($"No se pudo abrir el excel {Excel}. Error: {e.Message}.");
             }
             var sheet = hssfWorkbook.GetSheet(Hoja);
             if (sheet == null) return ResultadoOperacion.Fail($"La hoja {Hoja} no existe en el archivo {Excel}");

@@ -1,4 +1,5 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
 using CommandLine.Text;
 
 namespace Biodanza.Model
@@ -43,7 +44,14 @@ namespace Biodanza.Model
             help.AddPreOptionsLine("<>");
             help.AddPreOptionsLine("Usage: ");
             help.AddOptions(this);
-            return help;
+
+            var helpText = help.ToString();
+            helpText += Environment.NewLine;
+            helpText += "Ejemplo:" + Environment.NewLine;
+
+            helpText += @"Hyperlinks.exe -p ""C:\Biosoft\Musica\BsAs"" -l G -n A -i B -t C -h ""Por Ejercicio"" " +
+                        Environment.NewLine;
+            return helpText;
         }
 
     }
