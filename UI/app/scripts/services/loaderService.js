@@ -1,6 +1,7 @@
 ﻿
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
     //var coleccionesPromises = [];
+    if (typeof db === 'undefined') { db = {}; }
     db.musicas = [];
     db.colecciones = [];
 
@@ -12,6 +13,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         saveColecciones();
     } else {
         db.colecciones = $localStorage.biosoft_colecciones;
+        angular.forEach(db.colecciones, (i) => { i.nombre = i.nombre.toUpperCase() });
     }
 
     if (typeof $localStorage.biosoft_grupos === "undefined") {
@@ -25,6 +27,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             alertService.addDangerAlert("El nombre de la colección no puede tener espacios. " + col);
             return;
         }
+        col.nombre = col.nombre.toUpperCase();
         if (db.colecciones.filter((c) => c.nombre === col.nombre).length === 0)  {
             db.colecciones.push(col);
             save = true;
@@ -32,11 +35,9 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         if (save) {
             saveColeccion(col, musicas);
         }
-        db.musicas = db.musicas.filter(function (m) { return m.coleccion !== col.nombre });
-        //angular.extend(db.musicas, col);
+        db.musicas = db.musicas.filter(function (m) { return m.coleccion.toUpperCase() !== col.nombre.toUpperCase() });
         angular.forEach(musicas,
             (musica) => { addMusica(musica) });
-        //Array.prototype.push.apply(db.musicas, musicas);        
     }
 
     var service = {
@@ -134,10 +135,14 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     }
 
     function addMusica(musica) {
-        if (!db.musicas.includes(musica)) db.musicas.push(musica); 
+        if (!db.musicas.includes(musica)) db.musicas.push(musica);
+        musica.coleccion = musica.coleccion.toUpperCase();
         var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = musica;";
         eval(str);
         setIdMusica(musica);
+        musica.nombreNormalized = musica.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        musica.interpreteNormalized = musica.interprete.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        musica.cdPista = musica.nroCd + "-" + musica.nroPista;
         delete musica.ejercicios;
         angular.forEach(musica.ejerciciosId, (id) => {
             var ej = service.getEjercicioById(id);
@@ -155,24 +160,9 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     }
 
     function addEjercicio(ejercicio) {
-        var index = db.ejercicios.indexOf(ejercicio);
-        if (index === -1) {
-            db.ejercicios.push(ejercicio);
-            index = db.ejercicios.length - 1;
-        }
-        delete ejercicio.idEjercicio;
-        var i, j;
-        if (ejercicio.musicasId) {
-            if (ejercicio.musicasId !== null) {
-                for (i = 0; i < ejercicio.musicasId.length; i++) {
-                    for (j = i + 1; j < ejercicio.musicasId.length; j++) {
-                        if (ejercicio.musicasId[i] === ejercicio.musicasId[j])
-                            ejercicio.musicasId.splice(j, 1);
-                    }
-                }
-            }
-        }
-        var str = "db.ejercicios.x" + getIdEjercicio(ejercicio.nombre) + " = db.ejercicios[ " + index + "];";
+        ejercicio.nombreNormalized = ejercicio.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        ejercicio.grupoNormalized = ejercicio.grupo.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        var str = "db.ejercicios.x" + getIdEjercicio(ejercicio.nombre) + " = ejercicio";
         try {
             eval(str);
         } catch (e) {
@@ -182,17 +172,8 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         angular.forEach(ejercicio.musicasId,
             function (value, index) {
                 try {
-                    //                    var string = "db.musicas." + (value.charAt(0) === "x" ? "" :"x") + value;
                     var musica;
-                    if (isNaN(value)) {
-                        musica = service.getMusicaById(value);
-                    } else {
-                        var arr = db.musicas.filter((m) => { return m.oldId === value });
-                        if (arr.length > 0) {
-                            musica = arr[0];
-                            ejercicio.musicasId[index] = musica.idMusica;
-                        }
-                    }
+                    musica = service.getMusicaById(value);
                     if (musica) ejercicio.musicas.push(musica);
                 } catch (e) {
                     console.log("eval error: " + "db.musicas.x" + value);

@@ -199,7 +199,7 @@
                 <td class="col-md-1 col-lg-1 " title="'Nro'" sortable="'nroCd'" filter="{nroCd: 'text'}">
                     {{ musica.nroCd + '-' + musica.nroPista  }}
                 </td>
-                <td class="col-md-4 col-lg-4 " title="'Canción'" sortable="'nombre'" filter="{nombre: 'text'}">
+                <td class="col-md-4 col-lg-4 " title="'Canción (Interprete)'" sortable="'nombre'" filter="{nombre: 'text'}">
                     <span ng-if="modelMusicas.select !== true">{{ musica.nombre }}</span><a ng-if="modelMusicas.select === true" ng-click="modelMusicas.playFile(musica)">{{ musica.nombre }}</a>
                     {{ "(" + musica.interprete + ")" }}<br /><br />
                     <div ng-if="modelMusicas.select === true" ng-click="modelMusicas.ok(musica)"><button type="button" class="btn btn-success" ng-click="modelMusicas.selected(musica)">Seleccionar</button></div>
