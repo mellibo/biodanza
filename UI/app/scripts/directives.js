@@ -7,9 +7,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
         , replace: false
         //, transclude: true
         , scope: {
-            selected: '='
-            , 'onSelectedMusica': '&onSelectedMusica'// se ejecuta antes de que se actualice el valor
-            , ejercicio : '='
+            ejercicio : '='
         }
         , link: function(scope, element, attrs) {
             element.parent().bind('click', function () {
@@ -20,10 +18,8 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
         }
         , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                $scope.selected = $scope.selected;
-                $scope.idMusica = 0;
+                //$scope.selected = $scope.selected;
                 $scope.interprete = '';
-                $scope.ejercicio = $scope.ejercicio || {};
                 var modalInstance = $uibModal.open({
                     templateUrl: 'popupBuscarMusica.html'
                                                     , controller: popupMusicaInstance
@@ -35,9 +31,9 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                                                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
-                    $scope.selected = selectedItem;
+                    $scope.ejercicio.musica = selectedItem;
+                    $scope.ejercicio.musicaId = selectedItem.idMusica;
                     $rootScope.$broadcast('buscarMusicaSelected', selectedItem);
-                    if ($scope.onSelectedMusica()) $scope.onSelectedMusica()(selectedItem); // se ejecuta antes de que se actualice el valor
                     //$scope.modelMusicas.cleanSearch();
                 });
 
@@ -45,12 +41,11 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 
             var popupMusicaInstance = ['$scope', '$uibModalInstance', 'directiveScope', 'NgTableParams', 'contextService', 'modelMusicaService', function ($scope, $uibModalInstance, directiveScope, NgTableParams, contextService, modelMusicaService) {
                 $scope.directiveScope = directiveScope;
-
                 $scope.modelMusicas = modelMusicaService;
-                //$scope.modelMusicas.cleanSearch();
-                $scope.modelMusicas.ejercicio = directiveScope.ejercicio;
-                $scope.modelMusicas.ejercicioTextFilter = $scope.modelMusicas.ejercicio.nombre ? ("\"" + $scope.modelMusicas.ejercicio.nombre + "\"") : "";
                 $scope.modelMusicas.select = true;
+                //$scope.modelMusicas.cleanSearch();
+                //$scope.modelMusicas.ejercicio = directiveScope.ejercicio;
+                $scope.modelMusicas.ejercicioTextFilter = directiveScope.ejercicio.ejercicio ? ("\"" + directiveScope.ejercicio.ejercicio.nombre + "\"") : "";
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];
         }]
@@ -64,8 +59,8 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
         , replace: false
         //, transclude: true
         , scope: {
-            selected: '='
-            , 'onSelectedEjercicio': '&onSelectedEjercicio'// se ejecuta antes de que se actualice el valor
+            ejercicio: '='
+            //, 'onSelectedEjercicio': '&onSelectedEjercicio'// se ejecuta antes de que se actualice el valor
         }
         , link: function(scope, element, attrs) {
             element.parent().bind('click', function () {
@@ -76,11 +71,8 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
         }
         , controller: ['$scope', '$rootScope', function ($scope, $rootScope) {
             $scope.show = function () {
-                //$scope.cancion= '';
-                $scope.selected = $scope.selected;
-                $scope.idMusica = 0;
                 $scope.interprete = '';
-                $scope.ejercicio = {}
+                //$scope.ejercicio = {}
                 var modalInstance = $uibModal.open({
                     templateUrl: 'popupBuscarEjercicio.html'
                                                     , controller: popupEjercicioInstance
@@ -92,10 +84,9 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                                                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
-                    //$scope.modelEjercicios.reset();
-                    $scope.selected = selectedItem;
+                    $scope.ejercicio.ejercicio = { nombre: selectedItem.nombre, nombreNormalized: selectedItem.nombreNormalized };
                     $rootScope.$broadcast('buscarEjercicioSelected', selectedItem);
-                    if ($scope.onSelectedEjercicio()) $scope.onSelectedEjercicio()(selectedItem); // se ejecuta antes de que se actualice el valor
+                    //if ($scope.onSelectedEjercicio()) $scope.onSelectedEjercicio()(selectedItem); // se ejecuta antes de que se actualice el valor
                 });
             };
 
@@ -110,7 +101,6 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                 $scope.modelEjercicios.select = true;
                 $scope.modelEjercicios.$uibModalInstance = $uibModalInstance;
                 //$scope.modelEjercicios.reset();
-
             }];
         }]
     };

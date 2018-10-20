@@ -35,7 +35,13 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         if (save) {
             saveColeccion(col, musicas);
         }
-        db.musicas = db.musicas.filter(function (m) { return m.coleccion.toUpperCase() !== col.nombre.toUpperCase() });
+        var length = db.musicas.length-1;
+        for (var i = 0; i <= length; i++) {
+            if (db.musicas[length - i].coleccion.toUpperCase() === col.nombre.toUpperCase()) {
+                db.musicas.splice(length - i, 1);
+            }
+        }
+        //db.musicas = db.musicas.filter(function (m) { return m.coleccion.toUpperCase() !== col.nombre.toUpperCase() });
         angular.forEach(musicas,
             (musica) => { addMusica(musica) });
     }
@@ -54,11 +60,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             }
             $localStorage.biodanzaConfig = cfg;
         },
+        getEjercicioId : (nombre) => { return toValidJsVariableName(nombre); },
         getEjercicioById: (id) => { return eval("db.ejercicios.x" + id) },
         getEjercicio: function (nombre) {
             var ejercicio;
             try {
-                var idEjercicio = getIdEjercicio(nombre);
+                var idEjercicio = service.getEjercicioId(nombre);
                 ejercicio = service.getEjercicioById(idEjercicio);
             } catch (e) {
                 console.log(e);
@@ -69,9 +76,32 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             var str = "db.musicas." + idMusica;
             return eval(str);
         },
+        getMusicaId :(col, cd, pista) => {return "x" + col + "_" + cd + "_" + pista;},
         getMusicaByColCdPista: function (col, cd, pista) {
-            var idMusica = "x" + col + "_" + cd + "_" + pista;
+            var idMusica = service.getMusicaId(col, cd, pista);
             return service.getMusicaById(idMusica);
+        },
+        infoMusica : function (musicaId) {
+            var musica = service.getMusicaById(musicaId);
+            if (!musica) return "";
+            return musica.coleccion +
+                ' ' +
+                musica.nroCd +
+                '-' +
+                musica.nroPista +
+                ' ' +
+                musica.nombre +
+                ' (' +
+                musica.interprete +
+                ') - ' +
+                musica.duracion.substring(3);
+        },
+        getMusicasEjercicio : (ejercicio) => {
+            var musicas = [];
+            for (var i = 0; i < ejercicio.musicasId.length; i++) {
+                musicas.push(service.getMusicaById(ejercicio.musicasId[i]));
+            }
+            return musicas;
         }
     };
 
@@ -96,18 +126,15 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         angular.forEach(db.colecciones,
             function (col) {
                 var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
-                eval("db.musica_" + col.nombre + " = musicas");
+                //eval("db.musica_" + col.nombre + " = musicas");
                 addColeccion(col, musicas);
-                eval('db.musica_' + col.nombre + ' = undefined;');
+                //eval('db.musica_' + col.nombre + ' = undefined;');
             });
     }
 
     function saveColeccion(col, musicas) {
         eval("$localStorage.biosoft_musica_" + col.nombre + "= musicas");
     }
-
-    function getIdEjercicio(nombre)  { return toValidJsVariableName(nombre); };
-
 
     service.saveEjercicios = () => {
         for (i = 0; i < db.ejercicios.length; i++) {
@@ -129,17 +156,16 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             });
     }
 
-    function setIdMusica(musica) {
-        if (typeof musica.idMusica !== "undefined" &&  !isNaN(musica.idMusica)) musica.oldId = musica.idMusica;
-        musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
-    }
+    //function setIdMusica(musica) {
+    //    if (typeof musica.idMusica !== "undefined" &&  !isNaN(musica.idMusica)) musica.oldId = musica.idMusica;
+    //    musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
+    //}
 
     function addMusica(musica) {
         if (!db.musicas.includes(musica)) db.musicas.push(musica);
         musica.coleccion = musica.coleccion.toUpperCase();
         var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = musica;";
         eval(str);
-        setIdMusica(musica);
         musica.nombreNormalized = musica.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         musica.interpreteNormalized = musica.interprete.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         musica.cdPista = musica.nroCd + "-" + musica.nroPista;
@@ -162,7 +188,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     function addEjercicio(ejercicio) {
         ejercicio.nombreNormalized = ejercicio.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         ejercicio.grupoNormalized = ejercicio.grupo.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        var str = "db.ejercicios.x" + getIdEjercicio(ejercicio.nombre) + " = ejercicio";
+        var str = "db.ejercicios.x" + service.getEjercicioId(ejercicio.nombre) + " = ejercicio";
         try {
             eval(str);
         } catch (e) {
@@ -249,7 +275,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             }
             if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
             if (ejercicio.musicasId.filter((m) => m === musica.idMusica).length === 0) ejercicio.musicasId.push(musica.idMusica);
-            var idEjercicio = getIdEjercicio(ejercicio.nombre);
+            var idEjercicio = service.getEjercicioId(ejercicio.nombre);
             if (!musica.ejerciciosId.includes(idEjercicio)) musica.ejerciciosId.push(idEjercicio);
         });
         addColeccion(coleccion, col, true);

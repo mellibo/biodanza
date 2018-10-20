@@ -7,11 +7,13 @@
 
 
         service.calculaTiempoEjercicio = function (ejercicio) {
-            if (ejercicio.musica === null) {
+            if (!ejercicio.musicaId) {
                 ejercicio.tiempo = moment.duration(ejercicio.minutosAdicionales, 'm');
                 return;
             }
-            var tiempo = moment.duration(ejercicio.musica.duracion);
+            var musica = loaderService.getMusicaById(ejercicio.musicaId);
+            if (!musica) debugger;
+            var tiempo = moment.duration(musica.duracion);
             if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
             if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
             if (ejercicio.pauseEmpalme > 0) tiempo.add(ejercicio.pauseEmpalme, 's');
@@ -31,8 +33,8 @@
         function nuevoEjercicio(nro) {
             return angular.copy({
                 nro: nro,
-                ejercicio: null,
-                musica: null,
+                ejercicio: {},
+                musicaId: null,
                 consigna: null,
                 cometarios: null,
                 nombre: "",
@@ -130,12 +132,12 @@
         }
 
         service.deleteEjercicio = function (ejercicio) {
-            ejercicio.ejercicio = null;
+            ejercicio.ejercicio = {};
             service.saveClases();
         };
 
         service.deleteMusica = function (ejercicio) {
-            ejercicio.musica = null;
+            ejercicio.musicaId = null;
             service.saveClases();
         };
 
@@ -148,21 +150,27 @@
             angular.forEach(biodanzaClases, (clase) => {
                 angular.forEach(clase.ejercicios, (ejercicio) => {
                     if (ejercicio.ejercicio) {
-                        if (ejercicio.ejercicio.nombre) {
-                            var ej = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
-                            if (ej) ejercicio.ejercicio = ej;
-                        }
+                        delete ejercicio.ejercicio.detalle;
+                        delete ejercicio.ejercicio.grupo;
+                        delete ejercicio.ejercicio.grupoNormalized;
+                        delete ejercicio.ejercicio.musicas;
+                        delete ejercicio.ejercicio.musicasId;
+                        delete ejercicio.ejercicio.coleccion;
                     }
-                    if (typeof ejercicio.volumen === "undefined") ejercicio.volumen = 100;
 
-                    if (ejercicio.musica) {
-                        //ejercicio.musica.coleccion = ejercicio.musica.coleccion.toUpperCase();
-                        var musica = loaderService
-                            .getMusicaByColCdPista(ejercicio.musica.coleccion,
-                                ejercicio.musica.nroCd,
-                                ejercicio.musica.nroPista);
-                        if (musica) ejercicio.musica = musica;
-                    }
+                    //if (ejercicio.musica) {
+                    //    //ejercicio.musica.coleccion = ejercicio.musica.coleccion.toUpperCase();
+                    //    var musica = loaderService
+                    //        .getMusicaByColCdPista(ejercicio.musica.coleccion,
+                    //            ejercicio.musica.nroCd,
+                    //            ejercicio.musica.nroPista);
+                    //    if (musica) {
+                    //        ejercicio.musica = musica;
+                    //        ejercicio.musicaId = loaderService
+                    //            .getMusicaId(musica.coleccion, musica.nroCd, musica.nroPista);
+                    //    }
+
+                    //}
                 });
             });
             return biodanzaClases;
@@ -189,6 +197,8 @@
             var ejercicios = [];
             angular.forEach(clase.ejercicios,
                 function (value) {
+                    var musica = loaderService.getMusicaById(value.musicaId);
+                    var ejercicio = loaderService.getEjercicioById(value.nombreNormalized);
                     var ej = {
                         comentarios: value.comentarios,
                         consigna: value.consigna,
@@ -203,22 +213,19 @@
                         minutosAdicionales: value.minutosAdicionales,
                         cantidadRepeticiones: value.cantidadRepeticiones,
                         deshabilitado: value.deshabilitado,
-                        ejercicio: value.ejercicio === null
-                            ? null
-                            : {
-                                nombre: value.ejercicio.nombre,
-                                grupo: value.ejercicio.grupo
+                        ejercicio: {
+                            nombreNormalized: value.ejercicio.nombreNormalized,
+                            nombre: value.ejercicio.nombre || ""
                             },
-                        musica: value.musica === null
-                            ? null
-                            : {
-                                archivo: value.musica.archivo,
-                                carpeta: value.musica.carpeta,
-                                coleccion: value.musica.coleccion,
-                                interprete: value.musica.interprete,
-                                nombre: value.musica.nombre,
-                                nroCd: value.musica.nroCd,
-                                nroPista: value.musica.nroPista
+                        musica: {
+                                musicaId: value.musicaId,
+                                archivo: musica.archivo || null,
+                                carpeta: musica.carpeta || null,
+                                coleccion: musica.coleccion || null,
+                                interprete: musica.interprete || null,
+                                nombre: musica.nombre || null,
+                                nroCd: musica.nroCd || null,
+                                nroPista: musica.nroPista || null
                             }
                     };
                     ejercicios.push(ej);

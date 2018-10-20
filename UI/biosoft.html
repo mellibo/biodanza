@@ -154,7 +154,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-ng-repeat="musica in ejercicio.musicas">
+                        <tr data-ng-repeat="musica in loaderService.getMusicasEjercicio(ejercicio)">
                             <td>
                                 {{ musica.coleccion + ' ' + musica.nroCd + '-' + musica.nroPista  }}
                             </td>
@@ -415,7 +415,7 @@
                     </td>
                     <td class="{{'col-md-' + vistaPlayer ? '2' : '3'}}" title="'Ejercicio'" ng-click="rowClick(ejercicio)">
                         <div class="form-group btn-group" ng-if="vistaPlayer === false">
-                            <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
+                            <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio ejercicio="ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
                             <!--<button type="button" class="btn btn-success"  title="Cambiar nombre al ejercicio"  arsoft-input-modal arsoft-input-model="ejercicio.nombre" arsoft-input-label="Nombre ejercicio:" arsoft-input-title="Cambio de nombre:"> <span class="glyphicon glyphicon-edit"></span></button>-->
                             <button type="button" class="btn btn-success"  title="Editar detalles del ejercicio" ng-click="detalleEjercicioClase(ejercicio)" > <span class="glyphicon glyphicon-edit"></span></button>
                             <label class="btn"></label>
@@ -423,7 +423,7 @@
                             <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" ng-click="deleteEjercicio(ejercicio)" title="Eliminar ejercicio" arsoft-confirmation="¿Esta seguro que quiere eliminar el ejercicio?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
                         </div><br/>
                         <div class="form-group  align-middle" ng-if="vistaPlayer === false" >
-                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.ejercicio)" ng-bind-html="ejercicio.nombre === '' && ejercicio.ejercicio.nombre || ejercicio.nombre  + '<br />(' + ejercicio.ejercicio.nombre + ')'"></label></a>
+                            <a><label class="" data-ng-click="mostrarEjercicio(ejercicio.nombreNormalized)" ng-bind-html="ejercicio.nombre === '' && ejercicio.ejercicio.nombre || ejercicio.nombre  + '<br />(' + ejercicio.ejercicio.nombre + ')'"></label></a>
                         </div>
                         <div class="form-group  align-middle" ng-if="vistaPlayer === true" >
                             <a><label class="" data-ng-click="playEjercicio(ejercicio)"  ng-bind-html="ejercicio.nombre === '' && ejercicio.ejercicio.nombre || ejercicio.nombre  + '<br />(' + ejercicio.ejercicio.nombre + ')'"></label></a>
@@ -431,11 +431,11 @@
                     </td>
                     <td class="col-md-2" title="'Música'" ng-click="rowClick(ejercicio)">
                         <div class="btn-group" ng-if="vistaPlayer === false" >
-                            <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica selected="ejercicio.musica" onSelectedMusica="grabar()" ejercicio="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
+                            <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica ejercicio="ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
                             <button type="button" class="btn btn-warning"  title="Escuchar música" ng-click="playEjercicio(ejercicio)"><span class="glyphicon glyphicon-play"></span></button>
                         </div>
                         <button type="button" class="btn btn-danger" ng-if="vistaPlayer === false" style="float:right;" title="Eliminar música" ng-click="deleteMusica(ejercicio)" arsoft-confirmation="¿Esta seguro que quiere eliminar la música?" arsoft-confirmation-title="Confirma Eliminación"><span class="glyphicon glyphicon-trash"></span></button>
-                        <a ng-click="playEjercicio(ejercicio)"><label class="col-md-12">{{ ejercicio.musica.coleccion + ' ' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + ' (' + ejercicio.musica.interprete + ') - ' + ejercicio.musica.duracion.substring(3) }}</label></a>
+                        <a ng-click="playEjercicio(ejercicio)"><label class="col-md-12">{{ infoMusica(ejercicio) }}</label></a>
                     </td>
                     <td class="{{'col-md-' + vistaPlayer ? '4' : '3'}}" title="'Consigna'" ng-click="rowClick(ejercicio)">
                         <div class="form-group col-md-12" style="height:100%;" ng-if="vistaPlayer === false" >
@@ -556,7 +556,7 @@
                     <tbody>
                         <tr data-ng-repeat="ejercicio in $data" >
                             <td>
-                                <a data-ng-click="modelEjercicios.mostrarEjercicio(ejercicio)" ng-bind-html-unsafe="html">({{ ejercicio.coleccion }}) {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
+                                <a data-ng-click="modelEjercicios.mostrarEjercicio(ejercicio.nombreNormalized)" ng-bind-html-unsafe="html">({{ ejercicio.coleccion }}) {{ ejercicio.nombre }} ({{ ejercicio.grupo }})</a>
                                 <div ng-if="modelEjercicios.select === true"><button type="button" class="btn btn-success" ng-click="modelEjercicios.ok(ejercicio)">Seleccionar</button></div>
                             </td>
                             <td>
@@ -690,7 +690,7 @@
                             <div class="row ">
                                 <div class="form-group col-md-12">
                                     <label class="control-label" for="lblEjercicioOriginal">Ejercicio Origen:</label>
-                                    <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio selected="ejercicio.ejercicio" onSelectedEjercicio="grabar()" /> <span class="glyphicon glyphicon-search"></span></button>
+                                    <button type="button" class="btn btn-primary" title="Buscar ejercicio"><buscar-ejercicio ejercicio="ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
                                     <label class="control-label" id="lblEjercicioOriginal">{{ejercicio.ejercicio.nombre}}</label>
                                 </div>
                                 <div class="form-group col-md-12 ">
@@ -699,9 +699,9 @@
                                 </div>
                                 <div class="form-group  col-md-12">
                                     <label class="control-label" for="inputEjercicio">Música Ejercicio:</label>
-                                    <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica selected="ejercicio.musica" onSelectedMusica="grabar()" ejercicio="ejercicio.ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
+                                    <button type="button" class="btn btn-primary" title="Buscar música"><buscar-musica ejercicio="ejercicio" /> <span class="glyphicon glyphicon-search"></span></button>
                                     <button type="button" class="btn btn-warning" title="Escuchar música" ng-click="playFile()"><span class="glyphicon glyphicon-play"></span></button>
-                                    <label>{{ ejercicio.musica.coleccion + '-' + ejercicio.musica.nroCd + '-' + ejercicio.musica.nroPista + ' ' + ejercicio.musica.nombre + '(' + ejercicio.musica.interprete + ') - ' + ejercicio.musica.duracion.substring(3) }}</label>
+                                    <label>{{ infoMusica(ejercicio) }}</label>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label" for="inputInicio">Iniciar a los</label>

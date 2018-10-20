@@ -281,7 +281,7 @@ services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgT
 function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, loaderService) {
         var service = {
             ejercicios: db.ejercicios,
-            ejercicio: {},
+            //ejercicio: {},
             ejercicioTextFilter: "",
             ejerciciosNombre: [],
             refreshGrid: function() {

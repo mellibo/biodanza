@@ -1,6 +1,8 @@
 ﻿app.controller('ejerciciosController', ['$scope', 'loaderService', '$rootScope', '$window', '$location', 'contextService', 'modelEjerciciosService', '$uibModal', function ($scope, loaderService, $rootScope, $window, $location, contextService, modelEjerciciosService, $uibModal) {
     loaderService.colecciones().then(function () {
         $scope.modelEjercicios = modelEjerciciosService;
+        $scope.modelEjercicios.select = false;
+
     });
 
     if (typeof loaderService.config().pathMusica == "undefined" | loaderService.config().pathMusica === "") {
@@ -25,6 +27,7 @@ app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'l
 app.controller('musicasController', ['$scope', 'loaderService', '$location', 'contextService', 'modelMusicaService', '$uibModal', 'NgTableParams', function ($scope, loaderService, $location, contextService, modelMusicaService, $uibModal, NgTableParams) {
     loaderService.colecciones().then(function () {
         $scope.modelMusicas = modelMusicaService;
+        $scope.modelMusicas.select = false;
         $scope.modelMusicas.cleanSearch();
         $scope.isMobileOrTablet = contextService.isMobileOrTablet();
     });
@@ -115,7 +118,10 @@ app.controller('claseController',
             playerService.clase = $scope.clase;
             $scope.horaFin = "";
             $scope.vistaPlayer = false;
-            $scope.mostrarEjercicio = modelEjerciciosService.mostrarEjercicio;
+            $scope.mostrarEjercicio = (ejercicioId) => {
+                var ejercicio = loaderService.getEjercicioById(ejercicioId);
+                modelEjerciciosService.mostrarEjercicio(ejercicio);
+            }
 
             $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
         });
@@ -164,9 +170,9 @@ app.controller('claseController',
         };
         $scope.selected = function(ejercicio) {
             return playerService.playIndex === ejercicio.nro - 1 ||
-            (ejercicio.musica !== null &&
+            (ejercicio.musicaId &&
                 $scope.player.currentPlaying !== null &&
-                ejercicio.musica.nombre === $scope.player.currentPlaying.nombre);
+                loaderService.getMusicaById(ejercicio.musicaId).nombre === $scope.player.currentPlaying.nombre);
         };
         $scope.playAll = function() {
             $scope.player.playContinuo = true;
@@ -205,6 +211,10 @@ app.controller('claseController',
 
         $scope.deleteMusica = function(ejercicio) {
             clasesService.deleteMusica(ejercicio);
+        }
+
+        $scope.infoMusica = function (ejercicio) {
+            return  loaderService.infoMusica(ejercicio.musicaId);
         }
 
         $scope.cerrar = function() {
@@ -249,8 +259,11 @@ app.controller('claseController',
                     $uibModalInstance.close();
                 }
                 $scope.playFile = function() {
-                    playerService.playFile($scope.ejercicio.musica, $scope.ejercicio);
+                    playerService.playFile(loaderService.getMusicaById($scope.ejercicio.musicaId), $scope.ejercicio);
                 };
+                $scope.infoMusica = function (ejercicio) {
+                    return loaderService.infoMusica(ejercicio.musicaId);
+                }
 
             }
         ];
