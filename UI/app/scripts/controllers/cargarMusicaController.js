@@ -64,7 +64,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
 
     $scope.leerColeccion = function (file) {
         var f = file.files[0];
-        $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf("."));
+        $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf(".")).toUpperCase();
         var filePath;
         $scope.data.carpetaColeccion = "musica/" + $scope.data.coleccion.nombre + "/";
         filePath = $scope.data.carpetaColeccion + f.name;
@@ -238,6 +238,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                     break;
                 }
             }
+            item.grupo = item.grupo || item.Grupo;
             if (!item.grupo) {
                 for (var k = 0; k < $scope.equivalenciaGrupo.length; k++) {
                     var eq = $scope.equivalenciaGrupo[k];

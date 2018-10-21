@@ -124,10 +124,13 @@ function toValidJsVariableName(nombre) {
 }
 
 function clearStorage() {
-    window.localStorage.removeItem("ngStorage-biosoft_musica_BsAs");
-    window.localStorage.removeItem("ngStorage-biosoft_musica_IBF");
     window.localStorage.removeItem("ngStorage-biosoft_colecciones");
     window.localStorage.removeItem("ngStorage-biosoft_ejercicios");
+    var items = window.localStorage;
+    var count = items.length -1;
+    for (var i = 0; i < count; i++) {
+        if (items.key(count - i).substring(0, 25) === "ngStorage-biosoft_musica_") window.localStorage.removeItem(items.key(i));
+    }
 }
 
 //clearStorage();

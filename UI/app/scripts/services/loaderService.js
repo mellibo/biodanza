@@ -257,7 +257,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 musica.nroCd = row.nroCd;
                 musica.nroPista = row.nroPista;
                 musica.ejerciciosId = [];
-                setIdMusica(musica);
+                musica.idMusica = service.getMusicaId(musica.coleccion, musica.nroCd, musica.nroPista);
                 col.push(musica);
             }
             if (row.Ejercicio === "") return;
@@ -273,7 +273,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 }
                 addEjercicio(ejercicio);
             }
-            if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
+            //if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
             if (ejercicio.musicasId.filter((m) => m === musica.idMusica).length === 0) ejercicio.musicasId.push(musica.idMusica);
             var idEjercicio = service.getEjercicioId(ejercicio.nombre);
             if (!musica.ejerciciosId.includes(idEjercicio)) musica.ejerciciosId.push(idEjercicio);

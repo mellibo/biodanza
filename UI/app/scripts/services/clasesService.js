@@ -12,8 +12,8 @@
                 return;
             }
             var musica = loaderService.getMusicaById(ejercicio.musicaId);
-            if (!musica) debugger;
-            var tiempo = moment.duration(musica.duracion);
+            //if (!musica) debugger;
+            var tiempo = moment.duration(musica? musica.duracion:"00:00:00");
             if (ejercicio.finalizarSegundos > 0) tiempo = moment.duration(ejercicio.finalizarSegundos, 's');
             if (ejercicio.iniciarSegundos > 0) tiempo.subtract(ejercicio.iniciarSegundos, 's');
             if (ejercicio.pauseEmpalme > 0) tiempo.add(ejercicio.pauseEmpalme, 's');

@@ -212,9 +212,9 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
     service.buscar = "";
     service.$uibModalInstance = null;
 
-    service.ok = function (ejercicio) {
+    service.ok = function (ejercicio, musica) {
         service.reset();
-        service.$uibModalInstance.close(ejercicio);
+        service.$uibModalInstance.close([ejercicio, musica]);
     };
 
 

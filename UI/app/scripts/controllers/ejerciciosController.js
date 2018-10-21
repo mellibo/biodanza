@@ -13,8 +13,8 @@
 app.controller('modalEjercicioController', ['$scope', '$window', '$location', 'loaderService', '$uibModalInstance', 'model', 'playerService', function ($scope, $window, $location, loaderService, $uibModalInstance, model, playerService) {
     loaderService.colecciones().then(function () {
         $scope.ejercicio = model.ejercicio;
-        $scope.ejercicio.reset();
         $scope.model = model;
+        $scope.loaderService = loaderService;
     });
     $scope.playMusica = function(musica) {
         playerService.playFile(musica);
@@ -118,8 +118,8 @@ app.controller('claseController',
             playerService.clase = $scope.clase;
             $scope.horaFin = "";
             $scope.vistaPlayer = false;
-            $scope.mostrarEjercicio = (ejercicioId) => {
-                var ejercicio = loaderService.getEjercicioById(ejercicioId);
+            $scope.mostrarEjercicio = (ejercicio) => {
+                var ejercicio = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
                 modelEjerciciosService.mostrarEjercicio(ejercicio);
             }
 
@@ -172,7 +172,7 @@ app.controller('claseController',
             return playerService.playIndex === ejercicio.nro - 1 ||
             (ejercicio.musicaId &&
                 $scope.player.currentPlaying !== null &&
-                loaderService.getMusicaById(ejercicio.musicaId).nombre === $scope.player.currentPlaying.nombre);
+                ejercicio.musicaId === $scope.player.currentPlaying.idMusica);
         };
         $scope.playAll = function() {
             $scope.player.playContinuo = true;

@@ -41,7 +41,8 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
             //if (service.playList.length - 1 < service.playIndex) service.playIndex = 0;
             if (service.clase && service.clase.ejercicios.length - 1 >= service.playIndex) {
                 audio.repeatCount = undefined;
-                service.playFile(service.clase.ejercicios[service.playIndex].musica,
+                var musica = loaderService.getMusicaById(service.clase.ejercicios[service.playIndex].musicaId);
+                service.playFile(musica,
                     service.clase.ejercicios[service.playIndex]);
             }
         },

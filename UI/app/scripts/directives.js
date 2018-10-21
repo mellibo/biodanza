@@ -31,7 +31,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                                                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
-                    $scope.ejercicio.musica = selectedItem;
+                    //$scope.ejercicio.musica = selectedItem;
                     $scope.ejercicio.musicaId = selectedItem.idMusica;
                     $rootScope.$broadcast('buscarMusicaSelected', selectedItem);
                     //$scope.modelMusicas.cleanSearch();
@@ -83,8 +83,11 @@ directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function 
                                                         }
                                                     }
                 });
-                modalInstance.result.then(function (selectedItem) {
+                modalInstance.result.then(function (result) {
+                    var selectedItem = result[0];
+                    var musica = result[1];
                     $scope.ejercicio.ejercicio = { nombre: selectedItem.nombre, nombreNormalized: selectedItem.nombreNormalized };
+                    if (musica) $scope.ejercicio.musicaId = musica.idMusica;
                     $rootScope.$broadcast('buscarEjercicioSelected', selectedItem);
                     //if ($scope.onSelectedEjercicio()) $scope.onSelectedEjercicio()(selectedItem); // se ejecuta antes de que se actualice el valor
                 });
