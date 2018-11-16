@@ -112,6 +112,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $scope.reset();
     };
 
+    var musicasOk = [];
     $scope.loadSheet = function () {
         $rootScope.$broadcast('loadingStatusActive');
         var sheet = $scope.data.sheet;
@@ -139,6 +140,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                         var cell = sheet[XLSX.utils.encode_cell({ r: index + 1, c: linkCol })];
                         if (typeof cell === "undefined" || typeof cell.l === "undefined") return;
                         var target = cell.l.Target;
+                        item.Link = cell.l.Target;
                         if (typeof item.Carpeta === "undefined" || item.Carpeta.length === 0) {
                             var parts = target.split('/');
                             if (parts.length < 2) return;
@@ -251,6 +253,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
             item.grupo = item.grupo || "OTROS";
             listaACheckMusica.push(item);
         });
+        musicasOk = [];
         checkMusicas(listaACheckMusica);
         var props = Object.keys($scope.data.sampleRows[0]);
         if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
@@ -266,21 +269,41 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $scope.safeApply();
     };
 
+
     function checkMusicas(musicas) {
         $rootScope.$broadcast('loadingStatusActive');
         var item = musicas.shift();
+        //if (item.CdPista === "61.16") debugger;
+        if (musicasOk.includes(item.CdPista)) {
+            item.estado = "ok";
+            $scope.data.totalOk++;
+            checkNextMusica(musicas);
+            return;
+        }
         var musica = { coleccion: $scope.data.coleccion.nombre, carpeta: item.Carpeta, archivo: item.Archivo };
         loaderService.testMusica(musica)
             .then(function (result) {
                 if (result === true) {
                     item.estado = "ok";
                     item.duracion = musica.duracion;
+                    musicasOk.push(item.CdPista);
                     $scope.data.totalOk++;
                 }
                 checkNextMusica(musicas);
             }, function (reject) {
-                item.estado = "Error. " + reject.e.message + "." + decodeURI(reject.src);
-                $scope.data.totalError++;
+                if (item.Link) { // para que reintente con el link
+                    var parts = item.Link.split('/');
+                    if (parts.length === 2) {
+                        var musica = { coleccion: $scope.data.coleccion.nombre, carpeta: parts[parts.length - 2], archivo: parts[parts.length - 1] };
+                        item.Carpeta = parts[parts.length - 2];
+                        item.Archivo = parts[parts.length - 1];
+                        delete item.Link;
+                        musicas.push(item);
+                    }
+                } else {
+                    item.estado = "Error. " + reject.e.message + "." + decodeURI(reject.src);
+                    $scope.data.totalError++;
+                }
                 checkNextMusica(musicas);
             });
 
