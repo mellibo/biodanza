@@ -33,6 +33,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             save = true;
         }
         if (save) {
+            service.saveEjercicios();
             saveColeccion(col, musicas);
         }
         var length = db.musicas.length-1;
@@ -149,7 +150,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             delete ejercicio.musicas;
             delete ejercicio.idEjercicio;
         });
-        $localStorage.biosoft_ejercicios = db.ejercicios;
+        $localStorage.biosoft_ejercicios = db.ejercicios.slice(0);
         angular.forEach(db.ejercicios,
             function (ejercicio, index) {
                 addEjercicio(ejercicio, index);
@@ -272,6 +273,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                     , musicasId :[]
                 }
                 addEjercicio(ejercicio);
+                db.ejercicios.push(ejercicio);
             }
             //if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
             if (ejercicio.musicasId.filter((m) => m === musica.idMusica).length === 0) ejercicio.musicasId.push(musica.idMusica);
