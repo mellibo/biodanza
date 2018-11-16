@@ -10,8 +10,8 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
     var timeoutFinProgresivo = null;
     var service = {
         play: function () {
-            if (audio.currentTime === 0 && service.clase &&
-                service.currentPlaying === service.clase.ejercicios[service.playIndex].musica) {
+            if (audio.currentTime === 0 && service.clase && service.playIndex !== -1 &&
+                service.currentPlaying === loaderService.getMusicaById(service.clase.ejercicios[service.playIndex].musicaId)) {
                 service.playEjercicio(service.clase.ejercicios[service.playIndex]);
                 return;
             }
