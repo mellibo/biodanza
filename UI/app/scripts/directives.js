@@ -45,7 +45,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                 $scope.modelMusicas.select = true;
                 //$scope.modelMusicas.cleanSearch();
                 //$scope.modelMusicas.ejercicio = directiveScope.ejercicio;
-                $scope.modelMusicas.ejercicioTextFilter = directiveScope.ejercicio.ejercicio ? ("\"" + directiveScope.ejercicio.ejercicio.nombre + "\"") : "";
+                $scope.modelMusicas.ejercicioTextFilter = directiveScope.ejercicio.ejercicio.nombre ? ("\"" + directiveScope.ejercicio.ejercicio.nombre + "\"") : "";
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];
         }]
