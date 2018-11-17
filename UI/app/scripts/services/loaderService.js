@@ -49,6 +49,10 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         colecciones: function () {
             return promiseEjs;
         }
+        , vistaPlayer: (vista) => {
+            if (typeof vista !== "undefined") { $localStorage.vista = vista }
+            return $localStorage.vista || false;
+        }
         , config: function (cfg) {
             if (typeof cfg == 'undefined') {
                 var config = $localStorage.biodanzaConfig;

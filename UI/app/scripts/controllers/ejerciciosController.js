@@ -117,10 +117,10 @@ app.controller('claseController',
             $scope.refreshTotalClase();
             playerService.clase = $scope.clase;
             $scope.horaFin = "";
-            $scope.vistaPlayer = false;
+            $scope.vistaPlayer = loaderService.vistaPlayer();
             $scope.mostrarEjercicio = (ejercicio) => {
-                var ejercicio = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
-                modelEjerciciosService.mostrarEjercicio(ejercicio);
+                var ejercicio1 = loaderService.getEjercicio(ejercicio.ejercicio.nombre);
+                modelEjerciciosService.mostrarEjercicio(ejercicio1);
             }
 
             $scope.tableParams = new NgTableParams({ count: 30 }, { counts: [], dataset: $scope.clase.ejercicios });
@@ -151,6 +151,7 @@ app.controller('claseController',
         $scope.$watch('vistaPlayer',
             function(newVal, oldVal) {
                 if ($scope.intervalHoraFin) $interval.cancel($scope.intervalHoraFin);
+                loaderService.vistaPlayer($scope.vistaPlayer);
                 if (newVal === true) {
                     $scope.intervalHoraFin = $interval($scope.tiempoRestanteClase, 30000);
                     $scope.tiempoRestanteClase();
