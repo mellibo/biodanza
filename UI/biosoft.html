@@ -250,15 +250,17 @@
                 <div class="form-group col-md-12 btn-group" role="toolbar">
                     <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileEquivalencias')" title="Leer Excel Equivalencias Nombres"><span class="glyphicon glyphicon-import"></span>   Leer Excel Equivalencias Nombres</button>
                     <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileImport')" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
-                    <button type="button" class="btn btn-primary" ng-disabled="data.validado === false" ng-class="{'disabled' : data.validado === false }" ng-click="importarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
+                    <button type="button" class="btn btn-success" ng-disabled="data.validado === false" ng-class="{'disabled' : data.validado === false }" ng-click="importarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
                 </div>
             </div>
             <div class="row">
-                <label class="control-label col-md-3">Hoja a importar:</label>
-                <div class="btn-group col-md-12" role="group">
-                    <button data-ng-repeat="sheet in data.sheets" class="btn btn-primary" ng-click="changeSheet(sheet)" >{{sheet}}</button>
+                <div class="form-group col-md-12" style="margin-top:20px;">
+                    <label class="control-label">Seleccione la Hoja a importar:</label>
+                    <div class="btn-group" role="group">
+                        <button data-ng-repeat="sheet in data.sheets" class="btn btn-{{sheet === data.coleccion.hojaEjercicios ? 'warning':'primary'}}" ng-click="changeSheet(sheet)">{{sheet}}</button>
+                    </div>
                 </div>
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12" style="margin-top:20px;">
                     <label class="control-label ">renglones leidos:</label>
                     <input type="text" readonly class="form-control" style="width:70px;" value="{{data.totalLeidos}}">
                     <label class="control-label ">renglones ok para importar:</label>

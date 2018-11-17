@@ -92,9 +92,11 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
 
                     $scope.data.wb = XLSX.read(data, readtype);
                     $scope.data.sheets = $scope.data.wb.SheetNames;
-                    $scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
+                    //$scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
                     //sheet['!ref'] = "A1:L11";
-                    $scope.loadSheet();
+                    //$scope.loadSheet();
+                    $rootScope.$broadcast('loadingStatusInactive');
+                    $scope.safeApply();
                 };
                 if (rABS) reader.readAsBinaryString(f);
                 else reader.readAsArrayBuffer(f);
@@ -255,13 +257,15 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         });
         musicasOk = [];
         checkMusicas(listaACheckMusica);
-        var props = Object.keys($scope.data.sampleRows[0]);
-        if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
-        if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
-        if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
-        if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
-        if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
-        if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
+        if ($scope.data.sampleRows.length > 0) {
+            var props = Object.keys($scope.data.sampleRows[0]);
+            if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
+            if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
+            if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
+            if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
+            if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
+            if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
+        }
         if (colsError.length > 1) {
             alertService.addAlert("danger", "Error:" + colsError);
         }
@@ -274,7 +278,11 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $rootScope.$broadcast('loadingStatusActive');
         var item = musicas.shift();
         //if (item.CdPista === "61.16") debugger;
-        if (musicasOk.includes(item.CdPista)) {
+        if (!item) {
+            checkNextMusica(musicas);
+            return;
+        }
+        if (item.CdPista && musicasOk.includes(item.CdPista)) {
             item.estado = "ok";
             $scope.data.totalOk++;
             checkNextMusica(musicas);
