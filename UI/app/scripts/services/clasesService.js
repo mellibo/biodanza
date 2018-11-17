@@ -157,20 +157,6 @@
                         delete ejercicio.ejercicio.musicasId;
                         delete ejercicio.ejercicio.coleccion;
                     }
-
-                    //if (ejercicio.musica) {
-                    //    //ejercicio.musica.coleccion = ejercicio.musica.coleccion.toUpperCase();
-                    //    var musica = loaderService
-                    //        .getMusicaByColCdPista(ejercicio.musica.coleccion,
-                    //            ejercicio.musica.nroCd,
-                    //            ejercicio.musica.nroPista);
-                    //    if (musica) {
-                    //        ejercicio.musica = musica;
-                    //        ejercicio.musicaId = loaderService
-                    //            .getMusicaId(musica.coleccion, musica.nroCd, musica.nroPista);
-                    //    }
-
-                    //}
                 });
             });
             return biodanzaClases;
@@ -187,7 +173,6 @@
                         function (item) {
                             biodanzaClases.unshift(item);
                         });
-                    //service.clases();
                 }
             };
             reader.readAsText(file);

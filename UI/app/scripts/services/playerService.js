@@ -204,7 +204,7 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
         },
         playContinuo: false,
         changeState: function (newState) {
-            console.log(newState);
+            //console.log(newState);
             switch (newState) {
                 case "playing":
                     //service.startStateLoop();
@@ -218,19 +218,6 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
                     if (timeoutFinProgresivo) $timeout.cancel(timeoutFinProgresivo);
                     if (service.clase) {
                         service.tiempoRestanteClase();
-                        //if (service.playIndex > -1 &&
-                        //    service.clase.ejercicios[service.playIndex].cantidadRepeticiones >
-                        //    audio.repeatCount) {
-                        //    audio.repeatCount++;
-                        //    console.log("start audio.timerInicio " + 30);
-                        //    audio.timerInicio = $timeout(function () {
-                        //        console.log("elapsed audio.timerInicio ");
-                        //        service.playFile(service.clase.ejercicios[service.playIndex].musica,
-                        //                service.clase.ejercicios[service.playIndex]);
-                        //    },
-                        //        30 * 1000);
-                        //    return;
-                        //}
                     }
                     if (service
                         .playIndex >

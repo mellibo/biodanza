@@ -1,6 +1,5 @@
 ﻿
 services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$filter', 'alertService', function (loadJsService, $q, $localStorage, $filter, alertService) {
-    //var coleccionesPromises = [];
     if (typeof db === 'undefined') { db = {}; }
     db.musicas = [];
     db.colecciones = [];
@@ -42,7 +41,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 db.musicas.splice(length - i, 1);
             }
         }
-        //db.musicas = db.musicas.filter(function (m) { return m.coleccion.toUpperCase() !== col.nombre.toUpperCase() });
         angular.forEach(musicas,
             (musica) => { addMusica(musica) });
     }
@@ -127,9 +125,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         angular.forEach(db.colecciones,
             function (col) {
                 var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
-                //eval("db.musica_" + col.nombre + " = musicas");
                 addColeccion(col, musicas);
-                //eval('db.musica_' + col.nombre + ' = undefined;');
             });
     }
 
@@ -156,11 +152,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 addEjercicio(ejercicio, index);
             });
     }
-
-    //function setIdMusica(musica) {
-    //    if (typeof musica.idMusica !== "undefined" &&  !isNaN(musica.idMusica)) musica.oldId = musica.idMusica;
-    //    musica.idMusica = "x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista;
-    //}
 
     function addMusica(musica) {
         if (!db.musicas.includes(musica)) db.musicas.push(musica);
@@ -275,7 +266,6 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 addEjercicio(ejercicio);
                 db.ejercicios.push(ejercicio);
             }
-            //if (ejercicio.musicas.filter((m) => m.idMusica === musica.idMusica ).length === 0) ejercicio.musicas.push(musica);
             if (ejercicio.musicasId.filter((m) => m === musica.idMusica).length === 0) ejercicio.musicasId.push(musica.idMusica);
             var idEjercicio = service.getEjercicioId(ejercicio.nombre);
             if (!musica.ejerciciosId.includes(idEjercicio)) musica.ejerciciosId.push(idEjercicio);

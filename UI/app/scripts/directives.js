@@ -3,9 +3,7 @@
 directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($uibModal, NgTableParams) {
     return {
         restrict: 'E'
-        //, template: '<span ng-transclude></span><button type="button" style="float:right" ng-click="show()">...</button>'
         , replace: false
-        //, transclude: true
         , scope: {
             ejercicio : '='
         }
@@ -31,7 +29,6 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                                                     }
                 });
                 modalInstance.result.then(function (selectedItem) {
-                    //$scope.ejercicio.musica = selectedItem;
                     $scope.ejercicio.musicaId = selectedItem.idMusica;
                     $rootScope.$broadcast('buscarMusicaSelected', selectedItem);
                     //$scope.modelMusicas.cleanSearch();
@@ -44,7 +41,6 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
                 $scope.modelMusicas = modelMusicaService;
                 $scope.modelMusicas.select = true;
                 //$scope.modelMusicas.cleanSearch();
-                //$scope.modelMusicas.ejercicio = directiveScope.ejercicio;
                 $scope.modelMusicas.ejercicioTextFilter = directiveScope.ejercicio.ejercicio.nombre ? ("\"" + directiveScope.ejercicio.ejercicio.nombre + "\"") : "";
                 $scope.modelMusicas.$uibModalInstance = $uibModalInstance;
             }];
@@ -55,9 +51,7 @@ directives.directive('buscarMusica', ['$uibModal', 'NgTableParams', function ($u
 directives.directive('buscarEjercicio', ['$uibModal', 'NgTableParams', function ($uibModal, NgTableParams) {
     return {
         restrict: 'E'
-        //, template: '<span ng-transclude></span><button type="button" style="float:right" ng-click="show()">...</button>'
         , replace: false
-        //, transclude: true
         , scope: {
             ejercicio: '='
             //, 'onSelectedEjercicio': '&onSelectedEjercicio'// se ejecuta antes de que se actualice el valor
@@ -143,12 +137,6 @@ directives.directive('arsoftConfirmation',['$uibModal', function ($uibModal) {
                         }
                     }
                 });
-
-                //modalInstance.result.then(function(selectedItem) {
-                //    $scope.selected = selectedItem;
-                //}, function() {
-                //    $log.info('Modal dismissed at: ' + new Date());
-                //});
             };
             
             var ModalInstanceCtrl =['$scope', '$uibModalInstance' , 'parentScope', function ($scope, $uibModalInstance , parentScope) {
@@ -178,7 +166,6 @@ directives.directive('arsoftInputModal', ['$uibModal', function ($uibModal) {
             arsoftInputModel: '='
         }
         , replace: false
-        //, transclude: true
      , link: function (scope, element, attrs) {
             return element.bind('click', function (e) {
                 scope.model.label = attrs.arsoftInputLabel || "Ingrese valor:";
@@ -239,22 +226,3 @@ directives.directive('ngEnter', [function () {
         });
     };
 }]);
-/*
-var loadingStatus = angular.module('loadingStatus');
-
-loadingStatus.directive('loadingStatusMessage', function () {
-    return {
-        link: function ($scope, $element, attrs) {
-            var show = function () {
-                $element.css('display', 'block');
-            };
-            var hide = function () {
-                $element.css('display', 'none');
-            };
-            $scope.$on('loadingStatusActive', show);
-            $scope.$on('loadingStatusInactive', hide);
-            hide();
-        }
-    };
-});
-*/
