@@ -96,8 +96,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 musica.nombre +
                 ' (' +
                 musica.interprete +
-                ') - ' +
-                musica.duracion.substring(3);
+                ') - ' + (musica.duracion ? musica.duracion.substring(3) : "");
         },
         getMusicasEjercicio : (ejercicio) => {
             var musicas = [];
@@ -237,11 +236,12 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         var col = [];
         angular.forEach(rows, function (row, index) {
             if (row.estado !== "ok") return;
-            var arr = $filter('filter')(col, { nroCd: row.nroCd, nroPista: row.nroPista });
+            var arr = $filter('filter')(col, { nroCd: row.nroCd, nroPista: row.nroPista }, true);
             var musica;
             if (arr.length === 1) {
                 musica = arr[0];
             } else {
+                if (typeof row.duracion === "undefined") debugger;
                 musica = {};
                 musica.archivo = row.Archivo;
                 musica.carpeta = row.Carpeta;
