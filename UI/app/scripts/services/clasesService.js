@@ -5,6 +5,17 @@
         var service = {};
         var biodanzaClases = null;
 
+        function safeApply(fn) {
+            var scope = angular.element(document.querySelector('#fileImport')).scope();
+            var phase = scope.$$phase;
+            if (phase === '$apply' || phase === '$digest') {
+                if (fn && (typeof (fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                scope.$apply(fn);
+            }
+        };
 
         service.calculaTiempoEjercicio = function (ejercicio) {
             if (!ejercicio.musicaId) {
@@ -167,12 +178,21 @@
             var reader = new FileReader();
             reader.onloadend = function (evt) {
                 if (evt.target.readyState === FileReader.DONE) {
-                    console.log(evt.target.result);
+                    //console.log(evt.target.result);
                     var json = eval(evt.target.result.substring(evt.target.result.indexOf('[')));
-                    angular.forEach(json,
-                        function (item) {
-                            biodanzaClases.unshift(item);
-                        });
+                    for (var i = json.length - 1; i >= 0; i--) {
+                        var item = json[i];
+                        for (var j = 0; j < item.ejercicios.length; j++) {
+                            var ejercicio = item.ejercicios[j];
+                            if (ejercicio.musica && ejercicio.musica.coleccion && ejercicio.musica.nroCd && ejercicio.musica.nroPista) {
+                                ejercicio.musicaId = loaderService.getMusicaId(ejercicio.musica.coleccion, ejercicio.musica.nroCd, ejercicio.musica.nroPista);
+                                delete ejercicio.musica;
+                            }
+                        }
+                        biodanzaClases.unshift(item);
+                    }
+                    service.saveClases();
+                    window.location.reload();
                 }
             };
             reader.readAsText(file);
