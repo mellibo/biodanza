@@ -241,7 +241,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             if (arr.length === 1) {
                 musica = arr[0];
             } else {
-                if (typeof row.duracion === "undefined") debugger;
+                //if (typeof row.duracion === "undefined") debugger;
                 musica = {};
                 musica.archivo = row.Archivo;
                 musica.carpeta = row.Carpeta;

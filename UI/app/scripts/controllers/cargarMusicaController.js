@@ -6,6 +6,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         $scope.data = {
             wb: null,
             sheets: [],
+            sheet: null,
             sampleRows: [],
             tableParams: new NgTableParams({ count: 15 }),
             totalOk: 0,
@@ -258,10 +259,10 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         checkMusicas(listaACheckMusica);
         if ($scope.data.sampleRows.length > 0) {
             var props = Object.keys($scope.data.sampleRows[0]);
-            if (props.indexOf("Ejercicio") === -1) colsError += "No se encontro la columna Ejercicio.";
-            if (props.indexOf("CdPista") === -1) colsError += "No se encontro la columna CdPista.";
-            if (props.indexOf("Titulo") === -1) colsError += "No se encontro la columna Titulo.";
-            if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
+            if (props.indexOf("Ejercicio") === -1 && props.indexOf("Danza") === -1) colsError += "No se encontro la columna Ejercicio.";
+            if (props.indexOf("CdPista") === -1 && props.indexOf("Nro") === -1) colsError += "No se encontro la columna CdPista.";
+            if (props.indexOf("Titulo") === -1 && props.indexOf("Tema") === -1) colsError += "No se encontro la columna Titulo.";
+            if (props.indexOf("Autor") === -1) colsError += "No se encontro la columna Interprete.";
             if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
             if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
         }
@@ -356,6 +357,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
     }
 
     $scope.pickImportFile = function (fileImport) {
+        $scope.reset();
         var fileElementAng = angular.element(document.querySelector('#' + fileImport ));
         var fileElement = fileElementAng[0];
         fileElement.click();
