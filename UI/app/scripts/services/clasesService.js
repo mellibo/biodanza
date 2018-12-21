@@ -203,7 +203,11 @@
             angular.forEach(clase.ejercicios,
                 function (value) {
                     var musica = loaderService.getMusicaById(value.musicaId) || {};
-                    var ejercicio = loaderService.getEjercicioById(value.nombreNormalized);
+                    try {
+                        var ejercicio = loaderService.getEjercicio(value.ejercicio.nombre);
+                    } catch (e) {
+
+                    } 
                     var ej = {
                         comentarios: value.comentarios,
                         consigna: value.consigna,
@@ -219,8 +223,8 @@
                         cantidadRepeticiones: value.cantidadRepeticiones,
                         deshabilitado: value.deshabilitado,
                         ejercicio: {
-                            nombreNormalized: value.ejercicio || value.ejercicio.nombreNormalized,
-                            nombre: value.ejercicio || value.ejercicio.nombre || ""
+                            nombreNormalized: ejercicio ? ejercicio.nombreNormalized : "",
+                            nombre: ejercicio ? ejercicio.nombre : ""
                             },
                         musica: {
                                 musicaId: value.musicaId || null,
