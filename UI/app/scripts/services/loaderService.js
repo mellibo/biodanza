@@ -42,7 +42,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             }
         }
         angular.forEach(musicas,
-            (musica) => { addMusica(musica) });
+            (musica) => { addMusica(musica); });
     }
 
     var service = {
@@ -50,21 +50,29 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             return promiseEjs;
         }
         , vistaPlayer: (vista) => {
-            if (typeof vista !== "undefined") { $localStorage.vista = vista }
+            if (typeof vista !== "undefined") {
+                $localStorage.vista = vista; }
             return $localStorage.vista || false;
         }
         , config: function (cfg) {
-            if (typeof cfg == 'undefined') {
+            if (typeof cfg === 'undefined') {
                 var config = $localStorage.biodanzaConfig;
-                if (config == null) {
-                    config = { pathMusica: 'musica/' }
+                if (!config) {
+                    config = { pathMusica: 'musica/' };
                 }
                 return config;
             }
             $localStorage.biodanzaConfig = cfg;
         },
         getEjercicioId : (nombre) => { return toValidJsVariableName(nombre); },
-        getEjercicioById: (id) => { return eval("db.ejercicios.x" + id) },
+        getEjercicioById: (id) => {
+            try {
+                return eval("db.ejercicios.x" + id);
+            } catch (e) {
+                console.log(id);
+                console.log(e);
+            } 
+        },
         getEjercicio: function (nombre) {
             var ejercicio;
             try {
@@ -217,6 +225,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
                 musica.archivo;
         } catch (e) {
             console.log(e);
+            deferred.reject({ musica: musica, e: e, src: audio.src });
         } 
         audio.ondurationchange =  function() {
             if (!musica.duracion && audio) musica.duracion = moment(moment(0, 's').add(moment.duration(audio.duration, 's'))).format("HH:mm:ss");
@@ -241,19 +250,20 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             if (arr.length === 1) {
                 musica = arr[0];
             } else {
-                if (typeof row.duracion === "undefined") debugger;
+                //if (typeof row.duracion === "undefined") debugger;
                 musica = {};
-                musica.archivo = row.Archivo;
+                musica.archivo = row.Archivo ;
                 musica.carpeta = row.Carpeta;
-                musica.coleccion = coleccion.nombre;
-                musica.duracion = row.duracion;
-                musica.interprete = row.Interprete;
-                musica.lineas = row.Lineas;
-                musica.nombre = row.Titulo;
+                musica.coleccion = coleccion.nombre ||"";
+                musica.duracion = row.duracion || "";
+                musica.interprete = row.Interprete || "";
+                musica.lineas = row.Lineas || "";
+                musica.nombre = row.Titulo || "";
                 musica.nroCd = row.nroCd;
                 musica.nroPista = row.nroPista;
                 musica.ejerciciosId = [];
                 musica.idMusica = service.getMusicaId(musica.coleccion, musica.nroCd, musica.nroPista);
+                musica.tags = row.Tags? row.Tags.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "") : "";
                 col.push(musica);
             }
             if (row.Ejercicio === "") return;

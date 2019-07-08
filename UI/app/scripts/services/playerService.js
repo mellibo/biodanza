@@ -331,6 +331,9 @@ function (loaderService, $document, $rootScope, $interval, $filter, $timeout) {
             service.message = service.errorMessage;
             //$rootScope.$apply();
             console.log($event);
+            $timeout(function () {
+                
+            });
             //if (indexMusicas < musicas.length - 1) {
             //    updateDuracion();
             //    return;

@@ -160,7 +160,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
         var listaACheckMusica = [];
         angular.forEach($scope.data.sampleRows, function (item, index) {
             $scope.data.totalLeidos++;
-            item.Lineas = item.Lineas || item.L;
+            item.Lineas = item.Lineas || item.L || item.lineas;
             item.CdPista = item.CdPista || item.Nro;
             if (typeof item.CdPista !== "string") {
                 item.estado = "Error: CdPista Incorrecto.";
@@ -226,6 +226,10 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 item.estado = "Error: Columna Archivo Incorrecta.";
                 $scope.data.totalError++;
                 return;
+            }
+            if (typeof item.Tags === "string") {
+                item.Tags = item.Tags.replace(item.Ejercicio + ";", "").replace(item.Interprete + ";", "")
+                    .replace(item.Titulo + ";", "").replace(item.Archivo + ";", "").replace(item.Carpeta + ";", "").toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
             }
             for (var k = 0; k < $scope.equivalenciaEjercicios.length; k++) {
                 var eq = $scope.equivalenciaEjercicios[k];

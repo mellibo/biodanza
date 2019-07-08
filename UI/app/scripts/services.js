@@ -154,6 +154,12 @@ services.factory('modelEjerciciosService', ['$q', '$localStorage', '$uibModal', 
 services.factory('modelMusicaService', ['$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', 'playerService', 'loaderService',
 function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, loaderService) {
 
+    var pesoColeccion = 50;
+    var pesoTitulo = 10;
+    var pesoEjercicio = 10;
+    var pesoCdPista = 30;
+    var pesoLineas = 20;
+    var pesoTag = 5;
     function buscarMusicas(searchStringsEjercicio, filter) {
         var search = [];
         var i;
@@ -173,26 +179,29 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
             for (var m = 0; m < searchStringsEjercicio.length; m++) {
                 for (var l = 0; l < musica.ejerciciosId.length; l++) {
                     var ejercicio = loaderService.getEjercicioById(musica.ejerciciosId[l]);
-                    if (ejercicio.nombreNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank++;
-                    if (ejercicio.grupoNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank++;
+                    if (!ejercicio) continue;
+                    if (ejercicio.nombreNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank+=pesoEjercicio;
+                    if (ejercicio.grupoNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank += pesoEjercicio;
                 }
             }
             if (filter.coleccion && filter.coleccion.length > 0) {
-                if (musica.coleccion.indexOf(filter.coleccion.toUpperCase()) !== -1) rank++;
+                if (musica.coleccion.indexOf(filter.coleccion.toUpperCase()) !== -1) rank += pesoColeccion;
             }
             if (filter.nroCd && filter.nroCd.length > 0) {
-                if (musica.cdPista.indexOf(filter.nroCd.toUpperCase()) !== -1) rank++;
+                if (musica.cdPista.indexOf(filter.nroCd.toUpperCase()) !== -1) rank += pesoCdPista;
             }
             if (filter.nombre && filter.nombre.length > 0) {
                 var searchStrings = filter.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
-                searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== "" });
+                searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== ""; });
                 for (var j = 0; j < searchStrings.length; j++) {
-                    if (musica.nombreNormalized.indexOf(searchStrings[j]) !== -1) rank++;
-                    if (musica.interpreteNormalized.indexOf(searchStrings[j]) !== -1) rank++;
+                    if (musica.nombreNormalized.indexOf(searchStrings[j]) !== -1 || musica.archivo.indexOf(searchStrings[j]) !== -1 || musica.carpeta.indexOf(searchStrings[j]) !== -1) rank += pesoTitulo;
+                    if (musica.interpreteNormalized.indexOf(searchStrings[j]) !== -1) rank += pesoTitulo;
+                    if (musica.tags && musica.tags.indexOf(searchStrings[j]) !== -1)
+                        rank += pesoTag;
                 }
             }
             if (filter.lineas && filter.lineas.length > 0) {
-                if (!musica.lineas || musica.lineas.indexOf(filter.lineas.toUpperCase()) !== -1) rank++;
+                if (!musica.lineas || musica.lineas.indexOf(filter.lineas.toUpperCase()) !== -1) rank += pesoLineas;
             }
             if (rank > 0) search.push({ rank: rank, musica: musica });
         }
