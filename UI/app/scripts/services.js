@@ -160,7 +160,20 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
     var pesoCdPista = 30;
     var pesoLineas = 20;
     var pesoTag = 5;
+    var factorLengthMenor4 = .25;
+
+    function addRank(match, peso) {
+        var ret = 0;
+        if (match) {
+            for (var j = 0; j < match.length; j++) {
+                ret += peso * (match[j].length < 4 ? factorLengthMenor4 : 1);
+            }
+        }
+        return ret;
+    }
+
     function buscarMusicas(searchStringsEjercicio, filter) {
+        var inicio = moment(new Date());
         var search = [];
         var i;
         if (searchStringsEjercicio.length === 0) {
@@ -173,15 +186,61 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
                 (!filter.lineas ||
                 filter.lineas.length === 0)) return db.musicas;
         }
+        var regStr = "(";
+        var sep = "";
+        var regexEj;
+        var searchStringsEjercicioFiltered = $filter('filter')(searchStringsEjercicio, (obj) => { return obj.length > 3; });
+
+        if (searchStringsEjercicioFiltered.length > 0) {
+            for (var m = 0; m < searchStringsEjercicioFiltered.length; m++) {
+                regStr += sep + searchStringsEjercicioFiltered[m];
+                sep = "|";
+            }
+            regStr += ")";
+            regexEj = new RegExp(regStr, "g");
+        }
+
+        var regexTitulo;
+        if (filter.nombre && filter.nombre.length > 0) {
+            var searchStrings = filter.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
+            searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== ""; });
+            regStr = "(";
+            sep = "";
+            for (var m = 0; m < searchStrings.length; m++) {
+                regStr += sep + searchStrings[m];
+                sep = "|";
+            }
+            regStr += ")";
+            regexTitulo = new RegExp(regStr,"g");
+        }
+        var checkedEjercicios = [];
         for (i = 0; i < db.musicas.length; i++) {
             var musica = db.musicas[i];
+            if (musica.nombreNormalized === "LIBERTANGO") {
+                console.log();
+            }
             var rank = 0;
-            for (var m = 0; m < searchStringsEjercicio.length; m++) {
+            var match;
+            if (regexEj) {
                 for (var l = 0; l < musica.ejerciciosId.length; l++) {
+                    var rankEje;
+                    if (checkedEjercicios[musica.ejerciciosId[l]]) {
+                        rank += checkedEjercicios[musica.ejerciciosId[l]];
+                        break;
+                    }
                     var ejercicio = loaderService.getEjercicioById(musica.ejerciciosId[l]);
                     if (!ejercicio) continue;
-                    if (ejercicio.nombreNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank+=pesoEjercicio;
-                    if (ejercicio.grupoNormalized.indexOf(searchStringsEjercicio[m]) !== -1) rank += pesoEjercicio;
+                    rankEje = 0;
+                    match = ejercicio.nombreNormalized.match(regexEj);
+                    rankEje += addRank(match, pesoEjercicio);
+                    match = ejercicio.grupoNormalized.match(regexEj);
+                    rankEje += addRank(match, pesoEjercicio);
+                    rank += rankEje;
+                    //var a = moment(new Date());
+                    checkedEjercicios[musica.ejerciciosId[l]] = rankEje;
+                    //var b = moment(new Date());
+                    //console.log(moment.duration(b.diff(a)).asMilliseconds());
+                    if (rankEje > 0) break;
                 }
             }
             if (filter.coleccion && filter.coleccion.length > 0) {
@@ -191,25 +250,32 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
                 if (musica.cdPista.indexOf(filter.nroCd.toUpperCase()) !== -1) rank += pesoCdPista;
             }
             if (filter.nombre && filter.nombre.length > 0) {
-                var searchStrings = filter.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").split(" ");
-                searchStrings = $filter('filter')(searchStrings, (obj) => { return obj !== ""; });
-                for (var j = 0; j < searchStrings.length; j++) {
-                    if (musica.nombreNormalized.indexOf(searchStrings[j]) !== -1 || musica.archivo.indexOf(searchStrings[j]) !== -1 || musica.carpeta.indexOf(searchStrings[j]) !== -1) rank += pesoTitulo;
-                    if (musica.interpreteNormalized.indexOf(searchStrings[j]) !== -1) rank += pesoTitulo;
-                    if (musica.tags && musica.tags.indexOf(searchStrings[j]) !== -1)
-                        rank += pesoTag;
+                match = musica.nombreNormalized.match(regexTitulo);
+                if (!match) match = musica.archivo.match(regexTitulo);
+                if (!match) match = musica.carpeta.match(regexTitulo);
+                rank += addRank(match, pesoTitulo);
+                match = musica.interpreteNormalized.match(regexTitulo);
+                rank += addRank(match, pesoTitulo);
+                if (musica.tags) {
+                    match = musica.tags.match(regexTitulo);
+                    rank += addRank(match, pesoTag);
                 }
             }
             if (filter.lineas && filter.lineas.length > 0) {
                 if (!musica.lineas || musica.lineas.indexOf(filter.lineas.toUpperCase()) !== -1) rank += pesoLineas;
             }
-            if (rank > 0) search.push({ rank: rank, musica: musica });
+            if (rank > 0) {
+                search.push({ rank: rank, musica: musica });
+            }
         }
         search.sort((a, b) => { return b.rank - a.rank });
+        console.log(search);
         var result = [];
         for (i = 0; i < search.length; i++) {
             result.push(search[i].musica);
         }
+        var fin = moment(new Date());
+        console.log(moment.duration(fin.diff(inicio)).asMilliseconds());
         return result;
     }
 
