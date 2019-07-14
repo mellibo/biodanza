@@ -258,6 +258,7 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
                 rank += addRank(match, pesoTitulo);
                 if (musica.tags) {
                     match = musica.tags.match(regexTitulo);
+                    if (!match) match = musica.tags.match(regexEj);
                     rank += addRank(match, pesoTag);
                 }
             }
@@ -269,9 +270,10 @@ function ($q, $localStorage, $uibModal, NgTableParams, $filter, playerService, l
             }
         }
         search.sort((a, b) => { return b.rank - a.rank });
-        console.log(search);
+        //console.log(search);
         var result = [];
         for (i = 0; i < search.length; i++) {
+            if (i>100) break;
             result.push(search[i].musica);
         }
         var fin = moment(new Date());
