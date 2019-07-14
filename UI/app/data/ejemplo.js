@@ -34,6 +34,7 @@
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
             "pauseEmpalme": null,
+            "volumen": 100,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
         },
@@ -68,6 +69,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -103,6 +105,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -138,6 +141,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -208,6 +212,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -278,6 +283,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -313,6 +319,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
@@ -348,6 +355,7 @@
             "finalizarSegundos": null,
             "segundosInicioProgresivo": null,
             "segundosFinProgresivo": null,
+            "volumen": 100,
             "pauseEmpalme": null,
             "minutosAdicionales": 0,
             "cantidadRepeticiones": 1
