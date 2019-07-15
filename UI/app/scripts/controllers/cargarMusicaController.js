@@ -41,16 +41,34 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                 data = btoa(arr);
             }
 
-            var wb = XLSX.read(data, readtype);
+            try {
+                var wb = XLSX.read(data, readtype);
+            } catch (e) {
+                alertService.addAlert("danger", "Archivo Excel invalido.");
+                return;
+            }
             var sheets = wb.SheetNames;
             var sheet = wb.Sheets["Ejercicios"];
+            if (!sheet) {
+                alertService.addAlert("danger", "No se encontro la Hoja Ejercicios en el Excel.");
+                return;
+            }
+
             var rows = XLSX.utils.sheet_to_json(sheet);
             $scope.equivalenciaEjercicios = rows.slice();
 
             sheet = wb.Sheets["Interpretes"];
+            if (!sheet) {
+                alertService.addAlert("danger", "No se encontro la Hoja Interpretes en el Excel.");
+                return;
+            }
             rows = XLSX.utils.sheet_to_json(sheet);
             $scope.equivalenciaInterpretes = rows.slice();
             sheet = wb.Sheets["Grupo"];
+            if (!sheet) {
+                alertService.addAlert("danger", "No se encontro la Grupo Interpretes en el Excel.");
+                return;
+            }
             rows = XLSX.utils.sheet_to_json(sheet);
             $scope.equivalenciaGrupo = rows.slice();
             alertService.addInfoAlert("Archivo de Equivalencias Cargado.");
@@ -65,10 +83,10 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
 
     $scope.leerColeccion = function (file) {
         var f = file.files[0];
-        $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf(".")).toUpperCase();
         var filePath;
-        $scope.data.carpetaColeccion = "musica/" + $scope.data.coleccion.nombre + "/";
+        $scope.data.carpetaColeccion = "musica/" + f.name.substring(0, f.name.indexOf(".")) + "/";
         filePath = $scope.data.carpetaColeccion + f.name;
+        $scope.data.coleccion.nombre = f.name.substring(0, f.name.indexOf(".")).toUpperCase();
         loadJsService.load(filePath)
             .then((a) => {
                 $scope.data.coleccion.carpeta = $scope.data.carpetaColeccion;
@@ -90,8 +108,13 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
                         arr = fixdata(data);
                         data = btoa(arr);
                     }
+                    try {
+                        $scope.data.wb = XLSX.read(data, readtype);
+                    } catch (e) {
+                        alertService.addAlert("danger", "Archivo Excel invalido.");
+                        return;
+                    }
 
-                    $scope.data.wb = XLSX.read(data, readtype);
                     $scope.data.sheets = $scope.data.wb.SheetNames;
                     //$scope.data.sheet = $scope.data.wb.Sheets[$scope.data.wb.SheetNames[0]];
                     //sheet['!ref'] = "A1:L11";
@@ -111,7 +134,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
 
     $scope.importarExcelMusicas = function () {
         var result = loaderService.importarColeccionMusicas($scope.data.coleccion, $scope.data.sampleRows);
-        alertService.addInfoAlert("se importaron " + result.length + " importados de la coleccion " + $scope.data.coleccion.nombre);
+        alertService.addInfoAlert("se importaron " + result.length + " renglones de la colección " + $scope.data.coleccion.nombre);
         $scope.reset();
     };
 
@@ -266,7 +289,7 @@ app.controller('cargarMusicaController', ['$scope', '$window', '$location', 'loa
             if (props.indexOf("Ejercicio") === -1 && props.indexOf("Danza") === -1) colsError += "No se encontro la columna Ejercicio.";
             if (props.indexOf("CdPista") === -1 && props.indexOf("Nro") === -1) colsError += "No se encontro la columna CdPista.";
             if (props.indexOf("Titulo") === -1 && props.indexOf("Tema") === -1) colsError += "No se encontro la columna Titulo.";
-            if (props.indexOf("Autor") === -1) colsError += "No se encontro la columna Interprete.";
+            if (props.indexOf("Interprete") === -1) colsError += "No se encontro la columna Interprete.";
             if (props.indexOf("Carpeta") === -1) colsError += "No se encontro la columna Carpeta.";
             if (props.indexOf("Archivo") === -1) colsError += "No se encontro la columna Archivo.";
         }

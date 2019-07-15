@@ -97,7 +97,7 @@
     </div>
 </div>
 <div class="container" >
-    <div ng-controller="alertController" class="row" style="padding-top: 110px;">
+    <div ng-controller="alertController" class="row" style="margin-top: 110px;">
         <div uib-alert ng-repeat="al in service.alerts" type="{{al.type}}" class="{{'alert-' + al.type}}" close="service.closeAlert($index)">{{al.msg}}</div>
     </div>
 
@@ -248,7 +248,7 @@
                 <input type="file" id="fileEquivalencias"  style="visibility:hidden;" onchange="angular.element(this).scope().leerEquivalencias(this)" />
                 <div class="form-group col-md-12 btn-group" role="toolbar">
                     <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileEquivalencias')" title="Leer Excel Equivalencias Nombres"><span class="glyphicon glyphicon-import"></span>   Leer Excel Equivalencias Nombres</button>
-                    <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileImport')" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
+                    <button type="button" class="btn btn-primary" ng-click="pickImportFile('fileImport')" ng-disabled="equivalenciaEjercicios.length < 1" ng-class="{'disabled' : equivalenciaEjercicios.length < 1 }" title="Leer Excel Colección"><span class="glyphicon glyphicon-import"></span>   Leer Excel Colección Música</button>
                     <button type="button" class="btn btn-success" ng-disabled="data.validado === false" ng-class="{'disabled' : data.validado === false }" ng-click="importarExcelMusicas()" title="Validar músicas"><span class="glyphicon glyphicon-import"></span>   Importación Colección Música</button>
                 </div>
             </div>
