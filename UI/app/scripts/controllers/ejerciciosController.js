@@ -149,7 +149,8 @@ app.controller('claseController',
 
 
         $scope.$watch('vistaPlayer',
-            function(newVal, oldVal) {
+            function (newVal, oldVal) {
+                $scope.refreshTotalClase();
                 if ($scope.intervalHoraFin) $interval.cancel($scope.intervalHoraFin);
                 loaderService.vistaPlayer($scope.vistaPlayer);
                 if (newVal === true) {
