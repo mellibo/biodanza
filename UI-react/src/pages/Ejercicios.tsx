@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDataStore } from '../store/dataStore'
+import { usePlayerStore } from '../store/playerStore'
 import { buscarEjercicios, filtrarMusica } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import { EjercicioModal } from '../components/EjercicioModal'
@@ -18,6 +19,7 @@ export function Ejercicios() {
   const ejerciciosOrder = useDataStore((s) => s.ejerciciosOrder)
   const grupos = useDataStore((s) => s.grupos)
   const getMusicasForEjercicio = useDataStore((s) => s.getMusicasForEjercicio)
+  const playFile = usePlayerStore((s) => s.playFile)
 
   useEffect(() => {
     init()
@@ -101,7 +103,7 @@ export function Ejercicios() {
                           .filter((musica) => filtrarMusica(musica, ejercicio, buscar))
                           .map((musica) => (
                             <div key={musica.id}>
-                              <a title="Reproductor todavía no migrado (Fase 6 del plan)">
+                              <a onClick={() => playFile(musica)}>
                                 {musica.coleccion}-{musica.nroCd}-{musica.nroPista} {musica.nombre}(
                                 {musica.interprete})
                               </a>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDataStore } from '../store/dataStore'
+import { usePlayerStore } from '../store/playerStore'
 import { buscarMusicas, tokenizeEjercicioTextFilter } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import type { MusicaFilter } from '../types'
@@ -8,13 +9,12 @@ const PAGE_SIZE = 15
 
 // Puerto de musicasController + grillaMusica.html (UI/biosoft.html:186-221).
 // El modo "select" (elegir una música desde otra pantalla) no aplica acá.
-// Los botones "play" quedan deshabilitados hasta portar el reproductor
-// (Fase 6 del plan).
 export function Musicas() {
   const init = useDataStore((s) => s.init)
   const musicasById = useDataStore((s) => s.musicasById)
   const musicasOrder = useDataStore((s) => s.musicasOrder)
   const getEjercicioById = useDataStore((s) => s.getEjercicioById)
+  const playFile = usePlayerStore((s) => s.playFile)
 
   useEffect(() => {
     init()
@@ -115,7 +115,7 @@ export function Musicas() {
               <td className="col-md-1 col-lg-1">{musica.lineas}</td>
               <td className="col-md-1 col-lg-1">
                 {musica.duracion}
-                <button type="button" className="btn btn-warning" disabled title="Reproductor todavía no migrado (Fase 6 del plan)">
+                <button type="button" className="btn btn-warning" onClick={() => playFile(musica)} title="Escuchar música">
                   <span className="glyphicon glyphicon-play" />
                 </button>
               </td>

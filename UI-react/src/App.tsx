@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { routes } from './routes'
 import { AlertBanner } from './components/AlertBanner'
+import { PlayerControls } from './components/PlayerControls'
 
 const navLabels: Record<string, string> = {
   '/clases': 'Clases',
@@ -39,7 +40,17 @@ function Layout() {
           </div>
         </div>
       </div>
-      <div className="container" style={{ marginTop: '70px' }}>
+      <div
+        className="navbar navbar-default navbar-fixed-top"
+        style={{ top: '50px', paddingTop: '1px', backgroundImage: 'none', backgroundColor: 'white', minHeight: 0 }}
+      >
+        <div className="container">
+          <div className="navbar-collapse collapse">
+            <PlayerControls />
+          </div>
+        </div>
+      </div>
+      <div className="container" style={{ marginTop: '110px' }}>
         <AlertBanner />
         <div className="row" style={{ paddingTop: '6px' }}>
           <Routes>

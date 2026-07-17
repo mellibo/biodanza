@@ -1,7 +1,6 @@
 // Rutas que replican las URLs hash de la app AngularJS actual
-// (UI/app/scripts/main.js). Se portaron todas menos el reproductor de
-// audio en sí (Fase 6 del plan): los botones "play" quedan deshabilitados
-// con tooltip hasta esa fase.
+// (UI/app/scripts/main.js). Todas las rutas y el reproductor de audio
+// (src/store/playerStore.ts) están portados.
 import type { JSX } from 'react'
 import { About } from './pages/About'
 import { Ejercicios } from './pages/Ejercicios'

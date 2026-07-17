@@ -1,8 +1,8 @@
+import { usePlayerStore } from '../store/playerStore'
 import type { Ejercicio, Musica } from '../types'
 
 // Puerto de modalEjercicioController + modalEjercicio.html
-// (UI/biosoft.html:114-185). El botón "play" queda deshabilitado hasta que
-// se porte el reproductor (Fase 6 del plan) -- no se simula reproducción.
+// (UI/biosoft.html:114-185).
 interface EjercicioModalProps {
   ejercicio: Ejercicio
   musicas: Musica[]
@@ -10,6 +10,7 @@ interface EjercicioModalProps {
 }
 
 export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalProps) {
+  const playFile = usePlayerStore((s) => s.playFile)
   return (
     <div
       className="modal"
@@ -65,7 +66,7 @@ export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalPr
                       <td>{musica.interprete}</td>
                       <td>{musica.duracion}</td>
                       <td className="col-md-2 col-lg-2 centrado">
-                        <a title="Reproductor todavía no migrado (Fase 6 del plan)">play</a>
+                        <a onClick={() => playFile(musica)}>play</a>
                       </td>
                     </tr>
                   ))}

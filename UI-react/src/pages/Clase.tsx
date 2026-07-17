@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useClasesStore, calculaTiempoEjercicio } from '../store/clasesStore'
 import { useDataStore } from '../store/dataStore'
+import { usePlayerStore } from '../store/playerStore'
 import { formatDuracion } from '../lib/duration'
 import { infoMusica } from '../lib/musicaInfo'
 import { getVistaPlayer, setVistaPlayer } from '../lib/vistaPlayer'
@@ -10,11 +11,7 @@ import { BuscarMusicaModal } from '../components/BuscarMusicaModal'
 import { DetalleEjercicioClaseModal } from '../components/DetalleEjercicioClaseModal'
 import type { ClaseEjercicio } from '../types'
 
-// Puerto de claseController + clase.html (UI/biosoft.html:362-495). El
-// modo "Play" (vistaPlayer===true) muestra la clase en modo lectura --
-// reproducir de verdad es la Fase 6 del plan (más riesgosa, se deja para
-// el final); acá los botones de play quedan deshabilitados con tooltip,
-// igual que en el resto de las rutas ya portadas.
+// Puerto de claseController + clase.html (UI/biosoft.html:362-495).
 export function Clase() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -35,6 +32,12 @@ export function Clase() {
   const exportarClase = useClasesStore((s) => s.exportarClase)
   const getMusicaById = useDataStore((s) => s.getMusicaById)
 
+  const playIndex = usePlayerStore((s) => s.playIndex)
+  const currentPlaying = usePlayerStore((s) => s.currentPlaying)
+  const setPlayerClase = usePlayerStore((s) => s.setClase)
+  const playAll = usePlayerStore((s) => s.playAll)
+  const playEjercicio = usePlayerStore((s) => s.playEjercicio)
+
   useEffect(() => {
     initClases()
     initData()
@@ -50,6 +53,26 @@ export function Clase() {
   useEffect(() => {
     if (clases.length > 0 && !clase) navigate('/clases')
   }, [clase, clases.length, navigate])
+
+  // Puerto de claseController: playerService.clase = $scope.clase se
+  // asigna al entrar a la pantalla (no se limpia al desmontar -- así era
+  // el original, para que la música siga sonando si navegás a otra
+  // pantalla; solo se limpia en cerrar()/"Volver").
+  useEffect(() => {
+    if (clase) setPlayerClase(clase)
+  }, [clase, setPlayerClase])
+
+  function esSeleccionado(ej: ClaseEjercicio) {
+    return (
+      playIndex === ej.nro - 1 ||
+      (!!ej.musicaId && currentPlaying !== null && ej.musicaId === currentPlaying.id)
+    )
+  }
+
+  function cerrar() {
+    setPlayerClase(null)
+    navigate('/clases')
+  }
 
   const tiempoTotal = useMemo(() => {
     if (!clase) return 0
@@ -73,7 +96,7 @@ export function Clase() {
     <div className="row">
       <form className="form-inline">
         <div className="btn-group">
-          <button type="button" className="btn btn-primary" onClick={() => navigate('/clases')} title="Volver al listado de clases">
+          <button type="button" className="btn btn-primary" onClick={cerrar} title="Volver al listado de clases">
             <span className="glyphicon glyphicon-menu-left" /> Volver
           </button>
           {!vistaPlayer && (
@@ -89,12 +112,7 @@ export function Clase() {
               <span className="glyphicon glyphicon-share" />
             </button>
           )}
-          <button
-            type="button"
-            className="btn btn-primary"
-            disabled
-            title="Reproductor todavía no migrado (Fase 6 del plan)"
-          >
+          <button type="button" className="btn btn-primary" onClick={playAll} title="Reproducir toda la clase sin cortes">
             <span className="glyphicon glyphicon-play" /> Todos
           </button>
         </div>
@@ -138,7 +156,11 @@ export function Clase() {
         <table id="tblEjercicios" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
           <tbody>
             {clase.ejercicios.map((ej) => (
-              <tr key={ej.nro} style={ej.deshabilitado ? { backgroundColor: '#b3b7bc' } : undefined}>
+              <tr
+                key={ej.nro}
+                className={esSeleccionado(ej) ? 'selected' : ''}
+                style={ej.deshabilitado ? { backgroundColor: '#b3b7bc' } : undefined}
+              >
                 <td className="col-md-1 form-inline">
                   {!vistaPlayer && (
                     <div className="btn-group-vertical">
@@ -194,7 +216,7 @@ export function Clase() {
                   )}
                   <br />
                   <div>
-                    <a title={vistaPlayer ? 'Reproductor todavía no migrado (Fase 6 del plan)' : undefined}>
+                    <a onClick={vistaPlayer ? () => playEjercicio(ej) : undefined}>
                       <label>{nombreMostrado(ej)}</label>
                     </a>
                   </div>
@@ -205,7 +227,7 @@ export function Clase() {
                       <button type="button" className="btn btn-primary" title="Buscar música" onClick={() => setBuscarMusicaNro(ej.nro)}>
                         <span className="glyphicon glyphicon-search" />
                       </button>
-                      <button type="button" className="btn btn-warning" disabled title="Reproductor todavía no migrado (Fase 6 del plan)">
+                      <button type="button" className="btn btn-warning" onClick={() => playEjercicio(ej)} title="Escuchar música">
                         <span className="glyphicon glyphicon-play" />
                       </button>
                       <button
@@ -221,7 +243,9 @@ export function Clase() {
                       </button>
                     </div>
                   )}
-                  <label className="col-md-12">{infoMusica(ej.musicaId ? getMusicaById(ej.musicaId) : undefined)}</label>
+                  <a onClick={() => playEjercicio(ej)}>
+                    <label className="col-md-12">{infoMusica(ej.musicaId ? getMusicaById(ej.musicaId) : undefined)}</label>
+                  </a>
                 </td>
                 <td className="col-md-3">
                   {!vistaPlayer ? (

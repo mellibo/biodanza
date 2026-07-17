@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useDataStore } from '../store/dataStore'
 import { useClasesStore } from '../store/clasesStore'
+import { usePlayerStore } from '../store/playerStore'
 import { infoMusica } from '../lib/musicaInfo'
 import { BuscarEjercicioModal } from './BuscarEjercicioModal'
 import { BuscarMusicaModal } from './BuscarMusicaModal'
 import type { ClaseEjercicio } from '../types'
 
 // Puerto de detalleEjercicioClaseController + popupEjercicioClase.html
-// (UI/biosoft.html:674-766). El botón "Escuchar música" queda
-// deshabilitado hasta portar el reproductor (Fase 6 del plan).
+// (UI/biosoft.html:674-766).
 interface DetalleEjercicioClaseModalProps {
   claseIndex: number
   ejercicio: ClaseEjercicio
@@ -18,6 +18,7 @@ interface DetalleEjercicioClaseModalProps {
 export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: DetalleEjercicioClaseModalProps) {
   const getMusicaById = useDataStore((s) => s.getMusicaById)
   const updateEjercicioClase = useClasesStore((s) => s.updateEjercicioClase)
+  const playFile = usePlayerStore((s) => s.playFile)
 
   const [buscarEjercicioOpen, setBuscarEjercicioOpen] = useState(false)
   const [buscarMusicaOpen, setBuscarMusicaOpen] = useState(false)
@@ -65,8 +66,8 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
                 <button
                   type="button"
                   className="btn btn-warning"
-                  disabled
-                  title="Reproductor todavía no migrado (Fase 6 del plan)"
+                  onClick={() => playFile(musica ?? null, ejercicio)}
+                  title="Escuchar música"
                 >
                   <span className="glyphicon glyphicon-play" />
                 </button>
