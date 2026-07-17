@@ -5,6 +5,9 @@
 
 [Bb]iblio/
 Musica/
+
+# Claude Code local config
+.claude/
 # User-specific files
 *.suo
 *.user
