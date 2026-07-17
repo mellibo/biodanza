@@ -19,5 +19,12 @@ export default defineConfig({
     // los glyphicons de Bootstrap, ~109KB, que supera el límite por
     // defecto) — no puede quedar ningún archivo externo bajo file://.
     assetsInlineLimit: Number.MAX_SAFE_INTEGER,
+    // No vaciar dist/ en cada build: dist/musica/ es un junction manual a
+    // una carpeta de colecciones real (ver sesión de migración) para poder
+    // probar cargarMusica/el reproductor con archivos de audio de verdad;
+    // Vite lo borraría en cada `build` si emptyOutDir quedara en su
+    // default (true). El build es un solo index.html, así que no hay
+    // riesgo de acumular basura de builds viejos.
+    emptyOutDir: false,
   },
 })
