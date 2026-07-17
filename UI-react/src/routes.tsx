@@ -3,6 +3,8 @@
 // enlaces/costumbre del usuario. Ver Fase 0 del plan de migración.
 import type { JSX } from 'react'
 import { About } from './pages/About'
+import { Ejercicios } from './pages/Ejercicios'
+import { Musicas } from './pages/Musicas'
 
 function Placeholder({ nombre }: { nombre: string }) {
   return (
@@ -16,8 +18,8 @@ function Placeholder({ nombre }: { nombre: string }) {
 export const routes: { path: string; element: JSX.Element }[] = [
   { path: '/clases', element: <Placeholder nombre="Clases" /> },
   { path: '/clase/:id', element: <Placeholder nombre="Clase" /> },
-  { path: '/ejercicios', element: <Placeholder nombre="Ejercicios" /> },
-  { path: '/musicas', element: <Placeholder nombre="Musicas" /> },
+  { path: '/ejercicios', element: <Ejercicios /> },
+  { path: '/musicas', element: <Musicas /> },
   { path: '/cargarMusica', element: <Placeholder nombre="Cargar Musica" /> },
   { path: '/cargarEjercicios', element: <Placeholder nombre="Cargar Ejercicios" /> },
   { path: '/acercade', element: <About /> },
