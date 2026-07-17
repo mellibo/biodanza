@@ -66,12 +66,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         },
         getEjercicioId : (nombre) => { return toValidJsVariableName(nombre); },
         getEjercicioById: (id) => {
-            try {
-                return eval("db.ejercicios.x" + id);
-            } catch (e) {
-                console.log(id);
-                console.log(e);
-            } 
+            return db.ejercicios["x" + id];
         },
         getEjercicio: function (nombre) {
             var ejercicio;
@@ -84,8 +79,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
             return ejercicio;
         },
         getMusicaById: function (idMusica) {
-            var str = "db.musicas." + idMusica;
-            return eval(str);
+            return db.musicas[idMusica];
         },
         getMusicaId :(col, cd, pista) => {return "x" + col + "_" + cd + "_" + pista;},
         getMusicaByColCdPista: function (col, cd, pista) {
@@ -135,13 +129,13 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
         angular.forEach(db.ejercicios, (ej) => addEjercicio(ej));
         angular.forEach(db.colecciones,
             function (col) {
-                var musicas = eval("$localStorage.biosoft_musica_" + col.nombre);
+                var musicas = $localStorage["biosoft_musica_" + col.nombre];
                 addColeccion(col, musicas);
             });
     }
 
     function saveColeccion(col, musicas) {
-        eval("$localStorage.biosoft_musica_" + col.nombre + "= musicas");
+        $localStorage["biosoft_musica_" + col.nombre] = musicas;
     }
 
     service.saveEjercicios = () => {
@@ -167,8 +161,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     function addMusica(musica) {
         if (!db.musicas.includes(musica)) db.musicas.push(musica);
         musica.coleccion = musica.coleccion.toUpperCase();
-        var str = "db.musicas.x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista + " = musica;";
-        eval(str);
+        db.musicas["x" + musica.coleccion + "_" + musica.nroCd + "_" + musica.nroPista] = musica;
         musica.nombreNormalized = musica.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         musica.interpreteNormalized = musica.interprete.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         musica.cdPista = musica.nroCd + "-" + musica.nroPista;
@@ -191,12 +184,7 @@ services.factory('loaderService', ['loadJsService', '$q', '$localStorage', '$fil
     function addEjercicio(ejercicio) {
         ejercicio.nombreNormalized = ejercicio.nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         ejercicio.grupoNormalized = ejercicio.grupo.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        var str = "db.ejercicios.x" + service.getEjercicioId(ejercicio.nombre) + " = ejercicio";
-        try {
-            eval(str);
-        } catch (e) {
-            console.log(e);
-        }
+        db.ejercicios["x" + service.getEjercicioId(ejercicio.nombre)] = ejercicio;
         ejercicio.musicas = [];
         angular.forEach(ejercicio.musicasId,
             function (value, index) {

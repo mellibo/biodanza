@@ -1,7 +1,7 @@
 ﻿services.factory('clasesService',
 [
-    '$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', '$rootScope', 'loaderService', 'downloadService',
-    function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location, $rootScope, loaderService, downloadService) {
+    '$q', '$localStorage', '$uibModal', 'NgTableParams', '$filter', '$location', '$rootScope', 'loaderService', 'downloadService', 'alertService',
+    function ($q, $localStorage, $uibModal, NgTableParams, $filter, $location, $rootScope, loaderService, downloadService, alertService) {
         var service = {};
         var biodanzaClases = null;
 
@@ -179,7 +179,14 @@
             reader.onloadend = function (evt) {
                 if (evt.target.readyState === FileReader.DONE) {
                     //console.log(evt.target.result);
-                    var json = eval(evt.target.result.substring(evt.target.result.indexOf('[')));
+                    var json;
+                    try {
+                        json = JSON.parse(evt.target.result.substring(evt.target.result.indexOf('[')));
+                    } catch (e) {
+                        console.log(e);
+                        alertService.addDangerAlert("El archivo de clases no tiene un formato válido.");
+                        return;
+                    }
                     for (var i = json.length - 1; i >= 0; i--) {
                         var item = json[i];
                         for (var j = 0; j < item.ejercicios.length; j++) {
