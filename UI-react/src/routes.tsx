@@ -2,6 +2,7 @@
 // (UI/app/scripts/main.js), para poder portarlas una por una sin romper
 // enlaces/costumbre del usuario. Ver Fase 0 del plan de migración.
 import type { JSX } from 'react'
+import { About } from './pages/About'
 
 function Placeholder({ nombre }: { nombre: string }) {
   return (
@@ -19,5 +20,5 @@ export const routes: { path: string; element: JSX.Element }[] = [
   { path: '/musicas', element: <Placeholder nombre="Musicas" /> },
   { path: '/cargarMusica', element: <Placeholder nombre="Cargar Musica" /> },
   { path: '/cargarEjercicios', element: <Placeholder nombre="Cargar Ejercicios" /> },
-  { path: '/acercade', element: <Placeholder nombre="Acerca de" /> },
+  { path: '/acercade', element: <About /> },
 ]
