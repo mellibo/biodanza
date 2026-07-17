@@ -1,5 +1,6 @@
 import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { routes } from './routes'
+import { AlertBanner } from './components/AlertBanner'
 
 const navLabels: Record<string, string> = {
   '/clases': 'Clases',
@@ -38,8 +39,9 @@ function Layout() {
           </div>
         </div>
       </div>
-      <div className="container">
-        <div className="row" style={{ marginTop: '70px' }}>
+      <div className="container" style={{ marginTop: '70px' }}>
+        <AlertBanner />
+        <div className="row" style={{ paddingTop: '6px' }}>
           <Routes>
             <Route path="/" element={<Navigate to="/clases" replace />} />
             {routes.map((r) => (

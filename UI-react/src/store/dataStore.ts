@@ -54,6 +54,16 @@ function buildMusica(base: MusicaBase): Musica {
   }
 }
 
+// Separa los campos calculados de vuelta a la forma "base" que se persiste
+// (equivalente a lo que loaderService.saveEjercicios hace con `delete
+// ejercicio.musicas`/`idEjercicio` antes de guardar, y a que saveColeccion
+// guarda los objetos musica ANTES de que addMusica les agregue los campos
+// calculados -- ver loaderService.js:34-37 vs 44-45).
+function toEjercicioBase(ejercicio: Ejercicio): EjercicioBase {
+  const { id: _id, nombreNormalized: _n, grupoNormalized: _g, ...base } = ejercicio
+  return base
+}
+
 interface DataState {
   ejerciciosById: Record<string, Ejercicio>
   ejerciciosOrder: string[]
@@ -65,9 +75,36 @@ interface DataState {
 
   init: () => void
   getEjercicioById: (id: string) => Ejercicio | undefined
+  getEjercicioByNombre: (nombre: string) => Ejercicio | undefined
   getMusicaById: (id: string) => Musica | undefined
   getMusicasForEjercicio: (ejercicio: Ejercicio) => Musica[]
   getEjerciciosForMusica: (musica: Musica) => Ejercicio[]
+  getCarpetaColeccion: (coleccionNombre: string) => string | undefined
+
+  addEjercicio: (base: EjercicioBase) => Ejercicio
+  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion'>>) => void
+  removeEjercicio: (id: string) => void
+  saveEjerciciosSnapshot: () => void
+  importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
+}
+
+// Forma de cada fila validada de la grilla de importación de música
+// (cargarMusicaController.js:185-284): nombres de columnas de Excel tal
+// como llegan, más los campos calculados durante la validación (nroCd,
+// nroPista, estado, duracion).
+export interface RowImportMusica {
+  estado: string
+  Archivo?: string
+  Carpeta?: string
+  Titulo?: string
+  Interprete?: string
+  Lineas?: string
+  Ejercicio?: string
+  grupo?: string
+  nroCd?: number
+  nroPista?: number
+  duracion?: string
+  Tags?: string
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -112,6 +149,7 @@ export const useDataStore = create<DataState>((set, get) => ({
   },
 
   getEjercicioById: (id) => get().ejerciciosById[id],
+  getEjercicioByNombre: (nombre) => get().ejerciciosById[getEjercicioId(nombre)],
   getMusicaById: (id) => get().musicasById[id],
 
   getMusicasForEjercicio: (ejercicio) => {
@@ -132,6 +170,142 @@ export const useDataStore = create<DataState>((set, get) => ({
       if (ejercicio) ejercicios.push(ejercicio)
     }
     return ejercicios
+  },
+
+  getCarpetaColeccion: (coleccionNombre) => {
+    const col = get().colecciones.find((c) => c.nombre === coleccionNombre)
+    return col?.carpeta
+  },
+
+  addEjercicio: (base) => {
+    const ejercicio = buildEjercicio(base)
+    set((state) => ({
+      ejerciciosById: { ...state.ejerciciosById, [ejercicio.id]: ejercicio },
+      ejerciciosOrder: state.ejerciciosById[ejercicio.id]
+        ? state.ejerciciosOrder
+        : [...state.ejerciciosOrder, ejercicio.id],
+    }))
+    return ejercicio
+  },
+
+  updateEjercicio: (id, patch) => {
+    set((state) => {
+      const existing = state.ejerciciosById[id]
+      if (!existing) return state
+      return { ejerciciosById: { ...state.ejerciciosById, [id]: { ...existing, ...patch } } }
+    })
+  },
+
+  removeEjercicio: (id) => {
+    set((state) => {
+      const { [id]: _removed, ...rest } = state.ejerciciosById
+      return { ejerciciosById: rest, ejerciciosOrder: state.ejerciciosOrder.filter((x) => x !== id) }
+    })
+  },
+
+  // Puerto de loaderService.saveEjercicios (líneas 141-159): de-duplica por
+  // nombre (se queda con la primera aparición) y persiste el snapshot.
+  saveEjerciciosSnapshot: () => {
+    const { ejerciciosById, ejerciciosOrder } = get()
+    const vistos = new Set<string>()
+    const idsUnicos: string[] = []
+    for (const id of ejerciciosOrder) {
+      const ejercicio = ejerciciosById[id]
+      if (!ejercicio) continue
+      if (vistos.has(ejercicio.nombre)) continue
+      vistos.add(ejercicio.nombre)
+      idsUnicos.push(id)
+    }
+    if (idsUnicos.length !== ejerciciosOrder.length) {
+      set({ ejerciciosOrder: idsUnicos })
+    }
+    const snapshot = idsUnicos.map((id) => toEjercicioBase(ejerciciosById[id]))
+    writeLocalStorage(STORAGE_KEYS.ejercicios, snapshot)
+  },
+
+  // Puerto de loaderService.importarColeccionMusicas (líneas 232-277) +
+  // addColeccion (líneas 24-46), fusionados en una sola acción de store.
+  importarColeccionMusicas: (coleccion, rows) => {
+    const nombreCol = coleccion.nombre.toUpperCase()
+    if (nombreCol.indexOf(' ') > -1) {
+      throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
+    }
+
+    const col: MusicaBase[] = []
+    for (const row of rows) {
+      if (row.estado !== 'ok') continue
+      let musica = col.find((m) => m.nroCd === String(row.nroCd) && m.nroPista === String(row.nroPista))
+      if (!musica) {
+        musica = {
+          archivo: row.Archivo ?? '',
+          carpeta: row.Carpeta ?? '',
+          coleccion: nombreCol,
+          duracion: row.duracion ?? '',
+          interprete: row.Interprete ?? '',
+          lineas: row.Lineas ?? '',
+          nombre: row.Titulo ?? '',
+          nroCd: String(row.nroCd ?? ''),
+          nroPista: String(row.nroPista ?? ''),
+          ejerciciosId: [],
+          tags: row.Tags ? normalize(row.Tags) : '',
+        }
+        col.push(musica)
+      }
+      if (!row.Ejercicio) continue
+      let ejercicio = get().getEjercicioByNombre(row.Ejercicio)
+      if (!ejercicio) {
+        ejercicio = get().addEjercicio({
+          nombre: row.Ejercicio,
+          grupo: row.grupo ?? '',
+          coleccion: nombreCol,
+          detalle: '',
+          musicasId: [],
+        })
+      }
+      const idMusica = getMusicaId(nombreCol, musica.nroCd, musica.nroPista)
+      if (!ejercicio.musicasId.includes(idMusica)) {
+        set((state) => ({
+          ejerciciosById: {
+            ...state.ejerciciosById,
+            [ejercicio!.id]: {
+              ...state.ejerciciosById[ejercicio!.id],
+              musicasId: [...state.ejerciciosById[ejercicio!.id].musicasId, idMusica],
+            },
+          },
+        }))
+      }
+      if (!musica.ejerciciosId.includes(ejercicio.id)) musica.ejerciciosId.push(ejercicio.id)
+    }
+
+    get().saveEjerciciosSnapshot()
+
+    // addColeccion: si es nueva, agregarla a la lista; purgar músicas
+    // previas de esta colección (una reimportación reemplaza todo) y
+    // agregar las nuevas.
+    set((state) => {
+      const yaExiste = state.colecciones.some((c) => c.nombre === nombreCol)
+      const colecciones = yaExiste
+        ? state.colecciones
+        : [...state.colecciones, { ...coleccion, nombre: nombreCol }]
+
+      const musicasById = { ...state.musicasById }
+      const musicasOrder = state.musicasOrder.filter((id) => musicasById[id]?.coleccion !== nombreCol)
+      for (const id of state.musicasOrder) {
+        if (musicasById[id]?.coleccion === nombreCol) delete musicasById[id]
+      }
+      for (const base of col) {
+        const musica = buildMusica(base)
+        musicasById[musica.id] = musica
+        musicasOrder.push(musica.id)
+      }
+
+      return { colecciones, musicasById, musicasOrder }
+    })
+
+    saveColecciones(get().colecciones)
+    saveMusicasColeccion(nombreCol, col)
+
+    return col
   },
 }))
 

@@ -5,6 +5,8 @@ import type { JSX } from 'react'
 import { About } from './pages/About'
 import { Ejercicios } from './pages/Ejercicios'
 import { Musicas } from './pages/Musicas'
+import { CargarMusica } from './pages/CargarMusica'
+import { CargarEjercicios } from './pages/CargarEjercicios'
 
 function Placeholder({ nombre }: { nombre: string }) {
   return (
@@ -20,7 +22,7 @@ export const routes: { path: string; element: JSX.Element }[] = [
   { path: '/clase/:id', element: <Placeholder nombre="Clase" /> },
   { path: '/ejercicios', element: <Ejercicios /> },
   { path: '/musicas', element: <Musicas /> },
-  { path: '/cargarMusica', element: <Placeholder nombre="Cargar Musica" /> },
-  { path: '/cargarEjercicios', element: <Placeholder nombre="Cargar Ejercicios" /> },
+  { path: '/cargarMusica', element: <CargarMusica /> },
+  { path: '/cargarEjercicios', element: <CargarEjercicios /> },
   { path: '/acercade', element: <About /> },
 ]
