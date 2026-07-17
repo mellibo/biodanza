@@ -1,22 +1,61 @@
-import { HashRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { routes } from './routes'
+
+const navLabels: Record<string, string> = {
+  '/clases': 'Clases',
+  '/ejercicios': 'Ejercicios',
+  '/musicas': 'Música',
+  '/cargarMusica': 'Cargar Música',
+  '/cargarEjercicios': 'Cargar Ejercicios',
+  '/acercade': 'Acerca De...',
+}
+
+function NavItem({ path, label }: { path: string; label: string }) {
+  const { pathname } = useLocation()
+  return (
+    <li className={pathname === path ? 'active' : ''}>
+      <Link to={path}>{label}</Link>
+    </li>
+  )
+}
+
+function Layout() {
+  return (
+    <>
+      <div className="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div className="container">
+          <div className="navbar-header">
+            <Link className="navbar-brand" to="/clases">
+              Biodanza
+            </Link>
+          </div>
+          <div className="navbar-collapse collapse">
+            <ul className="nav navbar-nav">
+              {Object.entries(navLabels).map(([path, label]) => (
+                <NavItem key={path} path={path} label={label} />
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="container">
+        <div className="row" style={{ marginTop: '70px' }}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/clases" replace />} />
+            {routes.map((r) => (
+              <Route key={r.path} path={r.path} element={r.element} />
+            ))}
+          </Routes>
+        </div>
+      </div>
+    </>
+  )
+}
 
 function App() {
   return (
     <HashRouter>
-      <nav style={{ display: 'flex', gap: '1rem', padding: '1rem' }}>
-        {routes.map((r) => (
-          <Link key={r.path} to={r.path.replace(':id', '1')}>
-            {r.path}
-          </Link>
-        ))}
-      </nav>
-      <Routes>
-        <Route path="/" element={<Navigate to="/clases" replace />} />
-        {routes.map((r) => (
-          <Route key={r.path} path={r.path} element={r.element} />
-        ))}
-      </Routes>
+      <Layout />
     </HashRouter>
   )
 }

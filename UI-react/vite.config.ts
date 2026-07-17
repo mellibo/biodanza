@@ -15,5 +15,9 @@ export default defineConfig({
   plugins: [react(), viteSingleFile()],
   build: {
     target: 'es2018',
+    // Fuerza inlinear TODO asset como data URI (incluida la fuente SVG de
+    // los glyphicons de Bootstrap, ~109KB, que supera el límite por
+    // defecto) — no puede quedar ningún archivo externo bajo file://.
+    assetsInlineLimit: Number.MAX_SAFE_INTEGER,
   },
 })
