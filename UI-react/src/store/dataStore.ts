@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import ejerciciosData from '../data/ejercicios.generated'
 import gruposData from '../data/grupos.generated'
 import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
+import { readLocalStorage, writeLocalStorage } from '../lib/storage'
 import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
@@ -16,23 +17,6 @@ const STORAGE_KEYS = {
   grupos: 'biosoft_grupos',
   musicaPrefix: 'biosoft_musica_',
 } as const
-
-// ngStorage guarda cada valor bajo localStorage con el prefijo "ngStorage-"
-// y el propio JSON como string -- se replica para heredar los datos de
-// usuarios que ya venían usando la app AngularJS en este mismo navegador.
-function readLocalStorage<T>(key: string): T | undefined {
-  const raw = window.localStorage.getItem('ngStorage-' + key)
-  if (raw == null) return undefined
-  try {
-    return JSON.parse(raw) as T
-  } catch {
-    return undefined
-  }
-}
-
-function writeLocalStorage(key: string, value: unknown) {
-  window.localStorage.setItem('ngStorage-' + key, JSON.stringify(value))
-}
 
 function buildEjercicio(base: EjercicioBase): Ejercicio {
   return {
