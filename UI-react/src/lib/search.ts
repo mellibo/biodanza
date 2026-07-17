@@ -3,6 +3,14 @@
 // Mismos pesos, mismo tope de 100 resultados, misma inconsistencia de
 // normalización de acentos entre ramas (ver nota más abajo) -- no se
 // "arregla" en silencio, se replica a propósito.
+//
+// Excepción deliberada y documentada (pedida explícitamente, no un cambio
+// silencioso): en el original, filtrar por grupo sin texto de búsqueda
+// devolvía 0 resultados -- searchStrings quedaba vacío, el loop de ranking
+// nunca sumaba nada, y `if (rank > 0)` nunca era cierto aunque el grupo
+// matcheara. Acá, cuando no hay texto de búsqueda, un ejercicio que pasa el
+// filtro de grupo se incluye directo (rank 0), sin depender del loop de
+// tokens de búsqueda.
 import { normalize } from './normalize'
 import type { Ejercicio, Musica, MusicaFilter } from '../types'
 
@@ -25,6 +33,11 @@ export function buscarEjercicios(
   const search: { rank: number; ejercicio: Ejercicio }[] = []
   for (const ejercicio of ejercicios) {
     if (grupo !== 'TODOS' && grupo !== ejercicio.grupo) continue
+    if (searchStrings.length === 0) {
+      // Fix deliberado: sin texto de búsqueda, un match de grupo alcanza.
+      search.push({ rank: 0, ejercicio })
+      continue
+    }
     let rank = 0
     for (const s of searchStrings) {
       if (ejercicio.nombreNormalized.indexOf(s) !== -1) rank++
