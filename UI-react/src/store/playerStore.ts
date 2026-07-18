@@ -149,7 +149,14 @@ function wireAudioEvents(audio: HTMLAudioElement) {
   audio.addEventListener('pause', () => usePlayerStore.getState().changeState('pause'))
   audio.addEventListener('ended', () => {
     usePlayerStore.getState().changeState('ended')
-    if (usePlayerStore.getState().playContinuo) usePlayerStore.getState().playNext()
+    // Fix (a pedido, bug real confirmado también en el original): si el
+    // ejercicio tenía pauseEmpalme>0, changeState('ended') ya armó un
+    // timeout para avanzar después de la pausa. Llamar a playNext() acá
+    // también, sin condición, hacía que ese avance pasara YA MISMO
+    // (playFile cancela el timeout de empalme al arrancar) -- la pausa
+    // configurada nunca llegaba a ocurrir. Ahora, si hay un empalme
+    // armado, se deja que sea el único que dispare el avance.
+    if (usePlayerStore.getState().playContinuo && !timers.timeoutEmpalme) usePlayerStore.getState().playNext()
   })
   audio.addEventListener('durationchange', () => {
     usePlayerStore.setState({ duration: audio.duration || 0 })
@@ -318,6 +325,12 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
       message: '',
       segundosFinProgresivo: 0,
       finalizarLeftPx: null,
+      // Fix (a pedido): el original no limpiaba segundosParaEmpalme acá,
+      // así que el label "Emp. en N seg." de playerControls.html quedaba
+      // pegado con el último valor para siempre después de que el
+      // empalme disparara y arrancara la siguiente pista. clearAllTimers()
+      // ya cancela el timeout; esto limpia el número que se muestra.
+      segundosParaEmpalme: 0,
     })
 
     if (ejercicio && ejercicio.finalizarSegundos && musica) {
