@@ -365,7 +365,7 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
 
     set({
       message:
-        musica.coleccion + '-' + musica.nroCd + '-' + musica.nroPista + ' ' + musica.nombre + '(' + musica.interprete + '). ',
+        musica.coleccion + '-' + musica.idMusica + ' ' + musica.nombre + '(' + musica.interprete + '). ',
     })
 
     audio.play().catch((e: unknown) => {

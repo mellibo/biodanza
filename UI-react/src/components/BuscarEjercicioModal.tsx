@@ -99,7 +99,7 @@ export function BuscarEjercicioModal({ onSelect, onClose }: BuscarEjercicioModal
                           >
                             seleccionar
                           </button>{' '}
-                          {musica.coleccion}-{musica.nroCd}-{musica.nroPista} {musica.nombre}({musica.interprete})
+                          {musica.coleccion}-{musica.idMusica} {musica.nombre}({musica.interprete})
                         </div>
                       ))}
                     </td>

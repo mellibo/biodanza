@@ -64,12 +64,12 @@ export function Musicas() {
               />
             </td>
             <td className="col-md-1 col-lg-1">
-              Nro
+              Clave
               <input
                 type="text"
                 className="form-control input-sm"
-                value={filter.nroCd ?? ''}
-                onChange={(e) => setFilterField('nroCd', e.target.value)}
+                value={filter.idMusica ?? ''}
+                onChange={(e) => setFilterField('idMusica', e.target.value)}
               />
             </td>
             <td className="col-md-4 col-lg-4">
@@ -98,9 +98,7 @@ export function Musicas() {
           {paginaActual.map((musica) => (
             <tr key={musica.id}>
               <td className="col-md-1 col-lg-1">{musica.coleccion}</td>
-              <td className="col-md-1 col-lg-1">
-                {musica.nroCd}-{musica.nroPista}
-              </td>
+              <td className="col-md-1 col-lg-1">{musica.idMusica}</td>
               <td className="col-md-4 col-lg-4">
                 <span>{musica.nombre}</span> ({musica.interprete})
               </td>

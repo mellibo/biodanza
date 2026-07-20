@@ -29,8 +29,10 @@ export interface MusicaBase {
   interprete: string
   lineas: string
   nombre: string
-  nroCd: string
-  nroPista: string
+  // Clave libre leída de la primera columna del Excel de catálogo ("clave",
+  // ver CLAUDE.md). Antes se exigía el formato "00:00" y se descomponía en
+  // nroCd/nroPista; ahora es cualquier texto alfanumérico, usado tal cual.
+  idMusica: string
   ejerciciosId: string[]
   tags: string
 }
@@ -40,7 +42,6 @@ export interface Musica extends MusicaBase {
   id: string
   nombreNormalized: string
   interpreteNormalized: string
-  cdPista: string
 }
 
 export interface Grupo {
@@ -59,7 +60,7 @@ export interface Coleccion {
 
 export interface MusicaFilter {
   coleccion?: string
-  nroCd?: string
+  idMusica?: string
   nombre?: string
   lineas?: string
 }
@@ -131,8 +132,11 @@ export interface ClaseEjercicioExport {
     coleccion: string | null
     interprete: string | null
     nombre: string | null
-    nroCd: string | null
-    nroPista: string | null
+    idMusica: string | null
+    // Legacy: solo se aceptan al importar un .bio viejo (ver
+    // clasesStore.ts importarClases), nunca se escriben en un export nuevo.
+    nroCd?: string | null
+    nroPista?: string | null
   }
 }
 

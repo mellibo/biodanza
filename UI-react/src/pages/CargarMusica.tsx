@@ -199,31 +199,13 @@ export function CargarMusica() {
     for (const item of rawRows) {
       item.Lineas = item.Lineas || item.L || item.lineas
       item.CdPista = item.CdPista || item.Nro
-      if (typeof item.CdPista !== 'string') {
-        item.estado = 'Error: CdPista Incorrecto.'
+      if (typeof item.CdPista !== 'string' || item.CdPista.trim() === '') {
+        item.estado = 'Error: Clave (CdPista) vacia o incorrecta.'
         totalError++
         continue
       }
       item.CdPista = item.CdPista.trim()
-      if (item.CdPista.length !== 5) {
-        item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'"
-        totalError++
-        continue
-      }
-      const nroCd = parseInt(item.CdPista.substring(0, 2))
-      if (isNaN(nroCd)) {
-        item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'"
-        totalError++
-        continue
-      }
-      item.nroCd = nroCd
-      const nroPista = parseInt(item.CdPista.substring(3, 5))
-      if (isNaN(nroPista)) {
-        item.estado = "Error: CdPista Incorrecto. Debe ser de la forma '00:00'"
-        totalError++
-        continue
-      }
-      item.nroPista = nroPista
+      item.idMusica = item.CdPista
 
       if (typeof item.Ejercicio !== 'string') {
         item.estado = 'Error: Columna Ejercicio Incorrecta.'
@@ -430,7 +412,7 @@ export function CargarMusica() {
             <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
               <thead>
                 <tr>
-                  <td>Cd:Pista</td>
+                  <td>Clave</td>
                   <td>Ejercicio</td>
                   <td>Titulo</td>
                   <td>Interprete</td>

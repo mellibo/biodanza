@@ -6,9 +6,7 @@ export function infoMusica(musica: Musica | undefined): string {
   return (
     musica.coleccion +
     ' ' +
-    musica.nroCd +
-    '-' +
-    musica.nroPista +
+    musica.idMusica +
     ' ' +
     musica.nombre +
     ' (' +

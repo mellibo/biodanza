@@ -60,7 +60,7 @@ export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalPr
                   {musicas.map((musica) => (
                     <tr key={musica.id}>
                       <td>
-                        {musica.coleccion} {musica.nroCd}-{musica.nroPista}
+                        {musica.coleccion} {musica.idMusica}
                       </td>
                       <td>{musica.nombre}</td>
                       <td>{musica.interprete}</td>

@@ -4,6 +4,7 @@ import { getMusicaId } from '../lib/normalize'
 import { parseDuracion } from '../lib/duration'
 import { useDataStore } from './dataStore'
 import { downloadJson } from '../lib/download'
+import { resolveLegacyMusicaId, findLegacyMusica } from '../lib/legacyMusicaId'
 import type { Clase, ClaseEjercicio, ClaseEjercicioRef, ClaseExport, ClaseEjercicioExport } from '../types'
 
 function ejercicioRef(ejercicio: ClaseEjercicioRef | Record<string, never>): ClaseEjercicioRef {
@@ -103,8 +104,7 @@ function buildExpClase(clase: Clase): ClaseExport {
         coleccion: musica?.coleccion || null,
         interprete: musica?.interprete || null,
         nombre: musica?.nombre || null,
-        nroCd: musica?.nroCd || null,
-        nroPista: musica?.nroPista || null,
+        idMusica: musica?.idMusica || null,
       },
     }
   })
@@ -148,14 +148,44 @@ function withClase(clases: Clase[], index: number, fn: (clase: Clase) => Clase):
   return clases.map((c, i) => (i === index ? fn(c) : c))
 }
 
+// Re-vincula ClaseEjercicio.musicaId viejos (esquema coleccion+nroCd+nroPista,
+// ver src/lib/legacyMusicaId.ts) contra el catálogo ya cargado, una sola vez.
+// Un musicaId que ya resuelve directo (musicasById[...]) no se toca -- eso
+// cubre tanto ids nuevos como el caso (raro, pero posible) de una clave
+// nueva que por casualidad tenga la forma del id viejo.
+function migrateLegacyMusicaIds(clases: Clase[]): { clases: Clase[]; changed: boolean } {
+  const { musicasOrder, musicasById } = useDataStore.getState()
+  let changed = false
+  const migradas = clases.map((clase) => {
+    let claseChanged = false
+    const ejercicios = clase.ejercicios.map((ej) => {
+      if (!ej.musicaId || musicasById[ej.musicaId]) return ej
+      const nuevo = resolveLegacyMusicaId(ej.musicaId, musicasOrder, musicasById)
+      if (!nuevo) return ej
+      claseChanged = true
+      return { ...ej, musicaId: nuevo }
+    })
+    if (!claseChanged) return clase
+    changed = true
+    return { ...clase, ejercicios }
+  })
+  return { clases: migradas, changed }
+}
+
 export const useClasesStore = create<ClasesState>((set, get) => ({
   clases: [],
   initialized: false,
 
   init: () => {
     if (get().initialized) return
-    const clases = readLocalStorage<Clase[]>(STORAGE_KEY) ?? []
+    // Asegura el catálogo cargado antes de migrar -- init() de dataStore es
+    // idempotente, así que no importa si la pantalla actual ya lo llamó o no
+    // (Clases.tsx, por ejemplo, nunca inicializa dataStore por su cuenta).
+    useDataStore.getState().init()
+    const stored = readLocalStorage<Clase[]>(STORAGE_KEY) ?? []
+    const { clases, changed } = migrateLegacyMusicaIds(stored)
     set({ clases, initialized: true })
+    if (changed) get().saveClases(clases)
   },
 
   saveClases: (clases) => {
@@ -303,8 +333,17 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
           T: item.T,
           ejercicios: item.ejercicios.map((ej) => {
             let musicaId = ej.musica?.musicaId ?? null
-            if (ej.musica?.coleccion && ej.musica?.nroCd && ej.musica?.nroPista) {
-              musicaId = getMusicaId(ej.musica.coleccion, ej.musica.nroCd, ej.musica.nroPista)
+            if (ej.musica?.coleccion && ej.musica?.idMusica) {
+              // .bio nuevo
+              musicaId = getMusicaId(ej.musica.coleccion, ej.musica.idMusica)
+            } else if (ej.musica?.coleccion && ej.musica?.nroCd && ej.musica?.nroPista) {
+              // .bio viejo (coleccion+nroCd+nroPista sueltos, sin idMusica) --
+              // a diferencia del original, que armaba un id sin verificar que
+              // existiera, acá se resuelve contra el catálogo ya cargado y se
+              // deja null si no hay match, en vez de dejar una referencia
+              // colgada a nada.
+              const { musicasOrder, musicasById } = useDataStore.getState()
+              musicaId = findLegacyMusica(ej.musica.coleccion, ej.musica.nroCd, ej.musica.nroPista, musicasOrder, musicasById)?.id ?? null
             }
             return {
               nro: ej.nro,

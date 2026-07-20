@@ -79,7 +79,7 @@ export function filtrarMusica(musica: Musica, ejercicio: Ejercicio, buscar: stri
 const PESO_COLECCION = 50
 const PESO_TITULO = 10
 const PESO_EJERCICIO = 10
-const PESO_CD_PISTA = 30
+const PESO_ID_MUSICA = 30
 const PESO_LINEAS = 20
 const PESO_TAG = 5
 const FACTOR_LENGTH_MENOR_4 = 0.25
@@ -104,7 +104,7 @@ export function buscarMusicas(
   const musicas = musicasOrder.map((id) => musicasById[id])
 
   if (searchStringsEjercicio.length === 0) {
-    if (!filter.coleccion?.length && !filter.nroCd?.length && !filter.nombre?.length && !filter.lineas?.length) {
+    if (!filter.coleccion?.length && !filter.idMusica?.length && !filter.nombre?.length && !filter.lineas?.length) {
       return musicas
     }
   }
@@ -155,8 +155,8 @@ export function buscarMusicas(
     if (filter.coleccion && filter.coleccion.length > 0) {
       if (musica.coleccion.indexOf(filter.coleccion.toUpperCase()) !== -1) rank += PESO_COLECCION
     }
-    if (filter.nroCd && filter.nroCd.length > 0) {
-      if (musica.cdPista.indexOf(filter.nroCd.toUpperCase()) !== -1) rank += PESO_CD_PISTA
+    if (filter.idMusica && filter.idMusica.length > 0) {
+      if (musica.idMusica.toUpperCase().indexOf(filter.idMusica.toUpperCase()) !== -1) rank += PESO_ID_MUSICA
     }
     if (filter.nombre && filter.nombre.length > 0 && regexTitulo) {
       match = musica.nombreNormalized.match(regexTitulo)

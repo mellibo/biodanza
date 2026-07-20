@@ -104,7 +104,7 @@ export function Ejercicios() {
                           .map((musica) => (
                             <div key={musica.id}>
                               <a onClick={() => playFile(musica)}>
-                                {musica.coleccion}-{musica.nroCd}-{musica.nroPista} {musica.nombre}(
+                                {musica.coleccion}-{musica.idMusica} {musica.nombre}(
                                 {musica.interprete})
                               </a>
                             </div>

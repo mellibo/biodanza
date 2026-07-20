@@ -24,6 +24,9 @@ export function getEjercicioId(nombre: string): string {
   return toValidJsVariableName(nombre)
 }
 
-export function getMusicaId(coleccion: string, nroCd: string, nroPista: string): string {
-  return 'x' + coleccion + '_' + nroCd + '_' + nroPista
+// Sin el prefijo "x" que tenía el original (existía para poder hacer
+// db.musicas.x1_3 como acceso de propiedad válido en JS -- acá siempre se
+// usa Record<string,T> con corchetes, no cumple ninguna función real).
+export function getMusicaId(coleccion: string, idMusica: string): string {
+  return coleccion + '_' + idMusica
 }

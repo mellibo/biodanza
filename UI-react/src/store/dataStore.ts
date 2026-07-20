@@ -27,14 +27,29 @@ function buildEjercicio(base: EjercicioBase): Ejercicio {
   }
 }
 
-function buildMusica(base: MusicaBase): Musica {
+// Adapta música persistida por versiones anteriores a este cambio (forma
+// {nroCd, nroPista}, sin idMusica) reconstruyendo un idMusica equivalente,
+// para no romper colecciones ya importadas hasta que el usuario las
+// reimporte. El parser viejo exigía una celda de 5 caracteres "00:00", así
+// que nroCd/nroPista siempre representan 0-99 -- son re-paddeables a 2
+// dígitos sin ambigüedad.
+function adaptLegacyMusicaBase(base: MusicaBase & { nroCd?: string; nroPista?: string }): MusicaBase {
+  if (base.idMusica) return base
+  if (base.nroCd && base.nroPista) {
+    const pad = (s: string) => String(s).padStart(2, '0')
+    return { ...base, idMusica: pad(base.nroCd) + ':' + pad(base.nroPista) }
+  }
+  return { ...base, idMusica: '' }
+}
+
+function buildMusica(rawBase: MusicaBase): Musica {
+  const base = adaptLegacyMusicaBase(rawBase)
   return {
     ...base,
-    id: getMusicaId(base.coleccion.toUpperCase(), base.nroCd, base.nroPista),
+    id: getMusicaId(base.coleccion.toUpperCase(), base.idMusica),
     coleccion: base.coleccion.toUpperCase(),
     nombreNormalized: normalize(base.nombre),
     interpreteNormalized: normalize(base.interprete),
-    cdPista: base.nroCd + '-' + base.nroPista,
   }
 }
 
@@ -74,8 +89,8 @@ interface DataState {
 
 // Forma de cada fila validada de la grilla de importación de música
 // (cargarMusicaController.js:185-284): nombres de columnas de Excel tal
-// como llegan, más los campos calculados durante la validación (nroCd,
-// nroPista, estado, duracion).
+// como llegan, más los campos calculados durante la validación (idMusica,
+// estado, duracion).
 export interface RowImportMusica {
   estado: string
   Archivo?: string
@@ -85,8 +100,7 @@ export interface RowImportMusica {
   Lineas?: string
   Ejercicio?: string
   grupo?: string
-  nroCd?: number
-  nroPista?: number
+  idMusica?: string
   duracion?: string
   Tags?: string
 }
@@ -218,7 +232,7 @@ export const useDataStore = create<DataState>((set, get) => ({
     const col: MusicaBase[] = []
     for (const row of rows) {
       if (row.estado !== 'ok') continue
-      let musica = col.find((m) => m.nroCd === String(row.nroCd) && m.nroPista === String(row.nroPista))
+      let musica = col.find((m) => m.idMusica === row.idMusica)
       if (!musica) {
         musica = {
           archivo: row.Archivo ?? '',
@@ -228,8 +242,7 @@ export const useDataStore = create<DataState>((set, get) => ({
           interprete: row.Interprete ?? '',
           lineas: row.Lineas ?? '',
           nombre: row.Titulo ?? '',
-          nroCd: String(row.nroCd ?? ''),
-          nroPista: String(row.nroPista ?? ''),
+          idMusica: row.idMusica ?? '',
           ejerciciosId: [],
           tags: row.Tags ? normalize(row.Tags) : '',
         }
@@ -246,14 +259,14 @@ export const useDataStore = create<DataState>((set, get) => ({
           musicasId: [],
         })
       }
-      const idMusica = getMusicaId(nombreCol, musica.nroCd, musica.nroPista)
-      if (!ejercicio.musicasId.includes(idMusica)) {
+      const musicaId = getMusicaId(nombreCol, musica.idMusica)
+      if (!ejercicio.musicasId.includes(musicaId)) {
         set((state) => ({
           ejerciciosById: {
             ...state.ejerciciosById,
             [ejercicio!.id]: {
               ...state.ejerciciosById[ejercicio!.id],
-              musicasId: [...state.ejerciciosById[ejercicio!.id].musicasId, idMusica],
+              musicasId: [...state.ejerciciosById[ejercicio!.id].musicasId, musicaId],
             },
           },
         }))

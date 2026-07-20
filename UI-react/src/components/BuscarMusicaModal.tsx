@@ -69,12 +69,12 @@ export function BuscarMusicaModal({ ejercicioNombreInicial, onSelect, onClose }:
                 value={filter.coleccion ?? ''}
                 onChange={(e) => setFilterField('coleccion', e.target.value)}
               />
-              <label>Nro:</label>
+              <label>Clave:</label>
               <input
                 type="text"
                 className="form-control"
-                value={filter.nroCd ?? ''}
-                onChange={(e) => setFilterField('nroCd', e.target.value)}
+                value={filter.idMusica ?? ''}
+                onChange={(e) => setFilterField('idMusica', e.target.value)}
               />
               <label>Título:</label>
               <input
@@ -88,7 +88,7 @@ export function BuscarMusicaModal({ ejercicioNombreInicial, onSelect, onClose }:
               <thead>
                 <tr>
                   <td>Col</td>
-                  <td>Nro</td>
+                  <td>Clave</td>
                   <td>Canción (Interprete)</td>
                   <td>Ejercicios</td>
                   <td></td>
@@ -98,9 +98,7 @@ export function BuscarMusicaModal({ ejercicioNombreInicial, onSelect, onClose }:
                 {paginaActual.map((musica) => (
                   <tr key={musica.id}>
                     <td>{musica.coleccion}</td>
-                    <td>
-                      {musica.nroCd}-{musica.nroPista}
-                    </td>
+                    <td>{musica.idMusica}</td>
                     <td>
                       {musica.nombre} ({musica.interprete})
                     </td>
