@@ -3,6 +3,7 @@ import ejerciciosData from '../data/ejercicios.generated'
 import gruposData from '../data/grupos.generated'
 import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
 import { readLocalStorage, writeLocalStorage } from '../lib/storage'
+import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
 import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
@@ -143,7 +144,31 @@ export const useDataStore = create<DataState>((set, get) => ({
       }
     }
 
+    // Re-vincula ejercicio.musicasId viejos (formato "xCOL_nroCd_nroPista",
+    // ver src/lib/legacyMusicaId.ts) contra las músicas ya cargadas -- estos
+    // ids quedaron grabados en biosoft_ejercicios con el esquema anterior a
+    // este cambio, y buildMusica() ya devuelve ids con el esquema nuevo, así
+    // que sin este paso un ejercicio viejo se queda sin ninguna música
+    // vinculada. Un id que ya resuelve directo no se toca.
+    let ejerciciosMigrados = false
+    for (const id of ejerciciosOrder) {
+      const ejercicio = ejerciciosById[id]
+      let cambioEsteEjercicio = false
+      const musicasIdNuevo = ejercicio.musicasId.map((mid) => {
+        if (musicasById[mid]) return mid
+        const nuevo = resolveLegacyMusicaId(mid, musicasOrder, musicasById)
+        if (!nuevo) return mid
+        cambioEsteEjercicio = true
+        return nuevo
+      })
+      if (cambioEsteEjercicio) {
+        ejerciciosById[id] = { ...ejercicio, musicasId: musicasIdNuevo }
+        ejerciciosMigrados = true
+      }
+    }
+
     set({ ejerciciosById, ejerciciosOrder, musicasById, musicasOrder, colecciones, grupos, initialized: true })
+    if (ejerciciosMigrados) get().saveEjerciciosSnapshot()
   },
 
   getEjercicioById: (id) => get().ejerciciosById[id],
