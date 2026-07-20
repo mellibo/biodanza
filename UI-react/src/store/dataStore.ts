@@ -4,6 +4,7 @@ import gruposData from '../data/grupos.generated'
 import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
 import { readLocalStorage, writeLocalStorage } from '../lib/storage'
 import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
+import { parseLineasToEtiquetas } from '../lib/etiquetasParsing'
 import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
@@ -22,6 +23,7 @@ const STORAGE_KEYS = {
 function buildEjercicio(base: EjercicioBase): Ejercicio {
   return {
     ...base,
+    etiquetas: base.etiquetas ?? [],
     id: getEjercicioId(base.nombre),
     nombreNormalized: normalize(base.nombre),
     grupoNormalized: normalize(base.grupo),
@@ -33,14 +35,21 @@ function buildEjercicio(base: EjercicioBase): Ejercicio {
 // para no romper colecciones ya importadas hasta que el usuario las
 // reimporte. El parser viejo exigía una celda de 5 caracteres "00:00", así
 // que nroCd/nroPista siempre representan 0-99 -- son re-paddeables a 2
-// dígitos sin ambigüedad.
+// dígitos sin ambigüedad. También cubre música persistida de antes de que
+// existieran las etiquetas (sin ese campo) -- arranca en [] sin migrar el
+// viejo campo `lineas`, a pedido explícito (mismo criterio que V/A/C/S/T).
 function adaptLegacyMusicaBase(base: MusicaBase & { nroCd?: string; nroPista?: string }): MusicaBase {
-  if (base.idMusica) return base
-  if (base.nroCd && base.nroPista) {
-    const pad = (s: string) => String(s).padStart(2, '0')
-    return { ...base, idMusica: pad(base.nroCd) + ':' + pad(base.nroPista) }
+  let adaptada = base
+  if (!adaptada.idMusica) {
+    if (adaptada.nroCd && adaptada.nroPista) {
+      const pad = (s: string) => String(s).padStart(2, '0')
+      adaptada = { ...adaptada, idMusica: pad(adaptada.nroCd) + ':' + pad(adaptada.nroPista) }
+    } else {
+      adaptada = { ...adaptada, idMusica: '' }
+    }
   }
-  return { ...base, idMusica: '' }
+  if (!adaptada.etiquetas) adaptada = { ...adaptada, etiquetas: [] }
+  return adaptada
 }
 
 function buildMusica(rawBase: MusicaBase): Musica {
@@ -64,6 +73,11 @@ function toEjercicioBase(ejercicio: Ejercicio): EjercicioBase {
   return base
 }
 
+function toMusicaBase(musica: Musica): MusicaBase {
+  const { id: _id, nombreNormalized: _n, interpreteNormalized: _i, ...base } = musica
+  return base
+}
+
 interface DataState {
   ejerciciosById: Record<string, Ejercicio>
   ejerciciosOrder: string[]
@@ -82,9 +96,10 @@ interface DataState {
   getCarpetaColeccion: (coleccionNombre: string) => string | undefined
 
   addEjercicio: (base: EjercicioBase) => Ejercicio
-  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion'>>) => void
+  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion' | 'etiquetas'>>) => void
   removeEjercicio: (id: string) => void
   saveEjerciciosSnapshot: () => void
+  updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
 }
 
@@ -246,6 +261,24 @@ export const useDataStore = create<DataState>((set, get) => ({
     writeLocalStorage(STORAGE_KEYS.ejercicios, snapshot)
   },
 
+  // No tiene equivalente directo en el original (ahí Musica no era editable
+  // desde la grilla) -- persiste el cambio de vuelta en la colección de la
+  // música afectada, mismo storage key que importarColeccionMusicas.
+  updateMusica: (id, patch) => {
+    set((state) => {
+      const existing = state.musicasById[id]
+      if (!existing) return state
+      return { musicasById: { ...state.musicasById, [id]: { ...existing, ...patch } } }
+    })
+    const musica = get().musicasById[id]
+    if (!musica) return
+    const musicasColeccion = get()
+      .musicasOrder.map((mid) => get().musicasById[mid])
+      .filter((m): m is Musica => !!m && m.coleccion === musica.coleccion)
+      .map(toMusicaBase)
+    saveMusicasColeccion(musica.coleccion, musicasColeccion)
+  },
+
   // Puerto de loaderService.importarColeccionMusicas (líneas 232-277) +
   // addColeccion (líneas 24-46), fusionados en una sola acción de store.
   importarColeccionMusicas: (coleccion, rows) => {
@@ -265,11 +298,11 @@ export const useDataStore = create<DataState>((set, get) => ({
           coleccion: nombreCol,
           duracion: row.duracion ?? '',
           interprete: row.Interprete ?? '',
-          lineas: row.Lineas ?? '',
           nombre: row.Titulo ?? '',
           idMusica: row.idMusica ?? '',
           ejerciciosId: [],
           tags: row.Tags ? normalize(row.Tags) : '',
+          etiquetas: parseLineasToEtiquetas(row.Lineas),
         }
         col.push(musica)
       }
@@ -282,6 +315,7 @@ export const useDataStore = create<DataState>((set, get) => ({
           coleccion: nombreCol,
           detalle: '',
           musicasId: [],
+          etiquetas: [],
         })
       }
       const musicaId = getMusicaId(nombreCol, musica.idMusica)

@@ -3,6 +3,7 @@ import { useDataStore } from '../store/dataStore'
 import { usePlayerStore } from '../store/playerStore'
 import { buscarMusicas, tokenizeEjercicioTextFilter } from '../lib/search'
 import { Pagination } from '../components/Pagination'
+import { EtiquetasEditor } from '../components/EtiquetasEditor'
 import type { MusicaFilter } from '../types'
 
 const PAGE_SIZE = 15
@@ -14,6 +15,7 @@ export function Musicas() {
   const musicasById = useDataStore((s) => s.musicasById)
   const musicasOrder = useDataStore((s) => s.musicasOrder)
   const getEjercicioById = useDataStore((s) => s.getEjercicioById)
+  const updateMusica = useDataStore((s) => s.updateMusica)
   const playFile = usePlayerStore((s) => s.playFile)
 
   useEffect(() => {
@@ -83,12 +85,12 @@ export function Musicas() {
             </td>
             <td className="col-md-4 col-lg-4">Ejercicios</td>
             <td className="col-md-1 col-lg-1">
-              Lineas
+              Etiquetas
               <input
                 type="text"
                 className="form-control input-sm"
-                value={filter.lineas ?? ''}
-                onChange={(e) => setFilterField('lineas', e.target.value)}
+                value={filter.etiquetas ?? ''}
+                onChange={(e) => setFilterField('etiquetas', e.target.value)}
               />
             </td>
             <td className="col-md-1 col-lg-1">Duración / Play</td>
@@ -110,7 +112,12 @@ export function Musicas() {
                   })}
                 </ul>
               </td>
-              <td className="col-md-1 col-lg-1">{musica.lineas}</td>
+              <td className="col-md-1 col-lg-1">
+                <EtiquetasEditor
+                  etiquetas={musica.etiquetas}
+                  onChange={(etiquetas) => updateMusica(musica.id, { etiquetas })}
+                />
+              </td>
               <td className="col-md-1 col-lg-1">
                 {musica.duracion}
                 <button type="button" className="btn btn-warning" onClick={() => playFile(musica)} title="Escuchar música">

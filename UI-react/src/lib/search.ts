@@ -80,7 +80,7 @@ const PESO_COLECCION = 50
 const PESO_TITULO = 10
 const PESO_EJERCICIO = 10
 const PESO_ID_MUSICA = 30
-const PESO_LINEAS = 20
+const PESO_ETIQUETAS = 20
 const PESO_TAG = 5
 const FACTOR_LENGTH_MENOR_4 = 0.25
 
@@ -104,7 +104,7 @@ export function buscarMusicas(
   const musicas = musicasOrder.map((id) => musicasById[id])
 
   if (searchStringsEjercicio.length === 0) {
-    if (!filter.coleccion?.length && !filter.idMusica?.length && !filter.nombre?.length && !filter.lineas?.length) {
+    if (!filter.coleccion?.length && !filter.idMusica?.length && !filter.nombre?.length && !filter.etiquetas?.length) {
       return musicas
     }
   }
@@ -171,8 +171,10 @@ export function buscarMusicas(
         rank += addRank(match, PESO_TAG)
       }
     }
-    if (filter.lineas && filter.lineas.length > 0) {
-      if (!musica.lineas || musica.lineas.indexOf(filter.lineas.toUpperCase()) !== -1) rank += PESO_LINEAS
+    if (filter.etiquetas && filter.etiquetas.length > 0) {
+      if (musica.etiquetas.some((e) => e.toUpperCase().indexOf(filter.etiquetas!.toUpperCase()) !== -1)) {
+        rank += PESO_ETIQUETAS
+      }
     }
 
     if (rank > 0) search.push({ rank, musica })

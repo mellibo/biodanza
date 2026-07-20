@@ -131,11 +131,7 @@ export function Clases() {
                   )}
                 </td>
                 <td className="col-md-1 col-lg-1" onClick={() => editarClase(i)}>
-                  {clase.V ? 'V' : ''}
-                  {clase.A ? 'A' : ''}
-                  {clase.C ? 'C' : ''}
-                  {clase.S ? 'S' : ''}
-                  {clase.T ? 'T' : ''}
+                  {clase.etiquetas.join(', ')}
                 </td>
                 <td className="col-md-3 col-lg-3">
                   <textarea

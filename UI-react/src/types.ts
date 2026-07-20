@@ -9,6 +9,9 @@ export interface EjercicioBase {
   coleccion: string
   detalle: string
   musicasId: string[]
+  // Etiquetas libres (ver src/store/etiquetasStore.ts) -- mismo mecanismo
+  // que en Clase/Musica, vocabulario compartido entre las 3 entidades.
+  etiquetas: string[]
 }
 
 // Campos calculados al cargar (equivalente a addEjercicio en loaderService.js).
@@ -27,14 +30,19 @@ export interface MusicaBase {
   coleccion: string
   duracion: string
   interprete: string
-  lineas: string
   nombre: string
   // Clave libre leída de la primera columna del Excel de catálogo ("clave",
   // ver CLAUDE.md). Antes se exigía el formato "00:00" y se descomponía en
   // nroCd/nroPista; ahora es cualquier texto alfanumérico, usado tal cual.
   idMusica: string
   ejerciciosId: string[]
+  // "Tags" -- columna de Excel aparte, normalizada, usada para rankear
+  // búsqueda (PESO_TAG en search.ts). NO tiene relación con `etiquetas`.
   tags: string
+  // Etiquetas libres (ver src/store/etiquetasStore.ts) -- reemplaza al
+  // viejo campo `lineas` (texto libre suelto). Mismo mecanismo que en
+  // Clase/Ejercicio, vocabulario compartido entre las 3 entidades.
+  etiquetas: string[]
 }
 
 // Campos calculados al cargar (equivalente a addMusica en loaderService.js)
@@ -62,7 +70,7 @@ export interface MusicaFilter {
   coleccion?: string
   idMusica?: string
   nombre?: string
-  lineas?: string
+  etiquetas?: string
 }
 
 // Formas calcadas de clasesService.js. A diferencia de Ejercicio/Musica,
@@ -99,11 +107,9 @@ export interface Clase {
   fechaClase: string
   comentarios: string
   ejercicios: ClaseEjercicio[]
-  V?: boolean
-  A?: boolean
-  C?: boolean
-  S?: boolean
-  T?: boolean
+  // Reemplaza los booleanos sueltos V/A/C/S/T (líneas de vivencia) por
+  // etiquetas libres -- mismo mecanismo que Musica/Ejercicio.
+  etiquetas: string[]
 }
 
 // Forma portable de un ejercicio de clase para exportar/importar .bio
@@ -146,9 +152,7 @@ export interface ClaseExport {
   fechaClase: string
   comentarios: string
   ejercicios: ClaseEjercicioExport[]
-  V?: boolean
-  A?: boolean
-  C?: boolean
-  S?: boolean
-  T?: boolean
+  // Opcional: un .bio viejo no tiene este campo -- importarClases lo
+  // trata como [] en ese caso (sin migrar V/A/C/S/T, a pedido explícito).
+  etiquetas?: string[]
 }

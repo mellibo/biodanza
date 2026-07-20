@@ -135,7 +135,7 @@ export function CargarEjercicios() {
     for (const row of sampleRows) {
       const dbEj = getEjercicioByNombre(row.nombre)
       if (nuevos && row.estado.substring(0, 5) === 'Nuevo') {
-        addEjercicio({ nombre: row.nombre, grupo: row.grupo, coleccion: row.coleccion, detalle: row.detalle, musicasId: [] })
+        addEjercicio({ nombre: row.nombre, grupo: row.grupo, coleccion: row.coleccion, detalle: row.detalle, musicasId: [], etiquetas: [] })
       }
       if (modificados && row.estado.substring(0, 6) === 'Cambio' && dbEj) {
         updateEjercicio(dbEj.id, { grupo: row.grupo, detalle: row.detalle, coleccion: row.coleccion })

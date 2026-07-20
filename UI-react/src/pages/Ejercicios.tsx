@@ -4,7 +4,6 @@ import { usePlayerStore } from '../store/playerStore'
 import { buscarEjercicios, filtrarMusica } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import { EjercicioModal } from '../components/EjercicioModal'
-import type { Ejercicio } from '../types'
 
 const PAGE_SIZE = 15
 
@@ -29,7 +28,11 @@ export function Ejercicios() {
   const [grupo, setGrupo] = useState('TODOS')
   const [colapsado, setColapsado] = useState(false)
   const [page, setPage] = useState(1)
-  const [seleccionado, setSeleccionado] = useState<Ejercicio | null>(null)
+  const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
+  // Se busca en vivo por id (no se guarda el objeto Ejercicio en sí) para
+  // que el modal siga reflejando cambios hechos en el propio modal (ej.
+  // etiquetas) sin quedarse con una copia vieja del ejercicio.
+  const seleccionado = seleccionadoId ? (ejerciciosById[seleccionadoId] ?? null) : null
 
   const resultados = useMemo(
     () => buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo),
@@ -94,7 +97,7 @@ export function Ejercicios() {
                   {paginaActual.map((ejercicio) => (
                     <tr key={ejercicio.id}>
                       <td>
-                        <a onClick={() => setSeleccionado(ejercicio)}>
+                        <a onClick={() => setSeleccionadoId(ejercicio.id)}>
                           ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo})
                         </a>
                       </td>
@@ -123,7 +126,7 @@ export function Ejercicios() {
         <EjercicioModal
           ejercicio={seleccionado}
           musicas={getMusicasForEjercicio(seleccionado)}
-          onClose={() => setSeleccionado(null)}
+          onClose={() => setSeleccionadoId(null)}
         />
       )}
     </div>

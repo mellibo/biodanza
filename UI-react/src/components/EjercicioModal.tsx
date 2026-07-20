@@ -1,4 +1,6 @@
 import { usePlayerStore } from '../store/playerStore'
+import { useDataStore } from '../store/dataStore'
+import { EtiquetasEditor } from './EtiquetasEditor'
 import type { Ejercicio, Musica } from '../types'
 
 // Puerto de modalEjercicioController + modalEjercicio.html
@@ -11,6 +13,8 @@ interface EjercicioModalProps {
 
 export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalProps) {
   const playFile = usePlayerStore((s) => s.playFile)
+  const updateEjercicio = useDataStore((s) => s.updateEjercicio)
+  const saveEjerciciosSnapshot = useDataStore((s) => s.saveEjerciciosSnapshot)
   return (
     <div
       className="modal"
@@ -43,6 +47,19 @@ export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalPr
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-12 form-group">
+                <label className="control-label">Etiquetas</label>
+                <br />
+                <EtiquetasEditor
+                  etiquetas={ejercicio.etiquetas}
+                  onChange={(etiquetas) => {
+                    updateEjercicio(ejercicio.id, { etiquetas })
+                    saveEjerciciosSnapshot()
+                  }}
+                />
               </div>
             </div>
             <div className="row">

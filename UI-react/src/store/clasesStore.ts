@@ -53,6 +53,7 @@ function nuevaClaseVacia(): Clase {
     fechaCreacion: new Date().toISOString(),
     fechaClase: new Date().toISOString(),
     comentarios: '',
+    etiquetas: [],
     ejercicios,
   }
 }
@@ -114,11 +115,7 @@ function buildExpClase(clase: Clase): ClaseExport {
     fechaClase: clase.fechaClase,
     comentarios: clase.comentarios,
     ejercicios,
-    V: clase.V,
-    A: clase.A,
-    C: clase.C,
-    S: clase.S,
-    T: clase.T,
+    etiquetas: clase.etiquetas,
   }
 }
 
@@ -326,11 +323,9 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
           fechaCreacion: item.fechaCreacion,
           fechaClase: item.fechaClase,
           comentarios: item.comentarios,
-          V: item.V,
-          A: item.A,
-          C: item.C,
-          S: item.S,
-          T: item.T,
+          // .bio viejo no tiene este campo (V/A/C/S/T no se migran, a
+          // pedido explícito del usuario) -- se arranca en [] en ese caso.
+          etiquetas: item.etiquetas ?? [],
           ejercicios: item.ejercicios.map((ej) => {
             let musicaId = ej.musica?.musicaId ?? null
             if (ej.musica?.coleccion && ej.musica?.idMusica) {

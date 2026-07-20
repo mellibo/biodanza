@@ -9,6 +9,7 @@ import { getVistaPlayer, setVistaPlayer } from '../lib/vistaPlayer'
 import { BuscarEjercicioModal } from '../components/BuscarEjercicioModal'
 import { BuscarMusicaModal } from '../components/BuscarMusicaModal'
 import { DetalleEjercicioClaseModal } from '../components/DetalleEjercicioClaseModal'
+import { EtiquetasEditor } from '../components/EtiquetasEditor'
 import type { ClaseEjercicio } from '../types'
 
 // Puerto de claseController + clase.html (UI/biosoft.html:362-495).
@@ -139,19 +140,13 @@ export function Clase() {
         <div className="form-group">
           <span>Total: {formatDuracion(tiempoTotal)}</span>
         </div>
-        <div className="form-group checkbox">
-          {(['V', 'A', 'C', 'S', 'T'] as const).map((letra) => (
-            <label key={letra}>
-              {letra}
-              <br />
-              <input
-                type="checkbox"
-                checked={!!clase[letra]}
-                onChange={(e) => updateClase(claseIndex, { [letra]: e.target.checked })}
-              />
-            </label>
-          ))}
-        </div>
+        {!vistaPlayer && (
+          <div className="form-group">
+            <label>Etiquetas</label>
+            <br />
+            <EtiquetasEditor etiquetas={clase.etiquetas} onChange={(etiquetas) => updateClase(claseIndex, { etiquetas })} />
+          </div>
+        )}
 
         <table id="tblEjercicios" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
           <tbody>
