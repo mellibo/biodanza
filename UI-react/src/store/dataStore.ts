@@ -120,6 +120,10 @@ export interface RowImportMusica {
   idMusica?: string
   duracion?: string
   Tags?: string
+  // Usado por el escaneo de carpeta (sin Excel, ver CargarMusica.tsx) para
+  // asignar etiquetas (globales y/o por carpeta) al importar, en vez de
+  // parsear la columna "Lineas" (que ahí no existe).
+  etiquetasOverride?: string[]
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
@@ -303,7 +307,7 @@ export const useDataStore = create<DataState>((set, get) => ({
           idMusica: row.idMusica ?? '',
           ejerciciosId: [],
           tags: row.Tags ? normalize(row.Tags) : '',
-          etiquetas: parseLineasToEtiquetas(row.Lineas),
+          etiquetas: row.etiquetasOverride ?? parseLineasToEtiquetas(row.Lineas),
         }
         col.push(musica)
       }

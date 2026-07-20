@@ -2,15 +2,40 @@ import { useEffect, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import { useDataStore, type RowImportMusica } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
+import { useEtiquetasStore } from '../store/etiquetasStore'
 import { checkFileExists } from '../lib/loadJs'
 import { testMusica } from '../lib/testMusica'
 import { normalize } from '../lib/normalize'
 import { getCurrentPath } from '../lib/path'
 import { getPathMusica } from '../lib/config'
 import { Pagination } from '../components/Pagination'
+import { EtiquetasEditor } from '../components/EtiquetasEditor'
 import type { Coleccion } from '../types'
 
 const PAGE_SIZE = 10
+
+// Extensiones de audio reconocidas al escanear una carpeta directamente
+// (sin Excel, ver modo "Escanear Carpeta" más abajo). No hay un listado
+// canónico de esto en el resto del repo (los .txt de Hyperlinks/ son
+// patrones de nombre de archivo, no extensiones), así que se usa un set
+// razonable de formatos de audio comunes.
+const EXTENSIONES_AUDIO = ['mp3', 'wav', 'm4a', 'ogg', 'wma', 'flac', 'aac', 'aiff']
+
+// Fila de la grilla de vista previa del modo "Escanear Carpeta" -- una por
+// cada archivo de audio encontrado, siguiendo el patrón
+// carpetaBase->Coleccion->carpeta->Archivo (ver CLAUDE.md, "Organizacion
+// de archivos de musicas"). A diferencia del modo Excel, acá no hay
+// columna "Ejercicio": estas músicas quedan sin vincular a ningún
+// ejercicio hasta que el usuario las asigne a mano después, desde
+// /ejercicios o /clase.
+interface ArchivoEscaneado {
+  file: File
+  carpeta: string
+  archivo: string
+  titulo: string
+  estado: string
+  duracion?: string
+}
 
 // Las columnas Carpeta/Archivo del catalogo a veces vienen percent-encoded
 // (ej. espacios como "%20") -- pasa tanto si se completan desde el
@@ -67,14 +92,19 @@ export function CargarMusica() {
   const init = useDataStore((s) => s.init)
   const importarColeccionMusicas = useDataStore((s) => s.importarColeccionMusicas)
   const addAlert = useAlertStore((s) => s.addAlert)
+  const initEtiquetas = useEtiquetasStore((s) => s.init)
 
   useEffect(() => {
     init()
-  }, [init])
+    initEtiquetas()
+  }, [init, initEtiquetas])
+
+  const [modo, setModo] = useState<'excel' | 'carpeta'>('excel')
 
   const fileImportRef = useRef<HTMLInputElement>(null)
   const fileEquivalenciasRef = useRef<HTMLInputElement>(null)
   const musicasOkRef = useRef<string[]>([])
+  const dirInputRef = useRef<HTMLInputElement>(null)
 
   const [equivalenciaEjercicios, setEquivalenciaEjercicios] = useState<EquivalenciaEjercicio[]>([])
   const [equivalenciaInterpretes, setEquivalenciaInterpretes] = useState<EquivalenciaInterprete[]>([])
@@ -89,7 +119,20 @@ export function CargarMusica() {
   const [validando, setValidando] = useState(false)
   const [page, setPage] = useState(1)
 
+  // --- Modo "Escanear Carpeta" (sin Excel) ---
+  const [coleccionCarpeta, setColeccionCarpeta] = useState<Coleccion>(nuevaColeccion())
+  const [archivosEscaneados, setArchivosEscaneados] = useState<ArchivoEscaneado[]>([])
+  const [escaneando, setEscaneando] = useState(false)
+  const [pageCarpeta, setPageCarpeta] = useState(1)
+  const [etiquetasGlobales, setEtiquetasGlobales] = useState<string[]>([])
+  const [etiquetasPorCarpeta, setEtiquetasPorCarpeta] = useState<Record<string, string[]>>({})
+
   const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
+
+  useEffect(() => {
+    // El atributo "webkitdirectory" no es JSX estándar -- se setea a mano.
+    dirInputRef.current?.setAttribute('webkitdirectory', '')
+  }, [])
 
   function reset() {
     setWb(null)
@@ -351,114 +394,326 @@ export function CargarMusica() {
     reset()
   }
 
+  function resetCarpeta() {
+    setColeccionCarpeta(nuevaColeccion())
+    setArchivosEscaneados([])
+    setEtiquetasGlobales([])
+    setEtiquetasPorCarpeta({})
+    setPageCarpeta(1)
+    if (dirInputRef.current) dirInputRef.current.value = ''
+  }
+
+  function pickCarpeta() {
+    resetCarpeta()
+    dirInputRef.current?.click()
+  }
+
+  // Puerto libre (no existía en el original): arma la lista de archivos de
+  // audio a partir de una carpeta elegida directamente en disco, siguiendo
+  // el patrón Coleccion/carpeta/Archivo (ver CLAUDE.md). El primer segmento
+  // de webkitRelativePath es la carpeta elegida (=Coleccion), el segundo es
+  // "carpeta", y el resto (unido) es el nombre real del Archivo -- soporta
+  // así una sola subcarpeta de profundidad extra si existiera.
+  async function escanearCarpeta(files: FileList) {
+    // Ojo: `files` es una referencia viva al FileList del <input> -- hay
+    // que sacar una copia ANTES de resetCarpeta(), porque esta limpia
+    // dirInputRef.current.value, lo que vacía ese mismo FileList (incluido
+    // el que ya recibimos acá) antes de poder leerlo.
+    const archivos = Array.from(files)
+    resetCarpeta()
+    const encontrados: ArchivoEscaneado[] = []
+    let coleccionNombre = ''
+    for (const file of archivos) {
+      const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
+      if (!rel) continue
+      const partes = rel.split('/')
+      if (partes.length < 3) continue
+      const ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
+      if (!EXTENSIONES_AUDIO.includes(ext)) continue
+      if (!coleccionNombre) coleccionNombre = partes[0]
+      const carpeta = partes[1]
+      const archivo = partes[partes.length - 1]
+      const puntoExt = archivo.lastIndexOf('.')
+      const titulo = puntoExt > 0 ? archivo.substring(0, puntoExt) : archivo
+      encontrados.push({ file, carpeta, archivo, titulo, estado: 'pendiente' })
+    }
+    if (encontrados.length === 0) {
+      addAlert('danger', 'No se encontraron archivos de audio en la carpeta elegida (se espera Coleccion/carpeta/Archivo, ver "' + pathMusicas + '" arriba).')
+      return
+    }
+    setColeccionCarpeta({ ...nuevaColeccion(), nombre: coleccionNombre.toUpperCase(), carpeta: 'musica/' + coleccionNombre.toUpperCase() + '/' })
+    setArchivosEscaneados(encontrados)
+    setEscaneando(true)
+    const actualizados = [...encontrados]
+    for (let i = 0; i < actualizados.length; i++) {
+      const url = URL.createObjectURL(actualizados[i].file)
+      const result = await testMusica(url)
+      URL.revokeObjectURL(url)
+      actualizados[i] = {
+        ...actualizados[i],
+        estado: result.ok ? 'ok' : 'Error. ' + (result.errorMessage ?? 'no se pudo leer el archivo'),
+        duracion: result.duracion,
+      }
+      setArchivosEscaneados([...actualizados])
+    }
+    setEscaneando(false)
+  }
+
+  function importarCarpeta() {
+    const rows: RowImportMusica[] = archivosEscaneados
+      .filter((a) => a.estado === 'ok')
+      .map((a) => {
+        const propias = etiquetasPorCarpeta[a.carpeta] ?? []
+        const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias]))
+        return {
+          estado: 'ok',
+          Archivo: a.archivo,
+          Carpeta: a.carpeta,
+          Titulo: a.titulo,
+          Interprete: 'Desconocido',
+          idMusica: a.carpeta + '/' + a.titulo,
+          duracion: a.duracion ?? '',
+          etiquetasOverride,
+        }
+      })
+    if (rows.length === 0) {
+      addAlert('danger', 'No hay archivos válidos para importar.')
+      return
+    }
+    const result = importarColeccionMusicas(coleccionCarpeta, rows)
+    addAlert(
+      'info',
+      'se importaron ' + result.length + ' archivos de música de la carpeta ' + coleccionCarpeta.nombre + ' (sin asignar a ningún ejercicio).',
+    )
+    resetCarpeta()
+  }
+
   const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const carpetasEscaneadas = Array.from(new Set(archivosEscaneados.map((a) => a.carpeta)))
+  const paginaActualCarpeta = archivosEscaneados.slice((pageCarpeta - 1) * PAGE_SIZE, pageCarpeta * PAGE_SIZE)
+  const totalesCarpeta = {
+    leidos: archivosEscaneados.length,
+    ok: archivosEscaneados.filter((a) => a.estado === 'ok').length,
+    error: archivosEscaneados.filter((a) => a.estado !== 'ok' && a.estado !== 'pendiente').length,
+  }
 
   return (
     <div className="row">
-      <form className="form-inline">
-        <div className="row">
-          <br />
-          <div className="form-group col-md-12">
-            <label className="control-label">Las colecciones de música deben estar en: {pathMusicas}</label>
-          </div>
-          <div className="form-group col-md-12">
-            <label className="control-label">Carpeta de la coleccion a importar:</label>
-            <input type="text" readOnly className="form-control" style={{ width: '500px' }} value={coleccion.carpeta} />
-          </div>
-          <input
-            ref={fileImportRef}
-            type="file"
-            style={{ visibility: 'hidden' }}
-            onChange={(e) => e.target.files?.[0] && leerColeccion(e.target.files[0])}
-          />
-          <input
-            ref={fileEquivalenciasRef}
-            type="file"
-            style={{ visibility: 'hidden' }}
-            onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
-          />
-          <div className="form-group col-md-12 btn-group" role="toolbar">
-            <button type="button" className="btn btn-primary" onClick={() => pickImportFile('fileEquivalencias')}>
-              <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
-            </button>
-            <button
-              type="button"
-              className={'btn btn-primary' + (equivalenciaEjercicios.length < 1 ? ' disabled' : '')}
-              disabled={equivalenciaEjercicios.length < 1}
-              onClick={() => pickImportFile('fileImport')}
-            >
-              <span className="glyphicon glyphicon-import" /> Leer Excel Colección Música
-            </button>
-            <button
-              type="button"
-              className={'btn btn-success' + (!validado ? ' disabled' : '')}
-              disabled={!validado}
-              onClick={importarExcelMusicas}
-            >
-              <span className="glyphicon glyphicon-import" /> Importación Colección Música
-            </button>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
-            <label className="control-label">Seleccione la Hoja a importar:</label>
-            <div className="btn-group" role="group">
-              {sheets.map((sheet) => (
-                <button
-                  key={sheet}
-                  type="button"
-                  className={'btn ' + (sheet === coleccion.hojaEjercicios ? 'btn-warning' : 'btn-primary')}
-                  onClick={() => changeSheet(sheet)}
-                >
-                  {sheet}
-                </button>
-              ))}
+      <div className="form-group col-md-12 btn-group" role="group" style={{ marginBottom: '10px' }}>
+        <button type="button" className={'btn ' + (modo === 'excel' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('excel')}>
+          Desde Excel
+        </button>
+        <button type="button" className={'btn ' + (modo === 'carpeta' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('carpeta')}>
+          Escanear Carpeta
+        </button>
+      </div>
+
+      {modo === 'excel' && (
+        <form className="form-inline">
+          <div className="row">
+            <br />
+            <div className="form-group col-md-12">
+              <label className="control-label">Las colecciones de música deben estar en: {pathMusicas}</label>
+            </div>
+            <div className="form-group col-md-12">
+              <label className="control-label">Carpeta de la coleccion a importar:</label>
+              <input type="text" readOnly className="form-control" style={{ width: '500px' }} value={coleccion.carpeta} />
+            </div>
+            <input
+              ref={fileImportRef}
+              type="file"
+              style={{ visibility: 'hidden' }}
+              onChange={(e) => e.target.files?.[0] && leerColeccion(e.target.files[0])}
+            />
+            <input
+              ref={fileEquivalenciasRef}
+              type="file"
+              style={{ visibility: 'hidden' }}
+              onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
+            />
+            <div className="form-group col-md-12 btn-group" role="toolbar">
+              <button type="button" className="btn btn-primary" onClick={() => pickImportFile('fileEquivalencias')}>
+                <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
+              </button>
+              <button
+                type="button"
+                className={'btn btn-primary' + (equivalenciaEjercicios.length < 1 ? ' disabled' : '')}
+                disabled={equivalenciaEjercicios.length < 1}
+                onClick={() => pickImportFile('fileImport')}
+              >
+                <span className="glyphicon glyphicon-import" /> Leer Excel Colección Música
+              </button>
+              <button
+                type="button"
+                className={'btn btn-success' + (!validado ? ' disabled' : '')}
+                disabled={!validado}
+                onClick={importarExcelMusicas}
+              >
+                <span className="glyphicon glyphicon-import" /> Importación Colección Música
+              </button>
             </div>
           </div>
-          <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
-            <label className="control-label">renglones leidos:</label>
-            <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.leidos} />
-            <label className="control-label">renglones ok para importar:</label>
-            <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.ok} />
-            <label className="control-label">renglones con error:</label>
-            <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.error} />
-            {validando && <span> Validando archivos...</span>}
-          </div>
-          <div className="col-md-12">
-            <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
-              <thead>
-                <tr>
-                  <td>Clave</td>
-                  <td>Ejercicio</td>
-                  <td>Titulo</td>
-                  <td>Interprete</td>
-                  <td>Lineas</td>
-                  <td>Carpeta</td>
-                  <td>Archivo</td>
-                  <td>Estado</td>
-                </tr>
-              </thead>
-              <tbody>
-                {paginaActual.map((row, i) => (
-                  <tr key={i}>
-                    <td>{row.CdPista}</td>
-                    <td>{row.Ejercicio}</td>
-                    <td>{row.Titulo}</td>
-                    <td>{row.Interprete}</td>
-                    <td>{row.Lineas}</td>
-                    <td>{row.Carpeta}</td>
-                    <td>{row.Archivo}</td>
-                    <td style={{ color: 'white', backgroundColor: row.estado === 'ok' ? '#04f95a' : 'orange' }}>
-                      {row.estado}
-                    </td>
-                  </tr>
+          <div className="row">
+            <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
+              <label className="control-label">Seleccione la Hoja a importar:</label>
+              <div className="btn-group" role="group">
+                {sheets.map((sheet) => (
+                  <button
+                    key={sheet}
+                    type="button"
+                    className={'btn ' + (sheet === coleccion.hojaEjercicios ? 'btn-warning' : 'btn-primary')}
+                    onClick={() => changeSheet(sheet)}
+                  >
+                    {sheet}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-            <Pagination page={page} count={sampleRows.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+              </div>
+            </div>
+            <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
+              <label className="control-label">renglones leidos:</label>
+              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.leidos} />
+              <label className="control-label">renglones ok para importar:</label>
+              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.ok} />
+              <label className="control-label">renglones con error:</label>
+              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.error} />
+              {validando && <span> Validando archivos...</span>}
+            </div>
+            <div className="col-md-12">
+              <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
+                <thead>
+                  <tr>
+                    <td>Clave</td>
+                    <td>Ejercicio</td>
+                    <td>Titulo</td>
+                    <td>Interprete</td>
+                    <td>Lineas</td>
+                    <td>Carpeta</td>
+                    <td>Archivo</td>
+                    <td>Estado</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginaActual.map((row, i) => (
+                    <tr key={i}>
+                      <td>{row.CdPista}</td>
+                      <td>{row.Ejercicio}</td>
+                      <td>{row.Titulo}</td>
+                      <td>{row.Interprete}</td>
+                      <td>{row.Lineas}</td>
+                      <td>{row.Carpeta}</td>
+                      <td>{row.Archivo}</td>
+                      <td style={{ color: 'white', backgroundColor: row.estado === 'ok' ? '#04f95a' : 'orange' }}>
+                        {row.estado}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Pagination page={page} count={sampleRows.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
+
+      {modo === 'carpeta' && (
+        <form className="form-inline">
+          <div className="row">
+            <br />
+            <div className="form-group col-md-12">
+              <label className="control-label">
+                Elija la carpeta de la colección (debe estar en {pathMusicas}, ej. {pathMusicas}NOMBRE_COLECCION); sus subcarpetas
+                directas son las "carpeta" y los archivos de audio dentro de cada una se importan siguiendo el patrón
+                Colección/carpeta/Archivo. No quedan asignadas a ningún ejercicio.
+              </label>
+            </div>
+            <div className="form-group col-md-12">
+              <label className="control-label">Colección detectada:</label>
+              <input type="text" readOnly className="form-control" style={{ width: '300px' }} value={coleccionCarpeta.nombre} />
+            </div>
+            <input
+              ref={dirInputRef}
+              type="file"
+              multiple
+              style={{ visibility: 'hidden' }}
+              onChange={(e) => e.target.files && escanearCarpeta(e.target.files)}
+            />
+            <div className="form-group col-md-12 btn-group" role="toolbar">
+              <button type="button" className="btn btn-primary" onClick={pickCarpeta}>
+                <span className="glyphicon glyphicon-folder-open" /> Elegir Carpeta
+              </button>
+              <button
+                type="button"
+                className={'btn btn-success' + (archivosEscaneados.length === 0 || escaneando ? ' disabled' : '')}
+                disabled={archivosEscaneados.length === 0 || escaneando}
+                onClick={importarCarpeta}
+              >
+                <span className="glyphicon glyphicon-import" /> Importar Archivos Escaneados
+              </button>
+            </div>
+          </div>
+
+          {archivosEscaneados.length > 0 && (
+            <div className="row">
+              <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
+                <label className="control-label">archivos leidos:</label>
+                <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totalesCarpeta.leidos} />
+                <label className="control-label">ok para importar:</label>
+                <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totalesCarpeta.ok} />
+                <label className="control-label">con error:</label>
+                <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totalesCarpeta.error} />
+                {escaneando && <span> Validando archivos...</span>}
+              </div>
+
+              <div className="form-group col-md-12" style={{ marginTop: '10px' }}>
+                <label className="control-label">Etiquetas para toda la colección:</label>
+                <br />
+                <EtiquetasEditor etiquetas={etiquetasGlobales} onChange={setEtiquetasGlobales} />
+              </div>
+
+              <div className="col-md-12" style={{ marginTop: '10px' }}>
+                <label className="control-label">Etiquetas por carpeta:</label>
+                {carpetasEscaneadas.map((carpeta) => (
+                  <div key={carpeta} style={{ marginTop: '4px' }}>
+                    <strong>{carpeta}:</strong>{' '}
+                    <EtiquetasEditor
+                      etiquetas={etiquetasPorCarpeta[carpeta] ?? []}
+                      onChange={(etiquetas) => setEtiquetasPorCarpeta((prev) => ({ ...prev, [carpeta]: etiquetas }))}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="col-md-12" style={{ marginTop: '10px' }}>
+                <table id="tblImportCarpeta" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
+                  <thead>
+                    <tr>
+                      <td>Carpeta</td>
+                      <td>Archivo</td>
+                      <td>Titulo</td>
+                      <td>Duración</td>
+                      <td>Estado</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginaActualCarpeta.map((a, i) => (
+                      <tr key={i}>
+                        <td>{a.carpeta}</td>
+                        <td>{a.archivo}</td>
+                        <td>{a.titulo}</td>
+                        <td>{a.duracion}</td>
+                        <td style={{ color: 'white', backgroundColor: a.estado === 'ok' ? '#04f95a' : a.estado === 'pendiente' ? '#999' : 'orange' }}>
+                          {a.estado}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <Pagination page={pageCarpeta} count={archivosEscaneados.length} pageSize={PAGE_SIZE} onPageChange={setPageCarpeta} />
+              </div>
+            </div>
+          )}
+        </form>
+      )}
     </div>
   )
 }
