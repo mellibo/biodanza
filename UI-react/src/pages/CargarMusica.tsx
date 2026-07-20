@@ -12,6 +12,20 @@ import type { Coleccion } from '../types'
 
 const PAGE_SIZE = 10
 
+// Las columnas Carpeta/Archivo del catalogo a veces vienen percent-encoded
+// (ej. espacios como "%20") -- pasa tanto si se completan desde el
+// hipervínculo (ver loadSheet) como si ya vienen así en la celda de Excel
+// (herramientas externas que arman el catálogo a partir de una URL, ver
+// CLAUDE.md/Biodanza.Model). Se decodifica siempre para que quede el
+// nombre real de archivo/carpeta en disco, no el escape de URL.
+function decodeSiHaceFalta(valor: string): string {
+  try {
+    return decodeURIComponent(valor)
+  } catch {
+    return valor
+  }
+}
+
 interface EquivalenciaEjercicio {
   Ejercicio: string
   CorrespondeA: string
@@ -188,18 +202,8 @@ export function CargarMusica() {
         if (!item.Carpeta || item.Carpeta.length === 0) {
           const parts = target.split('/')
           if (parts.length < 2) return
-          // El Target del hipervínculo viene percent-encoded (ej. espacios
-          // como %20) -- se decodifica para que Carpeta/Archivo queden con
-          // el nombre real tal como está en disco, no con el escape de URL.
-          const decodeParte = (s: string) => {
-            try {
-              return decodeURIComponent(s)
-            } catch {
-              return s
-            }
-          }
-          item.Carpeta = decodeParte(parts[parts.length - 2])
-          item.Archivo = decodeParte(parts[parts.length - 1])
+          item.Carpeta = decodeSiHaceFalta(parts[parts.length - 2])
+          item.Archivo = decodeSiHaceFalta(parts[parts.length - 1])
         }
       })
     }
@@ -238,6 +242,8 @@ export function CargarMusica() {
         totalError++
         continue
       }
+      item.Carpeta = decodeSiHaceFalta(item.Carpeta)
+      item.Archivo = decodeSiHaceFalta(item.Archivo)
       if (typeof item.Tags === 'string') {
         item.Tags = normalize(
           item.Tags.replace(item.Ejercicio + ';', '')
@@ -323,8 +329,8 @@ export function CargarMusica() {
       } else if (item.Link) {
         const parts = item.Link.split('/')
         if (parts.length === 2) {
-          item.Carpeta = parts[parts.length - 2]
-          item.Archivo = parts[parts.length - 1]
+          item.Carpeta = decodeSiHaceFalta(parts[parts.length - 2])
+          item.Archivo = decodeSiHaceFalta(parts[parts.length - 1])
           delete item.Link
           cola.push(item)
           continue
