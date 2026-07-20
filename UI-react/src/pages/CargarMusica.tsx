@@ -129,10 +129,15 @@ export function CargarMusica() {
 
   const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
 
-  useEffect(() => {
-    // El atributo "webkitdirectory" no es JSX estándar -- se setea a mano.
-    dirInputRef.current?.setAttribute('webkitdirectory', '')
-  }, [])
+  // El atributo "webkitdirectory" no es JSX estándar -- se setea a mano vía
+  // ref callback (no un useEffect con [] de dependencias) porque el
+  // <input> recién se monta la primera vez que se entra al modo "carpeta"
+  // (arranca en modo "excel"), momento en el que un efecto que solo corre
+  // una vez al montar el componente ya pasó de largo y nunca ve el nodo.
+  function setDirInputRef(el: HTMLInputElement | null) {
+    dirInputRef.current = el
+    el?.setAttribute('webkitdirectory', '')
+  }
 
   function reset() {
     setWb(null)
@@ -631,7 +636,7 @@ export function CargarMusica() {
               <input type="text" readOnly className="form-control" style={{ width: '300px' }} value={coleccionCarpeta.nombre} />
             </div>
             <input
-              ref={dirInputRef}
+              ref={setDirInputRef}
               type="file"
               multiple
               style={{ visibility: 'hidden' }}
