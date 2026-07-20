@@ -188,8 +188,18 @@ export function CargarMusica() {
         if (!item.Carpeta || item.Carpeta.length === 0) {
           const parts = target.split('/')
           if (parts.length < 2) return
-          item.Carpeta = parts[parts.length - 2]
-          item.Archivo = parts[parts.length - 1]
+          // El Target del hipervínculo viene percent-encoded (ej. espacios
+          // como %20) -- se decodifica para que Carpeta/Archivo queden con
+          // el nombre real tal como está en disco, no con el escape de URL.
+          const decodeParte = (s: string) => {
+            try {
+              return decodeURIComponent(s)
+            } catch {
+              return s
+            }
+          }
+          item.Carpeta = decodeParte(parts[parts.length - 2])
+          item.Archivo = decodeParte(parts[parts.length - 1])
         }
       })
     }

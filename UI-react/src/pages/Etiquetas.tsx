@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useEtiquetasStore } from '../store/etiquetasStore'
+import { useDataStore } from '../store/dataStore'
+import { useClasesStore } from '../store/clasesStore'
 
 // Color de fallback mostrado en el selector cuando una etiqueta todavía no
 // tiene uno propio asignado -- mismo celeste que usa Bootstrap ".label-info"
@@ -8,7 +10,7 @@ import { useEtiquetasStore } from '../store/etiquetasStore'
 const COLOR_DEFAULT = '#5bc0de'
 
 // Vista para administrar el vocabulario compartido de etiquetas (ver
-// src/store/etiquetasStore.ts): agregar etiquetas nuevas y asignarle un
+// src/store/etiquetasStore.ts): agregar/eliminar etiquetas y asignarle un
 // color a cada una. El color se aplica en los chips de EtiquetasEditor,
 // usado en Clase/Musica/Ejercicio.
 export function Etiquetas() {
@@ -16,6 +18,7 @@ export function Etiquetas() {
   const etiquetas = useEtiquetasStore((s) => s.etiquetas)
   const colores = useEtiquetasStore((s) => s.colores)
   const addEtiqueta = useEtiquetasStore((s) => s.addEtiqueta)
+  const removeEtiqueta = useEtiquetasStore((s) => s.removeEtiqueta)
   const setColor = useEtiquetasStore((s) => s.setColor)
   const [nueva, setNueva] = useState('')
 
@@ -30,6 +33,16 @@ export function Etiquetas() {
     setNueva('')
   }
 
+  // Al eliminar una etiqueta del vocabulario también hay que sacarla de
+  // toda clase/música/ejercicio que ya la tenga asignada, si no queda
+  // huérfana en datos guardados (ver dataStore/clasesStore.removeEtiquetaGlobal).
+  function eliminar(etiqueta: string) {
+    if (!window.confirm('¿Eliminar la etiqueta "' + etiqueta + '"?\nSe va a quitar de todas las clases, músicas y ejercicios que la tengan asignada.')) return
+    removeEtiqueta(etiqueta)
+    useDataStore.getState().removeEtiquetaGlobal(etiqueta)
+    useClasesStore.getState().removeEtiquetaGlobal(etiqueta)
+  }
+
   return (
     <div className="row">
       <div className="col-md-6">
@@ -39,6 +52,7 @@ export function Etiquetas() {
             <tr>
               <td>Etiqueta</td>
               <td style={{ width: '80px' }}>Color</td>
+              <td style={{ width: '50px' }} />
             </tr>
           </thead>
           <tbody>
@@ -55,6 +69,11 @@ export function Etiquetas() {
                     value={colores[etiqueta] ?? COLOR_DEFAULT}
                     onChange={(e) => setColor(etiqueta, e.target.value)}
                   />
+                </td>
+                <td>
+                  <button type="button" className="btn btn-danger btn-sm" onClick={() => eliminar(etiqueta)} title="Eliminar etiqueta">
+                    <span className="glyphicon glyphicon-trash" />
+                  </button>
                 </td>
               </tr>
             ))}

@@ -5,9 +5,13 @@ import { useEtiquetasStore } from '../store/etiquetasStore'
 import { buscarMusicas, tokenizeEjercicioTextFilter } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import { EtiquetasEditor } from '../components/EtiquetasEditor'
-import type { MusicaFilter } from '../types'
+import type { Musica, MusicaFilter } from '../types'
 
 const PAGE_SIZE = 15
+
+function claveNodo(coleccion: string, carpeta: string) {
+  return coleccion + '|' + carpeta
+}
 
 // Puerto de musicasController + grillaMusica.html (UI/biosoft.html:186-221).
 // El modo "select" (elegir una música desde otra pantalla) no aplica acá.
@@ -32,15 +36,37 @@ export function Musicas() {
   const [page, setPage] = useState(1)
   const [seleccionados, setSeleccionados] = useState<Set<string>>(new Set())
   const [textoBulk, setTextoBulk] = useState('')
+  const [colapsado, setColapsado] = useState(false)
+  // Nodos coleccion|carpeta EXCLUIDOS del árbol de filtro -- se guardan las
+  // exclusiones en vez de las selecciones para que, por defecto (set
+  // vacío), todo quede seleccionado, incluyendo colecciones/carpetas que se
+  // importen después.
+  const [excluidos, setExcluidos] = useState<Set<string>>(new Set())
 
   const searchStrings = useMemo(() => tokenizeEjercicioTextFilter(ejercicioTextFilter), [ejercicioTextFilter])
 
-  const resultados = useMemo(
+  const resultadosSinArbol = useMemo(
     () => buscarMusicas(musicasOrder, musicasById, getEjercicioById, searchStrings, filter),
     [musicasOrder, musicasById, getEjercicioById, searchStrings, filter],
   )
 
-  useEffect(() => setPage(1), [ejercicioTextFilter, filter])
+  const arbol = useMemo(() => {
+    const mapa = new Map<string, Set<string>>()
+    for (const id of musicasOrder) {
+      const musica = musicasById[id]
+      if (!musica) continue
+      if (!mapa.has(musica.coleccion)) mapa.set(musica.coleccion, new Set())
+      mapa.get(musica.coleccion)!.add(musica.carpeta)
+    }
+    return mapa
+  }, [musicasOrder, musicasById])
+
+  const resultados = useMemo(
+    () => resultadosSinArbol.filter((m) => !excluidos.has(claveNodo(m.coleccion, m.carpeta))),
+    [resultadosSinArbol, excluidos],
+  )
+
+  useEffect(() => setPage(1), [ejercicioTextFilter, filter, excluidos])
 
   const paginaActual = resultados.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const todosSeleccionadosEnPagina = paginaActual.length > 0 && paginaActual.every((m) => seleccionados.has(m.id))
@@ -83,135 +109,199 @@ export function Musicas() {
     setTextoBulk('')
   }
 
+  function toggleColeccion(coleccion: string, carpetas: string[], marcarExcluido: boolean) {
+    setExcluidos((prev) => {
+      const next = new Set(prev)
+      for (const carpeta of carpetas) {
+        const clave = claveNodo(coleccion, carpeta)
+        if (marcarExcluido) next.add(clave)
+        else next.delete(clave)
+      }
+      return next
+    })
+  }
+
+  function toggleCarpeta(coleccion: string, carpeta: string) {
+    setExcluidos((prev) => {
+      const next = new Set(prev)
+      const clave = claveNodo(coleccion, carpeta)
+      if (next.has(clave)) next.delete(clave)
+      else next.add(clave)
+      return next
+    })
+  }
+
   return (
-    <div className="row form-inline">
-      <div className="col-md-6">
-        <label className="form-label">Ejercicio:</label>
-        <input
-          type="text"
-          value={ejercicioTextFilter}
-          onChange={(e) => setEjercicioTextFilter(e.target.value)}
-          className="form-control input-md input-search"
-          style={{ width: '350px' }}
-        />
+    <div className="row">
+      <div className="form-inline">
+        {!colapsado && (
+          <div className="col-sm-3">
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => setColapsado(true)}>
+              <span className="glyphicon glyphicon-chevron-left" />
+            </button>
+            <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              {Array.from(arbol.entries()).map(([coleccion, carpetasSet]) => {
+                const carpetas = Array.from(carpetasSet).sort()
+                const todasExcluidas = carpetas.every((c) => excluidos.has(claveNodo(coleccion, c)))
+                const algunaExcluida = carpetas.some((c) => excluidos.has(claveNodo(coleccion, c)))
+                return (
+                  <div key={coleccion}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={!todasExcluidas}
+                        ref={(el) => {
+                          if (el) el.indeterminate = algunaExcluida && !todasExcluidas
+                        }}
+                        onChange={() => toggleColeccion(coleccion, carpetas, !todasExcluidas)}
+                      />{' '}
+                      <strong>{coleccion}</strong>
+                    </label>
+                    <div style={{ paddingLeft: '20px' }}>
+                      {carpetas.map((carpeta) => (
+                        <div key={carpeta}>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={!excluidos.has(claveNodo(coleccion, carpeta))}
+                              onChange={() => toggleCarpeta(coleccion, carpeta)}
+                            />{' '}
+                            {carpeta}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+        <div className={colapsado ? 'col-sm-12' : 'col-sm-9'}>
+          {colapsado && (
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => setColapsado(false)}>
+              <span className="glyphicon glyphicon-chevron-right" />
+            </button>
+          )}
+          <div className="row form-inline">
+            <div className="col-md-6">
+              <label className="form-label">Ejercicio:</label>
+              <input
+                type="text"
+                value={ejercicioTextFilter}
+                onChange={(e) => setEjercicioTextFilter(e.target.value)}
+                className="form-control input-md input-search"
+                style={{ width: '350px' }}
+              />
+            </div>
+            <div className="col-md-6 form-inline">
+              <label className="form-label">Asignar etiqueta a seleccionados ({seleccionados.size}):</label>{' '}
+              <input
+                type="text"
+                list="bulkEtiquetasList"
+                className="form-control input-sm"
+                style={{ width: '160px', display: 'inline-block' }}
+                placeholder="Etiqueta..."
+                value={textoBulk}
+                disabled={seleccionados.size === 0}
+                onChange={(e) => setTextoBulk(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    agregarEtiquetaASeleccionados(textoBulk)
+                  }
+                }}
+              />
+              <datalist id="bulkEtiquetasList">
+                {vocabularioEtiquetas.map((e) => (
+                  <option key={e} value={e} />
+                ))}
+              </datalist>{' '}
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                disabled={seleccionados.size === 0 || !textoBulk.trim()}
+                onClick={() => agregarEtiquetaASeleccionados(textoBulk)}
+              >
+                Agregar
+              </button>
+            </div>
+            <table id="tblMusicas" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
+              <thead>
+                <tr>
+                  <td style={{ width: '30px' }}>
+                    <input type="checkbox" checked={todosSeleccionadosEnPagina} onChange={toggleSeleccionarPagina} title="Seleccionar todas" />
+                  </td>
+                  <td style={{ width: '70px' }}>
+                    Clave
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      style={{ width: '60px' }}
+                      value={filter.idMusica ?? ''}
+                      onChange={(e) => setFilterField('idMusica', e.target.value)}
+                    />
+                  </td>
+                  <td className="col-md-4 col-lg-4">
+                    Canción (Interprete)
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      value={filter.nombre ?? ''}
+                      onChange={(e) => setFilterField('nombre', e.target.value)}
+                    />
+                  </td>
+                  <td className="col-md-3 col-lg-3">Ejercicios</td>
+                  <td style={{ width: '210px' }}>
+                    Etiquetas
+                    <input
+                      type="text"
+                      className="form-control input-sm"
+                      value={filter.etiquetas ?? ''}
+                      onChange={(e) => setFilterField('etiquetas', e.target.value)}
+                    />
+                  </td>
+                  <td className="col-md-1 col-lg-1">Duración / Play</td>
+                </tr>
+              </thead>
+              <tbody>
+                {paginaActual.map((musica: Musica) => (
+                  <tr key={musica.id}>
+                    <td>
+                      <input type="checkbox" checked={seleccionados.has(musica.id)} onChange={() => toggleSeleccionado(musica.id)} />
+                    </td>
+                    <td>{musica.idMusica}</td>
+                    <td className="col-md-4 col-lg-4">
+                      <span>{musica.nombre}</span> ({musica.interprete})
+                    </td>
+                    <td className="col-md-3 col-lg-3">
+                      <ul>
+                        {musica.ejerciciosId.map((id) => {
+                          const ej = getEjercicioById(id)
+                          return ej ? <li key={id}>{ej.nombre}</li> : null
+                        })}
+                      </ul>
+                    </td>
+                    <td style={{ width: '210px', maxHeight: '96px', overflowY: 'auto' }}>
+                      <EtiquetasEditor
+                        etiquetas={musica.etiquetas}
+                        onChange={(etiquetas) => updateMusica(musica.id, { etiquetas })}
+                      />
+                    </td>
+                    <td className="col-md-1 col-lg-1">
+                      {musica.duracion}
+                      <button type="button" className="btn btn-warning" onClick={() => playFile(musica)} title="Escuchar música">
+                        <span className="glyphicon glyphicon-play" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination page={page} count={resultados.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+          </div>
+        </div>
       </div>
-      <div className="col-md-6 form-inline">
-        <label className="form-label">Asignar etiqueta a seleccionados ({seleccionados.size}):</label>{' '}
-        <input
-          type="text"
-          list="bulkEtiquetasList"
-          className="form-control input-sm"
-          style={{ width: '160px', display: 'inline-block' }}
-          placeholder="Etiqueta..."
-          value={textoBulk}
-          disabled={seleccionados.size === 0}
-          onChange={(e) => setTextoBulk(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              agregarEtiquetaASeleccionados(textoBulk)
-            }
-          }}
-        />
-        <datalist id="bulkEtiquetasList">
-          {vocabularioEtiquetas.map((e) => (
-            <option key={e} value={e} />
-          ))}
-        </datalist>{' '}
-        <button
-          type="button"
-          className="btn btn-primary btn-sm"
-          disabled={seleccionados.size === 0 || !textoBulk.trim()}
-          onClick={() => agregarEtiquetaASeleccionados(textoBulk)}
-        >
-          Agregar
-        </button>
-      </div>
-      <table id="tblMusicas" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
-        <thead>
-          <tr>
-            <td style={{ width: '30px' }}>
-              <input type="checkbox" checked={todosSeleccionadosEnPagina} onChange={toggleSeleccionarPagina} title="Seleccionar todas" />
-            </td>
-            <td className="col-md-1 col-lg-1">
-              Colección
-              <input
-                type="text"
-                className="form-control input-sm"
-                value={filter.coleccion ?? ''}
-                onChange={(e) => setFilterField('coleccion', e.target.value)}
-              />
-            </td>
-            <td className="col-md-1 col-lg-1">Carpeta</td>
-            <td style={{ width: '70px' }}>
-              Clave
-              <input
-                type="text"
-                className="form-control input-sm"
-                style={{ width: '60px' }}
-                value={filter.idMusica ?? ''}
-                onChange={(e) => setFilterField('idMusica', e.target.value)}
-              />
-            </td>
-            <td className="col-md-3 col-lg-3">
-              Canción (Interprete)
-              <input
-                type="text"
-                className="form-control input-sm"
-                value={filter.nombre ?? ''}
-                onChange={(e) => setFilterField('nombre', e.target.value)}
-              />
-            </td>
-            <td className="col-md-3 col-lg-3">Ejercicios</td>
-            <td style={{ width: '210px' }}>
-              Etiquetas
-              <input
-                type="text"
-                className="form-control input-sm"
-                value={filter.etiquetas ?? ''}
-                onChange={(e) => setFilterField('etiquetas', e.target.value)}
-              />
-            </td>
-            <td className="col-md-1 col-lg-1">Duración / Play</td>
-          </tr>
-        </thead>
-        <tbody>
-          {paginaActual.map((musica) => (
-            <tr key={musica.id}>
-              <td>
-                <input type="checkbox" checked={seleccionados.has(musica.id)} onChange={() => toggleSeleccionado(musica.id)} />
-              </td>
-              <td className="col-md-1 col-lg-1">{musica.coleccion}</td>
-              <td className="col-md-1 col-lg-1">{musica.carpeta}</td>
-              <td>{musica.idMusica}</td>
-              <td className="col-md-3 col-lg-3">
-                <span>{musica.nombre}</span> ({musica.interprete})
-              </td>
-              <td className="col-md-3 col-lg-3">
-                <ul>
-                  {musica.ejerciciosId.map((id) => {
-                    const ej = getEjercicioById(id)
-                    return ej ? <li key={id}>{ej.nombre}</li> : null
-                  })}
-                </ul>
-              </td>
-              <td style={{ width: '210px', maxHeight: '96px', overflowY: 'auto' }}>
-                <EtiquetasEditor
-                  etiquetas={musica.etiquetas}
-                  onChange={(etiquetas) => updateMusica(musica.id, { etiquetas })}
-                />
-              </td>
-              <td className="col-md-1 col-lg-1">
-                {musica.duracion}
-                <button type="button" className="btn btn-warning" onClick={() => playFile(musica)} title="Escuchar música">
-                  <span className="glyphicon glyphicon-play" />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination page={page} count={resultados.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
     </div>
   )
 }

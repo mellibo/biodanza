@@ -139,6 +139,7 @@ interface ClasesState {
   exportarClases: () => void
   exportarClase: (index: number) => void
   importarClases: (file: File) => Promise<void>
+  removeEtiquetaGlobal: (etiqueta: string) => void
 }
 
 function withClase(clases: Clase[], index: number, fn: (clase: Clase) => Clase): Clase[] {
@@ -370,5 +371,17 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
       }
       reader.readAsText(file)
     })
+  },
+
+  // Contraparte de dataStore.removeEtiquetaGlobal para las clases: se
+  // llaman juntas desde la UI cuando se borra una etiqueta del vocabulario
+  // (ver src/pages/Etiquetas.tsx) para que no quede huérfana en datos ya
+  // guardados.
+  removeEtiquetaGlobal: (etiqueta) => {
+    const clases = get().clases.map((c) =>
+      c.etiquetas.includes(etiqueta) ? { ...c, etiquetas: c.etiquetas.filter((e) => e !== etiqueta) } : c,
+    )
+    set({ clases })
+    get().saveClases(clases)
   },
 }))

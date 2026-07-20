@@ -101,6 +101,7 @@ interface DataState {
   saveEjerciciosSnapshot: () => void
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
+  removeEtiquetaGlobal: (etiqueta: string) => void
 }
 
 // Forma de cada fila validada de la grilla de importación de música
@@ -362,6 +363,31 @@ export const useDataStore = create<DataState>((set, get) => ({
     saveMusicasColeccion(nombreCol, col)
 
     return col
+  },
+
+  // Al borrar una etiqueta del vocabulario compartido (ver
+  // src/store/etiquetasStore.ts) hay que sacarla también de todo ejercicio
+  // y música que la tuviera asignada -- si no, quedaría "huérfana": ya
+  // invisible en el vocabulario/autocompletado, pero todavía presente en
+  // datos ya guardados.
+  removeEtiquetaGlobal: (etiqueta) => {
+    const { ejerciciosById, ejerciciosOrder, musicasById, musicasOrder } = get()
+    let ejerciciosChanged = false
+    for (const id of ejerciciosOrder) {
+      const ej = ejerciciosById[id]
+      if (ej.etiquetas.includes(etiqueta)) {
+        get().updateEjercicio(id, { etiquetas: ej.etiquetas.filter((e) => e !== etiqueta) })
+        ejerciciosChanged = true
+      }
+    }
+    if (ejerciciosChanged) get().saveEjerciciosSnapshot()
+
+    for (const id of musicasOrder) {
+      const musica = musicasById[id]
+      if (musica.etiquetas.includes(etiqueta)) {
+        get().updateMusica(id, { etiquetas: musica.etiquetas.filter((e) => e !== etiqueta) })
+      }
+    }
   },
 }))
 

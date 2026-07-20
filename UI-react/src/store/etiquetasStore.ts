@@ -37,6 +37,7 @@ interface EtiquetasState {
   initialized: boolean
   init: () => void
   addEtiqueta: (etiqueta: string) => void
+  removeEtiqueta: (etiqueta: string) => void
   setColor: (etiqueta: string, color: string) => void
 }
 
@@ -60,6 +61,19 @@ export const useEtiquetasStore = create<EtiquetasState>((set, get) => ({
     const nuevas = [...etiquetas, limpia]
     set({ etiquetas: nuevas })
     writeLocalStorage(STORAGE_KEY, nuevas)
+  },
+
+  // Solo saca la etiqueta del vocabulario/colores -- quitarla de las
+  // clases/músicas/ejercicios que ya la tengan asignada es responsabilidad
+  // de cada store dueño de esos datos (ver dataStore.removeEtiquetaGlobal /
+  // clasesStore.removeEtiquetaGlobal), llamados juntos desde la UI.
+  removeEtiqueta: (etiqueta) => {
+    const etiquetas = get().etiquetas.filter((e) => e !== etiqueta)
+    const colores = { ...get().colores }
+    delete colores[etiqueta]
+    set({ etiquetas, colores })
+    writeLocalStorage(STORAGE_KEY, etiquetas)
+    writeLocalStorage(STORAGE_KEY_COLORES, colores)
   },
 
   setColor: (etiqueta, color) => {
