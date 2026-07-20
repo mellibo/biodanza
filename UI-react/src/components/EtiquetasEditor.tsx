@@ -15,6 +15,7 @@ export function EtiquetasEditor({ etiquetas, onChange }: EtiquetasEditorProps) {
   const initEtiquetas = useEtiquetasStore((s) => s.init)
   const vocabulario = useEtiquetasStore((s) => s.etiquetas)
   const addEtiqueta = useEtiquetasStore((s) => s.addEtiqueta)
+  const colores = useEtiquetasStore((s) => s.colores)
   const [texto, setTexto] = useState('')
   const datalistId = useId()
 
@@ -41,7 +42,11 @@ export function EtiquetasEditor({ etiquetas, onChange }: EtiquetasEditorProps) {
   return (
     <div className="form-inline">
       {etiquetas.map((etiqueta) => (
-        <span key={etiqueta} className="label label-info" style={{ marginRight: '4px', fontSize: '100%' }}>
+        <span
+          key={etiqueta}
+          className="label label-info"
+          style={{ marginRight: '4px', fontSize: '100%', backgroundColor: colores[etiqueta] }}
+        >
           {etiqueta}{' '}
           <a onClick={() => quitar(etiqueta)} style={{ color: 'white', cursor: 'pointer' }} title="Quitar etiqueta">
             ×

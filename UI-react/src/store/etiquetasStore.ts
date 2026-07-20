@@ -7,6 +7,7 @@ import { readLocalStorage, writeLocalStorage } from '../lib/storage'
 // usuario; cualquier etiqueta nueva que se escriba en cualquiera de las 3
 // pantallas se suma acá para quedar disponible como sugerencia después.
 const STORAGE_KEY = 'biosoft_etiquetas'
+const STORAGE_KEY_COLORES = 'biosoft_etiquetas_colores'
 
 const ETIQUETAS_INICIALES = [
   'Vitalidad',
@@ -30,19 +31,25 @@ const ETIQUETAS_INICIALES = [
 
 interface EtiquetasState {
   etiquetas: string[]
+  // Color asignado a cada etiqueta (nombre -> hex), opcional -- una
+  // etiqueta sin entrada acá usa el color por defecto de "label-info".
+  colores: Record<string, string>
   initialized: boolean
   init: () => void
   addEtiqueta: (etiqueta: string) => void
+  setColor: (etiqueta: string, color: string) => void
 }
 
 export const useEtiquetasStore = create<EtiquetasState>((set, get) => ({
   etiquetas: [],
+  colores: {},
   initialized: false,
 
   init: () => {
     if (get().initialized) return
     const etiquetas = readLocalStorage<string[]>(STORAGE_KEY) ?? ETIQUETAS_INICIALES
-    set({ etiquetas, initialized: true })
+    const colores = readLocalStorage<Record<string, string>>(STORAGE_KEY_COLORES) ?? {}
+    set({ etiquetas, colores, initialized: true })
   },
 
   addEtiqueta: (etiqueta) => {
@@ -53,5 +60,11 @@ export const useEtiquetasStore = create<EtiquetasState>((set, get) => ({
     const nuevas = [...etiquetas, limpia]
     set({ etiquetas: nuevas })
     writeLocalStorage(STORAGE_KEY, nuevas)
+  },
+
+  setColor: (etiqueta, color) => {
+    const colores = { ...get().colores, [etiqueta]: color }
+    set({ colores })
+    writeLocalStorage(STORAGE_KEY_COLORES, colores)
   },
 }))

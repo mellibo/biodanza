@@ -9,6 +9,7 @@ import { CargarMusica } from './pages/CargarMusica'
 import { CargarEjercicios } from './pages/CargarEjercicios'
 import { Clases } from './pages/Clases'
 import { Clase } from './pages/Clase'
+import { Etiquetas } from './pages/Etiquetas'
 
 export const routes: { path: string; element: JSX.Element }[] = [
   { path: '/clases', element: <Clases /> },
@@ -17,5 +18,6 @@ export const routes: { path: string; element: JSX.Element }[] = [
   { path: '/musicas', element: <Musicas /> },
   { path: '/cargarMusica', element: <CargarMusica /> },
   { path: '/cargarEjercicios', element: <CargarEjercicios /> },
+  { path: '/etiquetas', element: <Etiquetas /> },
   { path: '/acercade', element: <About /> },
 ]

@@ -9,6 +9,7 @@ const navLabels: Record<string, string> = {
   '/musicas': 'Música',
   '/cargarMusica': 'Cargar Música',
   '/cargarEjercicios': 'Cargar Ejercicios',
+  '/etiquetas': 'Etiquetas',
   '/acercade': 'Acerca De...',
 }
 
