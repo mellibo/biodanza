@@ -298,6 +298,10 @@ export const useDataStore = create<DataState>((set, get) => ({
       throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
     }
 
+    // Snapshot de antes de purgar/reemplazar -- se usa para no perder los
+    // ejercicios ya asignados a una música que se reimporta (ver abajo).
+    const musicasExistentes = get().musicasById
+
     const col: MusicaBase[] = []
     for (const row of rows) {
       if (row.estado !== 'ok') continue
@@ -315,6 +319,13 @@ export const useDataStore = create<DataState>((set, get) => ({
           tags: row.Tags ? normalize(row.Tags) : '',
           etiquetas: row.etiquetasOverride ?? parseLineasToEtiquetas(row.Lineas),
         }
+        // Reimportar una colección purga y reconstruye sus músicas desde
+        // cero (ver más abajo) -- si esta misma música (mismo id, ver
+        // getMusicaId) ya existía, se preservan los ejercicios que ya
+        // tenía asignados, para no perder vínculos hechos a mano o en una
+        // importación anterior con otro archivo/columnas.
+        const previa = musicasExistentes[getMusicaId(nombreCol, musica.idMusica)]
+        if (previa) musica.ejerciciosId = [...previa.ejerciciosId]
         col.push(musica)
       }
       if (!row.Ejercicio) continue

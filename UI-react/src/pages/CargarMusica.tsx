@@ -48,6 +48,15 @@ function claveCarpetaEscaneo(coleccion: string, carpeta: string) {
   return coleccion + '|' + carpeta
 }
 
+// Etiquetas cuyo nombre aparece como parte del nombre de una carpeta (no
+// hace falta que sea igual -- ej. carpeta "CD1 Ronda" matchea la etiqueta
+// "Ronda"). Pedido explícitamente para asignarlas automáticamente a TODOS
+// los archivos de esa carpeta, sin depender de los metadatos de cada uno.
+function matchEtiquetasEnCarpeta(carpeta: string, vocabulario: string[]): string[] {
+  const carpetaLower = carpeta.toLowerCase()
+  return vocabulario.filter((etiqueta) => carpetaLower.includes(etiqueta.toLowerCase()))
+}
+
 // Ubica un archivo dentro del árbol elegido y deriva Coleccion/carpeta/root
 // (carpetaBase) siguiendo el patrón carpetaBase->Coleccion->carpeta->Archivo
 // (ver CLAUDE.md). La Coleccion es SIEMPRE el ancestro dos niveles arriba
@@ -506,7 +515,7 @@ export function CargarMusica() {
         titulo,
         interprete: '',
         tagsExtra: '',
-        etiquetasDetectadas: [],
+        etiquetasDetectadas: matchEtiquetasEnCarpeta(ubicacion.carpeta, vocabularioEtiquetas),
         ejercicioDetectado: null,
         estado: 'pendiente',
       })
@@ -540,15 +549,19 @@ export function CargarMusica() {
       let titulo = item.titulo
       let interprete = item.interprete
       let tagsExtra = item.tagsExtra
-      let etiquetasDetectadas: string[] = []
+      // Arranca con lo ya detectado por nombre de carpeta (matchEtiquetasEnCarpeta,
+      // calculado al armar `encontrados`) -- lo de metadatos se suma, no lo
+      // reemplaza.
+      let etiquetasDetectadas = item.etiquetasDetectadas
       let ejercicioDetectado: string | null = null
       if (metadata) {
         if (metadata.titulo) titulo = metadata.titulo
         if (metadata.interprete) interprete = metadata.interprete
         tagsExtra = metadata.tagsExtra
-        etiquetasDetectadas = vocabularioEtiquetas.filter((etiqueta) =>
+        const etiquetasPorMetadata = vocabularioEtiquetas.filter((etiqueta) =>
           metadata.camposTexto.some((campo) => campo.trim().toLowerCase() === etiqueta.trim().toLowerCase()),
         )
+        etiquetasDetectadas = Array.from(new Set([...etiquetasDetectadas, ...etiquetasPorMetadata]))
         for (const campo of metadata.camposTexto) {
           const ejercicio = getEjercicioByNombre(campo)
           if (ejercicio) {
@@ -592,7 +605,12 @@ export function CargarMusica() {
         // a partir de metadatos, para no generar ejercicios espurios de
         // texto de intérprete/álbum que no tenga que ver con ninguno real.
         Ejercicio: a.ejercicioDetectado ?? undefined,
-        idMusica: a.carpeta + '/' + a.titulo,
+        // Se arma con el nombre de archivo real (estable), no con el
+        // título (a.titulo puede salir de metadatos y variar entre
+        // escaneos del mismo archivo -- si el id cambiara con eso, cada
+        // reimportación crearía una música "nueva" en vez de actualizar
+        // la existente, perdiendo los ejercicios ya asignados).
+        idMusica: a.carpeta + '/' + a.archivo,
         duracion: a.duracion ?? '',
         etiquetasOverride,
       }
