@@ -30,11 +30,44 @@ const EXTENSIONES_AUDIO = ['mp3', 'wav', 'm4a', 'ogg', 'wma', 'flac', 'aac', 'ai
 // /ejercicios o /clase.
 interface ArchivoEscaneado {
   file: File
+  coleccion: string
+  coleccionRoot: string
   carpeta: string
   archivo: string
   titulo: string
   estado: string
   duracion?: string
+}
+
+function claveCarpetaEscaneo(coleccion: string, carpeta: string) {
+  return coleccion + '|' + carpeta
+}
+
+// Ubica un archivo dentro del árbol elegido y deriva Coleccion/carpeta/root
+// (carpetaBase) siguiendo el patrón carpetaBase->Coleccion->carpeta->Archivo
+// (ver CLAUDE.md). La Coleccion es SIEMPRE el ancestro dos niveles arriba
+// del archivo (nombre solo, sin importar la profundidad real del árbol
+// elegido) -- esto permite elegir una carpeta ancestro que contenga varias
+// colecciones a la vez, incluso anidadas a distinta profundidad: si el
+// usuario elige "biosoft" y adentro hay
+// ".../musica/BsAs/CD1/track.mp3" y ".../musica/varios/Paula/CD1/track.mp3",
+// se detectan 2 colecciones -- "BsAs" con root "musica/BsAs/" y "Paula" con
+// root "musica/varios/Paula/" ("varios" no es una colección en sí, es
+// simplemente parte del root de "Paula" porque su hijo directo, Paula, no
+// contiene archivos de audio directamente -- Paula sí).
+// Requiere encontrar un segmento "musica" en la ruta (case-insensitive):
+// es la convención fija que ya usa el resto de la app (getPathMusica()),
+// así que sin eso no hay forma de construir una ruta de reproducción
+// válida más adelante.
+function ubicarEnArbol(partes: string[]): { coleccion: string; carpeta: string; root: string } | null {
+  if (partes.length < 4) return null
+  const idxCarpeta = partes.length - 2
+  const idxColeccion = partes.length - 3
+  const idxMusica = partes.findIndex((p) => p.toLowerCase() === 'musica')
+  if (idxMusica === -1 || idxMusica >= idxColeccion) return null
+  const intermedios = partes.slice(idxMusica + 1, idxColeccion)
+  const root = 'musica/' + (intermedios.length ? intermedios.join('/') + '/' : '') + partes[idxColeccion] + '/'
+  return { coleccion: partes[idxColeccion], carpeta: partes[idxCarpeta], root }
 }
 
 // Las columnas Carpeta/Archivo del catalogo a veces vienen percent-encoded
@@ -122,13 +155,12 @@ export function CargarMusica() {
   const [page, setPage] = useState(1)
 
   // --- Modo "Escanear Carpeta" (sin Excel) ---
-  const [coleccionCarpeta, setColeccionCarpeta] = useState<Coleccion>(nuevaColeccion())
   const [archivosEscaneados, setArchivosEscaneados] = useState<ArchivoEscaneado[]>([])
   const [escaneando, setEscaneando] = useState(false)
   const [pageCarpeta, setPageCarpeta] = useState(1)
   const [etiquetasGlobales, setEtiquetasGlobales] = useState<string[]>([])
   const [etiquetasPorCarpeta, setEtiquetasPorCarpeta] = useState<Record<string, string[]>>({})
-  const [filtroEscaneo, setFiltroEscaneo] = useState({ carpeta: '', archivo: '', titulo: '', estado: '' })
+  const [filtroEscaneo, setFiltroEscaneo] = useState({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
 
   const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
 
@@ -417,12 +449,11 @@ export function CargarMusica() {
   }
 
   function resetCarpeta() {
-    setColeccionCarpeta(nuevaColeccion())
     setArchivosEscaneados([])
     setEtiquetasGlobales([])
     setEtiquetasPorCarpeta({})
     setPageCarpeta(1)
-    setFiltroEscaneo({ carpeta: '', archivo: '', titulo: '', estado: '' })
+    setFiltroEscaneo({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
     if (dirInputRef.current) dirInputRef.current.value = ''
   }
 
@@ -432,11 +463,11 @@ export function CargarMusica() {
   }
 
   // Puerto libre (no existía en el original): arma la lista de archivos de
-  // audio a partir de una carpeta elegida directamente en disco, siguiendo
-  // el patrón Coleccion/carpeta/Archivo (ver CLAUDE.md). El primer segmento
-  // de webkitRelativePath es la carpeta elegida (=Coleccion), el segundo es
-  // "carpeta", y el resto (unido) es el nombre real del Archivo -- soporta
-  // así una sola subcarpeta de profundidad extra si existiera.
+  // audio a partir de una carpeta elegida directamente en disco -- puede
+  // ser la carpeta "musica" en sí, o cualquier ancestro de ella (ej. la
+  // carpeta del proyecto completa), y se detectan TODAS las colecciones
+  // que haya adentro, sin importar a qué profundidad estén anidadas (ver
+  // ubicarEnArbol arriba).
   async function escanearCarpeta(files: FileList) {
     // Ojo: `files` es una referencia viva al FileList del <input> -- hay
     // que sacar una copia ANTES de resetCarpeta(), porque esta limpia
@@ -445,26 +476,42 @@ export function CargarMusica() {
     const archivos = Array.from(files)
     resetCarpeta()
     const encontrados: ArchivoEscaneado[] = []
-    let coleccionNombre = ''
+    let ignorados = 0
     for (const file of archivos) {
       const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
       if (!rel) continue
-      const partes = rel.split('/')
-      if (partes.length < 3) continue
       const ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
       if (!EXTENSIONES_AUDIO.includes(ext)) continue
-      if (!coleccionNombre) coleccionNombre = partes[0]
-      const carpeta = partes[1]
-      const archivo = partes[partes.length - 1]
+      const ubicacion = ubicarEnArbol(rel.split('/'))
+      if (!ubicacion) {
+        ignorados++
+        continue
+      }
+      const archivo = file.name
       const puntoExt = archivo.lastIndexOf('.')
       const titulo = puntoExt > 0 ? archivo.substring(0, puntoExt) : archivo
-      encontrados.push({ file, carpeta, archivo, titulo, estado: 'pendiente' })
+      encontrados.push({
+        file,
+        coleccion: ubicacion.coleccion.toUpperCase(),
+        coleccionRoot: ubicacion.root,
+        carpeta: ubicacion.carpeta,
+        archivo,
+        titulo,
+        estado: 'pendiente',
+      })
     }
     if (encontrados.length === 0) {
-      addAlert('danger', 'No se encontraron archivos de audio en la carpeta elegida (se espera Coleccion/carpeta/Archivo, ver "' + pathMusicas + '" arriba).')
+      addAlert(
+        'danger',
+        'No se encontraron archivos de audio ubicables como musica/[.../]Coleccion/carpeta/Archivo dentro de la carpeta elegida' +
+          (ignorados > 0 ? ' (' + ignorados + ' archivo(s) de audio ignorados por no calzar con ese patrón)' : '') +
+          '.',
+      )
       return
     }
-    setColeccionCarpeta({ ...nuevaColeccion(), nombre: coleccionNombre.toUpperCase(), carpeta: 'musica/' + coleccionNombre.toUpperCase() + '/' })
+    if (ignorados > 0) {
+      addAlert('danger', ignorados + ' archivo(s) de audio se ignoraron por no calzar con el patrón musica/[.../]Coleccion/carpeta/Archivo.')
+    }
     setArchivosEscaneados(encontrados)
     setEscaneando(true)
     const actualizados = [...encontrados]
@@ -483,36 +530,77 @@ export function CargarMusica() {
   }
 
   function importarCarpeta() {
-    const rows: RowImportMusica[] = archivosEscaneados
-      .filter((a) => a.estado === 'ok')
-      .map((a) => {
-        const propias = etiquetasPorCarpeta[a.carpeta] ?? []
-        const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias]))
-        return {
-          estado: 'ok',
-          Archivo: a.archivo,
-          Carpeta: a.carpeta,
-          Titulo: a.titulo,
-          Interprete: 'Desconocido',
-          idMusica: a.carpeta + '/' + a.titulo,
-          duracion: a.duracion ?? '',
-          etiquetasOverride,
-        }
-      })
-    if (rows.length === 0) {
+    const porColeccion = new Map<string, RowImportMusica[]>()
+    for (const a of archivosEscaneados) {
+      if (a.estado !== 'ok') continue
+      const propias = etiquetasPorCarpeta[claveCarpetaEscaneo(a.coleccion, a.carpeta)] ?? []
+      const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias]))
+      const row: RowImportMusica = {
+        estado: 'ok',
+        Archivo: a.archivo,
+        Carpeta: a.carpeta,
+        Titulo: a.titulo,
+        Interprete: 'Desconocido',
+        idMusica: a.carpeta + '/' + a.titulo,
+        duracion: a.duracion ?? '',
+        etiquetasOverride,
+      }
+      if (!porColeccion.has(a.coleccion)) porColeccion.set(a.coleccion, [])
+      porColeccion.get(a.coleccion)!.push(row)
+    }
+    if (porColeccion.size === 0) {
       addAlert('danger', 'No hay archivos válidos para importar.')
       return
     }
-    const result = importarColeccionMusicas(coleccionCarpeta, rows)
+    let totalImportado = 0
+    for (const [nombreColeccion, rows] of porColeccion) {
+      const root = coleccionesDetectadas.get(nombreColeccion)?.root ?? 'musica/' + nombreColeccion + '/'
+      const coleccionObj: Coleccion = { nombre: nombreColeccion, carpeta: root, excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now() }
+      totalImportado += importarColeccionMusicas(coleccionObj, rows).length
+    }
     addAlert(
       'info',
-      'se importaron ' + result.length + ' archivos de música de la carpeta ' + coleccionCarpeta.nombre + ' (sin asignar a ningún ejercicio).',
+      'Se importaron ' +
+        totalImportado +
+        ' archivos de música en ' +
+        porColeccion.size +
+        ' colección(es): ' +
+        Array.from(porColeccion.keys()).join(', ') +
+        ' (sin asignar a ningún ejercicio).',
     )
     resetCarpeta()
   }
 
   const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-  const carpetasEscaneadas = Array.from(new Set(archivosEscaneados.map((a) => a.carpeta)))
+
+  // Colecciones distintas detectadas en el escaneo, con su root -- puede
+  // haber más de una (ver ubicarEnArbol).
+  const coleccionesDetectadas = useMemo(() => {
+    const mapa = new Map<string, { root: string; count: number }>()
+    for (const a of archivosEscaneados) {
+      const prev = mapa.get(a.coleccion)
+      if (prev) prev.count++
+      else mapa.set(a.coleccion, { root: a.coleccionRoot, count: 1 })
+    }
+    return mapa
+  }, [archivosEscaneados])
+
+  // Pares (coleccion, carpeta) únicos detectados -- para el editor de
+  // etiquetas por carpeta. Se identifican por coleccion+carpeta (no solo
+  // carpeta) porque distintas colecciones pueden compartir nombres de
+  // carpeta (ej. "CD1" en más de una).
+  const carpetasEscaneadas = useMemo(() => {
+    const vistos = new Set<string>()
+    const lista: { coleccion: string; carpeta: string }[] = []
+    for (const a of archivosEscaneados) {
+      const clave = claveCarpetaEscaneo(a.coleccion, a.carpeta)
+      if (vistos.has(clave)) continue
+      vistos.add(clave)
+      lista.push({ coleccion: a.coleccion, carpeta: a.carpeta })
+    }
+    return lista
+  }, [archivosEscaneados])
+
   const totalesCarpeta = {
     leidos: archivosEscaneados.length,
     ok: archivosEscaneados.filter((a) => a.estado === 'ok').length,
@@ -525,6 +613,7 @@ export function CargarMusica() {
     () =>
       archivosEscaneados.filter(
         (a) =>
+          a.coleccion.toLowerCase().includes(filtroEscaneo.coleccion.toLowerCase()) &&
           a.carpeta.toLowerCase().includes(filtroEscaneo.carpeta.toLowerCase()) &&
           a.archivo.toLowerCase().includes(filtroEscaneo.archivo.toLowerCase()) &&
           a.titulo.toLowerCase().includes(filtroEscaneo.titulo.toLowerCase()) &&
@@ -683,15 +772,29 @@ export function CargarMusica() {
             <br />
             <div className="form-group col-md-12">
               <label className="control-label">
-                Elija la carpeta de la colección (debe estar en {pathMusicas}, ej. {pathMusicas}NOMBRE_COLECCION); sus subcarpetas
-                directas son las "carpeta" y los archivos de audio dentro de cada una se importan siguiendo el patrón
-                Colección/carpeta/Archivo. No quedan asignadas a ningún ejercicio.
+                Elija cualquier carpeta que contenga, en algún nivel, una carpeta llamada "musica" (debe corresponder a {pathMusicas}).
+                Adentro de "musica" se detecta automáticamente cada colección: es cualquier carpeta cuyas subcarpetas directas ya
+                contienen archivos de audio (patrón Coleccion/carpeta/Archivo). Si una colección está en una subcarpeta intermedia
+                (ej. musica/varios/Paula/...), esa carpeta intermedia no es una colección en sí, solo forma parte de la ubicación de
+                "Paula". Pueden detectarse varias colecciones a la vez. No quedan asignadas a ningún ejercicio.
               </label>
             </div>
-            <div className="form-group col-md-12">
-              <label className="control-label">Colección detectada:</label>
-              <input type="text" readOnly className="form-control" style={{ width: '300px' }} value={coleccionCarpeta.nombre} />
-            </div>
+            {coleccionesDetectadas.size > 0 && (
+              <div className="form-group col-md-12">
+                <label className="control-label">Colecciones detectadas:</label>
+                <table className="table table-condensed" style={{ marginBottom: 0, width: 'auto' }}>
+                  <tbody>
+                    {Array.from(coleccionesDetectadas.entries()).map(([nombre, info]) => (
+                      <tr key={nombre}>
+                        <td style={{ width: '150px' }}>{nombre}</td>
+                        <td style={{ width: '250px' }}>{info.root}</td>
+                        <td>{info.count} archivo(s)</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
             <input
               ref={setDirInputRef}
               type="file"
@@ -727,28 +830,42 @@ export function CargarMusica() {
               </div>
 
               <div className="form-group col-md-12" style={{ marginTop: '10px' }}>
-                <label className="control-label">Etiquetas para toda la colección:</label>
+                <label className="control-label">Etiquetas para todo lo escaneado:</label>
                 <br />
                 <EtiquetasEditor etiquetas={etiquetasGlobales} onChange={setEtiquetasGlobales} />
               </div>
 
               <div className="col-md-12" style={{ marginTop: '10px' }}>
                 <label className="control-label">Etiquetas por carpeta:</label>
-                {carpetasEscaneadas.map((carpeta) => (
-                  <div key={carpeta} style={{ marginTop: '4px' }}>
-                    <strong>{carpeta}:</strong>{' '}
-                    <EtiquetasEditor
-                      etiquetas={etiquetasPorCarpeta[carpeta] ?? []}
-                      onChange={(etiquetas) => setEtiquetasPorCarpeta((prev) => ({ ...prev, [carpeta]: etiquetas }))}
-                    />
-                  </div>
-                ))}
+                {carpetasEscaneadas.map(({ coleccion, carpeta }) => {
+                  const clave = claveCarpetaEscaneo(coleccion, carpeta)
+                  return (
+                    <div key={clave} style={{ marginTop: '4px' }}>
+                      <strong>
+                        {coleccion} / {carpeta}:
+                      </strong>{' '}
+                      <EtiquetasEditor
+                        etiquetas={etiquetasPorCarpeta[clave] ?? []}
+                        onChange={(etiquetas) => setEtiquetasPorCarpeta((prev) => ({ ...prev, [clave]: etiquetas }))}
+                      />
+                    </div>
+                  )
+                })}
               </div>
 
               <div className="col-md-12" style={{ marginTop: '10px' }}>
                 <table id="tblImportCarpeta" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
                   <thead>
                     <tr>
+                      <td>
+                        Colección
+                        <input
+                          type="text"
+                          className="form-control input-sm"
+                          value={filtroEscaneo.coleccion}
+                          onChange={(e) => setFiltroEscaneoField('coleccion', e.target.value)}
+                        />
+                      </td>
                       <td>
                         Carpeta
                         <input
@@ -791,6 +908,7 @@ export function CargarMusica() {
                   <tbody>
                     {paginaActualCarpeta.map((a, i) => (
                       <tr key={i}>
+                        <td>{a.coleccion}</td>
                         <td>{a.carpeta}</td>
                         <td>{a.archivo}</td>
                         <td>{a.titulo}</td>
