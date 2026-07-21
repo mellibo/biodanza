@@ -585,6 +585,18 @@ export function CargarMusica() {
     return lista
   }, [archivosEscaneados])
 
+  // carpetasEscaneadas agrupado por colección -- para mostrar los editores
+  // de etiquetas por carpeta en columnas, una por colección (junto con el
+  // resumen de esa colección, ver coleccionesDetectadas).
+  const carpetasPorColeccion = useMemo(() => {
+    const mapa = new Map<string, string[]>()
+    for (const { coleccion, carpeta } of carpetasEscaneadas) {
+      if (!mapa.has(coleccion)) mapa.set(coleccion, [])
+      mapa.get(coleccion)!.push(carpeta)
+    }
+    return mapa
+  }, [carpetasEscaneadas])
+
   const totalesCarpeta = {
     leidos: archivosEscaneados.length,
     ok: archivosEscaneados.filter((a) => a.estado === 'ok').length,
@@ -763,22 +775,6 @@ export function CargarMusica() {
                 "Paula". Pueden detectarse varias colecciones a la vez. No quedan asignadas a ningún ejercicio.
               </label>
             </div>
-            {coleccionesDetectadas.size > 0 && (
-              <div className="form-group col-md-12">
-                <label className="control-label">Colecciones detectadas:</label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                  {Array.from(coleccionesDetectadas.entries()).map(([nombre, info]) => (
-                    <div key={nombre} style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '6px 10px', minWidth: '180px' }}>
-                      <div>
-                        <strong>{nombre}</strong>
-                      </div>
-                      <div style={{ fontSize: '90%', color: '#666' }}>{info.root}</div>
-                      <div>{info.count} archivo(s)</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
             <input
               ref={setDirInputRef}
               type="file"
@@ -820,21 +816,38 @@ export function CargarMusica() {
               </div>
 
               <div className="col-md-12" style={{ marginTop: '10px' }}>
-                <label className="control-label">Etiquetas por carpeta:</label>
-                {carpetasEscaneadas.map(({ coleccion, carpeta }) => {
-                  const clave = claveCarpetaEscaneo(coleccion, carpeta)
-                  return (
-                    <div key={clave} style={{ marginTop: '4px' }}>
-                      <strong>
-                        {coleccion} / {carpeta}:
-                      </strong>{' '}
-                      <EtiquetasEditor
-                        etiquetas={etiquetasPorCarpeta[clave] ?? []}
-                        onChange={(etiquetas) => setEtiquetasPorCarpeta((prev) => ({ ...prev, [clave]: etiquetas }))}
-                      />
-                    </div>
-                  )
-                })}
+                <label className="control-label">Colecciones detectadas y etiquetas por carpeta:</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {Array.from(carpetasPorColeccion.entries()).map(([coleccion, carpetas]) => {
+                    const info = coleccionesDetectadas.get(coleccion)
+                    return (
+                      <div key={coleccion} style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '6px 10px', minWidth: '220px' }}>
+                        <div>
+                          <strong>{coleccion}</strong>
+                        </div>
+                        {info && (
+                          <>
+                            <div style={{ fontSize: '90%', color: '#666' }}>{info.root}</div>
+                            <div>{info.count} archivo(s)</div>
+                          </>
+                        )}
+                        <hr style={{ margin: '6px 0' }} />
+                        {carpetas.map((carpeta) => {
+                          const clave = claveCarpetaEscaneo(coleccion, carpeta)
+                          return (
+                            <div key={clave} style={{ marginTop: '6px' }}>
+                              <strong>{carpeta}:</strong>{' '}
+                              <EtiquetasEditor
+                                etiquetas={etiquetasPorCarpeta[clave] ?? []}
+                                onChange={(etiquetas) => setEtiquetasPorCarpeta((prev) => ({ ...prev, [clave]: etiquetas }))}
+                              />
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
 
               <div className="col-md-12" style={{ marginTop: '10px' }}>
