@@ -44,6 +44,9 @@ export function Musicas() {
   // vacío), todo quede seleccionado, incluyendo colecciones/carpetas que se
   // importen después.
   const [excluidos, setExcluidos] = useState<Set<string>>(new Set())
+  // Colecciones con su lista de carpetas colapsada (oculta) en el árbol --
+  // separado de `excluidos` (que es sobre el filtro, no sobre qué se ve).
+  const [coleccionesColapsadas, setColeccionesColapsadas] = useState<Set<string>>(new Set())
 
   const searchStrings = useMemo(() => tokenizeEjercicioTextFilter(ejercicioTextFilter), [ejercicioTextFilter])
 
@@ -133,6 +136,15 @@ export function Musicas() {
     })
   }
 
+  function toggleColapsoColeccion(coleccion: string) {
+    setColeccionesColapsadas((prev) => {
+      const next = new Set(prev)
+      if (next.has(coleccion)) next.delete(coleccion)
+      else next.add(coleccion)
+      return next
+    })
+  }
+
   return (
     <div className="row">
       <div className="form-inline">
@@ -164,8 +176,23 @@ export function Musicas() {
                 const todasExcluidas = carpetas.every((c) => excluidos.has(claveNodo(coleccion, c)))
                 const algunaExcluida = carpetas.some((c) => excluidos.has(claveNodo(coleccion, c)))
                 const rootPath = colecciones.find((c) => c.nombre === coleccion)?.carpeta
+                const colapsada = coleccionesColapsadas.has(coleccion)
                 return (
                   <div key={coleccion}>
+                    <span
+                      onClick={() => toggleColapsoColeccion(coleccion)}
+                      title={colapsada ? 'Expandir carpetas' : 'Colapsar carpetas'}
+                      style={{
+                        cursor: 'pointer',
+                        display: 'inline-block',
+                        width: '14px',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        userSelect: 'none',
+                      }}
+                    >
+                      {colapsada ? '+' : '-'}
+                    </span>
                     <label title={rootPath}>
                       <input
                         type="checkbox"
@@ -177,20 +204,22 @@ export function Musicas() {
                       />{' '}
                       <strong>{coleccion}</strong>
                     </label>
-                    <div style={{ paddingLeft: '20px' }}>
-                      {carpetas.map((carpeta) => (
-                        <div key={carpeta}>
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={!excluidos.has(claveNodo(coleccion, carpeta))}
-                              onChange={() => toggleCarpeta(coleccion, carpeta)}
-                            />{' '}
-                            {carpeta}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
+                    {!colapsada && (
+                      <div style={{ paddingLeft: '20px' }}>
+                        {carpetas.map((carpeta) => (
+                          <div key={carpeta}>
+                            <label>
+                              <input
+                                type="checkbox"
+                                checked={!excluidos.has(claveNodo(coleccion, carpeta))}
+                                onChange={() => toggleCarpeta(coleccion, carpeta)}
+                              />{' '}
+                              {carpeta}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )
               })}
