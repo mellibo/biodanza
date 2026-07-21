@@ -163,9 +163,10 @@ export function Musicas() {
                 const carpetas = Array.from(carpetasSet).sort()
                 const todasExcluidas = carpetas.every((c) => excluidos.has(claveNodo(coleccion, c)))
                 const algunaExcluida = carpetas.some((c) => excluidos.has(claveNodo(coleccion, c)))
+                const rootPath = colecciones.find((c) => c.nombre === coleccion)?.carpeta
                 return (
                   <div key={coleccion}>
-                    <label>
+                    <label title={rootPath}>
                       <input
                         type="checkbox"
                         checked={!todasExcluidas}

@@ -91,6 +91,8 @@ function nuevaColeccion(): Coleccion {
 export function CargarMusica() {
   const init = useDataStore((s) => s.init)
   const importarColeccionMusicas = useDataStore((s) => s.importarColeccionMusicas)
+  const colecciones = useDataStore((s) => s.colecciones)
+  const removeColeccion = useDataStore((s) => s.removeColeccion)
   const addAlert = useAlertStore((s) => s.addAlert)
   const initEtiquetas = useEtiquetasStore((s) => s.init)
 
@@ -400,6 +402,20 @@ export function CargarMusica() {
     reset()
   }
 
+  function eliminarColeccion(nombre: string) {
+    if (
+      !window.confirm(
+        '¿Eliminar la colección "' +
+          nombre +
+          '"?\nSe van a borrar todas sus músicas. Los ejercicios/clases que las tuvieran asignadas van a quedar con ese enlace sin resolver.',
+      )
+    ) {
+      return
+    }
+    removeColeccion(nombre)
+    addAlert('info', 'Colección "' + nombre + '" eliminada.')
+  }
+
   function resetCarpeta() {
     setColeccionCarpeta(nuevaColeccion())
     setArchivosEscaneados([])
@@ -525,6 +541,26 @@ export function CargarMusica() {
 
   return (
     <div className="row">
+      {colecciones.length > 0 && (
+        <div className="col-md-12" style={{ marginBottom: '10px' }}>
+          <strong>Colecciones cargadas:</strong>
+          <table className="table table-condensed" style={{ marginBottom: 0 }}>
+            <tbody>
+              {colecciones.map((col) => (
+                <tr key={col.nombre}>
+                  <td style={{ width: '200px' }}>{col.nombre}</td>
+                  <td>{col.carpeta}</td>
+                  <td style={{ width: '40px' }}>
+                    <button type="button" className="btn btn-danger btn-sm" onClick={() => eliminarColeccion(col.nombre)} title="Eliminar colección">
+                      <span className="glyphicon glyphicon-trash" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
       <div className="form-group col-md-12 btn-group" role="group" style={{ marginBottom: '10px' }}>
         <button type="button" className={'btn ' + (modo === 'excel' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('excel')}>
           Desde Excel

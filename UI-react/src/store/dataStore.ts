@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import ejerciciosData from '../data/ejercicios.generated'
 import gruposData from '../data/grupos.generated'
 import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
-import { readLocalStorage, writeLocalStorage } from '../lib/storage'
+import { readLocalStorage, writeLocalStorage, removeLocalStorage } from '../lib/storage'
 import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
 import { parseLineasToEtiquetas } from '../lib/etiquetasParsing'
 import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
@@ -103,6 +103,7 @@ interface DataState {
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
   removeEtiquetaGlobal: (etiqueta: string) => void
   toggleColeccionCargar: (nombreColeccion: string, cargar: boolean) => void
+  removeColeccion: (nombreColeccion: string) => void
 }
 
 // Forma de cada fila validada de la grilla de importación de música
@@ -429,6 +430,28 @@ export const useDataStore = create<DataState>((set, get) => ({
       return { colecciones, musicasById, musicasOrder }
     })
     saveColecciones(get().colecciones)
+  },
+
+  // Elimina una colección por completo: la saca de memoria, borra su
+  // localStorage (biosoft_musica_<nombre>) y la quita del listado de
+  // colecciones. No limpia las referencias colgantes en
+  // ejercicio.musicasId/clase.ejercicio.musicaId hacia música ya borrada --
+  // ya se toleran en todos lados con lookups que devuelven undefined
+  // (mismo criterio que una reimportación que cambia los ids), así que
+  // simplemente dejan de resolver en vez de romper algo.
+  removeColeccion: (nombreColeccion) => {
+    set((state) => {
+      const colecciones = state.colecciones.filter((c) => c.nombre !== nombreColeccion)
+      const musicasById = { ...state.musicasById }
+      const musicasOrder = state.musicasOrder.filter((id) => {
+        if (musicasById[id]?.coleccion !== nombreColeccion) return true
+        delete musicasById[id]
+        return false
+      })
+      return { colecciones, musicasById, musicasOrder }
+    })
+    saveColecciones(get().colecciones)
+    removeLocalStorage(STORAGE_KEYS.musicaPrefix + nombreColeccion)
   },
 }))
 

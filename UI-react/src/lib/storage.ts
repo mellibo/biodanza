@@ -16,3 +16,7 @@ export function readLocalStorage<T>(key: string): T | undefined {
 export function writeLocalStorage(key: string, value: unknown) {
   window.localStorage.setItem('ngStorage-' + key, JSON.stringify(value))
 }
+
+export function removeLocalStorage(key: string) {
+  window.localStorage.removeItem('ngStorage-' + key)
+}
