@@ -5,6 +5,7 @@ import { useAlertStore } from '../store/alertStore'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { checkFileExists } from '../lib/loadJs'
 import { testMusica } from '../lib/testMusica'
+import { leerMetadata } from '../lib/musicaMetadata'
 import { normalize } from '../lib/normalize'
 import { getCurrentPath } from '../lib/path'
 import { getPathMusica } from '../lib/config'
@@ -24,10 +25,10 @@ const EXTENSIONES_AUDIO = ['mp3', 'wav', 'm4a', 'ogg', 'wma', 'flac', 'aac', 'ai
 // Fila de la grilla de vista previa del modo "Escanear Carpeta" -- una por
 // cada archivo de audio encontrado, siguiendo el patrón
 // carpetaBase->Coleccion->carpeta->Archivo (ver CLAUDE.md, "Organizacion
-// de archivos de musicas"). A diferencia del modo Excel, acá no hay
-// columna "Ejercicio": estas músicas quedan sin vincular a ningún
-// ejercicio hasta que el usuario las asigne a mano después, desde
-// /ejercicios o /clase.
+// de archivos de musicas"). A diferencia del modo Excel, el Ejercicio (si
+// se detecta) sale de los metadatos del propio archivo, no de una columna
+// de catálogo -- si no hay match, la música queda sin vincular hasta que
+// el usuario la asigne a mano después, desde /ejercicios o /clase.
 interface ArchivoEscaneado {
   file: File
   coleccion: string
@@ -35,6 +36,10 @@ interface ArchivoEscaneado {
   carpeta: string
   archivo: string
   titulo: string
+  interprete: string
+  tagsExtra: string
+  etiquetasDetectadas: string[]
+  ejercicioDetectado: string | null
   estado: string
   duracion?: string
 }
@@ -126,8 +131,10 @@ export function CargarMusica() {
   const importarColeccionMusicas = useDataStore((s) => s.importarColeccionMusicas)
   const colecciones = useDataStore((s) => s.colecciones)
   const removeColeccion = useDataStore((s) => s.removeColeccion)
+  const getEjercicioByNombre = useDataStore((s) => s.getEjercicioByNombre)
   const addAlert = useAlertStore((s) => s.addAlert)
   const initEtiquetas = useEtiquetasStore((s) => s.init)
+  const vocabularioEtiquetas = useEtiquetasStore((s) => s.etiquetas)
 
   useEffect(() => {
     init()
@@ -497,6 +504,10 @@ export function CargarMusica() {
         carpeta: ubicacion.carpeta,
         archivo,
         titulo,
+        interprete: '',
+        tagsExtra: '',
+        etiquetasDetectadas: [],
+        ejercicioDetectado: null,
         estado: 'pendiente',
       })
     }
@@ -516,11 +527,44 @@ export function CargarMusica() {
     setEscaneando(true)
     const actualizados = [...encontrados]
     for (let i = 0; i < actualizados.length; i++) {
-      const url = URL.createObjectURL(actualizados[i].file)
-      const result = await testMusica(url)
+      const item = actualizados[i]
+      const url = URL.createObjectURL(item.file)
+      const [result, metadata] = await Promise.all([testMusica(url), leerMetadata(item.file)])
       URL.revokeObjectURL(url)
+
+      // Metadatos embebidos (ID3/Vorbis/MP4, ver src/lib/musicaMetadata.ts):
+      // completan Titulo/Interprete cuando el archivo los trae, y sus
+      // valores (titulo, interprete, álbum, género, comentario) se
+      // comparan contra el vocabulario de etiquetas y contra nombres de
+      // ejercicio ya existentes, para auto-asignar cuando coinciden.
+      let titulo = item.titulo
+      let interprete = item.interprete
+      let tagsExtra = item.tagsExtra
+      let etiquetasDetectadas: string[] = []
+      let ejercicioDetectado: string | null = null
+      if (metadata) {
+        if (metadata.titulo) titulo = metadata.titulo
+        if (metadata.interprete) interprete = metadata.interprete
+        tagsExtra = metadata.tagsExtra
+        etiquetasDetectadas = vocabularioEtiquetas.filter((etiqueta) =>
+          metadata.camposTexto.some((campo) => campo.trim().toLowerCase() === etiqueta.trim().toLowerCase()),
+        )
+        for (const campo of metadata.camposTexto) {
+          const ejercicio = getEjercicioByNombre(campo)
+          if (ejercicio) {
+            ejercicioDetectado = ejercicio.nombre
+            break
+          }
+        }
+      }
+
       actualizados[i] = {
-        ...actualizados[i],
+        ...item,
+        titulo,
+        interprete,
+        tagsExtra,
+        etiquetasDetectadas,
+        ejercicioDetectado,
         estado: result.ok ? 'ok' : 'Error. ' + (result.errorMessage ?? 'no se pudo leer el archivo'),
         duracion: result.duracion,
       }
@@ -534,13 +578,20 @@ export function CargarMusica() {
     for (const a of archivosEscaneados) {
       if (a.estado !== 'ok') continue
       const propias = etiquetasPorCarpeta[claveCarpetaEscaneo(a.coleccion, a.carpeta)] ?? []
-      const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias]))
+      const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias, ...a.etiquetasDetectadas]))
       const row: RowImportMusica = {
         estado: 'ok',
         Archivo: a.archivo,
         Carpeta: a.carpeta,
         Titulo: a.titulo,
-        Interprete: 'Desconocido',
+        Interprete: a.interprete || 'Desconocido',
+        Tags: a.tagsExtra,
+        // Solo se completa cuando el nombre coincide con un ejercicio YA
+        // EXISTENTE (ver getEjercicioByNombre en escanearCarpeta) -- a
+        // diferencia del modo Excel, acá nunca se crea un ejercicio nuevo
+        // a partir de metadatos, para no generar ejercicios espurios de
+        // texto de intérprete/álbum que no tenga que ver con ninguno real.
+        Ejercicio: a.ejercicioDetectado ?? undefined,
         idMusica: a.carpeta + '/' + a.titulo,
         duracion: a.duracion ?? '',
         etiquetasOverride,
@@ -893,7 +944,10 @@ export function CargarMusica() {
                           onChange={(e) => setFiltroEscaneoField('titulo', e.target.value)}
                         />
                       </td>
+                      <td>Interprete</td>
                       <td>Duración</td>
+                      <td>Etiquetas (auto)</td>
+                      <td>Ejercicio (auto)</td>
                       <td>
                         Estado
                         <input
@@ -912,7 +966,10 @@ export function CargarMusica() {
                         <td>{a.carpeta}</td>
                         <td>{a.archivo}</td>
                         <td>{a.titulo}</td>
+                        <td>{a.interprete}</td>
                         <td>{a.duracion}</td>
+                        <td>{a.etiquetasDetectadas.join(', ')}</td>
+                        <td>{a.ejercicioDetectado}</td>
                         <td style={{ color: 'white', backgroundColor: a.estado === 'ok' ? '#04f95a' : a.estado === 'pendiente' ? '#999' : 'orange' }}>
                           {a.estado}
                         </td>
