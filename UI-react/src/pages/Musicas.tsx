@@ -19,6 +19,8 @@ export function Musicas() {
   const init = useDataStore((s) => s.init)
   const musicasById = useDataStore((s) => s.musicasById)
   const musicasOrder = useDataStore((s) => s.musicasOrder)
+  const colecciones = useDataStore((s) => s.colecciones)
+  const toggleColeccionCargar = useDataStore((s) => s.toggleColeccionCargar)
   const getEjercicioById = useDataStore((s) => s.getEjercicioById)
   const updateMusica = useDataStore((s) => s.updateMusica)
   const playFile = usePlayerStore((s) => s.playFile)
@@ -139,7 +141,24 @@ export function Musicas() {
             <button type="button" className="btn btn-primary btn-sm" onClick={() => setColapsado(true)}>
               <span className="glyphicon glyphicon-chevron-left" />
             </button>
-            <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+
+            <div style={{ marginTop: '8px' }}>
+              <strong>Colecciones cargadas:</strong>
+              {colecciones.map((col) => (
+                <div key={col.nombre}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={col.cargar}
+                      onChange={(e) => toggleColeccionCargar(col.nombre, e.target.checked)}
+                    />{' '}
+                    {col.nombre}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ maxHeight: '60vh', overflowY: 'auto', marginTop: '8px' }}>
               {Array.from(arbol.entries()).map(([coleccion, carpetasSet]) => {
                 const carpetas = Array.from(carpetasSet).sort()
                 const todasExcluidas = carpetas.every((c) => excluidos.has(claveNodo(coleccion, c)))

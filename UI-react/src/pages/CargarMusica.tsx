@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import { useDataStore, type RowImportMusica } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
@@ -126,6 +126,7 @@ export function CargarMusica() {
   const [pageCarpeta, setPageCarpeta] = useState(1)
   const [etiquetasGlobales, setEtiquetasGlobales] = useState<string[]>([])
   const [etiquetasPorCarpeta, setEtiquetasPorCarpeta] = useState<Record<string, string[]>>({})
+  const [filtroEscaneo, setFiltroEscaneo] = useState({ carpeta: '', archivo: '', titulo: '', estado: '' })
 
   const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
 
@@ -405,6 +406,7 @@ export function CargarMusica() {
     setEtiquetasGlobales([])
     setEtiquetasPorCarpeta({})
     setPageCarpeta(1)
+    setFiltroEscaneo({ carpeta: '', archivo: '', titulo: '', estado: '' })
     if (dirInputRef.current) dirInputRef.current.value = ''
   }
 
@@ -495,11 +497,30 @@ export function CargarMusica() {
 
   const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const carpetasEscaneadas = Array.from(new Set(archivosEscaneados.map((a) => a.carpeta)))
-  const paginaActualCarpeta = archivosEscaneados.slice((pageCarpeta - 1) * PAGE_SIZE, pageCarpeta * PAGE_SIZE)
   const totalesCarpeta = {
     leidos: archivosEscaneados.length,
     ok: archivosEscaneados.filter((a) => a.estado === 'ok').length,
     error: archivosEscaneados.filter((a) => a.estado !== 'ok' && a.estado !== 'pendiente').length,
+  }
+  // Filtro por cabecera de la grilla de vista previa -- solo afecta lo que
+  // se muestra/pagina, no los totales ni la asignación de etiquetas (que
+  // siguen aplicando sobre todo el lote escaneado).
+  const archivosFiltrados = useMemo(
+    () =>
+      archivosEscaneados.filter(
+        (a) =>
+          a.carpeta.toLowerCase().includes(filtroEscaneo.carpeta.toLowerCase()) &&
+          a.archivo.toLowerCase().includes(filtroEscaneo.archivo.toLowerCase()) &&
+          a.titulo.toLowerCase().includes(filtroEscaneo.titulo.toLowerCase()) &&
+          a.estado.toLowerCase().includes(filtroEscaneo.estado.toLowerCase()),
+      ),
+    [archivosEscaneados, filtroEscaneo],
+  )
+  const paginaActualCarpeta = archivosFiltrados.slice((pageCarpeta - 1) * PAGE_SIZE, pageCarpeta * PAGE_SIZE)
+
+  function setFiltroEscaneoField(campo: keyof typeof filtroEscaneo, valor: string) {
+    setFiltroEscaneo((f) => ({ ...f, [campo]: valor }))
+    setPageCarpeta(1)
   }
 
   return (
@@ -692,11 +713,43 @@ export function CargarMusica() {
                 <table id="tblImportCarpeta" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
                   <thead>
                     <tr>
-                      <td>Carpeta</td>
-                      <td>Archivo</td>
-                      <td>Titulo</td>
+                      <td>
+                        Carpeta
+                        <input
+                          type="text"
+                          className="form-control input-sm"
+                          value={filtroEscaneo.carpeta}
+                          onChange={(e) => setFiltroEscaneoField('carpeta', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        Archivo
+                        <input
+                          type="text"
+                          className="form-control input-sm"
+                          value={filtroEscaneo.archivo}
+                          onChange={(e) => setFiltroEscaneoField('archivo', e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        Titulo
+                        <input
+                          type="text"
+                          className="form-control input-sm"
+                          value={filtroEscaneo.titulo}
+                          onChange={(e) => setFiltroEscaneoField('titulo', e.target.value)}
+                        />
+                      </td>
                       <td>Duración</td>
-                      <td>Estado</td>
+                      <td>
+                        Estado
+                        <input
+                          type="text"
+                          className="form-control input-sm"
+                          value={filtroEscaneo.estado}
+                          onChange={(e) => setFiltroEscaneoField('estado', e.target.value)}
+                        />
+                      </td>
                     </tr>
                   </thead>
                   <tbody>
@@ -713,7 +766,7 @@ export function CargarMusica() {
                     ))}
                   </tbody>
                 </table>
-                <Pagination page={pageCarpeta} count={archivosEscaneados.length} pageSize={PAGE_SIZE} onPageChange={setPageCarpeta} />
+                <Pagination page={pageCarpeta} count={archivosFiltrados.length} pageSize={PAGE_SIZE} onPageChange={setPageCarpeta} />
               </div>
             </div>
           )}

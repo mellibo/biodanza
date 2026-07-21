@@ -20,19 +20,39 @@ function formatDuracion(totalSeconds: number): string {
   return `${pad(h)}:${pad(m)}:${pad(s)}`
 }
 
+// Nota de memoria: `audio.play()` arranca la reproducción real, y
+// `ondurationchange` resuelve ni bien se conoce la duración -- bastante
+// antes de que el archivo termine de sonar solo. Sin un pause()/liberación
+// explícita acá, el <audio> queda reproduciendo en segundo plano después
+// de resuelta la promesa, y el motor de audio del browser no libera esos
+// recursos de decodificación hasta que termina solo -- validar una
+// colección grande en secuencia (docenas/cientos de archivos) acumula
+// muchos audios "colgados" reproduciendo a la vez y sube la memoria.
+function liberarAudio(audio: HTMLAudioElement) {
+  audio.pause()
+  audio.removeAttribute('src')
+  audio.load()
+}
+
 export function testMusica(src: string): Promise<TestMusicaResult> {
   return new Promise((resolve) => {
     const audio = new Audio()
     audio.preload = 'metadata'
     audio.src = src
     audio.ondurationchange = () => {
-      resolve({ ok: true, duracion: formatDuracion(audio.duration) })
+      const duracion = formatDuracion(audio.duration)
+      liberarAudio(audio)
+      resolve({ ok: true, duracion })
     }
     audio.onerror = () => {
-      resolve({ ok: false, errorMessage: audio.error?.message ?? 'no se pudo cargar el archivo' })
+      const errorMessage = audio.error?.message ?? 'no se pudo cargar el archivo'
+      liberarAudio(audio)
+      resolve({ ok: false, errorMessage })
     }
     audio.play().catch((e: unknown) => {
-      resolve({ ok: false, errorMessage: e instanceof Error ? e.message : String(e) })
+      const errorMessage = e instanceof Error ? e.message : String(e)
+      liberarAudio(audio)
+      resolve({ ok: false, errorMessage })
     })
   })
 }

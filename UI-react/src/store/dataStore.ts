@@ -102,6 +102,7 @@ interface DataState {
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
   removeEtiquetaGlobal: (etiqueta: string) => void
+  toggleColeccionCargar: (nombreColeccion: string, cargar: boolean) => void
 }
 
 // Forma de cada fila validada de la grilla de importación de música
@@ -156,6 +157,10 @@ export const useDataStore = create<DataState>((set, get) => ({
     const musicasById: Record<string, Musica> = {}
     const musicasOrder: string[] = []
     for (const col of colecciones) {
+      // Colección desmarcada ("cargar": false, ver toggleColeccionCargar) --
+      // no se leen sus músicas a memoria al iniciar, para no pagar el costo
+      // (memoria, tiempo) de colecciones que el usuario no necesita ahora.
+      if (col.cargar === false) continue
       const musicasCol = readLocalStorage<MusicaBase[]>(STORAGE_KEYS.musicaPrefix + col.nombre) ?? []
       for (const base of musicasCol) {
         const musica = buildMusica(base)
@@ -392,6 +397,38 @@ export const useDataStore = create<DataState>((set, get) => ({
         get().updateMusica(id, { etiquetas: musica.etiquetas.filter((e) => e !== etiqueta) })
       }
     }
+  },
+
+  // Marca una colección para que no se cargue a memoria (o la vuelve a
+  // cargar), sin esperar a un reload -- saca/agrega sus músicas de
+  // musicasById/musicasOrder ahí mismo, en vez de solo persistir la
+  // preferencia para la próxima vez. Pensado para liberar memoria con
+  // colecciones grandes que no se están usando ahora.
+  toggleColeccionCargar: (nombreColeccion, cargar) => {
+    set((state) => {
+      const colecciones = state.colecciones.map((c) => (c.nombre === nombreColeccion ? { ...c, cargar } : c))
+
+      if (!cargar) {
+        const musicasById = { ...state.musicasById }
+        const musicasOrder = state.musicasOrder.filter((id) => {
+          if (musicasById[id]?.coleccion !== nombreColeccion) return true
+          delete musicasById[id]
+          return false
+        })
+        return { colecciones, musicasById, musicasOrder }
+      }
+
+      const musicasCol = readLocalStorage<MusicaBase[]>(STORAGE_KEYS.musicaPrefix + nombreColeccion) ?? []
+      const musicasById = { ...state.musicasById }
+      const musicasOrder = [...state.musicasOrder]
+      for (const base of musicasCol) {
+        const musica = buildMusica(base)
+        if (!musicasById[musica.id]) musicasOrder.push(musica.id)
+        musicasById[musica.id] = musica
+      }
+      return { colecciones, musicasById, musicasOrder }
+    })
+    saveColecciones(get().colecciones)
   },
 }))
 
