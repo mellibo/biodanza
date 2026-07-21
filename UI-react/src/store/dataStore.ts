@@ -101,6 +101,7 @@ interface DataState {
   saveEjerciciosSnapshot: () => void
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
+  agregarMusicasAColeccion: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
   removeEtiquetaGlobal: (etiqueta: string) => void
   toggleColeccionCargar: (nombreColeccion: string, cargar: boolean) => void
   removeColeccion: (nombreColeccion: string) => void
@@ -128,7 +129,72 @@ export interface RowImportMusica {
   etiquetasOverride?: string[]
 }
 
-export const useDataStore = create<DataState>((set, get) => ({
+export const useDataStore = create<DataState>((set, get) => {
+  // Compartido entre importarColeccionMusicas (reemplaza TODA la colección
+  // con lo que venga en `rows` -- pensado para un catálogo completo, Excel
+  // o carpeta escaneada) y agregarMusicasAColeccion (agrega/actualiza sin
+  // tocar el resto -- pensado para una o pocas pistas sueltas, ver
+  // AgregarMusicaModal.tsx). Arma los MusicaBase de `rows` y, de paso,
+  // vincula los que traigan Ejercicio -- pero NO toca musicasById/
+  // musicasOrder/colecciones, eso lo hace cada acción según si reemplaza o
+  // mezcla.
+  function construirMusicasDesdeRows(nombreCol: string, rows: RowImportMusica[]): MusicaBase[] {
+    const musicasExistentes = get().musicasById
+    const col: MusicaBase[] = []
+    for (const row of rows) {
+      if (row.estado !== 'ok') continue
+      let musica = col.find((m) => m.idMusica === row.idMusica)
+      if (!musica) {
+        musica = {
+          archivo: row.Archivo ?? '',
+          carpeta: row.Carpeta ?? '',
+          coleccion: nombreCol,
+          duracion: row.duracion ?? '',
+          interprete: row.Interprete ?? '',
+          nombre: row.Titulo ?? '',
+          idMusica: row.idMusica ?? '',
+          ejerciciosId: [],
+          tags: row.Tags ? normalize(row.Tags) : '',
+          etiquetas: row.etiquetasOverride ?? parseLineasToEtiquetas(row.Lineas),
+        }
+        // Si esta misma música (mismo id, ver getMusicaId) ya existía, se
+        // preservan los ejercicios que ya tenía asignados, para no perder
+        // vínculos hechos a mano o en una importación anterior.
+        const previa = musicasExistentes[getMusicaId(nombreCol, musica.idMusica)]
+        if (previa) musica.ejerciciosId = [...previa.ejerciciosId]
+        col.push(musica)
+      }
+      if (!row.Ejercicio) continue
+      let ejercicio = get().getEjercicioByNombre(row.Ejercicio)
+      if (!ejercicio) {
+        ejercicio = get().addEjercicio({
+          nombre: row.Ejercicio,
+          grupo: row.grupo ?? '',
+          coleccion: nombreCol,
+          detalle: '',
+          musicasId: [],
+          etiquetas: [],
+        })
+      }
+      const musicaId = getMusicaId(nombreCol, musica.idMusica)
+      if (!ejercicio.musicasId.includes(musicaId)) {
+        set((state) => ({
+          ejerciciosById: {
+            ...state.ejerciciosById,
+            [ejercicio!.id]: {
+              ...state.ejerciciosById[ejercicio!.id],
+              musicasId: [...state.ejerciciosById[ejercicio!.id].musicasId, musicaId],
+            },
+          },
+        }))
+      }
+      if (!musica.ejerciciosId.includes(ejercicio.id)) musica.ejerciciosId.push(ejercicio.id)
+    }
+    get().saveEjerciciosSnapshot()
+    return col
+  }
+
+  return {
   ejerciciosById: {},
   ejerciciosOrder: [],
   musicasById: {},
@@ -292,70 +358,17 @@ export const useDataStore = create<DataState>((set, get) => ({
 
   // Puerto de loaderService.importarColeccionMusicas (líneas 232-277) +
   // addColeccion (líneas 24-46), fusionados en una sola acción de store.
+  // Reemplaza TODA la colección con lo que venga en `rows` -- correcto
+  // para un catálogo completo (Excel o carpeta escaneada), pero NO usar
+  // para agregar una pista suelta a una colección ya cargada (ver
+  // agregarMusicasAColeccion más abajo).
   importarColeccionMusicas: (coleccion, rows) => {
     const nombreCol = coleccion.nombre.toUpperCase()
     if (nombreCol.indexOf(' ') > -1) {
       throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
     }
 
-    // Snapshot de antes de purgar/reemplazar -- se usa para no perder los
-    // ejercicios ya asignados a una música que se reimporta (ver abajo).
-    const musicasExistentes = get().musicasById
-
-    const col: MusicaBase[] = []
-    for (const row of rows) {
-      if (row.estado !== 'ok') continue
-      let musica = col.find((m) => m.idMusica === row.idMusica)
-      if (!musica) {
-        musica = {
-          archivo: row.Archivo ?? '',
-          carpeta: row.Carpeta ?? '',
-          coleccion: nombreCol,
-          duracion: row.duracion ?? '',
-          interprete: row.Interprete ?? '',
-          nombre: row.Titulo ?? '',
-          idMusica: row.idMusica ?? '',
-          ejerciciosId: [],
-          tags: row.Tags ? normalize(row.Tags) : '',
-          etiquetas: row.etiquetasOverride ?? parseLineasToEtiquetas(row.Lineas),
-        }
-        // Reimportar una colección purga y reconstruye sus músicas desde
-        // cero (ver más abajo) -- si esta misma música (mismo id, ver
-        // getMusicaId) ya existía, se preservan los ejercicios que ya
-        // tenía asignados, para no perder vínculos hechos a mano o en una
-        // importación anterior con otro archivo/columnas.
-        const previa = musicasExistentes[getMusicaId(nombreCol, musica.idMusica)]
-        if (previa) musica.ejerciciosId = [...previa.ejerciciosId]
-        col.push(musica)
-      }
-      if (!row.Ejercicio) continue
-      let ejercicio = get().getEjercicioByNombre(row.Ejercicio)
-      if (!ejercicio) {
-        ejercicio = get().addEjercicio({
-          nombre: row.Ejercicio,
-          grupo: row.grupo ?? '',
-          coleccion: nombreCol,
-          detalle: '',
-          musicasId: [],
-          etiquetas: [],
-        })
-      }
-      const musicaId = getMusicaId(nombreCol, musica.idMusica)
-      if (!ejercicio.musicasId.includes(musicaId)) {
-        set((state) => ({
-          ejerciciosById: {
-            ...state.ejerciciosById,
-            [ejercicio!.id]: {
-              ...state.ejerciciosById[ejercicio!.id],
-              musicasId: [...state.ejerciciosById[ejercicio!.id].musicasId, musicaId],
-            },
-          },
-        }))
-      }
-      if (!musica.ejerciciosId.includes(ejercicio.id)) musica.ejerciciosId.push(ejercicio.id)
-    }
-
-    get().saveEjerciciosSnapshot()
+    const col = construirMusicasDesdeRows(nombreCol, rows)
 
     // addColeccion: si es nueva, agregarla a la lista; purgar músicas
     // previas de esta colección (una reimportación reemplaza todo) y
@@ -384,6 +397,51 @@ export const useDataStore = create<DataState>((set, get) => ({
     saveMusicasColeccion(nombreCol, col)
 
     return col
+  },
+
+  // Agrega/actualiza música suelta en una colección (existente o nueva)
+  // SIN tocar el resto de sus músicas ya cargadas -- a diferencia de
+  // importarColeccionMusicas (que reemplaza TODA la colección con lo que
+  // venga en `rows`), pensado para agregar una o pocas pistas sueltas
+  // desde AgregarMusicaModal.tsx (arrastrar un archivo o el botón
+  // "Agregar Música"), donde `rows` nunca representa el catálogo completo.
+  agregarMusicasAColeccion: (coleccion, rows) => {
+    const nombreCol = coleccion.nombre.toUpperCase()
+    if (nombreCol.indexOf(' ') > -1) {
+      throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
+    }
+
+    const nuevas = construirMusicasDesdeRows(nombreCol, rows)
+
+    set((state) => {
+      const yaExiste = state.colecciones.some((c) => c.nombre === nombreCol)
+      const colecciones = yaExiste
+        ? state.colecciones
+        : [...state.colecciones, { ...coleccion, nombre: nombreCol }]
+
+      const musicasById = { ...state.musicasById }
+      const musicasOrder = [...state.musicasOrder]
+      for (const base of nuevas) {
+        const musica = buildMusica(base)
+        if (!musicasById[musica.id]) musicasOrder.push(musica.id)
+        musicasById[musica.id] = musica
+      }
+
+      return { colecciones, musicasById, musicasOrder }
+    })
+
+    saveColecciones(get().colecciones)
+    // Persiste TODAS las músicas de la colección (existentes + nuevas), no
+    // solo las agregadas ahora -- si no, la próxima vez que se lea
+    // biosoft_musica_<col> desde localStorage (ver init()) solo tendría lo
+    // último agregado.
+    const todasMusicasColeccion = get()
+      .musicasOrder.map((id) => get().musicasById[id])
+      .filter((m): m is Musica => !!m && m.coleccion === nombreCol)
+      .map(toMusicaBase)
+    saveMusicasColeccion(nombreCol, todasMusicasColeccion)
+
+    return nuevas
   },
 
   // Al borrar una etiqueta del vocabulario compartido (ver
@@ -464,7 +522,8 @@ export const useDataStore = create<DataState>((set, get) => ({
     saveColecciones(get().colecciones)
     removeLocalStorage(STORAGE_KEYS.musicaPrefix + nombreColeccion)
   },
-}))
+  }
+})
 
 export function saveColecciones(colecciones: Coleccion[]) {
   writeLocalStorage(STORAGE_KEYS.colecciones, colecciones)
