@@ -4,6 +4,7 @@ import { routes } from './routes'
 import { AlertBanner } from './components/AlertBanner'
 import { PlayerControls } from './components/PlayerControls'
 import { AgregarMusicaModal } from './components/AgregarMusicaModal'
+import { getTemaOscuro, setTemaOscuro } from './lib/tema'
 
 const navLabels: Record<string, string> = {
   '/clases': 'Clases',
@@ -24,12 +25,14 @@ function NavItem({ path, label }: { path: string; label: string }) {
   )
 }
 
-// Agregar música arrastrando un archivo o con el botón de acá arriba --
-// puerto libre (no existía en el original), disponible en cualquier
-// pantalla porque vive en el Layout que envuelve todas las rutas. El
-// drag-and-drop se escucha a nivel window (no en un <div> puntual) para
-// que funcione sin importar en qué parte de la pantalla se suelte el
-// archivo.
+// Agregar música arrastrando un archivo -- puerto libre (no existía en el
+// original), disponible en cualquier pantalla porque vive en el Layout
+// que envuelve todas las rutas. El drag-and-drop se escucha a nivel
+// window (no en un <div> puntual) para que funcione sin importar en qué
+// parte de la pantalla se suelte el archivo. Los botones "Agregar
+// Música"/"Agregar Carpeta" del menú se sacaron (confundían: no quedaba
+// claro qué poner en "carpeta") -- el camino soportado para importar una
+// colección es /cargarMusica (Escanear Carpeta o Desde Excel).
 function useDragAndDropArchivos(onArchivos: (files: File[]) => void) {
   const [arrastrando, setArrastrando] = useState(false)
   const contador = useRef(0)
@@ -78,17 +81,23 @@ function useDragAndDropArchivos(onArchivos: (files: File[]) => void) {
 
 function Layout() {
   const [archivosParaAgregar, setArchivosParaAgregar] = useState<File[] | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const arrastrando = useDragAndDropArchivos(setArchivosParaAgregar)
+  const [temaOscuro, setTemaOscuroState] = useState(getTemaOscuro())
 
-  function elegirArchivos() {
-    fileInputRef.current?.click()
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', temaOscuro ? 'dark' : 'light')
+  }, [temaOscuro])
+
+  function toggleTema() {
+    const next = !temaOscuro
+    setTemaOscuroState(next)
+    setTemaOscuro(next)
   }
 
   return (
     <>
       <div className="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div className="container">
+        <div className="container-fluid">
           <div className="navbar-header">
             <Link className="navbar-brand" to="/clases">
               Biodanza
@@ -102,39 +111,37 @@ function Layout() {
             </ul>
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a onClick={elegirArchivos} title="Agregar música a una colección" style={{ cursor: 'pointer' }}>
-                  <span className="glyphicon glyphicon-plus-sign" /> Agregar Música
+                <a onClick={toggleTema} title={temaOscuro ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'} style={{ cursor: 'pointer' }}>
+                  <span className="glyphicon glyphicon-adjust" />
                 </a>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        multiple
-        accept="audio/*"
-        style={{ visibility: 'hidden', position: 'absolute' }}
-        onChange={(e) => {
-          const files = Array.from(e.target.files ?? [])
-          if (files.length > 0) setArchivosParaAgregar(files)
-          e.target.value = ''
-        }}
-      />
       <div
-        className="navbar navbar-default navbar-fixed-top"
-        style={{ top: '50px', paddingTop: '1px', backgroundImage: 'none', backgroundColor: 'white', minHeight: 0 }}
+        className="navbar navbar-default navbar-fixed-top player-navbar"
+        style={{ top: '50px', paddingTop: '1px', backgroundImage: 'none', minHeight: 0 }}
       >
-        <div className="container">
+        <div className="container-fluid">
           <div className="navbar-collapse collapse">
             <PlayerControls />
           </div>
         </div>
       </div>
-      <div className="container" style={{ marginTop: '110px' }}>
+      {/* 145px: la barra del reproductor (debajo de la principal, ~51px)
+          se hizo más alta al agrandar sus botones (btn-lg) -- con el
+          offset viejo (110px) el contenido de cada página arrancaba
+          debajo del borde real de esa barra y quedaba tapado por ella. */}
+      <div className="container-fluid" style={{ marginTop: '145px' }}>
         <AlertBanner />
-        <div className="row" style={{ paddingTop: '6px' }}>
+        {/* Sin className "row" acá: cada página ya devuelve su propio
+            ".row" como elemento raíz -- anidar ".row" directo dentro de
+            otro ".row" (sin un ".col-*" que absorba el margen negativo de
+            -15px de cada uno) los suma, corriendo todo el contenido 15px
+            hacia la izquierda y cortando el borde contra el viewport
+            (mucho más visible ahora que el layout usa todo el ancho). */}
+        <div style={{ paddingTop: '6px' }}>
           <Routes>
             <Route path="/" element={<Navigate to="/clases" replace />} />
             {routes.map((r) => (
@@ -157,7 +164,7 @@ function Layout() {
             pointerEvents: 'none',
           }}
         >
-          <div style={{ background: 'white', padding: '20px 30px', borderRadius: '6px', fontSize: '150%' }}>
+          <div className="drag-overlay-box" style={{ padding: '20px 30px', borderRadius: '6px', fontSize: '150%' }}>
             Soltá el/los archivo(s) de música para agregarlos a una colección
           </div>
         </div>

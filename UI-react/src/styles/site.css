@@ -1,8 +1,195 @@
-﻿.ng-table tr.selected {
+﻿/* Fila de la música/ejercicio actualmente sonando (ver esSeleccionado en
+   Clase.tsx, y la fila resaltada en Musicas.tsx) -- el selector original
+   pedía un ancestro ".ng-table" que nunca existió en el port a React (era
+   un component de la app Angular vieja), así que esto nunca se veía; se
+   engancha directo a ".table" (Bootstrap), que sí envuelve estas filas. */
+.table tr.selected {
     background: #e8c87d !important;
+}
+
+/* Barra del reproductor (segunda navbar, debajo de la principal) -- antes
+   era blanco fijo por style inline; ahora es una clase para que el tema
+   oscuro (más abajo) la pueda pisar. Sin esto, en tema claro hereda el
+   celeste de .navbar-default y se ve como una sola banda estirada con la
+   navbar principal. */
+.player-navbar {
+    background-color: #fff;
+}
+
+/* .btn-default de Bootstrap Cerulean es casi blanco puro (además del
+   background-color, trae un background-image con un degradé
+   blanco->gris clarito que pisa visualmente cualquier background-color
+   que se le ponga encima -- por eso hace falta anular el degradé acá
+   también, no alcanza con cambiar el color de fondo solo) con borde casi
+   invisible (rgba(0,0,0,0.1)). Sobre un fondo también blanco (la barra
+   del reproductor, una tarjeta de la vista Play, etc.) el botón se pierde
+   por completo, se nota que hay algo clickeable pero no se lee bien dónde
+   empieza y termina. Se le da un gris más marcado, plano, y un borde más
+   visible, sin cambiarle el semántico "neutro" (sigue sin ser un botón de
+   acción como los de color). */
+.btn-default {
+    background-image: none;
+    background-color: #ced4da;
+    border-color: #99a3ac;
+}
+.btn-default:hover,
+.btn-default:focus {
+    background-image: none;
+    background-color: #b8c0c8;
+    border-color: #838f99;
+}
+
+/* Aviso de "espere" mientras se prueba cada archivo con el reproductor
+   (ver CargarMusica.tsx / AgregarMusicaModal.tsx) -- titila para que se
+   note que hay que esperar, no alcanza con un texto quieto. */
+.aviso-espera {
+    display: inline-block;
+    padding: 4px 10px;
+    color: #a94442;
+    background: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    animation: aviso-espera-titilar 1s ease-in-out infinite;
+}
+
+@keyframes aviso-espera-titilar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+/* Nombre del tema sonando en la barra del reproductor (PlayerControls) --
+   cuando no entra en el ancho disponible, se activa este scroll tipo
+   "cartel" en vez de cortarlo con "...". La duración se calcula en JS
+   según el largo real del texto (ver PlayerControls.tsx). */
+@keyframes marquee-scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
 }
 
 /*div.modalEjercicioClase .modal-content {
     max-height: 600px;
     overflow: auto;
 }*/
+
+/* Tema oscuro -- activado agregando data-theme="dark" en <html> (ver
+   App.tsx/lib/tema.ts, toggle en el navbar). No es un re-theme completo
+   de Bootstrap Cerulean: cubre las superficies grandes (fondo, navbars,
+   tablas, inputs, modales); los botones de color (btn-primary/success/
+   danger/warning) y los .alert ya se ven bien en fondo oscuro tal cual,
+   no hace falta tocarlos. */
+html[data-theme="dark"] {
+    color-scheme: dark;
+}
+html[data-theme="dark"] body {
+    background: #1b1f23;
+    color: #e2e5e8;
+}
+html[data-theme="dark"] a {
+    color: #6cb2eb;
+}
+html[data-theme="dark"] .navbar-default {
+    background-color: #22262b;
+    border-color: #050505;
+}
+html[data-theme="dark"] .navbar-default .navbar-brand,
+html[data-theme="dark"] .navbar-default .navbar-nav > li > a {
+    color: #d3d7db;
+}
+html[data-theme="dark"] .navbar-default .navbar-nav > li > a:hover,
+html[data-theme="dark"] .navbar-default .navbar-nav > li > a:focus,
+html[data-theme="dark"] .navbar-default .navbar-nav > .active > a {
+    background-color: #2f343a;
+    color: #fff;
+}
+html[data-theme="dark"] .player-navbar {
+    background-color: #22262b !important;
+}
+html[data-theme="dark"] .table {
+    color: #e2e5e8;
+}
+/* Filas/celdas contextuales (thead de las tablas de Clase/Ejercicios/
+   modales usan className="success") -- en claro son un verde pastel con
+   texto oscuro heredado; en oscuro el texto pasa a ser claro (regla de
+   arriba) y sobre ese mismo pastel queda casi invisible (claro sobre
+   claro). Se oscurece el fondo manteniendo el matiz de cada contexto. */
+html[data-theme="dark"] .table > thead > tr.success > td,
+html[data-theme="dark"] .table > tbody > tr.success > td,
+html[data-theme="dark"] .success {
+    background-color: #234a30;
+}
+html[data-theme="dark"] .table > thead > tr.info > td,
+html[data-theme="dark"] .table > tbody > tr.info > td,
+html[data-theme="dark"] .info,
+html[data-theme="dark"] .bg-info {
+    background-color: #1f4048;
+    color: #e2e5e8;
+}
+html[data-theme="dark"] .table > thead > tr.warning > td,
+html[data-theme="dark"] .table > tbody > tr.warning > td,
+html[data-theme="dark"] .warning {
+    background-color: #4a3f1f;
+}
+html[data-theme="dark"] .table > thead > tr.danger > td,
+html[data-theme="dark"] .table > tbody > tr.danger > td,
+html[data-theme="dark"] .danger {
+    background-color: #4a2323;
+}
+html[data-theme="dark"] .table > thead > tr.active > td,
+html[data-theme="dark"] .table > tbody > tr.active > td,
+html[data-theme="dark"] .active {
+    background-color: #30353b;
+}
+html[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #24282d;
+}
+html[data-theme="dark"] .table-hover > tbody > tr:hover {
+    background-color: #30353b;
+}
+html[data-theme="dark"] .table > thead > tr > td,
+html[data-theme="dark"] .table > tbody > tr > td,
+html[data-theme="dark"] .table-bordered > thead > tr > td,
+html[data-theme="dark"] .table-bordered > tbody > tr > td {
+    border-color: #383d43;
+}
+html[data-theme="dark"] .form-control {
+    background-color: #24282d;
+    border-color: #40464d;
+    color: #e2e5e8;
+}
+html[data-theme="dark"] .form-control:focus {
+    border-color: #6cb2eb;
+}
+html[data-theme="dark"] .form-control::placeholder {
+    color: #7d848c;
+}
+html[data-theme="dark"] .input-group-addon {
+    background-color: #2f343a;
+    border-color: #40464d;
+    color: #d3d7db;
+}
+html[data-theme="dark"] .modal-content {
+    background-color: #24282d;
+    color: #e2e5e8;
+    border-color: #40464d;
+}
+html[data-theme="dark"] .well,
+html[data-theme="dark"] .panel-default {
+    background-color: #24282d;
+    border-color: #383d43;
+    color: #e2e5e8;
+}
+html[data-theme="dark"] .btn-default {
+    background-color: #383d43;
+    color: #e2e5e8;
+    border-color: #4a5058;
+}
+html[data-theme="dark"] .drag-overlay-box {
+    background: #24282d;
+    color: #e2e5e8;
+}
+html[data-theme="dark"] .table tr.selected {
+    background: #6b551f !important;
+}
+html[data-theme="dark"] hr {
+    border-color: #383d43;
+}
