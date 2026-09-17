@@ -5,6 +5,7 @@ import { useAlertStore } from '../store/alertStore'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { checkFileExists } from '../lib/loadJs'
 import { normalize } from '../lib/normalize'
+import { decodeSiHaceFalta } from '../lib/decodeUrl'
 import { getCurrentPath } from '../lib/path'
 import { getPathMusica } from '../lib/config'
 import { testMusica } from '../lib/testMusica'
@@ -19,21 +20,21 @@ const PAGE_SIZE = 10
 // Fila de la grilla de vista previa del modo "Escanear Carpeta" -- una por
 // cada archivo de audio encontrado, siguiendo el patrón
 // carpetaBase->Coleccion->carpeta->Archivo (ver CLAUDE.md, "Organizacion
-// de archivos de musicas"). A diferencia del modo Excel, el Ejercicio (si
-// se detecta) sale de los metadatos del propio archivo, no de una columna
-// de catálogo -- si no hay match, la música queda sin vincular hasta que
-// el usuario la asigne a mano después, desde /ejercicios o /clase.
+// de archivos de musicas"). A diferencia del modo Excel, el/los Ejercicio
+// (si se detectan) salen de los metadatos del propio archivo -- típicamente
+// el campo "género" (ver analizarArchivoAudio.ts), no de una columna de
+// catálogo -- si no hay match, la música queda sin vincular hasta que el
+// usuario la asigne a mano después, desde /ejercicios o /clase.
 interface ArchivoEscaneado {
   file: File
   coleccion: string
-  coleccionRoot: string
   carpeta: string
   archivo: string
   titulo: string
   interprete: string
   tagsExtra: string
   etiquetasDetectadas: string[]
-  ejercicioDetectado: string | null
+  ejerciciosDetectados: string[]
   estado: string
   duracion?: string
 }
@@ -42,19 +43,6 @@ function claveCarpetaEscaneo(coleccion: string, carpeta: string) {
   return coleccion + '|' + carpeta
 }
 
-// Las columnas Carpeta/Archivo del catalogo a veces vienen percent-encoded
-// (ej. espacios como "%20") -- pasa tanto si se completan desde el
-// hipervínculo (ver loadSheet) como si ya vienen así en la celda de Excel
-// (herramientas externas que arman el catálogo a partir de una URL, ver
-// CLAUDE.md/Biodanza.Model). Se decodifica siempre para que quede el
-// nombre real de archivo/carpeta en disco, no el escape de URL.
-function decodeSiHaceFalta(valor: string): string {
-  try {
-    return decodeURIComponent(valor)
-  } catch {
-    return valor
-  }
-}
 
 interface EquivalenciaEjercicio {
   Ejercicio: string
@@ -108,7 +96,7 @@ export function CargarMusica() {
     initEtiquetas()
   }, [init, initEtiquetas])
 
-  const [modo, setModo] = useState<'excel' | 'carpeta'>('excel')
+  const [modo, setModo] = useState<'excel' | 'carpeta'>('carpeta')
 
   const fileImportRef = useRef<HTMLInputElement>(null)
   const fileEquivalenciasRef = useRef<HTMLInputElement>(null)
@@ -130,6 +118,17 @@ export function CargarMusica() {
 
   // --- Modo "Escanear Carpeta" (sin Excel) ---
   const [archivosEscaneados, setArchivosEscaneados] = useState<ArchivoEscaneado[]>([])
+  // Raíz de la colección escaneada, relativa a donde corre la app -- no hay
+  // forma de saber desde JS dónde está realmente la carpeta elegida en el
+  // disco (el picker de carpeta no expone esa ruta). Se prueba primero el
+  // default por convención (musica/<NOMBRE>/, ver CLAUDE.md) reproduciendo
+  // un archivo de ahí (ver escanearCarpeta/verificarRaiz); si no se
+  // encuentra, se propone el nombre de la carpeta elegida (asumiendo que
+  // es hermana de biosoft.html) y el usuario la corrige a mano.
+  const [rootColeccion, setRootColeccion] = useState('')
+  // null = todavía no se probó ninguna raíz; true/false = resultado del
+  // último intento (automático o manual vía el botón "Verificar").
+  const [raizVerificada, setRaizVerificada] = useState<boolean | null>(null)
   const [escaneando, setEscaneando] = useState(false)
   const [pageCarpeta, setPageCarpeta] = useState(1)
   const [etiquetasGlobales, setEtiquetasGlobales] = useState<string[]>([])
@@ -137,6 +136,7 @@ export function CargarMusica() {
   const [filtroEscaneo, setFiltroEscaneo] = useState({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
 
   const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
+  const pathApp = getCurrentPath() ?? ''
 
   // El atributo "webkitdirectory" no es JSX estándar -- se setea a mano vía
   // ref callback (no un useEffect con [] de dependencias) porque el
@@ -197,20 +197,22 @@ export function CargarMusica() {
 
   async function leerColeccion(file: File) {
     const nombre = file.name.substring(0, file.name.indexOf('.'))
+    // Solo un default -- la colección puede estar en cualquier carpeta del
+    // disco, así que esto NO bloquea la lectura si no coincide: se avisa y
+    // el usuario corrige la "Carpeta de la coleccion" (más abajo, editable)
+    // antes de verificar/importar.
     const carpetaColeccion = 'musica/' + nombre + '/'
     const filePath = carpetaColeccion + file.name
 
     try {
       await checkFileExists(filePath)
     } catch {
-      if (fileImportRef.current) fileImportRef.current.value = ''
       addAlert(
         'danger',
-        'No se encontro el archivo excel en la ubicación esperada: ' +
+        'No se encontro el archivo excel en la ubicación por default: ' +
           filePath +
-          '<br/>Verifique que la carpeta del archivo sea la indicada arriba.<br/>Verifique que el nombre del archivo excel sea igual al nombre de la carpeta.<br/>',
+          '<br/>Si la colección está en otra carpeta, corregí "Carpeta de la coleccion a importar" antes de verificar/importar.',
       )
-      return
     }
 
     setColeccion((c) => ({ ...c, nombre: nombre.toUpperCase(), carpeta: carpetaColeccion }))
@@ -376,7 +378,8 @@ export function CargarMusica() {
         setTotales((t) => ({ ...t, ok: totalOk, error: totalError }))
         continue
       }
-      const src = getPathMusica() + coleccion.nombre + '/' + item.Carpeta + '/' + item.Archivo
+      const raiz = coleccion.carpeta.trim()
+      const src = (raiz.endsWith('/') ? raiz : raiz + '/') + item.Carpeta + '/' + item.Archivo
       const result = await testMusica(src)
       if (result.ok) {
         item.estado = 'ok'
@@ -402,8 +405,35 @@ export function CargarMusica() {
     }
   }
 
+  // Vuelve a probar la ubicación de cada fila con la "Carpeta de la
+  // coleccion" actual -- hace falta re-ejecutar esto a mano si el usuario
+  // la corrige después de la lectura inicial (que solo prueba el default
+  // "musica/<nombre>/"), porque la colección puede estar en cualquier
+  // otra carpeta del disco. Se excluyen las filas con error de columna
+  // (esas no dependen de dónde esté la carpeta) y se limpia la caché de
+  // "ya confirmados" (musicasOkRef), que quedó validada contra la
+  // ubicación vieja.
+  async function revalidarUbicacion() {
+    const paraVerificar = sampleRows.filter((r) => !(typeof r.estado === 'string' && r.estado.startsWith('Error:')))
+    if (paraVerificar.length === 0) return
+    musicasOkRef.current = []
+    setValidando(true)
+    setValidado(false)
+    setTotales((t) => ({ ...t, ok: 0, error: 0 }))
+    await checkMusicas(paraVerificar)
+    setSampleRows([...sampleRows])
+    setValidando(false)
+    setValidado(true)
+  }
+
   function importarExcelMusicas() {
-    const result = importarColeccionMusicas(coleccion, sampleRows)
+    let result: ReturnType<typeof importarColeccionMusicas>
+    try {
+      result = importarColeccionMusicas(coleccion, sampleRows)
+    } catch (e) {
+      addAlert('danger', 'No se pudo importar: ' + (e instanceof Error ? e.message : String(e)))
+      return
+    }
     addAlert('info', 'se importaron ' + result.length + ' renglones de la colección ' + coleccion.nombre)
     reset()
   }
@@ -424,6 +454,8 @@ export function CargarMusica() {
 
   function resetCarpeta() {
     setArchivosEscaneados([])
+    setRootColeccion('')
+    setRaizVerificada(null)
     setEtiquetasGlobales([])
     setEtiquetasPorCarpeta({})
     setPageCarpeta(1)
@@ -436,12 +468,68 @@ export function CargarMusica() {
     dirInputRef.current?.click()
   }
 
+  // Prueba si un archivo de muestra se puede reproducir de verdad bajo la
+  // raíz candidata -- misma lógica que ya usa el modo Excel (testMusica
+  // contra una ruta relativa; no hace falta ningún path absoluto para
+  // esto, se resuelve relativo a la página actual).
+  async function existeEnRaiz(raiz: string, muestra: ArchivoEscaneado): Promise<boolean> {
+    const base = raiz.endsWith('/') ? raiz : raiz + '/'
+    const ruta = base + (muestra.carpeta ? muestra.carpeta + '/' : '') + muestra.archivo
+    const resultado = await testMusica(ruta)
+    return resultado.ok
+  }
+
+  // Lee metadatos/etiquetas/ejercicio de cada archivo ya escaneado -- no
+  // depende de la raíz (lee el File arrastrado/elegido directo, vía Blob
+  // URL, no la ruta reconstruida), pero se posterga hasta confirmar la
+  // raíz (ver escanearCarpeta/verificarRaizManual) para no hacerle perder
+  // tiempo al usuario analizando archivos si después va a tener que
+  // corregir la ubicación y esto ya no importa.
+  async function analizarArchivosEscaneados(lista: ArchivoEscaneado[]) {
+    setEscaneando(true)
+    const actualizados = [...lista]
+    for (let i = 0; i < actualizados.length; i++) {
+      const item = actualizados[i]
+      const analisis = await analizarArchivoAudio(
+        item.file,
+        item.carpeta,
+        item.titulo,
+        vocabularioEtiquetas,
+        getEjercicioByNombre,
+        equivalenciaEjercicios,
+        equivalenciaInterpretes,
+      )
+      actualizados[i] = { ...item, ...analisis }
+      setArchivosEscaneados([...actualizados])
+    }
+    setEscaneando(false)
+  }
+
+  // Vuelve a probar la raíz actual (rootColeccion) contra un archivo de
+  // muestra -- para cuando el usuario la corrige a mano tras un fallo de
+  // la verificación automática (ver escanearCarpeta). Si ahora sí
+  // resuelve, recién ahí arranca el análisis de metadatos (postergado
+  // hasta tener una raíz confirmada).
+  async function verificarRaizManual() {
+    const muestra = archivosEscaneados[0]
+    if (!muestra) return
+    const ok = await existeEnRaiz(rootColeccion, muestra)
+    setRaizVerificada(ok)
+    if (ok) {
+      await analizarArchivosEscaneados(archivosEscaneados)
+    } else {
+      addAlert(
+        'danger',
+        'No se encontraron los archivos en "' + rootColeccion + '". Corregí la ruta e intentá "Verificar" de nuevo.',
+      )
+    }
+  }
+
   // Puerto libre (no existía en el original): arma la lista de archivos de
-  // audio a partir de una carpeta elegida directamente en disco -- puede
-  // ser la carpeta "musica" en sí, o cualquier ancestro de ella (ej. la
-  // carpeta del proyecto completa), y se detectan TODAS las colecciones
-  // que haya adentro, sin importar a qué profundidad estén anidadas (ver
-  // ubicarEnArbol arriba).
+  // audio a partir de una carpeta elegida directamente en disco -- esa
+  // carpeta ES la colección (su nombre, sea cual sea, pasa a ser el
+  // nombre de la colección), y se carga una sola colección por escaneo
+  // (ver ubicarEnArbol arriba).
   async function escanearCarpeta(files: FileList) {
     // Ojo: `files` es una referencia viva al FileList del <input> -- hay
     // que sacar una copia ANTES de resetCarpeta(), porque esta limpia
@@ -449,6 +537,12 @@ export function CargarMusica() {
     // el que ya recibimos acá) antes de poder leerlo.
     const archivos = Array.from(files)
     resetCarpeta()
+    setEscaneando(true)
+    // El loop de abajo (filtrar/ubicar cada archivo) es sincrónico y, con
+    // carpetas grandes, puede tardar -- este await (sin espera real) le da
+    // lugar a React para pintar el mensaje de "espere" antes de bloquear
+    // el hilo con ese loop.
+    await new Promise((resolve) => setTimeout(resolve, 0))
     const encontrados: ArchivoEscaneado[] = []
     let ignorados = 0
     for (const file of archivos) {
@@ -463,108 +557,139 @@ export function CargarMusica() {
       const archivo = file.name
       const puntoExt = archivo.lastIndexOf('.')
       const titulo = puntoExt > 0 ? archivo.substring(0, puntoExt) : archivo
+      const coleccion = ubicacion.coleccion.toUpperCase()
       encontrados.push({
         file,
-        coleccion: ubicacion.coleccion.toUpperCase(),
-        coleccionRoot: ubicacion.root,
+        coleccion,
         carpeta: ubicacion.carpeta,
         archivo,
         titulo,
         interprete: '',
         tagsExtra: '',
         etiquetasDetectadas: [],
-        ejercicioDetectado: null,
+        ejerciciosDetectados: [],
         estado: 'pendiente',
       })
     }
     if (encontrados.length === 0) {
+      setEscaneando(false)
       addAlert(
         'danger',
-        'No se encontraron archivos de audio ubicables como musica/[.../]Coleccion/carpeta/Archivo dentro de la carpeta elegida' +
-          (ignorados > 0 ? ' (' + ignorados + ' archivo(s) de audio ignorados por no calzar con ese patrón)' : '') +
+        'No se encontraron archivos de audio dentro de la carpeta elegida' +
+          (ignorados > 0 ? ' (' + ignorados + ' archivo(s) de audio ignorados)' : '') +
           '.',
       )
       return
     }
     if (ignorados > 0) {
-      addAlert('danger', ignorados + ' archivo(s) de audio se ignoraron por no calzar con el patrón musica/[.../]Coleccion/carpeta/Archivo.')
+      addAlert('danger', ignorados + ' archivo(s) de audio se ignoraron.')
     }
     setArchivosEscaneados(encontrados)
-    setEscaneando(true)
-    const actualizados = [...encontrados]
-    for (let i = 0; i < actualizados.length; i++) {
-      const item = actualizados[i]
-      const analisis = await analizarArchivoAudio(item.file, item.carpeta, item.titulo, vocabularioEtiquetas, getEjercicioByNombre)
-      actualizados[i] = { ...item, ...analisis }
-      setArchivosEscaneados([...actualizados])
+    // Antes de pedirle nada al usuario, probamos si la colección sigue la
+    // convención documentada (musica/<NOMBRE>/, ver CLAUDE.md) -- si un
+    // archivo de muestra se reproduce ahí, se confirma sola y no hace
+    // falta que el usuario toque la raíz. Si no, se deja el default
+    // "hermana de la app" para que la corrija a mano (ver input "Raíz").
+    const coleccionNombre = encontrados[0].coleccion
+    const candidato = getPathMusica() + coleccionNombre + '/'
+    if (await existeEnRaiz(candidato, encontrados[0])) {
+      setRootColeccion(candidato)
+      setRaizVerificada(true)
+      await analizarArchivosEscaneados(encontrados)
+      return
     }
+    // No se pudo confirmar la raíz por default -- se corta acá (no se
+    // analizan metadatos todavía) y se le pide al usuario que la corrija
+    // y presione "Verificar" antes de seguir (ver verificarRaizManual).
+    setRootColeccion(coleccionNombre + '/')
+    setRaizVerificada(false)
     setEscaneando(false)
+    addAlert(
+      'danger',
+      'No se encontraron los archivos en "' + candidato + '" (ubicación por default). Corregí la Raíz de la colección y presioná "Verificar" antes de continuar.',
+    )
   }
 
   function importarCarpeta() {
-    const porColeccion = new Map<string, RowImportMusica[]>()
+    let nombreColeccion = ''
+    const rows: RowImportMusica[] = []
+    let archivosConEjercicio = 0
     for (const a of archivosEscaneados) {
       if (a.estado !== 'ok') continue
+      nombreColeccion = a.coleccion
       const propias = etiquetasPorCarpeta[claveCarpetaEscaneo(a.coleccion, a.carpeta)] ?? []
       const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias, ...a.etiquetasDetectadas]))
-      const row: RowImportMusica = {
-        estado: 'ok',
+      const base = {
+        estado: 'ok' as const,
         Archivo: a.archivo,
         Carpeta: a.carpeta,
         Titulo: a.titulo,
         Interprete: a.interprete || 'Desconocido',
         Tags: a.tagsExtra,
-        // Solo se completa cuando el nombre coincide con un ejercicio YA
-        // EXISTENTE (ver getEjercicioByNombre en escanearCarpeta) -- a
-        // diferencia del modo Excel, acá nunca se crea un ejercicio nuevo
-        // a partir de metadatos, para no generar ejercicios espurios de
-        // texto de intérprete/álbum que no tenga que ver con ninguno real.
-        Ejercicio: a.ejercicioDetectado ?? undefined,
         // Se arma con el nombre de archivo real (estable), no con el
         // título (a.titulo puede salir de metadatos y variar entre
         // escaneos del mismo archivo -- si el id cambiara con eso, cada
         // reimportación crearía una música "nueva" en vez de actualizar
         // la existente, perdiendo los ejercicios ya asignados).
-        idMusica: a.carpeta + '/' + a.archivo,
+        idMusica: (a.carpeta ? a.carpeta + '/' : '') + a.archivo,
         duracion: a.duracion ?? '',
         etiquetasOverride,
       }
-      if (!porColeccion.has(a.coleccion)) porColeccion.set(a.coleccion, [])
-      porColeccion.get(a.coleccion)!.push(row)
+      // Solo se completa cuando el nombre coincide con un ejercicio YA
+      // EXISTENTE (ver getEjercicioByNombre en analizarArchivoAudio.ts) --
+      // a diferencia del modo Excel, acá nunca se crea un ejercicio nuevo
+      // a partir de metadatos, para no generar ejercicios espurios de
+      // texto de intérprete/álbum que no tenga que ver con ninguno real.
+      // Si el archivo trae más de un nombre de ejercicio (separados por
+      // coma en el campo "género", ver ejerciciosDetectados), se manda una
+      // fila por cada uno -- mismo idMusica, así construirMusicasDesdeRows
+      // arma la música una sola vez y solo suma el vínculo en cada fila
+      // siguiente (igual que hace el modo Excel con varias filas para la
+      // misma música).
+      if (a.ejerciciosDetectados.length > 0) {
+        archivosConEjercicio++
+        for (const nombreEjercicio of a.ejerciciosDetectados) rows.push({ ...base, Ejercicio: nombreEjercicio })
+      } else {
+        rows.push(base)
+      }
     }
-    if (porColeccion.size === 0) {
+    if (rows.length === 0) {
       addAlert('danger', 'No hay archivos válidos para importar.')
       return
     }
-    let totalImportado = 0
-    for (const [nombreColeccion, rows] of porColeccion) {
-      const root = coleccionesDetectadas.get(nombreColeccion)?.root ?? 'musica/' + nombreColeccion + '/'
-      const coleccionObj: Coleccion = { nombre: nombreColeccion, carpeta: root, excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now() }
-      totalImportado += importarColeccionMusicas(coleccionObj, rows).length
+    const raiz = rootColeccion.trim()
+    const root = raiz ? (raiz.endsWith('/') ? raiz : raiz + '/') : ''
+    const coleccionObj: Coleccion = { nombre: nombreColeccion, carpeta: root, excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now() }
+    let totalImportado: number
+    try {
+      totalImportado = importarColeccionMusicas(coleccionObj, rows).length
+    } catch (e) {
+      addAlert('danger', 'No se pudo importar: ' + (e instanceof Error ? e.message : String(e)))
+      return
     }
     addAlert(
       'info',
       'Se importaron ' +
         totalImportado +
-        ' archivos de música en ' +
-        porColeccion.size +
-        ' colección(es): ' +
-        Array.from(porColeccion.keys()).join(', ') +
-        ' (sin asignar a ningún ejercicio).',
+        ' archivos de música en la colección ' +
+        nombreColeccion +
+        (archivosConEjercicio > 0
+          ? ' (' + archivosConEjercicio + ' con ejercicio(s) asignado(s) automáticamente por metadatos).'
+          : ' (sin asignar a ningún ejercicio).'),
     )
     resetCarpeta()
   }
 
   const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
-  // Colecciones distintas detectadas en el escaneo, con su root -- puede
-  // haber más de una (ver ubicarEnArbol).
+  // Cantidad de archivos de la colección detectada en el escaneo (siempre
+  // una sola, ver ubicarEnArbol). El root NO sale de acá -- se edita
+  // aparte (ver rootColeccion) porque no hay forma de detectarlo con
+  // certeza desde el picker de carpeta.
   const coleccionesDetectadas = useMemo(() => {
-    const mapa = new Map<string, { root: string; count: number }>()
+    const mapa = new Map<string, number>()
     for (const a of archivosEscaneados) {
-      const prev = mapa.get(a.coleccion)
-      if (prev) prev.count++
-      else mapa.set(a.coleccion, { root: a.coleccionRoot, count: 1 })
+      mapa.set(a.coleccion, (mapa.get(a.coleccion) ?? 0) + 1)
     }
     return mapa
   }, [archivosEscaneados])
@@ -585,15 +710,16 @@ export function CargarMusica() {
     return lista
   }, [archivosEscaneados])
 
-  // carpetasEscaneadas agrupado por colección -- para mostrar los editores
-  // de etiquetas por carpeta en columnas, una por colección (junto con el
-  // resumen de esa colección, ver coleccionesDetectadas).
+  // carpetasEscaneadas agrupado por colección (siempre una sola, ver
+  // ubicarEnArbol) -- para mostrar los editores de etiquetas por carpeta
+  // junto con el resumen de esa colección (ver coleccionesDetectadas).
   const carpetasPorColeccion = useMemo(() => {
     const mapa = new Map<string, string[]>()
     for (const { coleccion, carpeta } of carpetasEscaneadas) {
       if (!mapa.has(coleccion)) mapa.set(coleccion, [])
       mapa.get(coleccion)!.push(carpeta)
     }
+    for (const carpetas of mapa.values()) carpetas.sort()
     return mapa
   }, [carpetasEscaneadas])
 
@@ -646,6 +772,23 @@ export function CargarMusica() {
           </table>
         </div>
       )}
+      <input
+        ref={fileEquivalenciasRef}
+        type="file"
+        style={{ visibility: 'hidden' }}
+        onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
+      />
+      <div className="form-group col-md-12 btn-group" role="toolbar" style={{ marginBottom: '10px' }}>
+        <button type="button" className="btn btn-primary" onClick={() => pickImportFile('fileEquivalencias')}>
+          <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
+        </button>{' '}
+        {equivalenciaEjercicios.length > 0 && (
+          <span>
+            {equivalenciaEjercicios.length} equivalencia(s) de ejercicio, {equivalenciaInterpretes.length} de intérprete y{' '}
+            {equivalenciaGrupo.length} de grupo cargadas -- se usan al importar desde Excel y al Escanear Carpeta.
+          </span>
+        )}
+      </div>
       <div className="form-group col-md-12 btn-group" role="group" style={{ marginBottom: '10px' }}>
         <button type="button" className={'btn ' + (modo === 'excel' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('excel')}>
           Desde Excel
@@ -660,11 +803,29 @@ export function CargarMusica() {
           <div className="row">
             <br />
             <div className="form-group col-md-12">
-              <label className="control-label">Las colecciones de música deben estar en: {pathMusicas}</label>
+              <label className="control-label">
+                Por default se asume que la colección está en: {pathMusicas} -- si en realidad está en cualquier otra carpeta del
+                disco, corregí la ruta de abajo (relativa a donde corre esta app) y presioná "Verificar Ubicación".
+              </label>
             </div>
             <div className="form-group col-md-12">
               <label className="control-label">Carpeta de la coleccion a importar:</label>
-              <input type="text" readOnly className="form-control" style={{ width: '500px' }} value={coleccion.carpeta} />
+              <input
+                type="text"
+                className="form-control"
+                style={{ width: '500px' }}
+                value={coleccion.carpeta}
+                onChange={(e) => setColeccion((c) => ({ ...c, carpeta: e.target.value }))}
+              />{' '}
+              <button
+                type="button"
+                className={'btn btn-primary' + (sampleRows.length === 0 || validando ? ' disabled' : '')}
+                disabled={sampleRows.length === 0 || validando}
+                onClick={revalidarUbicacion}
+                title="Volver a verificar que los archivos existan en la carpeta indicada arriba"
+              >
+                <span className="glyphicon glyphicon-refresh" /> Verificar Ubicación
+              </button>
             </div>
             <input
               ref={fileImportRef}
@@ -672,16 +833,7 @@ export function CargarMusica() {
               style={{ visibility: 'hidden' }}
               onChange={(e) => e.target.files?.[0] && leerColeccion(e.target.files[0])}
             />
-            <input
-              ref={fileEquivalenciasRef}
-              type="file"
-              style={{ visibility: 'hidden' }}
-              onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
-            />
             <div className="form-group col-md-12 btn-group" role="toolbar">
-              <button type="button" className="btn btn-primary" onClick={() => pickImportFile('fileEquivalencias')}>
-                <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
-              </button>
               <button
                 type="button"
                 className={'btn btn-primary' + (equivalenciaEjercicios.length < 1 ? ' disabled' : '')}
@@ -723,8 +875,12 @@ export function CargarMusica() {
               <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.ok} />
               <label className="control-label">renglones con error:</label>
               <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.error} />
-              {validando && <span> Validando archivos...</span>}
             </div>
+            {validando && (
+              <div className="col-md-12">
+                <strong className="aviso-espera">Probando que cada archivo exista y se pueda reproducir, esto puede tardar. Por favor espere...</strong>
+              </div>
+            )}
             <div className="col-md-12">
               <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
                 <thead>
@@ -768,11 +924,16 @@ export function CargarMusica() {
             <br />
             <div className="form-group col-md-12">
               <label className="control-label">
-                Elija cualquier carpeta que contenga, en algún nivel, una carpeta llamada "musica" (debe corresponder a {pathMusicas}).
-                Adentro de "musica" se detecta automáticamente cada colección: es cualquier carpeta cuyas subcarpetas directas ya
-                contienen archivos de audio (patrón Coleccion/carpeta/Archivo). Si una colección está en una subcarpeta intermedia
-                (ej. musica/varios/Paula/...), esa carpeta intermedia no es una colección en sí, solo forma parte de la ubicación de
-                "Paula". Pueden detectarse varias colecciones a la vez. No quedan asignadas a ningún ejercicio.
+                Elija la carpeta de la colección que quiere importar (puede tener cualquier nombre; ese nombre se usa como nombre de
+                la colección). Por seguridad del navegador, esa carpeta tiene que ser subcarpeta (a cualquier profundidad) de donde
+                corre esta app: <strong>{pathApp}</strong> -- si está en otro lado del disco, no va a poder reproducirse. Se carga una
+                sola colección por escaneo: todos los archivos de audio que haya adentro, en cualquier subcarpeta (ej. CD1, o
+                CD1/Bonus), se toman como parte de esta colección, usando esa ruta relativa como su carpeta. Para que una música quede
+                asociada a uno o más ejercicios automáticamente, el/los nombre(s) del ejercicio (exactos, tal como están cargados en
+                /ejercicios) tienen que estar en los metadatos del archivo, en el campo <strong>género</strong> -- si hay más de uno,
+                separados por coma. Sin eso en los metadatos, la música se importa igual pero queda sin asociar, para asignarla a mano
+                después. La app no puede saber en qué subcarpeta exacta de {pathApp} está -- abajo se propone una raíz por default,
+                corregila si hace falta antes de importar.
               </label>
             </div>
             <input
@@ -788,13 +949,23 @@ export function CargarMusica() {
               </button>
               <button
                 type="button"
-                className={'btn btn-success' + (archivosEscaneados.length === 0 || escaneando ? ' disabled' : '')}
-                disabled={archivosEscaneados.length === 0 || escaneando}
+                className={'btn btn-success' + (archivosEscaneados.length === 0 || escaneando || raizVerificada !== true ? ' disabled' : '')}
+                disabled={archivosEscaneados.length === 0 || escaneando || raizVerificada !== true}
+                title={raizVerificada !== true ? 'Verificá la raíz de la colección antes de importar' : undefined}
                 onClick={importarCarpeta}
               >
                 <span className="glyphicon glyphicon-import" /> Importar Archivos Escaneados
               </button>
             </div>
+            {escaneando && (
+              <div className="col-md-12" style={{ marginTop: '10px' }}>
+                <strong className="aviso-espera">
+                  {archivosEscaneados.length === 0
+                    ? 'Escaneando archivos, por favor espere...'
+                    : 'Probando que cada archivo exista y se pueda reproducir, esto puede tardar. Por favor espere...'}
+                </strong>
+              </div>
+            )}
           </div>
 
           {archivosEscaneados.length > 0 && (
@@ -806,7 +977,6 @@ export function CargarMusica() {
                 <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totalesCarpeta.ok} />
                 <label className="control-label">con error:</label>
                 <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totalesCarpeta.error} />
-                {escaneando && <span> Validando archivos...</span>}
               </div>
 
               <div className="form-group col-md-12" style={{ marginTop: '10px' }}>
@@ -816,21 +986,42 @@ export function CargarMusica() {
               </div>
 
               <div className="col-md-12" style={{ marginTop: '10px' }}>
-                <label className="control-label">Colecciones detectadas y etiquetas por carpeta:</label>
+                <label className="control-label">Colección detectada y etiquetas por carpeta:</label>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                   {Array.from(carpetasPorColeccion.entries()).map(([coleccion, carpetas]) => {
-                    const info = coleccionesDetectadas.get(coleccion)
+                    const count = coleccionesDetectadas.get(coleccion)
                     return (
                       <div key={coleccion} style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '6px 10px', minWidth: '220px' }}>
                         <div>
                           <strong>{coleccion}</strong>
+                          {count !== undefined && ' (' + count + ')'}
                         </div>
-                        {info && (
-                          <>
-                            <div style={{ fontSize: '90%', color: '#666' }}>{info.root}</div>
-                            <div>{info.count} archivo(s)</div>
-                          </>
-                        )}
+                        <div style={{ fontSize: '90%', marginTop: '4px' }}>
+                          <label
+                            title="Ruta relativa desde donde corre la app hasta esta colección. Se prueba sola contra la convención musica/<NOMBRE>/ -- si no matchea, corregila y presioná Verificar."
+                          >
+                            Raíz:
+                          </label>{' '}
+                          <input
+                            type="text"
+                            className="form-control input-sm"
+                            style={{ display: 'inline-block', width: '160px' }}
+                            value={rootColeccion}
+                            onChange={(e) => {
+                              setRootColeccion(e.target.value)
+                              setRaizVerificada(null)
+                            }}
+                          />{' '}
+                          <button type="button" className="btn btn-primary btn-sm" onClick={verificarRaizManual} title="Volver a probar esta raíz">
+                            Verificar
+                          </button>
+                          {raizVerificada === true && (
+                            <div style={{ color: '#2e7d32' }}>✓ Verificada -- se pudo reproducir un archivo ahí.</div>
+                          )}
+                          {raizVerificada === false && (
+                            <div style={{ color: '#a94442' }}>⚠ No se encontró ningún archivo ahí -- corregí la ruta.</div>
+                          )}
+                        </div>
                         <hr style={{ margin: '6px 0' }} />
                         {carpetas.map((carpeta) => {
                           const clave = claveCarpetaEscaneo(coleccion, carpeta)
@@ -893,7 +1084,7 @@ export function CargarMusica() {
                       <td>Interprete</td>
                       <td>Duración</td>
                       <td>Etiquetas (auto)</td>
-                      <td>Ejercicio (auto)</td>
+                      <td>Ejercicio(s) (auto)</td>
                       <td>
                         Estado
                         <input
@@ -915,7 +1106,7 @@ export function CargarMusica() {
                         <td>{a.interprete}</td>
                         <td>{a.duracion}</td>
                         <td>{a.etiquetasDetectadas.join(', ')}</td>
-                        <td>{a.ejercicioDetectado}</td>
+                        <td>{a.ejerciciosDetectados.join(', ')}</td>
                         <td style={{ color: 'white', backgroundColor: a.estado === 'ok' ? '#04f95a' : a.estado === 'pendiente' ? '#999' : 'orange' }}>
                           {a.estado}
                         </td>
