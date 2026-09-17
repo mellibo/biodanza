@@ -3,6 +3,7 @@ import { useDataStore } from '../store/dataStore'
 import { useClasesStore } from '../store/clasesStore'
 import { usePlayerStore } from '../store/playerStore'
 import { infoMusica } from '../lib/musicaInfo'
+import { useEscToClose } from '../lib/useEscToClose'
 import { BuscarEjercicioModal } from './BuscarEjercicioModal'
 import { BuscarMusicaModal } from './BuscarMusicaModal'
 import type { ClaseEjercicio } from '../types'
@@ -16,6 +17,7 @@ interface DetalleEjercicioClaseModalProps {
 }
 
 export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: DetalleEjercicioClaseModalProps) {
+  useEscToClose(onClose)
   const getMusicaById = useDataStore((s) => s.getMusicaById)
   const updateEjercicioClase = useClasesStore((s) => s.updateEjercicioClase)
   const playFile = usePlayerStore((s) => s.playFile)
@@ -203,7 +205,6 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
       )}
       {buscarMusicaOpen && (
         <BuscarMusicaModal
-          ejercicioNombreInicial={nombreOrigen}
           onSelect={(musica) => {
             patch({ musicaId: musica.id })
             setBuscarMusicaOpen(false)
