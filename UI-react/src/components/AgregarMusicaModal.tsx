@@ -29,6 +29,13 @@ interface ArchivoAgregar {
 interface AgregarMusicaModalProps {
   archivosIniciales: File[]
   onClose: () => void
+  // Ver Clase.tsx: si se arrastraron los archivos encima de un ejercicio de
+  // la vista Play (en vez de en cualquier otra parte de la pantalla), además
+  // de agregarlos a su colección/SIN_COLECCION hay que agregarlos como
+  // ejercicios nuevos ahí mismo -- se avisa acá, con los ids ya definitivos
+  // (ver getMusicaId), en vez de que Clase.tsx tenga que adivinar qué id les
+  // tocó.
+  onAgregadas?: (musicaIds: string[]) => void
 }
 
 // Si el archivo llegó arrastrando/eligiendo una carpeta entera (no un
@@ -66,7 +73,7 @@ function resolverDestino(file: File, colecciones: Coleccion[]): { coleccionDesti
 // que el archivo original siga en disco: su contenido se copia a
 // IndexedDB (ver guardarBlobMusica/musicaBlobStore.ts), así que se pueden
 // reproducir después sin importar de qué carpeta se hayan arrastrado.
-export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusicaModalProps) {
+export function AgregarMusicaModal({ archivosIniciales, onClose, onAgregadas }: AgregarMusicaModalProps) {
   useEscToClose(onClose)
   const initData = useDataStore((s) => s.init)
   const colecciones = useDataStore((s) => s.colecciones)
@@ -231,6 +238,7 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
 
     let totalImportado = 0
     const resumen: string[] = []
+    const idsAgregados: string[] = []
     try {
       for (const [nombreDestino, items] of porColeccion) {
         const coleccionObj = resolverColeccionObj(nombreDestino)
@@ -257,6 +265,7 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
         const result = agregarMusicasAColeccion(coleccionObj, rows)
         totalImportado += result.length
         resumen.push(result.length + ' a ' + nombreDestino)
+        idsAgregados.push(...result.map((base) => getMusicaId(nombreDestino, base.idMusica)))
 
         // Recién acá se sabe que la música quedó creada de verdad -- se
         // copia el contenido de cada archivo a IndexedDB con el mismo id
@@ -272,6 +281,7 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
       return
     }
     addAlert('info', 'Se agregaron ' + totalImportado + ' archivo(s): ' + resumen.join(', ') + '.')
+    onAgregadas?.(idsAgregados)
     onClose()
   }
 

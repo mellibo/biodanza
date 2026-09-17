@@ -5,6 +5,7 @@ import { AlertBanner } from './components/AlertBanner'
 import { PlayerControls } from './components/PlayerControls'
 import { AgregarMusicaModal } from './components/AgregarMusicaModal'
 import { getTemaOscuro, setTemaOscuro } from './lib/tema'
+import { dropYaManejado } from './lib/dropExterno'
 
 const navLabels: Record<string, string> = {
   '/clases': 'Clases',
@@ -61,6 +62,10 @@ function useDragAndDropArchivos(onArchivos: (files: File[]) => void) {
       e.preventDefault()
       contador.current = 0
       setArrastrando(false)
+      // Ya lo agarró un drop zone más específico (ver Clase.tsx) -- no
+      // abrir un segundo AgregarMusicaModal genérico para los mismos
+      // archivos, pero sí limpiar el overlay de arriba (ya se hizo).
+      if (dropYaManejado(e)) return
       const files = Array.from(e.dataTransfer?.files ?? [])
       if (files.length > 0) onArchivos(files)
     }
