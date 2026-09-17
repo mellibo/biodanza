@@ -3,8 +3,9 @@ import { readLocalStorage, writeLocalStorage } from '../lib/storage'
 import { getMusicaId } from '../lib/normalize'
 import { parseDuracion } from '../lib/duration'
 import { useDataStore } from './dataStore'
-import { downloadJson } from '../lib/download'
+import { downloadJson, downloadBlob } from '../lib/download'
 import { resolveLegacyMusicaId, findLegacyMusica } from '../lib/legacyMusicaId'
+import { generarPlaylistM3U, generarPlaylistM3UMultiple, generarHtmlClase } from '../lib/exportClase'
 import type { Clase, ClaseEjercicio, ClaseEjercicioRef, ClaseExport, ClaseEjercicioExport } from '../types'
 
 function ejercicioRef(ejercicio: ClaseEjercicioRef | Record<string, never>): ClaseEjercicioRef {
@@ -12,6 +13,11 @@ function ejercicioRef(ejercicio: ClaseEjercicioRef | Record<string, never>): Cla
 }
 
 const STORAGE_KEY = 'biodanzaClases'
+// Carpetas creadas explícitamente (ver crearCarpeta) -- separado de
+// Clase.carpeta porque una carpeta vacía (sin ninguna clase todavía)
+// tiene que poder existir y navegarse, igual que en un sistema de
+// archivos real (mkdir sin archivos adentro).
+const CARPETAS_KEY = 'biodanzaClasesCarpetas'
 
 // Puerto de clasesService.js. `biodanzaClases` era un array global mutado
 // in-place (Angular's dirty-checking toleraba eso); acá cada acción
@@ -54,6 +60,7 @@ function nuevaClaseVacia(): Clase {
     fechaClase: new Date().toISOString(),
     comentarios: '',
     etiquetas: [],
+    carpeta: '',
     ejercicios,
   }
 }
@@ -116,30 +123,73 @@ function buildExpClase(clase: Clase): ClaseExport {
     comentarios: clase.comentarios,
     ejercicios,
     etiquetas: clase.etiquetas,
+    carpeta: clase.carpeta,
   }
 }
 
 interface ClasesState {
   clases: Clase[]
+  // Carpetas explícitas (ver CARPETAS_KEY) -- el árbol completo que se
+  // navega en Clases.tsx sale de esto UNIDO con cada prefijo de
+  // Clase.carpeta (una clase en "A/B" implica que "A" y "A/B" existen
+  // como carpetas aunque nunca se hayan creado a mano).
+  carpetas: string[]
   initialized: boolean
 
   init: () => void
   saveClases: (clases?: Clase[]) => void
+  crearCarpeta: (path: string) => void
+  eliminarCarpeta: (path: string) => void
   nuevaClase: () => number
+  duplicarClase: (index: number, nuevoTitulo: string) => number
   deleteClase: (index: number) => void
   updateClase: (index: number, patch: Partial<Clase>) => void
   nuevoEjercicioClase: (index: number) => void
   ejercicioMoveUp: (claseIndex: number, nro: number) => void
   ejercicioMoveDown: (claseIndex: number, nro: number) => void
+  moverEjercicio: (claseIndex: number, fromNro: number, toNro: number) => void
   insertarEjercicio: (claseIndex: number, nro: number) => void
+  // Puerto libre (no existía en el original): arrastrar uno o más archivos
+  // directo sobre un ejercicio de la vista Play (Clase.tsx) -- además de
+  // agregarlos a la colección/SIN_COLECCION (ver AgregarMusicaModal), los
+  // inserta como ejercicios nuevos ahí mismo, en el orden en que llegan.
+  // Atómico (una sola actualización de `clases`) a propósito: insertar de a
+  // uno llamando insertarEjercicio/updateEjercicioClase en un loop, en el
+  // mismo render, pisaría el mismo `nuevoNro` en cada vuelta -- `clase` es
+  // una referencia cerrada sobre el estado de ANTES del primer insert
+  // (React no re-renderiza entre llamadas sincrónicas), así que
+  // `clase.ejercicios.length` (usado para "al final") no cambia entre
+  // llamadas y los inserts pisarían la misma posición en vez de apilarse.
+  insertarMusicasEnPosicion: (claseIndex: number, insertarDespuesDeNro: number | null, musicaIds: string[]) => void
   deleteEjercicioClase: (claseIndex: number, nro: number) => void
   deleteEjercicio: (claseIndex: number, nro: number) => void
   deleteMusica: (claseIndex: number, nro: number) => void
+  // Deshacer (Ctrl+Z, ver Clase.tsx): guarda una sola foto de los
+  // ejercicios de la clase ANTES del último borrado (de fila, de
+  // ejercicio o de música) -- no es una pila multinivel, un solo paso
+  // atrás alcanza para el caso de uso (deshacer un click de tacho por
+  // error).
+  ultimoBorrado: { claseIndex: number; ejerciciosAntes: ClaseEjercicio[] } | null
+  deshacerBorrado: () => void
   updateEjercicioClase: (claseIndex: number, nro: number, patch: Partial<ClaseEjercicio>) => void
   exportarClases: () => void
   exportarClase: (index: number) => void
+  descargarPlaylist: (index: number) => void
+  descargarHtml: (index: number) => void
   importarClases: (file: File) => Promise<void>
   removeEtiquetaGlobal: (etiqueta: string) => void
+  // Contraparte de dataStore.ts migrando música suelta (SIN_COLECCION)
+  // hacia una colección real recién cargada (ver migrarDesdeSinColeccion
+  // en dataStore.ts) -- swap de musicaId por clase, ver implementación.
+  reemplazarMusicaId: (mapaIdViejoANuevo: Record<string, string>) => void
+  // Acciones en lote (ver selección múltiple en Clases.tsx) -- todas
+  // reciben los índices reales dentro de `clases` (los mismos que usan
+  // el resto de las acciones de arriba), no posiciones dentro de una
+  // lista filtrada/paginada.
+  deleteClases: (indices: number[]) => void
+  moverClases: (indices: number[], carpeta: string) => void
+  exportarClasesSeleccionadas: (indices: number[]) => void
+  descargarPlaylistMultiple: (indices: number[]) => void
 }
 
 function withClase(clases: Clase[], index: number, fn: (clase: Clase) => Clase): Clase[] {
@@ -172,7 +222,9 @@ function migrateLegacyMusicaIds(clases: Clase[]): { clases: Clase[]; changed: bo
 
 export const useClasesStore = create<ClasesState>((set, get) => ({
   clases: [],
+  carpetas: [],
   initialized: false,
+  ultimoBorrado: null,
 
   init: () => {
     if (get().initialized) return
@@ -182,8 +234,32 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     useDataStore.getState().init()
     const stored = readLocalStorage<Clase[]>(STORAGE_KEY) ?? []
     const { clases, changed } = migrateLegacyMusicaIds(stored)
-    set({ clases, initialized: true })
+    const carpetas = readLocalStorage<string[]>(CARPETAS_KEY) ?? []
+    set({ clases, carpetas, initialized: true })
     if (changed) get().saveClases(clases)
+  },
+
+  // "mkdir -p": crear "A/B/C" también deja navegables "A" y "A/B", aunque
+  // no tengan clases directas -- mismo comportamiento que un sistema de
+  // archivos real.
+  crearCarpeta: (path) => {
+    const limpio = path.trim().replace(/^\/+|\/+$/g, '')
+    if (!limpio) return
+    const segmentos = limpio.split('/')
+    const nuevas = segmentos.map((_, i) => segmentos.slice(0, i + 1).join('/'))
+    const carpetas = Array.from(new Set([...get().carpetas, ...nuevas]))
+    set({ carpetas })
+    writeLocalStorage(CARPETAS_KEY, carpetas)
+  },
+
+  // Solo saca la carpeta de la lista de "creadas explícitamente" -- si
+  // sigue habiendo clases o subcarpetas ahí adentro, Clases.tsx bloquea
+  // el llamado antes de llegar acá (no se borra nada en cascada, mismo
+  // criterio que un "rmdir" no recursivo).
+  eliminarCarpeta: (path) => {
+    const carpetas = get().carpetas.filter((c) => c !== path)
+    set({ carpetas })
+    writeLocalStorage(CARPETAS_KEY, carpetas)
   },
 
   saveClases: (clases) => {
@@ -194,6 +270,21 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
   nuevaClase: () => {
     const clase = nuevaClaseVacia()
     const clases = [clase, ...get().clases]
+    set({ clases })
+    get().saveClases(clases)
+    return 0
+  },
+
+  duplicarClase: (index, nuevoTitulo) => {
+    const original = get().clases[index]
+    if (!original) return 0
+    const copia: Clase = {
+      ...original,
+      titulo: nuevoTitulo,
+      fechaCreacion: new Date().toISOString(),
+      ejercicios: original.ejercicios.map((e) => ({ ...e })),
+    }
+    const clases = [copia, ...get().clases]
     set({ clases })
     get().saveClases(clases)
     return 0
@@ -250,6 +341,25 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     get().saveClases(clases)
   },
 
+  // Puerto libre (no existía en el original): reordenar arrastrando y
+  // soltando (ver Clase.tsx). Saca el ejercicio de su posición y lo
+  // reinserta antes del que tiene `toNro`, renumerando todo el resto.
+  moverEjercicio: (claseIndex, fromNro, toNro) => {
+    if (fromNro === toNro) return
+    const clases = withClase(get().clases, claseIndex, (c) => {
+      const ejercicios = [...c.ejercicios]
+      const fromIndex = fromNro - 1
+      const toIndex = toNro - 1
+      const [movido] = ejercicios.splice(fromIndex, 1)
+      const destino = fromIndex < toIndex ? toIndex - 1 : toIndex
+      ejercicios.splice(destino, 0, movido)
+      for (let i = 0; i < ejercicios.length; i++) ejercicios[i] = { ...ejercicios[i], nro: i + 1 }
+      return { ...c, ejercicios }
+    })
+    set({ clases })
+    get().saveClases(clases)
+  },
+
   insertarEjercicio: (claseIndex, nro) => {
     const clases = withClase(get().clases, claseIndex, (c) => {
       const ejercicios = [...c.ejercicios]
@@ -261,25 +371,55 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     get().saveClases(clases)
   },
 
-  deleteEjercicioClase: (claseIndex, nro) => {
-    if (nro === 1) return
+  insertarMusicasEnPosicion: (claseIndex, insertarDespuesDeNro, musicaIds) => {
+    if (musicaIds.length === 0) return
     const clases = withClase(get().clases, claseIndex, (c) => {
-      const ejercicios = c.ejercicios.filter((e) => e.nro !== nro)
-      for (let i = nro - 1; i < ejercicios.length; i++) ejercicios[i] = { ...ejercicios[i], nro: i + 1 }
+      const ejercicios = [...c.ejercicios]
+      const posicion = insertarDespuesDeNro !== null ? insertarDespuesDeNro : ejercicios.length
+      const nuevos = musicaIds.map((musicaId) => ({ ...nuevoEjercicio(0), musicaId }))
+      ejercicios.splice(posicion, 0, ...nuevos)
+      for (let i = 0; i < ejercicios.length; i++) ejercicios[i] = { ...ejercicios[i], nro: i + 1 }
       return { ...c, ejercicios }
     })
     set({ clases })
     get().saveClases(clases)
   },
 
+  deleteEjercicioClase: (claseIndex, nro) => {
+    const claseActual = get().clases[claseIndex]
+    if (!claseActual) return
+    const clases = withClase(get().clases, claseIndex, (c) => {
+      const ejercicios = c.ejercicios.filter((e) => e.nro !== nro)
+      for (let i = nro - 1; i < ejercicios.length; i++) ejercicios[i] = { ...ejercicios[i], nro: i + 1 }
+      return { ...c, ejercicios }
+    })
+    set({ clases, ultimoBorrado: { claseIndex, ejerciciosAntes: claseActual.ejercicios } })
+    get().saveClases(clases)
+  },
+
   // deleteEjercicio (clasesService.js:145-148): NO saca la fila, solo
   // vacía la referencia al ejercicio de origen.
   deleteEjercicio: (claseIndex, nro) => {
+    const claseActual = get().clases[claseIndex]
+    if (claseActual) set({ ultimoBorrado: { claseIndex, ejerciciosAntes: claseActual.ejercicios } })
     get().updateEjercicioClase(claseIndex, nro, { ejercicio: {} })
   },
 
   deleteMusica: (claseIndex, nro) => {
+    const claseActual = get().clases[claseIndex]
+    if (claseActual) set({ ultimoBorrado: { claseIndex, ejerciciosAntes: claseActual.ejercicios } })
     get().updateEjercicioClase(claseIndex, nro, { musicaId: null })
+  },
+
+  // Deshacer (Ctrl+Z): restaura la foto de ejercicios guardada por el
+  // último deleteEjercicioClase/deleteEjercicio/deleteMusica. Un solo
+  // paso atrás -- se pisa con cada borrado nuevo.
+  deshacerBorrado: () => {
+    const ultimo = get().ultimoBorrado
+    if (!ultimo) return
+    const clases = withClase(get().clases, ultimo.claseIndex, (c) => ({ ...c, ejercicios: ultimo.ejerciciosAntes }))
+    set({ clases, ultimoBorrado: null })
+    get().saveClases(clases)
   },
 
   updateEjercicioClase: (claseIndex, nro, patch) => {
@@ -301,6 +441,25 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     if (!clase) return
     const claseExp = buildExpClase(clase)
     downloadJson([claseExp], claseExp.titulo + '.bio')
+  },
+
+  // Playlist M3U (Winamp, VLC, Windows Media Player, etc.) con el orden
+  // real de reproducción de la clase, ver lib/exportClase.ts.
+  descargarPlaylist: (index) => {
+    const clase = get().clases[index]
+    if (!clase) return
+    const contenido = generarPlaylistM3U(clase)
+    if (contenido === undefined) return
+    downloadBlob(new Blob([contenido], { type: 'audio/x-mpegurl' }), clase.titulo + '.m3u')
+  },
+
+  // Página HTML (ver lib/exportClase.ts) con los ejercicios de la clase
+  // y un hipervínculo a la música de cada uno.
+  descargarHtml: (index) => {
+    const clase = get().clases[index]
+    if (!clase) return
+    const html = generarHtmlClase(clase)
+    downloadBlob(new Blob([html], { type: 'text/html' }), clase.titulo + '.html')
   },
 
   // Puerto de importarClases (clasesService.js:177-206): a diferencia del
@@ -327,6 +486,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
           // .bio viejo no tiene este campo (V/A/C/S/T no se migran, a
           // pedido explícito del usuario) -- se arranca en [] en ese caso.
           etiquetas: item.etiquetas ?? [],
+          carpeta: item.carpeta ?? '',
           ejercicios: item.ejercicios.map((ej) => {
             let musicaId = ej.musica?.musicaId ?? null
             if (ej.musica?.coleccion && ej.musica?.idMusica) {
@@ -383,5 +543,71 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     )
     set({ clases })
     get().saveClases(clases)
+  },
+
+  // Cuando una música suelta (SIN_COLECCION) resulta ser "la misma" que
+  // una recién cargada en una colección real (mismo nombre de archivo,
+  // ver migrarDesdeSinColeccion en dataStore.ts), cada ejercicio de clase
+  // que la tenía asignada tiene que empezar a apuntar a la nueva -- si no,
+  // quedaría con una referencia colgante a una música que dataStore.ts ya
+  // eliminó de SIN_COLECCION.
+  reemplazarMusicaId: (mapaIdViejoANuevo) => {
+    if (Object.keys(mapaIdViejoANuevo).length === 0) return
+    let cambio = false
+    const clases = get().clases.map((c) => {
+      let claseCambio = false
+      const ejercicios = c.ejercicios.map((ej) => {
+        const nuevo = ej.musicaId ? mapaIdViejoANuevo[ej.musicaId] : undefined
+        if (!nuevo) return ej
+        claseCambio = true
+        return { ...ej, musicaId: nuevo }
+      })
+      if (!claseCambio) return c
+      cambio = true
+      return { ...c, ejercicios }
+    })
+    if (!cambio) return
+    set({ clases })
+    get().saveClases(clases)
+  },
+
+  // Un solo filter atómico sobre los índices originales -- borrar de a
+  // una (llamando deleteClase en loop) rompería porque cada borrado corre
+  // los índices de las que quedan detrás.
+  deleteClases: (indices) => {
+    const indicesSet = new Set(indices)
+    const clases = get().clases.filter((_, i) => !indicesSet.has(i))
+    set({ clases })
+    get().saveClases(clases)
+  },
+
+  moverClases: (indices, carpeta) => {
+    const indicesSet = new Set(indices)
+    const clases = get().clases.map((c, i) => (indicesSet.has(i) ? { ...c, carpeta } : c))
+    set({ clases })
+    get().saveClases(clases)
+  },
+
+  exportarClasesSeleccionadas: (indices) => {
+    const seleccionadas = indices
+      .map((i) => get().clases[i])
+      .filter((c): c is Clase => !!c)
+      .map(buildExpClase)
+    if (seleccionadas.length === 0) return
+    const nombre = seleccionadas.length === 1 ? seleccionadas[0].titulo : seleccionadas.length + ' clases'
+    downloadJson(seleccionadas, nombre + '.bio')
+  },
+
+  // Playlist M3U combinada con las pistas de todas las clases elegidas,
+  // en el orden en que se seleccionaron -- separadas por un comentario
+  // "# <título>" (ignorado por cualquier reproductor M3U estándar, solo
+  // ayuda a ubicarse si se abre el archivo en un editor de texto).
+  descargarPlaylistMultiple: (indices) => {
+    const seleccionadas = indices.map((i) => get().clases[i]).filter((c): c is Clase => !!c)
+    if (seleccionadas.length === 0) return
+    const contenido = generarPlaylistM3UMultiple(seleccionadas)
+    if (contenido === undefined) return
+    const nombre = seleccionadas.length === 1 ? seleccionadas[0].titulo : 'Playlist (' + seleccionadas.length + ' clases)'
+    downloadBlob(new Blob([contenido], { type: 'audio/x-mpegurl' }), nombre + '.m3u')
   },
 }))
