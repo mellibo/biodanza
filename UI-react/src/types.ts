@@ -110,6 +110,12 @@ export interface Clase {
   // Reemplaza los booleanos sueltos V/A/C/S/T (líneas de vivencia) por
   // etiquetas libres -- mismo mecanismo que Musica/Ejercicio.
   etiquetas: string[]
+  // Carpeta libre para organizar el listado de clases (ver Clases.tsx) --
+  // '' significa "sin carpeta". Clases guardadas antes de este campo no
+  // lo tienen en absoluto en localStorage, por eso todo lugar que lo lee
+  // debe hacerlo con un fallback (`clase.carpeta || ''`), no asumir que
+  // siempre es un string.
+  carpeta: string
 }
 
 // Forma portable de un ejercicio de clase para exportar/importar .bio
@@ -155,4 +161,6 @@ export interface ClaseExport {
   // Opcional: un .bio viejo no tiene este campo -- importarClases lo
   // trata como [] en ese caso (sin migrar V/A/C/S/T, a pedido explícito).
   etiquetas?: string[]
+  // Opcional por el mismo motivo -- un .bio viejo no tiene carpeta.
+  carpeta?: string
 }
