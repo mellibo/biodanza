@@ -164,3 +164,37 @@ export interface ClaseExport {
   // Opcional por el mismo motivo -- un .bio viejo no tiene carpeta.
   carpeta?: string
 }
+
+// Resumen de qué pasó al importar un .bio (ver clasesStore.importarClases)
+// -- se muestra en un modal aparte (ResultadoImportarClasesModal) para que
+// quede claro, sobre todo, cuánta música NO se pudo asociar y por qué
+// (colección no cargada vs. archivo puntual no encontrado en el catálogo).
+export interface ResultadoImportacionClases {
+  totalClases: number
+  totalEjercicios: number
+  // Ejercicios que el .bio traía CON una música asignada (independiente
+  // de si se pudo resolver o no) -- los que no tenían ninguna no cuentan
+  // ni como "resueltos" ni como "sin resolver".
+  ejerciciosConMusicaReferenciada: number
+  ejerciciosResueltos: number
+  porColeccion: Array<{
+    coleccion: string
+    total: number
+    resueltos: number
+    // Si la colección no está cargada en absoluto en el catálogo actual
+    // (0 músicas suyas en memoria), para distinguir eso de "está cargada
+    // pero este archivo puntual no está en su catálogo".
+    cargada: boolean
+  }>
+  // Detalle fila por fila de cada ejercicio cuya música NO se pudo asociar
+  // -- para poder mostrarlo/descargarlo y que el usuario sepa exactamente
+  // qué archivo de qué colección/carpeta falta, sin tener que ir clase por
+  // clase a buscarlo.
+  detalleFaltantes: Array<{
+    clase: string
+    ejercicioNro: number
+    coleccion: string
+    carpeta: string
+    archivo: string
+  }>
+}

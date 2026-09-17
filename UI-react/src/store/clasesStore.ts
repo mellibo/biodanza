@@ -4,9 +4,10 @@ import { getMusicaId } from '../lib/normalize'
 import { parseDuracion } from '../lib/duration'
 import { useDataStore } from './dataStore'
 import { downloadJson, downloadBlob } from '../lib/download'
-import { resolveLegacyMusicaId, findLegacyMusica } from '../lib/legacyMusicaId'
+import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
+import { decodeSiHaceFalta } from '../lib/decodeUrl'
 import { generarPlaylistM3U, generarPlaylistM3UMultiple, generarHtmlClase } from '../lib/exportClase'
-import type { Clase, ClaseEjercicio, ClaseEjercicioRef, ClaseExport, ClaseEjercicioExport } from '../types'
+import type { Clase, ClaseEjercicio, ClaseEjercicioRef, ClaseExport, ClaseEjercicioExport, ResultadoImportacionClases } from '../types'
 
 function ejercicioRef(ejercicio: ClaseEjercicioRef | Record<string, never>): ClaseEjercicioRef {
   return 'nombre' in ejercicio ? { nombre: ejercicio.nombre, nombreNormalized: ejercicio.nombreNormalized } : { nombre: '', nombreNormalized: '' }
@@ -176,7 +177,13 @@ interface ClasesState {
   exportarClase: (index: number) => void
   descargarPlaylist: (index: number) => void
   descargarHtml: (index: number) => void
-  importarClases: (file: File) => Promise<void>
+  importarClases: (file: File) => Promise<ResultadoImportacionClases>
+  // Foto de `clases` justo antes del último importarClases -- permite
+  // "Cancelar importación" desde ResultadoImportarClasesModal (a pedido)
+  // sin tener que borrar las clases importadas una por una a mano. Un solo
+  // paso atrás, igual que ultimoBorrado: importar de nuevo pisa la foto.
+  ultimaImportacion: { clasesAntes: Clase[] } | null
+  cancelarImportacion: () => void
   removeEtiquetaGlobal: (etiqueta: string) => void
   // Contraparte de dataStore.ts migrando música suelta (SIN_COLECCION)
   // hacia una colección real recién cargada (ver migrarDesdeSinColeccion
@@ -225,6 +232,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
   carpetas: [],
   initialized: false,
   ultimoBorrado: null,
+  ultimaImportacion: null,
 
   init: () => {
     if (get().initialized) return
@@ -478,6 +486,59 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
           reject(e)
           return
         }
+        // Índices armados UNA vez para resolver ids de música con esquema
+        // viejo -- antes se volvía a escanear TODO musicasOrder por cada
+        // ejercicio del .bio (cientos de ejercicios × todo el catálogo
+        // cargado), lento hasta el punto de sentirse colgado con varias
+        // colecciones grandes cargadas a la vez.
+        const { musicasOrder, musicasById } = useDataStore.getState()
+        // Por archivo+carpeta+colección -- la forma más confiable de
+        // reconocer "es el mismo archivo", porque no depende de que la
+        // "clave" (idMusica) se haya asignado igual en esta instalación:
+        // una colección cargada por Excel tiene una clave real (ej.
+        // "35:07"), pero una cargada por "Escanear Carpeta" usa el propio
+        // nombre de archivo como idMusica (ver analizarArchivoAudio.ts) --
+        // muy distinto de "35:07" aunque sea EL MISMO archivo. archivo y
+        // carpeta, en cambio, son el nombre/ubicación real en disco,
+        // estables sin importar cómo se cargó la colección.
+        const indicePorArchivo = new Map<string, string>()
+        // Por coleccion+nroCd+nroPista (clave "35:07", ver
+        // findLegacyMusica) -- respaldo para cuando el .bio no trae
+        // archivo/carpeta (muy viejo) o la colección actual no matchea
+        // por archivo (ej. se renombró el archivo en disco).
+        const indicePorClave = new Map<string, string>()
+        for (const id of musicasOrder) {
+          const musica = musicasById[id]
+          if (!musica) continue
+          if (musica.archivo) {
+            indicePorArchivo.set(musica.coleccion + '|' + (musica.carpeta || '').toLowerCase() + '|' + musica.archivo.toLowerCase(), id)
+          }
+          const m = musica.idMusica.match(/^(\d{1,3})[.\-:](\d{1,3})$/)
+          if (!m) continue
+          indicePorClave.set(musica.coleccion + '|' + parseInt(m[1], 10) + '|' + parseInt(m[2], 10), id)
+        }
+
+        // Estadísticas para el modal de resultado (ver
+        // ResultadoImportarClasesModal) -- se completan de paso mientras se
+        // resuelve cada ejercicio, no es un paso aparte.
+        const statsPorColeccion = new Map<string, { total: number; resueltos: number }>()
+        let ejerciciosConMusicaReferenciada = 0
+        let ejerciciosResueltos = 0
+        const detalleFaltantes: ResultadoImportacionClases['detalleFaltantes'] = []
+
+        // Cuando la música de un ejercicio no se pudo asociar (ver
+        // detalleFaltantes más abajo), se deja una nota con los datos
+        // originales en el campo Comentarios -- así, aunque el vínculo se
+        // pierda, no hace falta ir a buscar en el .bio de dónde salía esa
+        // música para asignarla a mano desde la clase.
+        function notaMusicaSinAsociar(musica: { nombre: string | null; interprete: string | null; coleccion: string | null; carpeta: string | null; archivo: string | null }): string {
+          const titulo = [musica.nombre, musica.interprete].filter((s): s is string => !!s && s.trim() !== '').join(' - ') || '(sin título)'
+          const ubicacion = [musica.coleccion, decodeSiHaceFalta(musica.carpeta || ''), decodeSiHaceFalta(musica.archivo || '')]
+            .filter((s) => !!s)
+            .join('/')
+          return 'Música sin asociar al importar: ' + titulo + (ubicacion ? ' [' + ubicacion + ']' : '')
+        }
+
         const nuevas: Clase[] = json.map((item) => ({
           titulo: item.titulo,
           fechaCreacion: item.fechaCreacion,
@@ -492,21 +553,67 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
             if (ej.musica?.coleccion && ej.musica?.idMusica) {
               // .bio nuevo
               musicaId = getMusicaId(ej.musica.coleccion, ej.musica.idMusica)
+            } else if (ej.musica?.coleccion && ej.musica?.archivo) {
+              // .bio viejo, resuelto por archivo+carpeta (ver indicePorArchivo).
+              const coleccion = ej.musica.coleccion.toUpperCase()
+              const archivo = decodeSiHaceFalta(ej.musica.archivo).toLowerCase()
+              const carpeta = decodeSiHaceFalta(ej.musica.carpeta || '').toLowerCase()
+              musicaId = indicePorArchivo.get(coleccion + '|' + carpeta + '|' + archivo) ?? null
+              // Si no matcheó por archivo (ej. se renombró en disco), se
+              // prueba el respaldo por clave nroCd/nroPista.
+              if (!musicaId && ej.musica.nroCd && ej.musica.nroPista) {
+                const cd = parseInt(String(ej.musica.nroCd), 10)
+                const pista = parseInt(String(ej.musica.nroPista), 10)
+                musicaId = indicePorClave.get(coleccion + '|' + cd + '|' + pista) ?? null
+              }
             } else if (ej.musica?.coleccion && ej.musica?.nroCd && ej.musica?.nroPista) {
-              // .bio viejo (coleccion+nroCd+nroPista sueltos, sin idMusica) --
-              // a diferencia del original, que armaba un id sin verificar que
-              // existiera, acá se resuelve contra el catálogo ya cargado y se
-              // deja null si no hay match, en vez de dejar una referencia
-              // colgada a nada.
-              const { musicasOrder, musicasById } = useDataStore.getState()
-              musicaId = findLegacyMusica(ej.musica.coleccion, ej.musica.nroCd, ej.musica.nroPista, musicasOrder, musicasById)?.id ?? null
+              // .bio muy viejo (ni idMusica ni archivo, solo
+              // coleccion+nroCd+nroPista sueltos) -- a diferencia del
+              // original, que armaba un id sin verificar que existiera, acá
+              // se resuelve contra el catálogo ya cargado y se deja null si
+              // no hay match, en vez de dejar una referencia colgada a nada.
+              const cd = parseInt(String(ej.musica.nroCd), 10)
+              const pista = parseInt(String(ej.musica.nroPista), 10)
+              musicaId = indicePorClave.get(ej.musica.coleccion.toUpperCase() + '|' + cd + '|' + pista) ?? null
             }
+            let comentarios = ej.comentarios
+            if (ej.musica?.coleccion) {
+              const col = ej.musica.coleccion.toUpperCase()
+              const stat = statsPorColeccion.get(col) ?? { total: 0, resueltos: 0 }
+              stat.total++
+              if (musicaId) stat.resueltos++
+              statsPorColeccion.set(col, stat)
+              ejerciciosConMusicaReferenciada++
+              if (musicaId) {
+                ejerciciosResueltos++
+              } else {
+                detalleFaltantes.push({
+                  clase: item.titulo,
+                  ejercicioNro: ej.nro,
+                  coleccion: ej.musica.coleccion,
+                  carpeta: decodeSiHaceFalta(ej.musica.carpeta || ''),
+                  archivo: decodeSiHaceFalta(ej.musica.archivo || ''),
+                })
+                const nota = notaMusicaSinAsociar(ej.musica)
+                comentarios = comentarios ? comentarios + '\n' + nota : nota
+              }
+            }
+            // Defensa ante .bio corruptos/muy viejos donde `ejercicio` no
+            // trae strings de verdad (visto en la práctica: {nombre:{},
+            // nombreNormalized:{}}) -- sin este chequeo, cualquier pantalla
+            // que renderice ese nombre directo (Clases.tsx en vista
+            // expandida, Clase.tsx) rompe con "Objects are not valid as a
+            // React child" y la pantalla entera queda en blanco.
+            const ejercicioRef =
+              ej.ejercicio && typeof ej.ejercicio.nombre === 'string' && typeof ej.ejercicio.nombreNormalized === 'string'
+                ? ej.ejercicio
+                : {}
             return {
               nro: ej.nro,
-              ejercicio: ej.ejercicio,
+              ejercicio: ejercicioRef,
               musicaId,
               consigna: ej.consigna,
-              comentarios: ej.comentarios,
+              comentarios,
               nombre: ej.nombre,
               volumen: ej.volumen,
               iniciarSegundos: ej.iniciarSegundos,
@@ -524,13 +631,39 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
         // lo que neto deja json en su orden original al frente de la
         // lista (clasesService.js:190-200) -- acá se llega al mismo
         // resultado directamente.
-        const clases = [...nuevas, ...get().clases]
-        set({ clases })
+        const clasesAntes = get().clases
+        const clases = [...nuevas, ...clasesAntes]
+        set({ clases, ultimaImportacion: { clasesAntes } })
         get().saveClases(clases)
-        resolve()
+
+        const coleccionesCargadas = new Set(Array.from(musicasOrder, (id) => musicasById[id]?.coleccion).filter((c): c is string => !!c))
+        const totalEjercicios = nuevas.reduce((acc, c) => acc + c.ejercicios.length, 0)
+        const resultado: ResultadoImportacionClases = {
+          totalClases: nuevas.length,
+          totalEjercicios,
+          ejerciciosConMusicaReferenciada,
+          ejerciciosResueltos,
+          porColeccion: Array.from(statsPorColeccion.entries())
+            .map(([coleccion, stat]) => ({ coleccion, ...stat, cargada: coleccionesCargadas.has(coleccion) }))
+            .sort((a, b) => a.coleccion.localeCompare(b.coleccion)),
+          detalleFaltantes,
+        }
+        resolve(resultado)
       }
       reader.readAsText(file)
     })
+  },
+
+  // Restaura `clases` a como estaba antes del último importarClases (ver
+  // ultimaImportacion) -- "Cancelar importación" desde
+  // ResultadoImportarClasesModal. No hace falta tocar dataStore: importar
+  // un .bio nunca agrega música al catálogo, solo clases que referencian
+  // música ya existente.
+  cancelarImportacion: () => {
+    const ultima = get().ultimaImportacion
+    if (!ultima) return
+    set({ clases: ultima.clasesAntes, ultimaImportacion: null })
+    get().saveClases(ultima.clasesAntes)
   },
 
   // Contraparte de dataStore.removeEtiquetaGlobal para las clases: se

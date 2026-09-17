@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useClasesStore } from '../store/clasesStore'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { Pagination } from '../components/Pagination'
+import { ResultadoImportarClasesModal } from '../components/ResultadoImportarClasesModal'
 import { normalize } from '../lib/normalize'
-import type { Clase } from '../types'
+import type { Clase, ResultadoImportacionClases } from '../types'
 
 const PAGE_SIZE = 15
 
@@ -195,6 +196,11 @@ export function Clases() {
   const [creandoCarpeta, setCreandoCarpeta] = useState(false)
   const [nombreCarpetaNueva, setNombreCarpetaNueva] = useState('')
   const [buscar, setBuscar] = useState('')
+  // Orden de la lista mostrada (carpeta actual o resultados de búsqueda,
+  // ver listaOrdenada) -- "ninguno" preserva el orden que ya traía
+  // (inserción/import), sin reordenar nada por default.
+  const [orden, setOrden] = useState<'ninguno' | 'nombre' | 'fecha'>('ninguno')
+  const [ordenDesc, setOrdenDesc] = useState(false)
   // Borrador del campo "Carpeta" mientras se escribe, por índice de clase
   // -- no se mueve la clase en cada tecla, solo al confirmar (blur/Enter),
   // y solo si la carpeta escrita ya existe (ver confirmarCarpeta).
@@ -207,6 +213,9 @@ export function Clases() {
   const [seleccionados, setSeleccionados] = useState<Set<number>>(new Set())
   const [textoEtiquetaBulk, setTextoEtiquetaBulk] = useState('')
   const [carpetaDestinoBulk, setCarpetaDestinoBulk] = useState('')
+  // Resumen de la última importación (ver ResultadoImportarClasesModal) --
+  // null cuando no hay ninguno para mostrar.
+  const [resultadoImportacion, setResultadoImportacion] = useState<ResultadoImportacionClases | null>(null)
 
   function toggleExpandida(path: string) {
     setCarpetasExpandidas((prev) => {
@@ -307,7 +316,7 @@ export function Clases() {
 
   async function onImportFile(file: File) {
     try {
-      await importarClases(file)
+      setResultadoImportacion(await importarClases(file))
     } catch {
       window.alert('El archivo de clases no tiene un formato válido.')
     }
@@ -397,9 +406,25 @@ export function Clases() {
   const todosSeleccionados = listaMostrada.length > 0 && listaMostrada.every(({ i }) => seleccionados.has(i))
   const algunoSeleccionado = listaMostrada.some(({ i }) => seleccionados.has(i))
 
-  useEffect(() => setPage(1), [carpetaActual, buscar])
+  // Orden aplicado solo para mostrar/paginar -- no toca el orden real
+  // guardado en el store.
+  const listaOrdenada = useMemo(() => {
+    if (orden === 'ninguno') return listaMostrada
+    const copia = [...listaMostrada]
+    copia.sort((a, b) => {
+      const cmp =
+        orden === 'nombre'
+          ? a.clase.titulo.localeCompare(b.clase.titulo, 'es', { sensitivity: 'base' })
+          : new Date(a.clase.fechaClase).getTime() - new Date(b.clase.fechaClase).getTime()
+      return ordenDesc ? -cmp : cmp
+    })
+    return copia
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- listaMostrada se rearma cada render, alcanza con reaccionar a sus fuentes reales
+  }, [buscando, resultadosBusqueda, enEstaCarpeta, orden, ordenDesc])
 
-  const paginaActual = listaMostrada.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  useEffect(() => setPage(1), [carpetaActual, buscar, orden, ordenDesc])
+
+  const paginaActual = listaOrdenada.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const segmentos = segmentosDe(carpetaActual)
 
   return (
@@ -576,6 +601,27 @@ export function Clases() {
               </span>
             )}
           </div>
+          <label style={{ margin: 0 }}>Ordenar por:</label>
+          <select
+            className="form-control input-sm"
+            style={{ width: '140px', display: 'inline-block' }}
+            value={orden}
+            onChange={(e) => setOrden(e.target.value as typeof orden)}
+          >
+            <option value="ninguno">Sin ordenar</option>
+            <option value="nombre">Nombre</option>
+            <option value="fecha">Fecha</option>
+          </select>
+          {orden !== 'ninguno' && (
+            <button
+              type="button"
+              className="btn btn-default btn-sm"
+              onClick={() => setOrdenDesc((v) => !v)}
+              title={ordenDesc ? 'Descendente -- click para invertir' : 'Ascendente -- click para invertir'}
+            >
+              <span className={'glyphicon glyphicon-sort-by-attributes' + (ordenDesc ? '-alt' : '')} />
+            </button>
+          )}
         </div>
 
         <datalist id="bulkEtiquetasClases">
@@ -751,7 +797,7 @@ export function Clases() {
                         // Guarda ante .bio corruptos/muy viejos donde
                         // `ejercicio.nombre` no es un string de verdad (ver
                         // el mismo chequeo en Clase.tsx/nombreMostrado).
-                        const nombreEj = 'nombre' in ej.ejercicio ? ej.ejercicio.nombre : ''
+                        const nombreEj = 'nombre' in ej.ejercicio && typeof ej.ejercicio.nombre === 'string' ? ej.ejercicio.nombre : ''
                         return <li key={idx}>{idx + 1} {ej.nombre || nombreEj}</li>
                       })}
                     </ul>
@@ -778,6 +824,9 @@ export function Clases() {
         <Pagination page={page} count={listaMostrada.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
+      {resultadoImportacion && (
+        <ResultadoImportarClasesModal resultado={resultadoImportacion} onClose={() => setResultadoImportacion(null)} />
+      )}
     </div>
   )
 }

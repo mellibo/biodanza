@@ -18,3 +18,17 @@ export function downloadJson(obj: unknown, filename: string) {
   const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' })
   downloadBlob(blob, filename)
 }
+
+// CSV simple (una fila de encabezado + filas de texto), separado por ";"
+// (Excel en configuración regional es-AR/es-ES abre eso directo sin pedir
+// separador, a diferencia de la coma) y con comillas dobles escapadas.
+function csvCelda(valor: string): string {
+  return '"' + valor.replace(/"/g, '""') + '"'
+}
+
+export function downloadCsv(encabezados: string[], filas: string[][], filename: string) {
+  const lineas = [encabezados, ...filas].map((fila) => fila.map(csvCelda).join(';'))
+  // BOM al inicio para que Excel detecte UTF-8 y no rompa acentos/ñ.
+  const blob = new Blob(['﻿' + lineas.join('\r\n')], { type: 'text/csv' })
+  downloadBlob(blob, filename)
+}
