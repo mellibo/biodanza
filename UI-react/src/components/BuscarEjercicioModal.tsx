@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { useDataStore } from '../store/dataStore'
 import { buscarEjercicios } from '../lib/search'
+import { useEscToClose } from '../lib/useEscToClose'
+import { useLockBodyScroll } from '../lib/useLockBodyScroll'
 import { Pagination } from './Pagination'
 import type { Ejercicio, Musica } from '../types'
 
@@ -17,6 +19,8 @@ interface BuscarEjercicioModalProps {
 }
 
 export function BuscarEjercicioModal({ onSelect, onClose }: BuscarEjercicioModalProps) {
+  useEscToClose(onClose)
+  useLockBodyScroll()
   const ejerciciosById = useDataStore((s) => s.ejerciciosById)
   const ejerciciosOrder = useDataStore((s) => s.ejerciciosOrder)
   const grupos = useDataStore((s) => s.grupos)
@@ -69,44 +73,49 @@ export function BuscarEjercicioModal({ onSelect, onClose }: BuscarEjercicioModal
                 ))}
               </select>
             </div>
-            <table className="table table-striped table-hover" style={{ marginBottom: 0 }}>
-              <thead>
-                <tr className="success">
-                  <td>Ejercicio (Grupo)</td>
-                  <td>Musicas</td>
-                </tr>
-              </thead>
-              <tbody>
-                {paginaActual.map((ejercicio) => (
-                  <tr key={ejercicio.id}>
-                    <td>
-                      <a onClick={() => onSelect(ejercicio)}>
-                        ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo})
-                      </a>
-                      <div>
-                        <button type="button" className="btn btn-success btn-xs" onClick={() => onSelect(ejercicio)}>
-                          Seleccionar
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      {getMusicasForEjercicio(ejercicio).map((musica) => (
-                        <div key={musica.id}>
-                          <button
-                            type="button"
-                            className="btn btn-success btn-xs"
-                            onClick={() => onSelect(ejercicio, musica)}
-                          >
-                            seleccionar
-                          </button>{' '}
-                          {musica.coleccion}-{musica.idMusica} {musica.nombre}({musica.interprete})
-                        </div>
-                      ))}
-                    </td>
+            {/* maxHeight + overflow propio: la rueda del mouse acá adentro
+                mueve esta lista, no lo que quedó detrás del modal (ver
+                useLockBodyScroll, que además bloquea el scroll de fondo). */}
+            <div style={{ maxHeight: '55vh', overflowY: 'auto' }}>
+              <table className="table table-striped table-hover" style={{ marginBottom: 0 }}>
+                <thead>
+                  <tr className="success">
+                    <td>Ejercicio (Grupo)</td>
+                    <td>Musicas</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginaActual.map((ejercicio) => (
+                    <tr key={ejercicio.id}>
+                      <td>
+                        <a onClick={() => onSelect(ejercicio)}>
+                          ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo})
+                        </a>
+                        <div>
+                          <button type="button" className="btn btn-success btn-xs" onClick={() => onSelect(ejercicio)}>
+                            Seleccionar
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        {getMusicasForEjercicio(ejercicio).map((musica) => (
+                          <div key={musica.id}>
+                            <button
+                              type="button"
+                              className="btn btn-success btn-xs"
+                              onClick={() => onSelect(ejercicio, musica)}
+                            >
+                              seleccionar
+                            </button>{' '}
+                            {musica.coleccion}-{musica.idMusica} {musica.nombre}({musica.interprete})
+                          </div>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <Pagination page={page} count={resultados.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
           </div>
         </div>

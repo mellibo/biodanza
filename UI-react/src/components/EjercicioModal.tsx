@@ -1,5 +1,6 @@
 import { usePlayerStore } from '../store/playerStore'
 import { useDataStore } from '../store/dataStore'
+import { useEscToClose } from '../lib/useEscToClose'
 import { EtiquetasEditor } from './EtiquetasEditor'
 import type { Ejercicio, Musica } from '../types'
 
@@ -12,6 +13,7 @@ interface EjercicioModalProps {
 }
 
 export function EjercicioModal({ ejercicio, musicas, onClose }: EjercicioModalProps) {
+  useEscToClose(onClose)
   const playFile = usePlayerStore((s) => s.playFile)
   const updateEjercicio = useDataStore((s) => s.updateEjercicio)
   const saveEjerciciosSnapshot = useDataStore((s) => s.saveEjerciciosSnapshot)
