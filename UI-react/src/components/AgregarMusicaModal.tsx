@@ -1,40 +1,73 @@
 import { useEffect, useState } from 'react'
-import { useDataStore, type RowImportMusica } from '../store/dataStore'
+import { useDataStore, SIN_COLECCION, type RowImportMusica } from '../store/dataStore'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { useAlertStore } from '../store/alertStore'
 import { analizarArchivoAudio, esArchivoDeAudio } from '../lib/analizarArchivoAudio'
 import { testMusica } from '../lib/testMusica'
+import { ubicarEnArbol } from '../lib/ubicarEnArbol'
+import { useEscToClose } from '../lib/useEscToClose'
+import { guardarBlobMusica } from '../lib/musicaBlobStore'
+import { getMusicaId } from '../lib/normalize'
 import { EtiquetasEditor } from './EtiquetasEditor'
 import type { Coleccion } from '../types'
 
 interface ArchivoAgregar {
   file: File
   archivo: string
+  carpeta: string
+  coleccionDestino: string
+  seleccionado: boolean
   titulo: string
   interprete: string
   tagsExtra: string
   etiquetasDetectadas: string[]
-  ejercicioDetectado: string | null
+  ejerciciosDetectados: string[]
   estado: string
   duracion?: string
 }
-
-const NUEVA_COLECCION = '__nueva__'
 
 interface AgregarMusicaModalProps {
   archivosIniciales: File[]
   onClose: () => void
 }
 
-// Puerto libre (no existía en el original): agregar música suelta a una
-// colección (existente o nueva) desde cualquier pantalla, arrastrando
-// archivos o vía el botón "Agregar Música" del navbar (ver App.tsx). A
-// diferencia del modo "Escanear Carpeta" de CargarMusica.tsx (que detecta
-// la estructura Coleccion/carpeta a partir de una carpeta elegida), acá
-// los archivos llegan sueltos (drag-and-drop de archivos individuales o
-// selección manual) así que el destino (colección + carpeta) se elige a
-// mano, una sola vez para todo el lote.
+// Si el archivo llegó arrastrando/eligiendo una carpeta entera (no un
+// archivo suelto), el navegador completa `webkitRelativePath` con la
+// ruta relativa desde la carpeta elegida (mismo mecanismo que
+// ubicarEnArbol.ts para "Escanear Carpeta"). Con eso se decide el
+// destino: si el nombre de esa carpeta elegida coincide con una
+// colección ya cargada, el archivo se agrega A ESA colección (con la
+// carpeta relativa a su raíz real, ya conocida); si no coincide con
+// ninguna, va a la colección especial SIN_COLECCION (ver dataStore.ts),
+// con la ruta relativa COMPLETA como carpeta (no hay raíz conocida). Si
+// es un archivo suelto (sin carpeta elegida), no hay forma de saber
+// dónde vive en disco -- va a SIN_COLECCION con carpeta vacía, editable
+// a mano en la grilla.
+function resolverDestino(file: File, colecciones: Coleccion[]): { coleccionDestino: string; carpeta: string } {
+  const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
+  if (!rel) return { coleccionDestino: SIN_COLECCION, carpeta: '' }
+  const partes = rel.split('/')
+  const ubicacion = ubicarEnArbol(partes)
+  if (!ubicacion) return { coleccionDestino: SIN_COLECCION, carpeta: partes.slice(0, -1).join('/') }
+  const existente = colecciones.find((c) => c.nombre === ubicacion.coleccion.toUpperCase())
+  if (existente) return { coleccionDestino: existente.nombre, carpeta: ubicacion.carpeta }
+  return { coleccionDestino: SIN_COLECCION, carpeta: partes.slice(0, -1).join('/') }
+}
+
+// Puerto libre (no existía en el original): agregar música suelta desde
+// cualquier pantalla, arrastrando archivos/carpetas encima (ver
+// useDragAndDropArchivos en App.tsx -- los botones "Agregar Música"/
+// "Agregar Carpeta" del navbar que abrían esto mismo se sacaron, a pedido,
+// por confundir sobre qué poner en "carpeta"). Cada archivo se enruta solo
+// a su colección real si la carpeta elegida coincide con una ya cargada, o
+// a SIN_COLECCION si no (ver resolverDestino) -- el usuario elige cuáles
+// de los encontrados agregar (checkbox por fila) y puede corregir la
+// carpeta a mano si hace falta. Los que van a SIN_COLECCION no dependen de
+// que el archivo original siga en disco: su contenido se copia a
+// IndexedDB (ver guardarBlobMusica/musicaBlobStore.ts), así que se pueden
+// reproducir después sin importar de qué carpeta se hayan arrastrado.
 export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusicaModalProps) {
+  useEscToClose(onClose)
   const initData = useDataStore((s) => s.init)
   const colecciones = useDataStore((s) => s.colecciones)
   const agregarMusicasAColeccion = useDataStore((s) => s.agregarMusicasAColeccion)
@@ -49,29 +82,10 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
     initEtiquetas()
   }, [initData, initEtiquetas])
 
-  const [nombreColeccion, setNombreColeccion] = useState(colecciones[0]?.nombre ?? NUEVA_COLECCION)
-  const [nombreColeccionNueva, setNombreColeccionNueva] = useState('')
-  // Arranca vacío a propósito: no hay forma de adivinar la carpeta real
-  // (arrastrar/elegir un archivo suelto no expone dónde vive en disco), así
-  // que hay que obligar a que el usuario la escriba en vez de aceptar un
-  // valor por defecto que probablemente no exista.
-  const [carpeta, setCarpeta] = useState('')
   const [archivos, setArchivos] = useState<ArchivoAgregar[]>([])
   const [analizando, setAnalizando] = useState(false)
   const [verificandoUbicacion, setVerificandoUbicacion] = useState(false)
   const [etiquetasGlobales, setEtiquetasGlobales] = useState<string[]>([])
-
-  // Si el modal se abrió antes de que dataStore.init() terminara de cargar
-  // (ver arriba), `colecciones` llega vacío en el primer render y el
-  // select arranca en "Nueva colección" -- una vez que aparecen
-  // colecciones reales, se cambia la selección a la primera (solo si el
-  // usuario todavía no tocó nada).
-  useEffect(() => {
-    if (colecciones.length > 0 && nombreColeccion === NUEVA_COLECCION && !nombreColeccionNueva) {
-      setNombreColeccion(colecciones[0].nombre)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- solo cuando cambia la cantidad de colecciones
-  }, [colecciones.length])
 
   useEffect(() => {
     let cancelado = false
@@ -82,17 +96,22 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
         onClose()
         return
       }
+      const coleccionesActuales = useDataStore.getState().colecciones
       const iniciales: ArchivoAgregar[] = validos.map((file) => {
         const puntoExt = file.name.lastIndexOf('.')
         const titulo = puntoExt > 0 ? file.name.substring(0, puntoExt) : file.name
+        const { coleccionDestino, carpeta } = resolverDestino(file, coleccionesActuales)
         return {
           file,
           archivo: file.name,
+          carpeta,
+          coleccionDestino,
+          seleccionado: true,
           titulo,
           interprete: '',
           tagsExtra: '',
           etiquetasDetectadas: [],
-          ejercicioDetectado: null,
+          ejerciciosDetectados: [],
           estado: 'pendiente',
         }
       })
@@ -101,10 +120,8 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
       // Lee el estado directo del store (no el valor de los hooks
       // reactivos capturado en este efecto) -- initEtiquetas()/initData()
       // corren en un efecto separado y, aunque son síncronos, React no
-      // vuelve a ejecutar ESTE efecto solo porque el store cambió (no
-      // depende de esos valores a propósito, para no reiniciar el
-      // análisis si el usuario edita `carpeta` mientras corre). Sin este
-      // getState(), acá se seguiría viendo el vocabulario vacío del
+      // vuelve a ejecutar ESTE efecto solo porque el store cambió. Sin
+      // este getState(), acá se seguiría viendo el vocabulario vacío del
       // primer render.
       useEtiquetasStore.getState().init()
       useDataStore.getState().init()
@@ -113,7 +130,7 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
       const actualizados = [...iniciales]
       for (let i = 0; i < actualizados.length; i++) {
         const item = actualizados[i]
-        const analisis = await analizarArchivoAudio(item.file, carpeta, item.titulo, vocabularioActual, buscarEjercicio)
+        const analisis = await analizarArchivoAudio(item.file, item.carpeta, item.titulo, vocabularioActual, buscarEjercicio)
         if (cancelado) return
         actualizados[i] = { ...item, ...analisis }
         setArchivos([...actualizados])
@@ -127,54 +144,80 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
     // eslint-disable-next-line react-hooks/exhaustive-deps -- solo se analiza una vez, al recibir los archivos iniciales
   }, [archivosIniciales])
 
-  const nuevaColeccionElegida = nombreColeccion === NUEVA_COLECCION
-  const nombreColeccionFinal = (nuevaColeccionElegida ? nombreColeccionNueva : nombreColeccion).trim().toUpperCase()
   const totalOk = archivos.filter((a) => a.estado === 'ok').length
   const totalError = archivos.filter((a) => a.estado !== 'ok' && a.estado !== 'pendiente').length
+  const totalSeleccionados = archivos.filter((a) => a.estado === 'ok' && a.seleccionado).length
+  const todosSeleccionados = totalOk > 0 && totalSeleccionados === totalOk
+
+  // Corrección manual de la carpeta auto-detectada (ver resolverDestino):
+  // si se soltó/eligió un archivo suelto (sin carpeta), queda vacía y el
+  // usuario tiene que completarla acá para que la verificación de
+  // ubicación (en agregar(), más abajo) encuentre el archivo de verdad.
+  function setCarpetaArchivo(indice: number, valor: string) {
+    setArchivos((prev) => prev.map((a, i) => (i === indice ? { ...a, carpeta: valor } : a)))
+  }
+
+  function toggleSeleccionado(indice: number) {
+    setArchivos((prev) => prev.map((a, i) => (i === indice ? { ...a, seleccionado: !a.seleccionado } : a)))
+  }
+
+  function toggleTodos(seleccionar: boolean) {
+    setArchivos((prev) => prev.map((a) => (a.estado === 'ok' ? { ...a, seleccionado: seleccionar } : a)))
+  }
 
   async function agregar() {
-    if (!nombreColeccionFinal) {
-      addAlert('danger', 'Elegí o escribí el nombre de la colección de destino.')
-      return
-    }
-    if (!carpeta.trim()) {
-      addAlert('danger', 'Escribí la carpeta de destino dentro de la colección.')
-      return
-    }
-    const validos = archivos.filter((a) => a.estado === 'ok')
+    const validos = archivos.filter((a) => a.estado === 'ok' && a.seleccionado)
     if (validos.length === 0) {
-      addAlert('danger', 'No hay archivos válidos para agregar.')
+      addAlert('danger', 'No hay archivos seleccionados para agregar.')
       return
     }
 
-    const existente = colecciones.find((c) => c.nombre === nombreColeccionFinal)
-    const coleccionObj: Coleccion = existente ?? {
-      nombre: nombreColeccionFinal,
-      carpeta: 'musica/' + nombreColeccionFinal + '/',
-      excel: '',
-      hojaEjercicios: 'Por Nro',
-      cargar: true,
-      lastModified: Date.now(),
+    // Se agrupa por colección destino -- puede haber más de una si se
+    // eligió una carpeta que mezcla música ya reconocida (va a su
+    // colección real) con música que no matchea ninguna (va a
+    // SIN_COLECCION), ver resolverDestino.
+    const porColeccion = new Map<string, ArchivoAgregar[]>()
+    for (const a of validos) {
+      if (!porColeccion.has(a.coleccionDestino)) porColeccion.set(a.coleccionDestino, [])
+      porColeccion.get(a.coleccionDestino)!.push(a)
+    }
+
+    // SIN_COLECCION no tiene una raíz fija en disco (sus músicas pueden
+    // estar en cualquier carpeta) -- por eso su `carpeta` queda vacía y
+    // la `carpeta` de cada archivo (ver resolverDestino) es la ruta
+    // relativa COMPLETA hasta él, no solo el último tramo. Las demás
+    // colecciones (ya cargadas) usan su raíz real tal cual está guardada.
+    function resolverColeccionObj(nombre: string): Coleccion {
+      const existente = colecciones.find((c) => c.nombre === nombre)
+      if (existente) return existente
+      return { nombre: SIN_COLECCION, carpeta: '', excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now() }
     }
 
     // El análisis previo (analizarArchivoAudio) solo confirma que el
-    // archivo arrastrado/elegido ES audio válido -- arrastrar un archivo
-    // suelto no expone su ruta real en disco, así que no hay forma de
-    // saber de antemano si "Carpeta" corresponde a dónde ese archivo
-    // realmente está. Antes de guardar el vínculo, se confirma que la
-    // ruta calculada (root de la colección + Carpeta + archivo) exista de
-    // verdad -- si no, hay que moverlo ahí o corregir Carpeta.
+    // archivo arrastrado/elegido ES audio válido -- si se arrastró un
+    // archivo suelto (sin carpeta) o la carpeta detectada no corresponde
+    // a la ubicación real, no hay forma de saberlo de antemano. Antes de
+    // guardar el vínculo, se confirma que la ruta calculada (root de la
+    // colección + carpeta + archivo) exista de verdad -- si no, hay que
+    // moverlo ahí o corregir la Carpeta en la grilla.
     // Se usa testMusica() (un <audio> real apuntando a la ruta), no
     // checkFileExists() (el truco de <script src> que usa el modo Excel):
     // Chrome bloquea por CORB que un <script> cargue contenido con
     // Content-Type de audio, así que checkFileExists() daba "no
     // encontrado" incluso para archivos de audio reales que sí existen.
+    // SIN_COLECCION se salta esto: su contenido se copia a IndexedDB más
+    // abajo (ver guardarBlobMusica), así que no depende de que el archivo
+    // siga estando en ninguna ubicación real del disco.
     setVerificandoUbicacion(true)
     const noEncontrados: string[] = []
-    for (const a of validos) {
-      const rutaEsperada = coleccionObj.carpeta + carpeta.trim() + '/' + a.archivo
-      const resultado = await testMusica(rutaEsperada)
-      if (!resultado.ok) noEncontrados.push(rutaEsperada)
+    for (const [nombreDestino, items] of porColeccion) {
+      if (nombreDestino === SIN_COLECCION) continue
+      const coleccionObj = resolverColeccionObj(nombreDestino)
+      for (const a of items) {
+        const rutaEsperada = coleccionObj.carpeta + (a.carpeta ? a.carpeta + '/' : '') + a.archivo
+        const resultado = await testMusica(rutaEsperada)
+        if (!resultado.ok) noEncontrados.push(rutaEsperada)
+      }
     }
     setVerificandoUbicacion(false)
     if (noEncontrados.length > 0) {
@@ -186,20 +229,49 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
       return
     }
 
-    const rows: RowImportMusica[] = validos.map((a) => ({
-      estado: 'ok',
-      Archivo: a.archivo,
-      Carpeta: carpeta.trim(),
-      Titulo: a.titulo,
-      Interprete: a.interprete || 'Desconocido',
-      Tags: a.tagsExtra,
-      Ejercicio: a.ejercicioDetectado ?? undefined,
-      idMusica: carpeta.trim() + '/' + a.archivo,
-      duracion: a.duracion ?? '',
-      etiquetasOverride: Array.from(new Set([...etiquetasGlobales, ...a.etiquetasDetectadas])),
-    }))
-    const result = agregarMusicasAColeccion(coleccionObj, rows)
-    addAlert('info', 'Se agregaron ' + result.length + ' archivo(s) a la colección ' + nombreColeccionFinal + '.')
+    let totalImportado = 0
+    const resumen: string[] = []
+    try {
+      for (const [nombreDestino, items] of porColeccion) {
+        const coleccionObj = resolverColeccionObj(nombreDestino)
+        // Una fila por ejercicio detectado (mismo idMusica), igual que en
+        // CargarMusica.tsx/importarCarpeta -- así una música con varios
+        // nombres de ejercicio en el campo "género" (separados por coma)
+        // queda vinculada a todos, no solo al primero.
+        const rows: RowImportMusica[] = items.flatMap((a) => {
+          const base = {
+            estado: 'ok' as const,
+            Archivo: a.archivo,
+            Carpeta: a.carpeta,
+            Titulo: a.titulo,
+            Interprete: a.interprete || 'Desconocido',
+            Tags: a.tagsExtra,
+            idMusica: (a.carpeta ? a.carpeta + '/' : '') + a.archivo,
+            duracion: a.duracion ?? '',
+            etiquetasOverride: Array.from(new Set([...etiquetasGlobales, ...a.etiquetasDetectadas])),
+          }
+          return a.ejerciciosDetectados.length > 0
+            ? a.ejerciciosDetectados.map((nombreEjercicio) => ({ ...base, Ejercicio: nombreEjercicio }))
+            : [base]
+        })
+        const result = agregarMusicasAColeccion(coleccionObj, rows)
+        totalImportado += result.length
+        resumen.push(result.length + ' a ' + nombreDestino)
+
+        // Recién acá se sabe que la música quedó creada de verdad -- se
+        // copia el contenido de cada archivo a IndexedDB con el mismo id
+        // (ver getMusicaId) que va a buscar playerStore.ts al reproducir.
+        if (nombreDestino === SIN_COLECCION) {
+          await Promise.all(
+            items.map((a) => guardarBlobMusica(getMusicaId(SIN_COLECCION, (a.carpeta ? a.carpeta + '/' : '') + a.archivo), a.file)),
+          )
+        }
+      }
+    } catch (e) {
+      addAlert('danger', 'No se pudo agregar: ' + (e instanceof Error ? e.message : String(e)))
+      return
+    }
+    addAlert('info', 'Se agregaron ' + totalImportado + ' archivo(s): ' + resumen.join(', ') + '.')
     onClose()
   }
 
@@ -208,7 +280,7 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
       <div className="modal-dialog modal-lg" onClick={(e) => e.stopPropagation()}>
         <div className="modal-content">
           <div className="modal-header">
-            <h3 className="col-md-11">Agregar Música ({archivosIniciales.length} archivo(s))</h3>
+            <h3 className="col-md-11">Agregar Música ({archivosIniciales.length} archivo(s) encontrado(s))</h3>
             <div className="col-md-1">
               <button type="button" className="btn btn-success" onClick={onClose}>
                 Cerrar
@@ -217,41 +289,6 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
           </div>
           <div className="modal-body">
             <div className="row form-inline">
-              <div className="form-group col-md-6">
-                <label className="control-label">Colección de destino:</label>{' '}
-                <select className="form-control" value={nombreColeccion} onChange={(e) => setNombreColeccion(e.target.value)}>
-                  {colecciones.map((c) => (
-                    <option key={c.nombre} value={c.nombre}>
-                      {c.nombre}
-                    </option>
-                  ))}
-                  <option value={NUEVA_COLECCION}>-- Nueva colección --</option>
-                </select>
-                {nuevaColeccionElegida && (
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Nombre de la colección nueva"
-                    value={nombreColeccionNueva}
-                    onChange={(e) => setNombreColeccionNueva(e.target.value)}
-                    style={{ marginLeft: '6px' }}
-                  />
-                )}
-              </div>
-              <div className="form-group col-md-6">
-                <label className="control-label" title="Ruta relativa desde la raíz de la colección hasta donde el archivo REALMENTE está en disco (ej. CD1, o Sub/CD2). Si el archivo no está ahí todavía, hay que moverlo antes de reproducir.">
-                  Carpeta (ruta relativa dentro de la colección hasta el archivo):
-                </label>{' '}
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="ej. CD1"
-                  value={carpeta}
-                  onChange={(e) => setCarpeta(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="row form-inline" style={{ marginTop: '10px' }}>
               <div className="form-group col-md-12">
                 <label className="control-label">leidos:</label>
                 <input type="text" readOnly className="form-control" style={{ width: '60px' }} value={archivos.length} />
@@ -259,8 +296,14 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
                 <input type="text" readOnly className="form-control" style={{ width: '60px' }} value={totalOk} />
                 <label className="control-label">con error:</label>
                 <input type="text" readOnly className="form-control" style={{ width: '60px' }} value={totalError} />
-                {analizando && <span> Analizando archivos...</span>}
+                <label className="control-label">seleccionados:</label>
+                <input type="text" readOnly className="form-control" style={{ width: '60px' }} value={totalSeleccionados} />
               </div>
+              {analizando && (
+                <div className="form-group col-md-12">
+                  <strong className="aviso-espera">Probando que cada archivo se pueda reproducir, esto puede tardar. Por favor espere...</strong>
+                </div>
+              )}
               <div className="form-group col-md-12" style={{ marginTop: '10px' }}>
                 <label className="control-label">Etiquetas para todos:</label>
                 <br />
@@ -272,24 +315,50 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
                 <table className="table table-striped table-hover" style={{ marginBottom: 0 }}>
                   <thead>
                     <tr>
+                      <td>
+                        <input type="checkbox" checked={todosSeleccionados} onChange={(e) => toggleTodos(e.target.checked)} title="Seleccionar/deseleccionar todos" />
+                      </td>
                       <td>Archivo</td>
+                      <td>Carpeta</td>
+                      <td>Destino</td>
                       <td>Titulo</td>
                       <td>Interprete</td>
                       <td>Duración</td>
                       <td>Etiquetas (auto)</td>
-                      <td>Ejercicio (auto)</td>
+                      <td>Ejercicio(s) (auto)</td>
                       <td>Estado</td>
                     </tr>
                   </thead>
                   <tbody>
                     {archivos.map((a, i) => (
                       <tr key={i}>
+                        <td>
+                          {a.estado === 'ok' && <input type="checkbox" checked={a.seleccionado} onChange={() => toggleSeleccionado(i)} />}
+                        </td>
                         <td>{a.archivo}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control input-sm"
+                            style={{ minWidth: '140px' }}
+                            title={
+                              a.coleccionDestino === SIN_COLECCION
+                                ? 'Solo para distinguir archivos con el mismo nombre -- esta música no depende de una ubicación en disco, su contenido queda guardado en el navegador.'
+                                : 'Ruta relativa a la raíz de la colección destino, hasta el archivo. Se completa sola según de dónde se eligió el archivo; corregila a mano si no da con la ubicación real.'
+                            }
+                            placeholder="(raíz)"
+                            value={a.carpeta}
+                            onChange={(e) => setCarpetaArchivo(i, e.target.value)}
+                          />
+                        </td>
+                        <td title={a.coleccionDestino === SIN_COLECCION ? 'No coincide con ninguna colección cargada' : 'Coincide con una colección ya cargada'}>
+                          {a.coleccionDestino}
+                        </td>
                         <td>{a.titulo}</td>
                         <td>{a.interprete}</td>
                         <td>{a.duracion}</td>
                         <td>{a.etiquetasDetectadas.join(', ')}</td>
-                        <td>{a.ejercicioDetectado}</td>
+                        <td>{a.ejerciciosDetectados.join(', ')}</td>
                         <td style={{ color: 'white', backgroundColor: a.estado === 'ok' ? '#04f95a' : a.estado === 'pendiente' ? '#999' : 'orange' }}>
                           {a.estado}
                         </td>
@@ -301,14 +370,16 @@ export function AgregarMusicaModal({ archivosIniciales, onClose }: AgregarMusica
             </div>
           </div>
           <div className="modal-footer">
-            {verificandoUbicacion && <span>Verificando que los archivos existan en la ubicación esperada... </span>}
+            {verificandoUbicacion && (
+              <strong className="aviso-espera">Probando que cada archivo exista en la ubicación esperada, esto puede tardar. Por favor espere... </strong>
+            )}
             <button
               type="button"
               className="btn btn-success"
-              disabled={analizando || verificandoUbicacion || totalOk === 0}
+              disabled={analizando || verificandoUbicacion || totalSeleccionados === 0}
               onClick={agregar}
             >
-              <span className="glyphicon glyphicon-import" /> Agregar a la Colección
+              <span className="glyphicon glyphicon-import" /> Agregar
             </button>{' '}
             <button type="button" className="btn btn-success" onClick={onClose}>
               Cancelar

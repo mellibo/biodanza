@@ -1,8 +1,9 @@
 import { create } from 'zustand'
-import { useDataStore } from './dataStore'
+import { useDataStore, SIN_COLECCION } from './dataStore'
 import { parseDuracion } from '../lib/duration'
 import type { Clase, ClaseEjercicio, Musica } from '../types'
 import { calculaTiempoEjercicio } from './clasesStore'
+import { leerBlobMusica } from '../lib/musicaBlobStore'
 
 // Puerto de playerService.js. El original guardaba temporizadores e
 // intervalos como propiedades ad-hoc colgadas del elemento <audio>
@@ -33,6 +34,37 @@ import { calculaTiempoEjercicio } from './clasesStore'
 
 let audioEl: HTMLAudioElement | null = null
 let progressBarEl: HTMLElement | null = null
+// object URL del blob de la música "suelta" (SIN_COLECCION) actualmente
+// cargada, si la hay -- se revoca al cambiar de pista para no acumular
+// URLs vivas (ver resolverSrcAudio/liberarBlobUrlActual).
+let blobUrlActual: string | null = null
+
+function liberarBlobUrlActual() {
+  if (blobUrlActual) {
+    URL.revokeObjectURL(blobUrlActual)
+    blobUrlActual = null
+  }
+}
+
+// Arma la URL para audio.src: las músicas de una colección real siguen
+// resolviendo a una ruta relativa en disco (como siempre); las "sueltas"
+// (SIN_COLECCION, arrastradas desde cualquier carpeta -- ver
+// AgregarMusicaModal.tsx) tienen su contenido copiado en IndexedDB, así
+// que se arma un object URL a partir de ese blob. Si por lo que sea no
+// hay blob guardado (ej. datos de antes de que existiera esto), cae al
+// comportamiento viejo (ruta relativa) como último recurso.
+async function resolverSrcAudio(musica: Musica): Promise<string> {
+  liberarBlobUrlActual()
+  if (musica.coleccion === SIN_COLECCION) {
+    const blob = await leerBlobMusica(musica.id)
+    if (blob) {
+      blobUrlActual = URL.createObjectURL(blob)
+      return blobUrlActual
+    }
+  }
+  const carpetaColeccion = useDataStore.getState().getCarpetaColeccion(musica.coleccion) ?? ''
+  return carpetaColeccion + musica.carpeta + '/' + musica.archivo
+}
 
 const timers: {
   timeoutEmpalme: ReturnType<typeof setTimeout> | null
@@ -61,6 +93,15 @@ export type PlayerState = 'idle' | 'playing' | 'pause' | 'ended' | 'error'
 interface PlayerStoreState {
   state: PlayerState
   clase: Clase | null
+  // Referencia a la clase que realmente está sonando (o pausada/detenida en
+  // el punto en que quedó) -- a diferencia de `clase`, que se pisa cada vez
+  // que se entra a CUALQUIER pantalla /clase/:id (para que los botones Play
+  // de esa pantalla sepan qué reproducir), esta solo cambia cuando se
+  // arranca una reproducción de verdad (ver playFromList). Sin esto, abrir
+  // otra clase mientras suena una música dejaba el ejercicio de la clase
+  // VIEJA marcado como "sonando" en la clase NUEVA con el mismo número
+  // (playIndex coincidía por casualidad, aunque fueran clases distintas).
+  playingClase: Clase | null
   playIndex: number
   playContinuo: boolean
   currentPlaying: Musica | null
@@ -71,9 +112,11 @@ interface PlayerStoreState {
   segundosParaEmpalme: number
   finalizarLeftPx: number | null
   segundosFinProgresivo: number
+  volumenMaster: number
 
   setClase: (clase: Clase | null) => void
   setPlayContinuo: (value: boolean) => void
+  setVolumenMaster: (value: number) => void
   play: () => void
   pause: () => void
   stop: () => void
@@ -83,6 +126,8 @@ interface PlayerStoreState {
   playPrevious: () => void
   playEjercicio: (ejercicio: ClaseEjercicio) => void
   playAll: () => void
+  puedeEliminarMusicaActual: () => boolean
+  eliminarMusicaActual: () => void
   finProgresivo: (segundos: number) => void
   setCurrentTime: (value: number) => void
   progressClick: (offsetX: number) => void
@@ -184,6 +229,7 @@ function startStateLoop() {
 export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
   state: 'idle',
   clase: null,
+  playingClase: null,
   playIndex: -1,
   playContinuo: false,
   currentPlaying: null,
@@ -194,9 +240,24 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
   segundosParaEmpalme: 0,
   finalizarLeftPx: null,
   segundosFinProgresivo: 0,
+  volumenMaster: 100,
 
   setClase: (clase) => set({ clase }),
   setPlayContinuo: (value) => set({ playContinuo: value }),
+
+  // Puerto libre (no existía en el original): volumen general del
+  // reproductor, independiente del "Volumen" propio de cada ejercicio
+  // (ese es un valor de la clase, editable en "detalles del ejercicio";
+  // este es el volumen real de salida, como en cualquier reproductor).
+  // Se aplican multiplicados. No se pisa el volumen mientras hay un fade
+  // in/out de ejercicio en curso, para no pelear con esas rampas.
+  setVolumenMaster: (value) => {
+    set({ volumenMaster: value })
+    if (timers.intervalInicioVolume || timers.intervalFinProgresivo) return
+    const { clase, playIndex } = get()
+    const factorEjercicio = clase && playIndex >= 0 ? clase.ejercicios[playIndex].volumen / 100 : 1
+    getAudio().volume = factorEjercicio * (value / 100)
+  },
 
   play: () => {
     const audio = getAudio()
@@ -241,6 +302,7 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
   playFromList: () => {
     const { clase, playIndex } = get()
     if (clase && clase.ejercicios.length - 1 >= playIndex) {
+      set({ playingClase: clase })
       const musica = useDataStore.getState().getMusicaById(clase.ejercicios[playIndex].musicaId ?? '')
       get().playFile(musica ?? null, clase.ejercicios[playIndex])
     }
@@ -300,6 +362,28 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
     get().playFromList()
   },
 
+  // Puerto libre (no existía en el original): sacar el tema actual DEL
+  // REPRODUCTOR (para el audio y limpia "sonando ahora"), sin tocar la
+  // música asignada al ejercicio en la clase -- eso se hace aparte, desde
+  // /clase/:id o desde acá mismo si se decide agregarlo. A propósito no
+  // pide confirmación (no borra nada, es no-destructivo).
+  puedeEliminarMusicaActual: () => get().currentPlaying !== null,
+
+  eliminarMusicaActual: () => {
+    if (!get().currentPlaying) return
+    get().stop()
+    // A diferencia de stop() (que solo pausa y rebobina), acá se
+    // descarga la fuente por completo -- si no, play() de nuevo seguía
+    // reproduciendo el mismo archivo desde 0 porque audio.src quedaba
+    // intacto (a pedido explícito: "eliminar" tiene que dejar al
+    // reproductor sin nada cargado).
+    const audio = getAudio()
+    audio.removeAttribute('src')
+    audio.load()
+    liberarBlobUrlActual()
+    set({ currentPlaying: null, message: '', playIndex: -1, playingClase: null, duration: 0, currentTime: 0 })
+  },
+
   finProgresivo: (segundos) => set({ segundosFinProgresivo: segundos }),
 
   setCurrentTime: (value) => {
@@ -318,7 +402,8 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
     const audio = getAudio()
     clearAllTimers()
 
-    audio.volume = ejercicio ? ejercicio.volumen / 100 : 1
+    const master = get().volumenMaster / 100
+    audio.volume = (ejercicio ? ejercicio.volumen / 100 : 1) * master
     if (!ejercicio) set({ playContinuo: false })
     set({
       currentPlaying: musica,
@@ -346,7 +431,7 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
 
     if (ejercicio && (ejercicio.segundosInicioProgresivo || 0) > 0) {
       audio.volume = 0
-      const target = ejercicio.volumen / 100
+      const target = (ejercicio.volumen / 100) * master
       timers.volumeStep = target / ((ejercicio.segundosInicioProgresivo! * 1000) / 200)
       timers.intervalInicioVolume = setInterval(() => {
         if (audio.volume + timers.volumeStep >= target) {
@@ -359,17 +444,22 @@ export const usePlayerStore = create<PlayerStoreState>((set, get) => ({
       }, 200)
     }
 
-    const carpetaColeccion = useDataStore.getState().getCarpetaColeccion(musica.coleccion) ?? ''
-    audio.src = carpetaColeccion + musica.carpeta + '/' + musica.archivo
-    if (ejercicio && ejercicio.iniciarSegundos) audio.currentTime = ejercicio.iniciarSegundos
+    // Incluye la colección al principio (a pedido) -- salvo para música
+    // suelta (SIN_COLECCION), donde ese nombre técnico no le dice nada al
+    // usuario.
+    set({ message: (musica.coleccion !== SIN_COLECCION ? '[' + musica.coleccion + '] ' : '') + musica.nombre })
 
-    set({
-      message:
-        musica.coleccion + '-' + musica.idMusica + ' ' + musica.nombre + '(' + musica.interprete + '). ',
-    })
-
-    audio.play().catch((e: unknown) => {
-      set({ errorMessage: e instanceof Error ? e.message : String(e) })
+    // Async porque una música "suelta" (SIN_COLECCION) necesita ir a
+    // buscar su blob a IndexedDB antes de tener una URL real para el
+    // <audio> (ver resolverSrcAudio) -- el resto de playFile ya dejó
+    // seteado todo el estado sincrónico (volumen, mensaje, etc.), esto
+    // solo termina de arrancar la reproducción en sí.
+    resolverSrcAudio(musica).then((src) => {
+      audio.src = src
+      if (ejercicio && ejercicio.iniciarSegundos) audio.currentTime = ejercicio.iniciarSegundos
+      audio.play().catch((e: unknown) => {
+        set({ errorMessage: e instanceof Error ? e.message : String(e) })
+      })
     })
   },
 

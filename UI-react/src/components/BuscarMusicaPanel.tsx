@@ -27,6 +27,16 @@ interface BuscarMusicaPanelProps {
   // Opcional -- BuscarMusicaModal no lo pasa, ahí ya se puede elegir y
   // escuchar la música una vez asignada al ejercicio.
   onPlay?: (musica: Musica) => void
+  // Filtro con el que arranca la búsqueda (ver ReemplazarMusicaSueltaModal:
+  // precarga el nombre de la música suelta para sugerir de entrada
+  // candidatas parecidas, en vez de arrancar en blanco). Solo se lee al
+  // montar -- si cambiara en vivo no se vuelve a aplicar, no hace falta
+  // para el único uso actual.
+  initialFilter?: MusicaFilter
+  // Colección a excluir de los resultados (ver ReemplazarMusicaSueltaModal:
+  // no tiene sentido sugerir otra música SUELTA como reemplazo de una
+  // suelta -- el objetivo es siempre una de una colección real).
+  excludeColeccion?: string
 }
 
 export function BuscarMusicaPanel({
@@ -35,6 +45,8 @@ export function BuscarMusicaPanel({
   draggable = false,
   maxHeight = '55vh',
   onPlay,
+  initialFilter,
+  excludeColeccion,
 }: BuscarMusicaPanelProps) {
   const musicasById = useDataStore((s) => s.musicasById)
   const musicasOrder = useDataStore((s) => s.musicasOrder)
@@ -42,13 +54,17 @@ export function BuscarMusicaPanel({
   const currentPlaying = usePlayerStore((s) => s.currentPlaying)
 
   const [ejercicioTextFilter, setEjercicioTextFilter] = useState('')
-  const [filter, setFilter] = useState<MusicaFilter>({})
+  const [filter, setFilter] = useState<MusicaFilter>(initialFilter ?? {})
   const [page, setPage] = useState(1)
 
   const searchStrings = useMemo(() => tokenizeEjercicioTextFilter(ejercicioTextFilter), [ejercicioTextFilter])
-  const resultados = useMemo(
+  const resultadosSinExcluir = useMemo(
     () => buscarMusicas(musicasOrder, musicasById, getEjercicioById, searchStrings, filter),
     [musicasOrder, musicasById, getEjercicioById, searchStrings, filter],
+  )
+  const resultados = useMemo(
+    () => (excludeColeccion ? resultadosSinExcluir.filter((m) => m.coleccion !== excludeColeccion) : resultadosSinExcluir),
+    [resultadosSinExcluir, excludeColeccion],
   )
   const paginaActual = resultados.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 

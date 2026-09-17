@@ -1,16 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useDataStore } from '../store/dataStore'
+import { useDataStore, SIN_COLECCION } from '../store/dataStore'
 import { usePlayerStore } from '../store/playerStore'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { buscarMusicas, tokenizeEjercicioTextFilter } from '../lib/search'
+import { estadisticasBlobs } from '../lib/musicaBlobStore'
 import { Pagination } from '../components/Pagination'
 import { EtiquetasEditor } from '../components/EtiquetasEditor'
+import { ReemplazarMusicaSueltaModal } from '../components/ReemplazarMusicaSueltaModal'
 import type { Musica, MusicaFilter } from '../types'
 
 const PAGE_SIZE = 15
 
 function claveNodo(coleccion: string, carpeta: string) {
   return coleccion + '|' + carpeta
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB'
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 }
 
 // Puerto de musicasController + grillaMusica.html (UI/biosoft.html:186-221).
@@ -24,6 +31,7 @@ export function Musicas() {
   const getEjercicioById = useDataStore((s) => s.getEjercicioById)
   const updateMusica = useDataStore((s) => s.updateMusica)
   const playFile = usePlayerStore((s) => s.playFile)
+  const currentPlaying = usePlayerStore((s) => s.currentPlaying)
   const initEtiquetas = useEtiquetasStore((s) => s.init)
   const vocabularioEtiquetas = useEtiquetasStore((s) => s.etiquetas)
   const addEtiquetaVocabulario = useEtiquetasStore((s) => s.addEtiqueta)
@@ -47,6 +55,7 @@ export function Musicas() {
   // Colecciones con su lista de carpetas colapsada (oculta) en el árbol --
   // separado de `excluidos` (que es sobre el filtro, no sobre qué se ve).
   const [coleccionesColapsadas, setColeccionesColapsadas] = useState<Set<string>>(new Set())
+  const [reemplazando, setReemplazando] = useState<Musica | null>(null)
 
   const searchStrings = useMemo(() => tokenizeEjercicioTextFilter(ejercicioTextFilter), [ejercicioTextFilter])
 
@@ -66,6 +75,33 @@ export function Musicas() {
     return mapa
   }, [musicasOrder, musicasById])
 
+  const conteoPorColeccion = useMemo(() => {
+    const mapa = new Map<string, number>()
+    for (const id of musicasOrder) {
+      const musica = musicasById[id]
+      if (!musica) continue
+      mapa.set(musica.coleccion, (mapa.get(musica.coleccion) ?? 0) + 1)
+    }
+    return mapa
+  }, [musicasOrder, musicasById])
+
+  // Indicador de espacio ocupado por SIN_COLECCION en IndexedDB (a pedido) --
+  // a diferencia de una colección real, esta música vive copiada adentro
+  // del navegador (ver musicaBlobStore.ts), así que conviene que se note
+  // cuánto se está acumulando ahí. Se recalcula cada vez que cambia la
+  // cantidad de música suelta (agregar/eliminar/migrar a una colección).
+  const cantidadSinColeccion = conteoPorColeccion.get(SIN_COLECCION) ?? 0
+  const [bytesSinColeccion, setBytesSinColeccion] = useState<number | null>(null)
+  useEffect(() => {
+    let cancelado = false
+    estadisticasBlobs().then((stats) => {
+      if (!cancelado) setBytesSinColeccion(stats.bytes)
+    })
+    return () => {
+      cancelado = true
+    }
+  }, [cantidadSinColeccion])
+
   const resultados = useMemo(
     () => resultadosSinArbol.filter((m) => !excluidos.has(claveNodo(m.coleccion, m.carpeta))),
     [resultadosSinArbol, excluidos],
@@ -74,7 +110,10 @@ export function Musicas() {
   useEffect(() => setPage(1), [ejercicioTextFilter, filter, excluidos])
 
   const paginaActual = resultados.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-  const todosSeleccionadosEnPagina = paginaActual.length > 0 && paginaActual.every((m) => seleccionados.has(m.id))
+  // A pedido: el check "seleccionar todas" abarca TODOS los resultados
+  // filtrados (todas las páginas), no solo la página visible.
+  const todosSeleccionados = resultados.length > 0 && resultados.every((m) => seleccionados.has(m.id))
+  const algunoSeleccionado = resultados.some((m) => seleccionados.has(m.id))
 
   function setFilterField(field: keyof MusicaFilter, value: string) {
     setFilter((f) => ({ ...f, [field]: value }))
@@ -89,13 +128,13 @@ export function Musicas() {
     })
   }
 
-  function toggleSeleccionarPagina() {
+  function toggleSeleccionarTodos() {
     setSeleccionados((prev) => {
       const next = new Set(prev)
-      if (todosSeleccionadosEnPagina) {
-        for (const m of paginaActual) next.delete(m.id)
+      if (todosSeleccionados) {
+        for (const m of resultados) next.delete(m.id)
       } else {
-        for (const m of paginaActual) next.add(m.id)
+        for (const m of resultados) next.add(m.id)
       }
       return next
     })
@@ -164,7 +203,13 @@ export function Musicas() {
                       checked={col.cargar}
                       onChange={(e) => toggleColeccionCargar(col.nombre, e.target.checked)}
                     />{' '}
-                    {col.nombre}
+                    {col.nombre} ({conteoPorColeccion.get(col.nombre) ?? 0})
+                    {col.nombre === SIN_COLECCION && cantidadSinColeccion > 0 && (
+                      <span style={{ color: '#888' }} title="Espacio ocupado en el navegador (IndexedDB) por esta música copiada">
+                        {' '}
+                        -- {bytesSinColeccion === null ? '...' : formatBytes(bytesSinColeccion)}
+                      </span>
+                    )}
                   </label>
                 </div>
               ))}
@@ -279,7 +324,15 @@ export function Musicas() {
               <thead>
                 <tr>
                   <td style={{ width: '30px' }}>
-                    <input type="checkbox" checked={todosSeleccionadosEnPagina} onChange={toggleSeleccionarPagina} title="Seleccionar todas" />
+                    <input
+                      type="checkbox"
+                      checked={todosSeleccionados}
+                      ref={(el) => {
+                        if (el) el.indeterminate = algunoSeleccionado && !todosSeleccionados
+                      }}
+                      onChange={toggleSeleccionarTodos}
+                      title="Seleccionar todas (todas las páginas)"
+                    />
                   </td>
                   <td style={{ width: '70px' }}>
                     Clave
@@ -315,7 +368,7 @@ export function Musicas() {
               </thead>
               <tbody>
                 {paginaActual.map((musica: Musica) => (
-                  <tr key={musica.id}>
+                  <tr key={musica.id} className={currentPlaying?.id === musica.id ? 'selected' : ''}>
                     <td>
                       <input type="checkbox" checked={seleccionados.has(musica.id)} onChange={() => toggleSeleccionado(musica.id)} />
                     </td>
@@ -342,6 +395,16 @@ export function Musicas() {
                       <button type="button" className="btn btn-warning" onClick={() => playFile(musica)} title="Escuchar música">
                         <span className="glyphicon glyphicon-play" />
                       </button>
+                      {musica.coleccion === SIN_COLECCION && (
+                        <button
+                          type="button"
+                          className="btn btn-default"
+                          onClick={() => setReemplazando(musica)}
+                          title="Reemplazar por música de una colección cargada"
+                        >
+                          <span className="glyphicon glyphicon-transfer" />
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -351,6 +414,7 @@ export function Musicas() {
           </div>
         </div>
       </div>
+      {reemplazando && <ReemplazarMusicaSueltaModal musica={reemplazando} onClose={() => setReemplazando(null)} />}
     </div>
   )
 }

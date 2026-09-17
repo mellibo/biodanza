@@ -5,6 +5,9 @@ import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
 import { readLocalStorage, writeLocalStorage, removeLocalStorage } from '../lib/storage'
 import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
 import { parseLineasToEtiquetas } from '../lib/etiquetasParsing'
+import { parseDuracion } from '../lib/duration'
+import { eliminarBlobMusica } from '../lib/musicaBlobStore'
+import { useClasesStore } from './clasesStore'
 import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
@@ -12,6 +15,18 @@ import type { Coleccion, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } f
 // "x<id>" colgadas del mismo array). Acá se separa en un Record por id +
 // un array de ids que preserva el orden original (para que el sort estable
 // de los rankings de búsqueda desempate igual que antes).
+
+// Colección especial donde cae toda música agregada a mano (ver
+// AgregarMusicaModal.tsx): a diferencia de una colección real, sus
+// músicas no viven bajo una raíz común (pathMusica + nombre + carpeta) --
+// cada una puede estar en cualquier ubicación, así que esta colección se
+// guarda con carpeta '' y el campo `carpeta` de cada música pasa a ser la
+// ruta relativa COMPLETA (desde la raíz de la app) hasta el archivo, no
+// solo el último tramo. Reproducción y búsqueda no necesitan tratarla
+// distinto porque ya arman el path como carpetaColeccion + carpeta +
+// archivo (ver playerStore.ts) -- con carpetaColeccion vacío, el campo
+// `carpeta` hace todo el trabajo.
+export const SIN_COLECCION = 'SIN_COLECCION'
 
 const STORAGE_KEYS = {
   ejercicios: 'biosoft_ejercicios',
@@ -102,6 +117,13 @@ interface DataState {
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
   importarColeccionMusicas: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
   agregarMusicasAColeccion: (coleccion: Coleccion, rows: RowImportMusica[]) => MusicaBase[]
+  // Contraparte manual de migrarDesdeSinColeccion (que solo dispara sola al
+  // cargar una colección con un match EXACTO de archivo+duración): desde
+  // Musicas.tsx, el usuario elige a mano qué música de una colección real
+  // reemplaza a una suelta (ver ReemplazarMusicaSueltaModal) -- para los
+  // casos en que el match automático no encontró nada (nombre de archivo
+  // distinto, distinta duración) pero es la misma canción a simple vista.
+  reemplazarMusicaSuelta: (idSuelta: string, idNueva: string) => void
   removeEtiquetaGlobal: (etiqueta: string) => void
   toggleColeccionCargar: (nombreColeccion: string, cargar: boolean) => void
   removeColeccion: (nombreColeccion: string) => void
@@ -192,6 +214,119 @@ export const useDataStore = create<DataState>((set, get) => {
     }
     get().saveEjerciciosSnapshot()
     return col
+  }
+
+  // Margen para considerar que dos duraciones son "la misma" (ver
+  // esLaMismaMusica) -- la duración real que reporta el <audio> al leer
+  // el mismo archivo puede variar un par de segundos entre dos lecturas
+  // (redondeo/decodificación), pero dos archivos de audio DISTINTOS casi
+  // nunca coinciden por casualidad dentro de este margen.
+  const TOLERANCIA_DURACION_SEGUNDOS = 3
+
+  function duracionesCoinciden(a: string, b: string): boolean {
+    if (!a.trim() || !b.trim()) return false
+    return Math.abs(parseDuracion(a) - parseDuracion(b)) <= TOLERANCIA_DURACION_SEGUNDOS
+  }
+
+  function metadatoNoContradice(a: string, b: string): boolean {
+    if (!a.trim() || !b.trim()) return true
+    return normalize(a) === normalize(b)
+  }
+
+  // El nombre de archivo solo no alcanza para asumir que dos músicas son
+  // la misma (dos audios distintos pueden coincidir en un nombre genérico,
+  // ej. "01.mp3", "Track01.mp3") -- además del nombre, se exige que la
+  // duración real coincida (con tolerancia, ver arriba) y que, si ambos
+  // lados tienen título/intérprete cargados, no se contradigan (si falta
+  // de un lado no bloquea -- un catálogo Excel puede traer un título
+  // curado distinto al que sale de los metadatos ID3 crudos del escaneo).
+  function esLaMismaMusica(nueva: MusicaBase, suelta: Musica): boolean {
+    if (nueva.archivo.trim().toLowerCase() !== suelta.archivo.trim().toLowerCase()) return false
+    if (!duracionesCoinciden(nueva.duracion, suelta.duracion)) return false
+    if (!metadatoNoContradice(nueva.nombre, suelta.nombre)) return false
+    if (!metadatoNoContradice(nueva.interprete, suelta.interprete)) return false
+    return true
+  }
+
+  // Si una música recién cargada en una colección REAL resulta ser "la
+  // misma" que una que ya estaba suelta en SIN_COLECCION (ver
+  // esLaMismaMusica), se la migra: la de la colección real hereda los
+  // ejercicios/etiquetas que tenía la suelta, toda referencia a la suelta
+  // (ejercicio.musicasId acá, clase.ejercicio.musicaId vía
+  // useClasesStore) pasa a apuntar a la nueva, y la entrada + su blob en
+  // IndexedDB (ver musicaBlobStore.ts) se eliminan -- ya no hace falta
+  // guardarle una copia, ahora hay una referencia real en una colección.
+  // Muta `col` in-place (todavía no se persistió) para que la música que
+  // se guarda ya salga con lo heredado.
+  // Cola común de todo reemplazo de música suelta (sea automático, ver
+  // migrarDesdeSinColeccion, o manual, ver reemplazarMusicaSuelta más
+  // abajo): re-vincula ejercicio.musicasId a la música nueva, persiste lo
+  // que queda de SIN_COLECCION, borra el/los blob(s) de IndexedDB ya sin
+  // uso, y actualiza las clases que tuvieran la suelta asignada. En ambos
+  // casos, la música NUEVA (con ejerciciosId/etiquetas ya fusionados) tiene
+  // que estar guardada en musicasById/persistida ANTES de llamar a esto --
+  // acá solo se ocupa de la parte de "dar de baja" la suelta.
+  function finalizarMigracionSinColeccion(idsAEliminar: string[], mapaIdViejoANuevo: Record<string, string>) {
+    set((state) => {
+      const ejerciciosById = { ...state.ejerciciosById }
+      let changed = false
+      for (const id of state.ejerciciosOrder) {
+        const ej = ejerciciosById[id]
+        if (!ej.musicasId.some((mid) => mapaIdViejoANuevo[mid])) continue
+        const musicasId = Array.from(new Set(ej.musicasId.map((mid) => mapaIdViejoANuevo[mid] ?? mid)))
+        ejerciciosById[id] = { ...ej, musicasId }
+        changed = true
+      }
+      return changed ? { ejerciciosById } : {}
+    })
+    get().saveEjerciciosSnapshot()
+
+    set((state) => {
+      const musicasById = { ...state.musicasById }
+      const musicasOrder = state.musicasOrder.filter((id) => {
+        if (!idsAEliminar.includes(id)) return true
+        delete musicasById[id]
+        return false
+      })
+      return { musicasById, musicasOrder }
+    })
+    const restanteSinColeccion = get()
+      .musicasOrder.map((id) => get().musicasById[id])
+      .filter((m): m is Musica => !!m && m.coleccion === SIN_COLECCION)
+      .map(toMusicaBase)
+    saveMusicasColeccion(SIN_COLECCION, restanteSinColeccion)
+
+    for (const id of idsAEliminar) {
+      eliminarBlobMusica(id).catch(() => {})
+    }
+
+    useClasesStore.getState().reemplazarMusicaId(mapaIdViejoANuevo)
+  }
+
+  function migrarDesdeSinColeccion(nombreCol: string, col: MusicaBase[]) {
+    if (nombreCol === SIN_COLECCION || col.length === 0) return
+    const sueltas = get()
+      .musicasOrder.map((id) => get().musicasById[id])
+      .filter((m): m is Musica => !!m && m.coleccion === SIN_COLECCION)
+    if (sueltas.length === 0) return
+
+    const mapaIdViejoANuevo: Record<string, string> = {}
+    const idsAEliminar: string[] = []
+
+    for (const nueva of col) {
+      if (!nueva.archivo.trim()) continue
+      const suelta = sueltas.find((s) => !idsAEliminar.includes(s.id) && esLaMismaMusica(nueva, s))
+      if (!suelta) continue
+
+      nueva.ejerciciosId = Array.from(new Set([...nueva.ejerciciosId, ...suelta.ejerciciosId]))
+      nueva.etiquetas = Array.from(new Set([...nueva.etiquetas, ...suelta.etiquetas]))
+
+      mapaIdViejoANuevo[suelta.id] = getMusicaId(nombreCol, nueva.idMusica)
+      idsAEliminar.push(suelta.id)
+    }
+
+    if (idsAEliminar.length === 0) return
+    finalizarMigracionSinColeccion(idsAEliminar, mapaIdViejoANuevo)
   }
 
   return {
@@ -364,11 +499,9 @@ export const useDataStore = create<DataState>((set, get) => {
   // agregarMusicasAColeccion más abajo).
   importarColeccionMusicas: (coleccion, rows) => {
     const nombreCol = coleccion.nombre.toUpperCase()
-    if (nombreCol.indexOf(' ') > -1) {
-      throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
-    }
 
     const col = construirMusicasDesdeRows(nombreCol, rows)
+    migrarDesdeSinColeccion(nombreCol, col)
 
     // addColeccion: si es nueva, agregarla a la lista; purgar músicas
     // previas de esta colección (una reimportación reemplaza todo) y
@@ -407,11 +540,9 @@ export const useDataStore = create<DataState>((set, get) => {
   // "Agregar Música"), donde `rows` nunca representa el catálogo completo.
   agregarMusicasAColeccion: (coleccion, rows) => {
     const nombreCol = coleccion.nombre.toUpperCase()
-    if (nombreCol.indexOf(' ') > -1) {
-      throw new Error('El nombre de la colección no puede tener espacios. ' + nombreCol)
-    }
 
     const nuevas = construirMusicasDesdeRows(nombreCol, rows)
+    migrarDesdeSinColeccion(nombreCol, nuevas)
 
     set((state) => {
       const yaExiste = state.colecciones.some((c) => c.nombre === nombreCol)
@@ -442,6 +573,27 @@ export const useDataStore = create<DataState>((set, get) => {
     saveMusicasColeccion(nombreCol, todasMusicasColeccion)
 
     return nuevas
+  },
+
+  reemplazarMusicaSuelta: (idSuelta, idNueva) => {
+    const suelta = get().musicasById[idSuelta]
+    const nueva = get().musicasById[idNueva]
+    if (!suelta || suelta.coleccion !== SIN_COLECCION) return
+    if (!nueva || nueva.coleccion === SIN_COLECCION) return
+
+    const nuevaActualizada: Musica = {
+      ...nueva,
+      ejerciciosId: Array.from(new Set([...nueva.ejerciciosId, ...suelta.ejerciciosId])),
+      etiquetas: Array.from(new Set([...nueva.etiquetas, ...suelta.etiquetas])),
+    }
+    set((state) => ({ musicasById: { ...state.musicasById, [idNueva]: nuevaActualizada } }))
+    const musicasColeccionNueva = get()
+      .musicasOrder.map((id) => get().musicasById[id])
+      .filter((m): m is Musica => !!m && m.coleccion === nueva.coleccion)
+      .map(toMusicaBase)
+    saveMusicasColeccion(nueva.coleccion, musicasColeccionNueva)
+
+    finalizarMigracionSinColeccion([idSuelta], { [idSuelta]: idNueva })
   },
 
   // Al borrar una etiqueta del vocabulario compartido (ver
