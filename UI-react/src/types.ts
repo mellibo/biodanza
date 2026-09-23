@@ -198,3 +198,28 @@ export interface ResultadoImportacionClases {
     archivo: string
   }>
 }
+
+// JSON que genera scripts/importar-cimeb-2018.cjs a partir del PDF del CIMEB.
+export interface DatosCimeb {
+  fuente: string
+  ejercicios: Array<{
+    nombre: string
+    grupo: string
+    detalle: string
+    musicas: Array<{
+      titulo: string
+      artista: string
+      duracion: string
+      coleccion: string
+      referencias: Array<{ coleccion: string; cd: number; pista: number }>
+    }>
+  }>
+}
+
+export interface ResultadoImportacionCimeb {
+  ejerciciosNuevos: number
+  ejerciciosExistentes: number
+  musicasVinculadas: number
+  // Músicas del PDF que no se pudieron ubicar en el catálogo cargado.
+  sinResolver: Array<{ ejercicio: string; titulo: string; artista: string; referencia: string }>
+}

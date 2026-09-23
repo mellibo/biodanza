@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import { useDataStore } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
-import { downloadBlob } from '../lib/download'
+import { downloadBlob, downloadCsv } from '../lib/download'
 import { Pagination } from '../components/Pagination'
-import type { EjercicioBase } from '../types'
+import type { DatosCimeb, EjercicioBase, ResultadoImportacionCimeb } from '../types'
 
 const PAGE_SIZE = 10
 
@@ -27,12 +27,15 @@ export function CargarEjercicios() {
   const removeEjercicio = useDataStore((s) => s.removeEjercicio)
   const saveEjerciciosSnapshot = useDataStore((s) => s.saveEjerciciosSnapshot)
   const addAlert = useAlertStore((s) => s.addAlert)
+  const importarEjerciciosCimeb = useDataStore((s) => s.importarEjerciciosCimeb)
 
   useEffect(() => {
     init()
   }, [init])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const cimebInputRef = useRef<HTMLInputElement>(null)
+  const [resultadoCimeb, setResultadoCimeb] = useState<ResultadoImportacionCimeb | null>(null)
   const [sampleRows, setSampleRows] = useState<SampleRow[]>([])
   const [validado, setValidado] = useState(false)
   const [page, setPage] = useState(1)
@@ -127,6 +130,17 @@ export function CargarEjercicios() {
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
+  async function importarCimeb(file: File) {
+    try {
+      const datos = JSON.parse(await file.text()) as DatosCimeb
+      if (!Array.isArray(datos.ejercicios)) throw new Error('sin ejercicios')
+      setResultadoCimeb(importarEjerciciosCimeb(datos))
+    } catch {
+      addAlert('danger', 'El archivo no es un JSON de CIMEB válido (generarlo con scripts/importar-cimeb-2018.cjs).')
+    }
+    if (cimebInputRef.current) cimebInputRef.current.value = ''
+  }
+
   function pickImportFile() {
     fileInputRef.current?.click()
   }
@@ -180,12 +194,54 @@ export function CargarEjercicios() {
             style={{ visibility: 'hidden' }}
             onChange={(e) => e.target.files?.[0] && leerEjercicios(e.target.files[0])}
           />
+          <input
+            ref={cimebInputRef}
+            type="file"
+            accept=".json"
+            style={{ visibility: 'hidden' }}
+            onChange={(e) => e.target.files?.[0] && importarCimeb(e.target.files[0])}
+          />
+          {resultadoCimeb && (
+            <div className="col-md-12">
+              <div className="alert alert-info">
+                <button type="button" className="close" onClick={() => setResultadoCimeb(null)}>
+                  &times;
+                </button>
+                CIMEB: <strong>{resultadoCimeb.ejerciciosNuevos}</strong> ejercicio(s) nuevo(s), <strong>{resultadoCimeb.ejerciciosExistentes}</strong> ya
+                existían; <strong>{resultadoCimeb.musicasVinculadas}</strong> música(s) vinculada(s), <strong>{resultadoCimeb.sinResolver.length}</strong>{' '}
+                sin ubicar en el catálogo cargado (cargá las colecciones BSAS/HLB/IBF antes de importar para que se vinculen).{' '}
+                {resultadoCimeb.sinResolver.length > 0 && (
+                  <button
+                    type="button"
+                    className="btn btn-default btn-xs"
+                    onClick={() =>
+                      downloadCsv(
+                        ['Ejercicio', 'Título', 'Artista', 'Referencia'],
+                        resultadoCimeb.sinResolver.map((r) => [r.ejercicio, r.titulo, r.artista, r.referencia]),
+                        'cimeb musicas sin ubicar.csv',
+                      )
+                    }
+                  >
+                    <span className="glyphicon glyphicon-download-alt" /> Descargar detalle (CSV)
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
           <div className="form-group col-md-12 btn-group" role="toolbar">
             <button type="button" className="btn btn-primary" onClick={exportExcel} title="Descargar Excel de  Ejercicios">
               <span className="glyphicon glyphicon-import" /> Descargar Excel de Ejercicios
             </button>
             <button type="button" className="btn btn-primary" onClick={pickImportFile} title="Leer Excel Ejercicios">
               <span className="glyphicon glyphicon-import" /> Leer Excel Ejercicios
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => cimebInputRef.current?.click()}
+              title="Importa ejercicios y sus músicas desde el JSON generado del PDF del CIMEB (scripts/importar-cimeb-2018.cjs)"
+            >
+              <span className="glyphicon glyphicon-import" /> Importar CIMEB (JSON)
             </button>
             <button
               type="button"

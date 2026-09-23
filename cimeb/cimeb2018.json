@@ -1,0 +1,1716 @@
+{
+  "fuente": "CIMEB 2018",
+  "ejercicios": [
+    {
+      "nombre": "Danza circular a dos",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danzar en pareja girando.<br/>Descripción o consigna: Es una danza de a dos. Nos tomamos de la otra persona con una mano en su cintura y la otra un poco más extendida en su mano (como si fuera la postura de vals). Ambas personas se miran. Comienzan a girar con progresividad y cada vez más intensamente hasta una velocidad en la que ambas personas se sientan cómodas. Se añade también desplazamiento. Aunque hay un cierto vértigo, al estar mirándonos a los ojos es bastante probable que no nos mareemos.",
+      "musicas": [
+        {
+          "titulo": "Toque de Teatro",
+          "artista": "La Musgaña",
+          "duracion": "2:49",
+          "coleccion": "Escuela de Buenos Aires de Verónica Toro y Raúl Terrén (en adelante Bs As) 08-13",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 8,
+              "pista": 13
+            }
+          ]
+        },
+        {
+          "titulo": "Carousel",
+          "artista": "Evanthia Reboutsika",
+          "duracion": "3:15",
+          "coleccion": "Bs As 68-13",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 68,
+              "pista": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de adaptación a ritmos diferentes",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danzas libres con temas musicales que ofrecen cambios en su ritmo u otras cualidades.<br/>Objetivo: • Aprender a adaptarnos a las situaciones diferentes de la vida.<br/>Descripción o consigna: La música nos lleva por diferentes momentos rítmicos: en intensidad, en emoción, en motricidad. Ser capaz de danzar cada uno de ellos, nos ayudará a disfrutar de la música (de la vida) con la versatilidad que requiere cambiar repentinamente de estimulo.",
+      "musicas": [
+        {
+          "titulo": "Baroque and Blue",
+          "artista": "Jean-Pierre Rampal y Claude Bolling",
+          "duracion": "5:20",
+          "coleccion": "Bs As 15-03",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 15,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Saludo final (selección instrumental) de “Drácula”, el musical",
+          "artista": "Pepe Cibrian y Ángel Mahler",
+          "duracion": "4:32",
+          "coleccion": "Bs As 64-05.",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 64,
+              "pista": 5
+            }
+          ]
+        },
+        {
+          "titulo": "Combinación 5ª sinfonía y Mambo número 5",
+          "artista": "Orquesta Sinfonica Cerrejón",
+          "duracion": "4:26",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Mar adentro",
+          "artista": "Carlos Núñez",
+          "duracion": "4:35",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "The horse walked in the grass",
+          "artista": "Paul Winter",
+          "duracion": "4:18",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de empoderamiento",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Es prácticamente igual a una danza yang pero utilizando una música especialmente intensa y deflagradora y con una proyección existencial de empoderamiento.<br/>Descripción o consigna: Danzaremos libremente en conexión con la música, expresando nuestra fuerza y poder. Las características del movimiento son similares a las danzas Yang: • Ojos bien abiertos. • Desplazamientos frecuentes. • Aumento del tono muscular, principalmente en las extremidades (brazos y piernas). • Movimiento intencionado. • Movimientos expansivos principalmente. • Apertura de piernas y centro de gravedad bajo para un mayor sostén en el suelo. • Frecuentemente movimiento direccionado. • Movimientos predominantemente veloces. • Potencia e ímpetu vital. • Conexión con el impulso emocional. Es muy importante la autoregulación, si notamos cansancio o una tensión muy alta, podemos mantener una postura de identidad en el sitio o caminando y cuando sintamos que nos hemos recuperado, si queremos, podemos volver a realizar movimientos más enérgicos.",
+      "musicas": [
+        {
+          "titulo": "Tarakihi Artista intérprete: Kiri Te Kanawa",
+          "artista": "",
+          "duracion": "2:58",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza del “sí”",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danza creativa exaltando la propia vida.<br/>Descripción o consigna: Danza de desplazamiento, expansiva, con euforia, tomando fuerza y concentrándonos en nuestros valores y lo que queremos afirmar. Cuando tomamos coraje gritamos y cantamos de diferentes maneras el “Sí”: Sí a estar vivos, sí, sí, sí, a todo lo que queremos en nuestras vidas.",
+      "musicas": [
+        {
+          "titulo": "Sundance",
+          "artista": "Kitaro",
+          "duracion": "6:18",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza masculina",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danza de conexión con lo masculino. Línea de vivencia Vitalidad – Creatividad. Objetivos • Vivenciar la masculinidad. • Evocar el guerrero interior. • Favorecer la conexión tribal.<br/>Descripción o consigna: Partimos de la Posición Generatriz de Poder (brazos cruzados frente al pecho). Acompañando a la música ir haciendo una pulsación con los brazos y puños cerrados conectando con la fuerza interna y expresando movimientos con energía, a medida que se va ganando energía el movimiento va siendo acompañado con un sonido “Hug” (más o menos). Todos los hombres van acompañando la pulsación juntos gritando como guerreros en el momento apropiado de la música. Lentamente la danza termina con los brazos en dirección al cielo con los puños cerrados gritando como guerreros “Aaaahhh”. Las mujeres se quedan afuera del círculo y cuando los hombres terminan abrazan a los guerreros. Vamos a hacer una danza de conexión con nuestra masculinidad y vamos a expresarla a través de nuestros movimientos decididos con energía. Vamos a salir al mundo. No basta con sentir, tenemos que expresar.",
+      "musicas": [
+        {
+          "titulo": "Adiemus",
+          "artista": "Karl Jenkins, Mary Carewe, London Philharmonic Orchestra",
+          "duracion": "3:57",
+          "coleccion": "Bs As 19-02",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 19,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Fluidez y potencia",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danza libre que integra la fluidez y la potencia.<br/>Descripción o consigna: Danzaras en el espíritu de la música, con desplazamiento y dando giros y saltos, siempre prestando atención a tu movimiento sin interrupción. Ser un torbellino de movimiento, siempre prestando atención a los compañeros y sin golpearse.",
+      "musicas": [
+        {
+          "titulo": "Time",
+          "artista": "Freddie Mercury",
+          "duracion": "3:57",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Juego: eutonía de espaldas",
+      "grupo": "VITALIDAD",
+      "detalle": "Resumen: Danzamos espalda con espalda. Línea de vivencia Vitalidad - Creatividad. Objetivos • Potenciar la integración grupal. • Facilitar un contacto corporal progresivo.<br/>Descripción o consigna: Nos ponemos de a dos en contacto de espalda con espalda. Primero procuramos estar cómodos, generamos un tono adecuado para danzar. Ni bien la música comienza a sonar los participantes danzan juntos manteniendo el contacto de las espaldas. A medida que transcurre la danza, los participantes establecen contacto visual con otra pareja de danzarines y van acercándose, quedando ambas parejas en contacto lateral con cada uno de los integrantes de la otra pareja. Se ponen en contacto los hombros y los brazos. Desde ese contacto lateral nos deslizamos para quedar con la espalda de un nuevo compañero y continuar con la danza. Los cambios de parejas son regulados por los propios participantes en el momento en que lo deseen.",
+      "musicas": [
+        {
+          "titulo": "Senegal Fast Food Artista intérprete: Amadou et Myriam (feat. Manu Chao)",
+          "artista": "",
+          "duracion": "4:19",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Caricias de rostro con rostro",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Acariciamos el rostro de un compañero/a con nuestro propio rostro.<br/>Descripción o consigna: Se realiza en parejas. Se puede hacer de pié o sentados en el suelo (en este caso es más regresivo y erotizante aún). Las personas se aproximan hasta estar muy juntas. Pueden estar en un abrazo sutil. Si están sentadas se ponen a horcajadas (muy juntas y con las piernas abiertas albergando a la otra persona). Cerramos los ojos y, con mucha suavidad y delicadeza, empezamos a acariciar con nuestro propio rostro (principalmente con la mejilla) el rostro de la otra persona. Siempre con respeto, sensibilidad y feedback.",
+      "musicas": [
+        {
+          "titulo": "Proposta",
+          "artista": "Simone",
+          "duracion": "3:00",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Angel eyes",
+          "artista": "Hellen Merrill",
+          "duracion": "5:08",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Contacto lúdico en tierra",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Rodar por el suelo con contacto corporal.<br/>Objetivo: • Facilitar la superación de la represión del contacto corporal.<br/>Descripción o consigna: Se hace en pareja o en pequeños grupos. Se realizan, en diferentes y progresivas intensidades, estiramientos más superficiales, medios y profundos, tomados de las manos u oponiendo pequeñas resistencias entre las plantas de los pies, creando estiramientos en las espaldas. En definitiva, jugando y rodando por el suelo o el cuerpo de los compañeros, juguetona y amorosamente, generando libertad de movimiento y descondicionamiento de regiones corporales diferentes. Evitamos movimientos bruscos, entregándonos con inocencia en movimientos corporales relajados y expandidos. Tiene una gran capacidad integradora de primer y segundo orden, elevación del humor endógeno y disolución de la culpabilidad al contacto.",
+      "musicas": [
+        {
+          "titulo": "María Mole",
+          "artista": "Rita Lee",
+          "duracion": "5:20",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "I Can't Believe I'm Not A Millionaire",
+          "artista": "The Puppini Sisters",
+          "duracion": "4:27",
+          "coleccion": "Hélène Levy Benseft (en adelante HLB) 25-26",
+          "referencias": [
+            {
+              "coleccion": "HLB",
+              "cd": 25,
+              "pista": 26
+            }
+          ]
+        },
+        {
+          "titulo": "Mania de voçe",
+          "artista": "Simone",
+          "duracion": "3:49",
+          "coleccion": "Escuela de Buenos Aires de Verónica Toro y Raúl Terrén (en adelante Bs As) 21-07 y HLB 01-06",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 21,
+              "pista": 7
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 1,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Take the \"L\" train (to 8th Avenue)",
+          "artista": "Brooklyn Funk Essentials",
+          "duracion": "4:09",
+          "coleccion": "Bs As 39-06",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 39,
+              "pista": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de pulsación sensual grupal",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Una danza al centro de un grupo donde las personas se acercan y se alejan. Línea de vivencia Sexualidad – Vitalidad. Objetivos • Reforzar la escucha a los deseos propios. • Favorecer la capacidad de atraer. • Fortalecer la asertividad.<br/>Descripción o consigna: Formamos grupos de cinco personas. Una persona pasa al centro a danzar con sensualidad, el resto acompaña la danza desde su lugar. La persona que pasó al centro va a pulsar en dos gestos: un gesto de atracción que el participante realizará con sus manos invitando a que las personas del grupo, manteniendo la danza, se acerquen. Las personas del grupo se acercan hasta quedar en contacto con el cuerpo de quien está en el centro y se acoplan a su danza. El segundo gesto consiste en abrir los brazos de manera sensual, marcando un límite que invite a las personas a abrir la ronda. Las personas que están danzando en contacto con quien está en el medio se van abriendo al ritmo de la música, dejando espacio suficiente para que quien está en el centro pueda danzar.",
+      "musicas": [
+        {
+          "titulo": "Khalliouni Khalliouni",
+          "artista": "Rachid Taha, Khaled, Faudel",
+          "duracion": "4:40",
+          "coleccion": "Bs As 30-01 y HLB 07-04",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 30,
+              "pista": 1
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 7,
+              "pista": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Dejarse amar (a tres)",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Una persona se entrega a ser acariciada por dos personas. Línea de vivencia Sexualidad – Afectividad. Objetivos • Desarrollar la capacidad de entrega. • Estimular la disposición a sentir placer. • Favorecer la sensibilidad para percibir el amor.<br/>Descripción o consigna: Hacemos grupos de tres, de pie bien juntitos. La persona que va al centro se abandona en actitud receptiva a las caricias de sus dos compañeros, que van rotando alrededor, dándole amor con sus manos y también con sus cuerpos (dependiendo del grado de profundidad que deseemos darle a la vivencia).",
+      "musicas": [
+        {
+          "titulo": "Road",
+          "artista": "Refractory feat. J.C. Sindress & Youn Sun Nah",
+          "duracion": "5:31",
+          "coleccion": "Bs As 47-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 47,
+              "pista": 1
+            }
+          ]
+        },
+        {
+          "titulo": "Como é grande meu amor por você",
+          "artista": "Oswaldo Montenegro",
+          "duracion": "4:18",
+          "coleccion": "Bs As 20-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 20,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Lluvia de los 4 elementos",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Una persona recibe diversos toques de un grupo.<br/>Descripción o consigna: Hacemos grupos de cinco integrantes de pie. Un compañero al centro recibe la lluvia de toques. El grupo los ofrenda con el espíritu de los elementos: • Le regalan la lluvia: golpeteos suaves en todo el cuerpo, realizado con la yema de los dedos. Intermitentes y dinámicos. Y dulces deslizamientos hasta los pies. • Le regalan el fuego: en toda la superficie del cuerpo los compañeros realizan movimientos de activación, superficiales y enérgicos (con moderación). • Le regalan el aire: el grupo, simultáneamente, sopla (acariciando) con al aire la totalidad de la piel del compañero. Abanico con las manos. • Le regalan la tierra: movimientos de amasamiento y dulces compresiones alternadas. Agradecimiento y cambio. El que recibe puede permanecer de pie, aunque su sostén depende mucho del grupo para que pueda entregarse con confianza. Este ejercicio beneficia tanto al que recibe como a los que dan.",
+      "musicas": [
+        {
+          "titulo": "Aquarela do Brasil e Nêga do cabelo duro",
+          "artista": "Elis Regina",
+          "duracion": "3:22",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Ronda de aromas (cheirinho)",
+      "grupo": "SEXUALIDAD",
+      "detalle": "Resumen: Una ronda donde olemos el aroma de los compañeros.<br/>Descripción o consigna: Se trata de oler los perfumes, los olores de los compañeros. La danza puede hacerse en ronda o en marcha en cámara lenta por la diversidad humana, con esta segunda propuesta es más fácil relacionarse de manera más sutil. Uno se acerca a una persona y acerca su nariz solamente a nivel del cuello e inspira.",
+      "musicas": [
+        {
+          "titulo": "Na asa do Vento",
+          "artista": "Nazare Pereira",
+          "duracion": "03:56",
+          "coleccion": "Bs As 21-16",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 21,
+              "pista": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Canto en ronda tomándonos de las manos",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Cantamos de forma grupal.<br/>Descripción o consigna: Grupo en ronda, tomados de las manos con movimientos suaves danzantes. Sin desplazamiento. Alternando ojos cerrados y abiertos. Comenzamos acompañando suavemente la música con la voz. Después, con más fuerza y entusiasmo hasta abrir los ojos, todos cantando (podemos hacer un sonido de “aaaaa” conforme a la melodía de la música).",
+      "musicas": [
+        {
+          "titulo": "Amazing grace",
+          "artista": "Nana Mouskouri",
+          "duracion": "4:28",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Dame tu fuego",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza de fuego de a dos. Línea de vivencia Creatividad - Sexualidad. Objetivos • Favorecer la expresión de la línea de sexualidad. • Estimular el coraje de mostrarnos.<br/>Descripción o consigna: Es una danza de fuego a dos, vital y expresiva. Primero uno de los dos comienza realizando una danza de fuego intensa, mientras el otro contempla y disfruta de observar la danza del compañero. En un momento dado el danzarín realiza un gesto cuya intención es traspasarle la energía del fuego y pasársela al compañero que contempla para cambiar de roles. Y así sucesivamente se va intercambiando la energía del fuego.",
+      "musicas": [
+        {
+          "titulo": "Dame tu fuerza",
+          "artista": "Fortuna",
+          "duracion": "2:12",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de abrir nuevos espacios",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza creativa individual que evoca el paso a nuevos espacios.<br/>Descripción o consigna: Comenzamos danzando libremente en un espacio conocido, mi mundo seguro, pequeño. Como si una membrana nos separara de los peligros, nos animamos a dar un paso, a lo nuevo, a lo que podemos conocer… y danzamos. Podemos dar otro paso más, indagar y abrir un espacio más que llamamos desconocido, danzamos el misterio.",
+      "musicas": [
+        {
+          "titulo": "Tell him",
+          "artista": "Céline Dion y Barbra Streisand",
+          "duracion": "4:55",
+          "coleccion": "Escuela de Buenos Aires de Verónica Toro y Raúl Terrén (en adelante Bs As) 20-06",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 20,
+              "pista": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de creatividad existencial",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzar creativamente tu vida.<br/>Descripción o consigna: La danza comienza con una conexión profunda consigo mismo, evocando la potencia y la libertad que uno desea vivir danzando la música con todas sus variantes: momentos de expansión, de abandono, de conexión con la totalidad y con el placer de danzar.",
+      "musicas": [
+        {
+          "titulo": "Music",
+          "artista": "John Miles",
+          "duracion": "5:52",
+          "coleccion": "Bs As 08-08",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 8,
+              "pista": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza del águila",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza de renacimiento existencial. Línea de vivencia Creatividad – Trascendencia. Objetivos • Facilitar una vivencia de renacimiento existencial. • Expresar el coraje. • Favorecer la libertad. • Fortalecer la resiliencia.<br/>Descripción o consigna: La danza comienza ya en el momento de renovacion. Nos ponemos en posición de semilla con las manos sobre nuestra cara (pico). Desde esta postura iniciamos un dulce movimiento de hombros, siguiendo con los brazos como si fueran alas que están abriendose. De a poco nuestra danza va creciendo con un cierto tono muscular en las manos, como garras, hasta ponernos de pie. Una vez que nos ponemos de pie comenzamos a volar sin limites, sin fronteras, de una manera ascendente, en conexión con la música. Por momentos nos detenemos y miramos hacia abajo, observando nuestra historia con vision de altura, y podemos sentir que nuestros problemas no son tan graves.",
+      "musicas": [
+        {
+          "titulo": "Remember me",
+          "artista": "Thomas Bergensen",
+          "duracion": "04:30",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la imaginación",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Despertar el poder creador de la imaginación.<br/>Descripción o consigna: La danza parte de una posición de identidad. La música te atraviesa y comienza a explorar diferentes partes de tu cuerpo, el espíritu creador de la imaginación te posee. Surgen gestos y expresiones nuevas, desconocidas, llenas de energía, de lo más profundo del ser. La danza es sin formas conocidas, fuera de los patrones familiares de movimiento. Posibilidades nuevas orientadas a algo nuevo. Infinitas posibilidades de riqueza del ser.",
+      "musicas": [
+        {
+          "titulo": "Experience",
+          "artista": "Ludovico Einaudi",
+          "duracion": "5:18",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la libertad en vínculo",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzaremos individualmente de forma libre y además en vínculo “invisible” con otra persona.<br/>Descripción o consigna: Invitaremos a una persona para danzar. Todo el grupo danzará simultáneamente. Los dos miembros de la pareja danzan libremente de forma simultánea. Durante nuestra danza, mantendremos un vínculo “invisible” con nuestra pareja, conscientes de que tenemos una conexión “especial” con una de las personas que está danzando en el grupo. Podemos mirarnos o acercarnos ocasionalmente (no frecuentemente) pero no necesita hacerse. Primaremos los momentos de danzar con libertad. Al finalizar la danza nos encontramos con nuestra pareja en un abrazo. La danza se realiza con mucho desplazamiento y movimientos expansivos. También podemos incorporar levedad. Ojos abiertos.",
+      "musicas": [
+        {
+          "titulo": "Astrea Artista intérprete: John Harle & The Silencium Ensemble (Silencium)",
+          "artista": "",
+          "duracion": "4:39",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la mariposa",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza sutil inspirada en el desarrollo de una mariposa.<br/>Descripción o consigna: Comienza con una profunda conexión consigo mismo/a. Desde allí, soy un huevo que me transformo en oruga y luego tejo mi nido con hilos de seda, hasta que termino mi construcción y me cuelgo de la rama de un árbol. Luego tengo que esforzarme para abrir mis alas que me transformaren en una hermosa mariposa de colores. La creatividad esta allí en tu interior, esperando agazapada que la dejes salir. Solo requiere de una condición, que te afines contigo y con la naturaleza.",
+      "musicas": [
+        {
+          "titulo": "Rosa",
+          "artista": "Carlos Poyares",
+          "duracion": "3:44",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la oportunidad para cambiar",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Con una música en la que se repiten las frases melódicas, animamos a danzar cada parte con una característica de movimiento distinto.<br/>Descripción o consigna: Utilizaremos una música en la que se repite varias veces la misma “frase melódica”. Os propongo que dancemos cada parte de una forma distinta, cambiando las características de nuestro movimiento cada una de las veces, aunque solo sea en sutiles matices. No importa hacerlo “bonito” ni “bien”. Lo que importa es la variedad y la diferencia. Se hace principalmente de pié y con poco o ningún desplazamiento. Los ojos suelen estar abiertos y cerrados en algunos instantes.",
+      "musicas": [
+        {
+          "titulo": "Japanese music box Artista intérprete: George Winston",
+          "artista": "",
+          "duracion": "2:17",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la reconstrucción",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza secuencial reconociendo y manifestando nuestra capacidad de renovación existencial.<br/>Descripción o consigna: La danza consta de cuatro pasos: 1) Acostados en el suelo nos ponemos de pie por nuestros propios medios estimulados por un autoacariciamiento dulce. (Primer minuto). 2) De pie comenzamos a probar los movimientos nuevos y las habilidades que poseemos; con los brazos, las piernas, el torso, la cabeza… (Segundo minuto). 3) Con estos movimientos ya incorporados danzamos nuestra reconstrucción guiados por el corazón. Es una danza liviana e intensa, expansiva y potente. (Desde minuto 2 hasta 3:30). 4) En un momento detenemos la danza tomando conciencia de la reconstrucción realizada, caminamos y atesoramos lo conseguido, lo reafirmamos y sobre el final (solo si así lo sentimos ) agradecemos. (Último minuto).",
+      "musicas": [
+        {
+          "titulo": "A thousand years",
+          "artista": "The Piano Guys",
+          "duracion": "4:31",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de las manos",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzar una fluidez de manos creativa.<br/>Descripción o consigna: Es una danza que comienza con la fluidez y liviandad en las manos y poco a poco todo el cuerpo sigue esta fluidez, con ojos abiertos donde la mirada sigue el movimiento de las manos constantemente. Las manos no se detienen nunca y la persona circula por la sala con libertad en una conexión profunda consigo misma.",
+      "musicas": [
+        {
+          "titulo": "Storms in Africa",
+          "artista": "Enya",
+          "duracion": "5:33",
+          "coleccion": "Bs As 55-11",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 55,
+              "pista": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de otoño",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza de intimidad en conexión con el otoño interior.<br/>Descripción o consigna: Comenzamos de pie, en posición de intimidad. Con caricias suaves y movimientos hacia fuera, nos desprendemos de todo aquello que ya no queremos conservar. Finalizamos con los brazos en alto, como un árbol bien erguido, conservando nuestra esencia.",
+      "musicas": [
+        {
+          "titulo": "Is he the one",
+          "artista": "John Barry",
+          "duracion": "3:13",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Prelude",
+          "artista": "Vangelis",
+          "duracion": "3:32",
+          "coleccion": "Bs As 09-07",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 9,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "Near light",
+          "artista": "Ólafur Arnalds",
+          "duracion": "3:29",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de tempestad interior (danza de invierno)",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danza que propone la conexión con las dificultades internas y su posible superación.<br/>Descripción o consigna: Llevamos las manos al centro del corazón y comenzamos a danzar con movimientos expansivos e impetuosos para poder conectar y salir de esta tempestad interior.",
+      "musicas": [
+        {
+          "titulo": "Presto - l'été Concerto 'L'estate' in sol minore 3 (Le quattro stagioni Op.8/2, RV 315) Compositor/a: Antonio Vivaldi",
+          "artista": "",
+          "duracion": "3:09",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza grupal de agua y aire",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Fluimos en grupo con una danza que integra características de agua y de aire.<br/>Descripción o consigna: Danza grupal de agua y aire. La danza inicia con movimientos blandos y fluidos, con desplazamiento sutil y livianos, es una fluidez grupal. Todo el grupo danza con gran cercanía entre sí pero sin establecer contacto. La música tiene una velocidad creciente que invita a aumentar la velocidad de la danza y el desplazamiento.",
+      "musicas": [
+        {
+          "titulo": "Salento",
+          "artista": "René Aubry",
+          "duracion": "5:45",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Decir “no” con feed-back",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Una persona avanza lentamente hacia otra y se detiene cuando escuche un “no” que le resulte convincente.<br/>Descripción o consigna: Este ejercicio se realiza sin música. Invitaremos a una persona para formar parejas. Cada pareja se posicionará, una persona enfrente de la otra, a varios metros de distancia (unos 5 metros aproximadamente). Para facilitar la distribución del grupo en el espacio, podemos colocarnos en dos filas, una enfrente de la otra, haciendo coincidir a cada persona con su pareja enfrente. Un miembro de la pareja será quien ha de expresar su asertividad. Posteriormente se intercambiarán los roles. Mi pareja irá avanzando hacia mí muy lentamente. Yo diré “no”. Si este “no” le resulta insuficientemente convincente seguirá avanzando lentamente y tendré de nuevo la oportunidad para decir “no” de manera más firme y así sucesivamente. En caso de que mi “no” le resulte convincente a mi pareja, esta se detendrá indicando que ha sido efectivo. Como posiblemente sobre tiempo, pues el resto del grupo continuará con el ejercicio, puede volver a acercarse para darme la oportunidad de ejercitar mi asertividad varias veces. En cualquier caso, el hecho de que se detenga significa que mi “no” le ha parecido suficientemente firme. Aunque luego podamos probar varias veces. Por el contrario, que prosiga su lento avance hacia mí sin haberse detenido significa que no le ha resultado lo suficientemente efectivo. De esta manera tendremos un feed-back que nos ayude a mejorar. Evitemos decir “No” de forma violenta (con cara de odio). También evitemos decirlo con “desesperación” ya que eso no resulta efectivo. Por supuesto tampoco es momento de una expresión frágil, sumisa o sensible. Entendemos por un “no convincente” aquel que expresamos: - Con firmeza y fuerza. - Con un buen volumen de voz. - Manteniendo la mirada. - Con una expresión facial coherente. - Con una postura corporal con identidad (fuerte, estable, consistente…). Al finalizar el ejercicio nos saludamos con una mirada de reconocimiento y valoración hacia el otro compañero/a. Preferiblemente sin abrazarnos. Se invierten los roles.",
+      "musicas": []
+    },
+    {
+      "nombre": "Escudo de fuerza",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Poner mi límite y respetar el límite que me ponen otras personas; situados en dos rondas concéntricas.<br/>Descripción o consigna: Cada una de las personas del grupo se pone en pareja con otra y les indicamos que una de las dos se coloque en ronda en el centro de la sala, mirando hacia afuera y su pareja se posiciona enfrente pero a gran distancia de ella (para que haya sitio suficiente para caminar hacia el centro) de manera que cada persona tiene enfrente a otra, pero a la mayor distancia posible. Quienes están en el centro de la sala marcarán un límite gestual con la mano en señal de “stop” y con el brazo hacia adelante. Lo harán cuando sientan que la distancia de aproximación de la persona que camina hacia ellas es demasiado “intimidatoria”, cuando sientan que rebasa su zona de seguridad. Cuando comience la música, quienes están en el perímetro de la sala en la parte externa caminan hacia su compañero de enfrente, con paso decidido muy conectado con la fuerza interior, el poder personal, bien anclados en tierra, con la fuerza del fuego, con seguridad, aplomo, mirando a los ojos de las personas a las que se dirigen. Quienes están en el centro marcan el “stop” cuando lo sientan y los que caminan detienen su paso inmediatamente. Volvemos a la posición original y los de fuera se mueven hacia la derecha hasta quedar enfrente de la persona contigua y volvemos a caminar hacia ella hasta que me marque el stop. Repetimos ciclos todo lo que dure la música. Es bueno realizar el marcaje con distintos encuentros para sentir las diferentes energías y los distintos límites propios y ajenos. El gesto de límite ha de ser claro y acompañado por todo el cuerpo de forma integrada. Deben mirarse a los ojos a la vez que avanzan hacia el compañero. Al finalizar se repite invirtiendo los roles.",
+      "musicas": [
+        {
+          "titulo": "L'Abeille",
+          "artista": "Guem et Zaka",
+          "duracion": "5:46",
+          "coleccion": "Bs As 13-04",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 13,
+              "pista": 4
+            }
+          ]
+        },
+        {
+          "titulo": "Wana Be-ied Annak (when I am far from you)",
+          "artista": "Hossam Ramzy",
+          "duracion": "5:08",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Hacer sonidos con el cuerpo (sin música)",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Realizar sonidos con todo el cuerpo.<br/>Descripción o consigna: Se comienza haciendo sonidos con nuestras manos en el cuerpo, suavemente pero como si el cuerpo fuera un instrumento de percusión, se pasa por todo el cuerpo de la cabeza a los pies. Luego se agregan sonidos con la voz pero más bien sonidos viscerales que acompañan los movimientos rítmicos que estamos haciendo.",
+      "musicas": []
+    },
+    {
+      "nombre": "Inspiración a dos",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Encontrase con otra persona en una danza lenta para luego danzar creativamente una danza propia (individual).<br/>Descripción o consigna: Los participantes se ubican a una distancia de intimidad y luego se van acercando lentamente, hasta encontrarse corazón a corazón. Comienza la danza con movimientos lentos y fluidos. Mientras acompaño el movimiento con inspiraciones cerca del cuerpo del compañero, oliendo su aroma. Cuando la música propone una danza más activa, cada participante sale a crear una danza individual, una danza ocupando los tres planos de la danza.",
+      "musicas": [
+        {
+          "titulo": "Divenire",
+          "artista": "Ludovico Einaudi",
+          "duracion": "6:42",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Juego: contacto grupal",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Juego con contacto corporal indiferenciado con el número de personas que proponga el facilitador/a.<br/>Descripción o consigna: Vamos a danzar en contacto corporal en pequeños grupos. Yo iré señalando el número de miembros de cada grupo. La consigna es “estar en contacto corporal con absolutamente todos los miembros del grupo en el que estemos” (aunque ese contacto se dé con una pequeña parte del cuerpo). Por ejemplo si digo “grupos de al menos dos personas” bastará que nos tomemos las manos en pareja y ya estaremos en contacto corporal con la otra persona. Si digo “grupos de al menos tres personas” bastará también con que nos tomemos las manos en una ronda puesto que yo estoy en contacto con las otras dos personas que conforman el grupo. Pero si digo “grupos de al menos cuatro personas” ya no nos basta una ronda puesto que en ella estoy en contacto corporal con las dos personas de mis lados pero no con la de enfrente. Entonces tendré que encontrar la forma de conseguirlo (se puede mostrar acercando un pié hasta contactar con la persona de enfrente). Si digo “grupos de al menos cinco personas” la cosa se complica… No sólo se trata de contactar sino de seguir danzando mientras se está en contacto. Empezamos danzando individualmente. A partir de aquí el facilitador/a de vez en cuando baja un poco la música y dice: “grupos de x personas o más” o “grupos de al menos x personas” al cabo de unos instantes baja la música un poco de nuevo y dice “sueltos” y así sucesivamente.",
+      "musicas": []
+    },
+    {
+      "nombre": "Juego: el mundo al revés",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Propuesta lúdica en la que se siguen las indicaciones del facilitador/a, en muchas de ellas se hace lo contrario a lo que se dice.<br/>Descripción o consigna: Nos colocamos todo el grupo en un extremo de la sala mirando hacia el facilitador/a que está en el extremo opuesto de la sala. Se pueden hacer varias “filas” (no necesitan ser filas “correctamente hechas”). El facilitador indica: “Tenéis que ser muy “obedientes” y hacer exactamente lo que yo diga (con ironía). Cuando diga caminamos hacia delante, caminamos hacia delante al ritmo de la música, cuando diga caminamos hacia atrás, caminamos hacia atrás, cuando diga caminamos hacia la derecha, caminamos hacia la derecha y cuando diga caminamos hacia la izquierda, pues caminamos hacia la izquierda siempre al ritmo de la música. Espero que hayáis entendido estas complicadas consignas (de nuevo con ironía). Eso sí, cuando diga “¡Caos!” entonces tenemos libertad plena, nos movemos como queramos, interactuamos con los compañeros/as, jugamos, cantamos, gritamos, ululamos…”. Se pone la música, el facilitador/a improvisa unas cuantas indicaciones y tras un rato dice “¡Caos!”. Las etapas de caos pueden durar más o menos 15-20 segundos. Tras eso baja o quita la música y dice: “Bien, como veo que sois un grupo muy evolucionado y lo hacéis todo correctamente (seguimos con ironía) voy a ponéroslo más difícil: cuando diga caminamos hacia delante, caminamos hacia atrás, cuando diga caminamos hacia atrás, caminamos hacia delante, cuando diga caminamos hacia la derecha, caminamos hacia la izquierda y cuando diga caminamos hacia la izquierda, pues caminamos hacia la derecha, siempre al ritmo de la música. Y claro está, cuando diga “¡Caos!” de nuevo somos libres para jugar como queramos”. Se pone de nuevo la música y se dan las consignas tergiversadas con algunos momentos de caos. Siempre después del caos se baja un poco la música y se vuelve a empezar varias veces. Con dos periodos completos (consignas tergiversadas, caos, consignas tergiversadas, caos) bastará.",
+      "musicas": []
+    },
+    {
+      "nombre": "Juego sin instrucciones",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Jugamos individual y grupalmente sin indicaciones de qué hacer o de cómo hacerlo.<br/>Descripción o consigna: La propuesta es jugar. Os voy a proponer un objetivo: divertirnos. Y también unas normas que son comunes a todas las propuestas de Biodanza: progresividad, auto-regulación y feed-back. También la norma de no danzar tumbados/as en el suelo en las partes centrales de la sala para evitar que otras personas se puedan tropezar con nosotros. Pero, aparte del objetivo y de las normas, no os voy a dar indicaciones de qué hacer o de cómo hacerlo. Cuando suene la música comenzaremos a danzar y empezaremos a iniciar propuestas espontáneas de danzas o de juegos. Puede ser individualmente, como danzar con diferentes partes del cuerpo, diferentes expresiones, saltos, giros, variar nuestros movimientos… O en interacción con otras personas como danzas en parejas o grupos, trenecitos, pasillos, limbo (pasando por debajo de los brazos de dos compañeros/as), pasar por debajo de las piernas de un pasillo, gesticulaciones compartidas, coreografías grupales y otros tipos de interacción. Es bueno realizar propuestas (no verbales) al resto del grupo y también sumarnos a propuestas de otras personas. Tener en cuenta nuestra libertad integrada con la dimensión colectiva.",
+      "musicas": [
+        {
+          "titulo": "The cat and the moon",
+          "artista": "A.R.Rahman - Värttinä - Christopher Nightgale",
+          "duracion": "3:55",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Liberación de la mirada ajena",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Una danza creativa individual con y sin la mirada de otras personas. Línea de vivencia Creatividad. Objetivos • Reforzar la confianza en uno mismo. • Fortalecer el coraje de explorarse. • Favorecer la conexión con la singularidad propia.<br/>Descripción o consigna: Dividimos al grupo en dos subgrupos. Un grupo (A) representa la mirada ajena y el otro grupo (B) danza su liberación. La danza se desarrolla en tres fases consecutivas. Primero, el grupo que representa la mirada ajena (A) se ubica en fila, mirando todos hacia la misma dirección dividiendo el salón en dos espacios. El grupo que va a liberarse de la mirada (B) comienza danzando en la zona del salón donde todos están mirando. En un momento de la música entramos en la segunda fase, quien facilita la sesión, indica “¡Nos liberamos!” y el grupo B pasa danzando a la otra parte del salón y continúa su propia danza sin ser mirado por el grupo A que permanence mirando hacia el mismo sitio (ahora vacío). Pasado un tiempo (tercera fase), el facilitador/a indica “¡Volvemos!” y el grupo B danza de nuevo hacia la parte del salón a la que mira el grupo A. El grupo A se queda mirando hacia el lado de siempre. De ésta forma, el grupo B danza ininterrumpidamente en tres fases: con público, sin público y de nuevo con público. El grupo A se mantiene sin moverse. Una vez terminada la música, se invierten los roles y se repite el proceso.",
+      "musicas": [
+        {
+          "titulo": "Struggle for pleasure",
+          "artista": "",
+          "duracion": "4:02",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Luz y sombra",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzar la penumbra de nuestra existencia y emerger hacia la luz.<br/>Descripción o consigna: Realizamos una danza creativa pulsando con movimientos hacia abajo y hacia arriba.",
+      "musicas": [
+        {
+          "titulo": "Light and shadow",
+          "artista": "Vangelis",
+          "duracion": "3:45",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Ronda del caos y el orden",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Ronda lúdica a modo de juego en la que nos entrelazamos y “desenredamos”.<br/>Descripción o consigna: Nos tomamos de las manos en una ronda, cuando suene la música comenzaremos a girar hacia la derecha (como en todas las rondas de Biodanza). A la indicación de “¡caos!”, al mismo tiempo que bailamos, empezamos a enredarnos entre todo el grupo (haciendo giros, pasando unos compañeros por debajo de las manos de otros, inventando diferentes formas de “liarnos”). Todo ello sin soltarnos de las manos pero con la suficiente soltura y auto-regulación para no lastimarnos ni a nosotros ni al resto de compañeros/as. A la indicación de “¡orden!”, volemos a “desenredarnos” cooperando hasta recuperar la figura circular y continuamos con la ronda. El proceso se repite varias veces. Además, vamos a cantar la canción que sonará. Podemos hacerlo aunque “no sepamos cantar”. Si no conocemos la letra de la música la tarareamos.",
+      "musicas": [
+        {
+          "titulo": "Volaré Artista intérprete: Gipsy Kings",
+          "artista": "",
+          "duracion": "3:48",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Sina Mali, Sina Deni",
+          "artista": "Khadja Nin",
+          "duracion": "4:11",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Subirse al sueño del otro (y de los otros)",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzar con otra persona de forma creativa los sueños.",
+      "musicas": [
+        {
+          "titulo": "My name is Lincoln",
+          "artista": "Steve Jablonsky",
+          "duracion": "3:43",
+          "coleccion": "Bs As 64-07",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 64,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "Los pájaros perdidos",
+          "artista": "Astor Piazzolla",
+          "duracion": "3:11",
+          "coleccion": "Bs As 05-09",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 5,
+              "pista": 9
+            }
+          ]
+        },
+        {
+          "titulo": "Kiss from a rose",
+          "artista": "Seal",
+          "duracion": "4:54",
+          "coleccion": "Bs As 22-12 y Hélène Levy Benseft (HLB) 07-17",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 22,
+              "pista": 12
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 7,
+              "pista": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Sueños y conquista (danza de aire y fuego)",
+      "grupo": "CREATIVIDAD",
+      "detalle": "Resumen: Danzar la conquista de nuestros sueños integrando dos elementos: aire y fuego. Línea de vivencia Creatividad – Vitalidad. Objetivos • Potenciar la creatividad. • Despertar la posibilidad de soñar. • Fortalecer la intensidad.<br/>Descripción o consigna: Un dialogo entre dos danzas conviviendo en un solo cuerpo, la música sugiere aire, y nos largamos a volar, con locura, un vuelo interior por momentos, donde todo movimiento cesa, soñamos en el interior con ojos cerrados, los abrimos y salimos a explorar con libertad y levedad el universo que nos rodea. La música sugiere fuego, metamorfosis de pasión, una mirada penetrante atraviesa el horizonte, movimientos intensos, conquista del espacio, fuego irradiante, luminoso, caliente, sensual y enérgico…",
+      "musicas": [
+        {
+          "titulo": "Por una Cabeza",
+          "artista": "The Tango Project",
+          "duracion": "2:28",
+          "coleccion": "Bs As 51- 01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 51,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Abrir el corazón",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Nos animamos a abrir nuestro centro afectivo (a solas o con caricias de otra persona).",
+      "musicas": [
+        {
+          "titulo": "Tears of Love",
+          "artista": "Raúl Di Blasio",
+          "duracion": "5:03",
+          "coleccion": "Escuela de Buenos Aires de Verónica Toro y Raúl Terrén (en adelante Bs As) 25-12",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 25,
+              "pista": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Abrir puertas",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danzar con una gestualidad de abrir. Línea de vivencia Afectividad – Trascendencia. Objetivos • Fortalecer el coraje de abrirnos. • Favorecer la apertura a lo nuevo.<br/>Descripción o consigna: Entramos en postura de intimidad, en conexión con nuestro centro afectivo. Nos sumergimos en la necesidad de abrir puertas al amor (por ejemplo), y muy lentamente vamos retirando las manos del pecho como si abriéramos un portal desde el corazón (se puede hacer también desde otras partes del cuerpo). El movimiento es con las palmas abiertas hacia afuera y los brazos extendidos como si estuviésemos abriendo puertas con una energía de necesidad amorosa. Se comienza de una manera progresiva y se repite varias veces hasta abrirse lo mas que se pueda.",
+      "musicas": [
+        {
+          "titulo": "Listen to the river",
+          "artista": "Luka Bloom",
+          "duracion": "4:53",
+          "coleccion": "Bs As 27-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 27,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Abrirse al universo del otro",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Doy a conocer mi mundo con un gesto de apertura. Línea de vivencia Afectividad – Trascendencia. Objetivos • Reforzar los vínculos. • Favorecer la aceptación de la diversidad.<br/>Descripción o consigna: Frente a frente con un compañero, con las manos recogidas en actitud de intimidad, se encuentran con la mirada, a una distancia aproximada de un metro. Luego simultáneamente ambos van entrando en la confianza de revelarse al otro con el centro afectivo abierto. Una vez que sentimos que se produjo ese instante mágico y sagrado de abrirnos al universo del otro, sin llegar al abrazo, se vuelve a la postura original de conexión consigo mismo para reiniciar nuevos encuentros.",
+      "musicas": [
+        {
+          "titulo": "The dark night of the soul",
+          "artista": "Loreena McKennitt",
+          "duracion": "6:51",
+          "coleccion": "Bs As 10-12",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 10,
+              "pista": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Aceptación",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Mostrarnos al centro de la ronda. Línea de vivencia Afectividad. Objetivos • Reforzar la confianza en uno mismo. • Sensibilizar para la aceptación de las diferencias de cada persona.<br/>Descripción o consigna: Se constituyen grupos de 5 personas y se forma un círculo. Uno de los integrantes del grupo entra en el centro en actitud de recogimiento y los demás están con receptividad y presencia, sin tomarse de las manos, observando la apertura de su compañero del centro. Este abre los ojos, retira sus manos del pecho abriendo su espacio afectivo y va girando lentamente mirando a cada uno de sus compañeros, aceptándose a sí mismo y mostrándose. Al terminar de mirar a todos, su último compañero lo abraza y el grupo le da continente.",
+      "musicas": [
+        {
+          "titulo": "Quero Quero",
+          "artista": "Claudio Nucci",
+          "duracion": "3:22",
+          "coleccion": "Bs As 13-05",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 13,
+              "pista": 5
+            }
+          ]
+        },
+        {
+          "titulo": "Meu mundo é hoje (Eu sou assim)",
+          "artista": "Eliete Negreiros",
+          "duracion": "2:51",
+          "coleccion": "Bs As 57-06",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 57,
+              "pista": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Acompañar a abrir las alas y volar",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Una danza libre suave con unas caricias previas en la espalda.<br/>Descripción o consigna: La danza se realiza en pares. Uno de los dos se pone de pié en actitud receptiva. El otro comienza con caricias en las escápulas reforzando y nutriendo el nacimiento de nuestras alas, estirando el movimiento hasta los brazos y luego ayudando a realizar un movimiento de abrir las alas. Surge un movimiento de apertura de brazos que se transforman en alas, hasta que la persona está lista para volar. Con la segunda música disfruta de su vuelo. Se invierte la danza.",
+      "musicas": [
+        {
+          "titulo": "Higher Ground",
+          "artista": "Barbra Streisand",
+          "duracion": "4:26",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Lonely looking sky",
+          "artista": "Neil Diamond",
+          "duracion": "3:24",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Agradecer la presencia",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Encuentros mirándonos y después besándonos las palmas de las manos.<br/>Descripción o consigna: Es una ceremonia de encuentro de aproximación en feedback en la cual, después del acercamiento y las miradas, nos tomamos de las manos y nos besamos las palmas una por vez.",
+      "musicas": [
+        {
+          "titulo": "Te dire merci",
+          "artista": "Atma",
+          "duracion": "3:37",
+          "coleccion": "Bs As 46-03",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 46,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Wind Beneath My Wings",
+          "artista": "Israel Kamakawiwo'ole",
+          "duracion": "4:40",
+          "coleccion": "Bs As 43-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 43,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Ayudar a sanar las alas",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danzamos nuestra sanación con apoyo afectivo.<br/>Descripción o consigna: La persona que danza la sanación de sus alas comienza sentada en el suelo con movimientos leves. Sus ojos permanecen entrecerrados en un gesto de intimidad. La respiración pulsa desde su centro afectivo, conectando con la necesidad de elevarse. Sus brazos se transforman en alas que intentan abrirse, pero al percibir que sus heridas no le permiten emprender vuelo, se acaricia suavemente con las manos un abrazo y luego el otro, pasando por su corazón y su rostro, procurando su sanación. Su compañero permanece sentado a la distancia desde el inicio y por un tiempo, contemplándolo. Al “empatizar”, comienza a volar con delicadeza alrededor de su compañero y le ofrece su ayuda. Se acerca suavemente, brindándole su presencia afectiva, acariciándolo delicadamente por delante y por detrás. Se mantiene volando cerca, con su mirada presente, dando apoyo al compañero que está intentando elevarse. En algún momento desciende hasta ponerse en su frente, permitiendo que se apoye en él y logre ponerse de pie comenzando a desplegar su vuelo. Una vez que se asegura que puede desplazarse por sí mismo, ambos continúan por un momento volando juntos, conectados a través de la mirada, desplegando sus brazos, con un gesto de vuelo compartido, evocando el disfrute, la entrega y alegría. Lentamente la persona que acompañó, se va alejando sin detener su vuelo, cuidando desde ese lugar, como base segura a su compañero, quien continúa desplazándose por el espacio, con una expresión plena y sus brazos como alas expandidas. Al finalizar la danza, ambos buscan nuevamente conectarse con la mirada y se dejan fundir en un gran abrazo inspirado en la certeza de que el amor sana. Toda la danza se realiza con levedad, fluidez, reciprocidad, sensibilidad y gracia.",
+      "musicas": [
+        {
+          "titulo": "Clouds Suite (acortada)",
+          "artista": "David Gates",
+          "duracion": "4:48",
+          "coleccion": "Bs As 28-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 28,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Base segura",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danza similar a la semilla con cuidado afectivo y exploración. Línea de vivencia Afectividad – Creatividad. Objetivos • Reeditar la vivencia de tener una base segura. • Afianzar el sentimiento de ser queridos/as. • Recordar la importancia de tener a alguien con quién contar. • Sensibilizar sobre la importancia de expresar afecto. • Fortalecer la seguridad y confianza. • Incentivar la exploración.<br/>Descripción o consigna: Nos ponemos a dos. Uno se pone en posición de semilla y el otro se arrodilla al lado poniendo sus manos sobre la espalda, constituyendo con su presencia afectiva la base segura. Suena la música y la persona que se encuentra en posición de semilla comienza una danza de lento y sentido crecimiento, el compañero le brinda sus caricias, su aceptación y su afectividad para colaborar en ese crecimiento. Una vez de pie, el companero que colaboró con su crecimiento, acaricia con delicadeza la zona de sus ojos para que los abra, se coloca a su costado para rodearlo con un brazo y le muestra con el otro brazo el mundo en todas las direcciones. La persona que hizo su danza de crecimiento sale a danzar con una nueva música. Explora todas la posibilidades del mundo con su danza y por momentos, esporadicamente, su mirada vuelve hacia la base segura, sabiendo que la base segura está allí para que éste pueda volar. Se invierten los roles.",
+      "musicas": [
+        {
+          "titulo": "Claro de luna",
+          "artista": "Noa",
+          "duracion": "05:42",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Lonely looking sky",
+          "artista": "Neil Diamond",
+          "duracion": "03:22",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Caricias de pies y manos en flor",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Caricias en sub-grupos sentados.<br/>Descripción o consigna: Es una adaptación de otros ejercicios de Biodanza con caricias. Formamos grupos de seis personas y nos tomamos de las manos (preferiblemente los hacemos de pié y después nos sentamos). Nos sentamos todos juntos y nos colocamos simbólicamente en forma de flor, es decir, sentados en círculo con los pies al centro (bien juntos los pies, las piernas estiradas en este momento). Así, nos disponemos como los pétalos de una flor que se recogen hacia su propio centro. Alternadamente, tres de estas personas se extienden en el suelo (siendo ayudadas por las otras para que no hagan ningún esfuerzo). Las otras tres (que permanecen sentadas) se acercan encogiendo un poco las piernas y acarician con ternura contemporáneamente sus propias manos y los pies de los compañeros extendidos. Integración entre todas las personas que dan y reciben. Cuando el facilitador/a lo indique, se ayuda a las personas acostadas (tomándolas de nuevo con las manos) a incorporarse suavemente y se invierten los roles manteniendo la posición de flor. Se concluye con un abrazo, primero sentados en tierra, luego elevando las manos al cielo y finalmente de pie abrazados.",
+      "musicas": [
+        {
+          "titulo": "I do",
+          "artista": "Jon Schmidt",
+          "duracion": "3:56",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Conspiración",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Acompañamos con nuestro cuerpo la respiración de una persona.<br/>Descripción o consigna: En compañía de una dulce melodía y en parejas, uno de los 2 se coloca en el suelo en posición supina (boca arriba), la otra se posa sobre su pecho con el propio pecho, siguiendo la respiración de la persona que recibe, dando protección con el propio cuerpo. El dador estará ligeramente apoyado, sin descargar completamente su peso. Cuando el compañero exhala, abandona el peso ligera y parcialmente sobre el cuerpo del primero. Cuando este inspira, se alza ligeramente para crear una dulce pulsión. Tendremos alto cuidado en relación a la progresividad del contacto, respetando siempre los principios del encuentro corporal. Los elementos definidos claramente son el agua y el aire, brindando una vivencia de afectividad y protección, trascendencia, y un dulce erotismo al evocar sutilmente el encuentro amoroso. Elementos a observar: 1. Progresividad. 2. Entrar en contacto. 3. Estirar la pierna más cercana al compañero y doblar la otra. 4. Cuando se produce la exhalación del compañero, colocar el peso del propio cuerpo. 5. Durante su inspiración, retirar el peso del propio cuerpo.",
+      "musicas": [
+        {
+          "titulo": "Serenade to spring",
+          "artista": "Secret Garden",
+          "duracion": "3:18",
+          "coleccion": "Bs As 17-07",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 17,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "Missing",
+          "artista": "Vangelis",
+          "duracion": "4:02",
+          "coleccion": "Bs As 17-09",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 17,
+              "pista": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de cuidado primordial (mamá, papá, hijo)",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Ejercicio de reparentalización.<br/>Descripción o consigna: Se forman grupos de tres, acostándose en el suelo. Uno de los tres se coloca en posición receptiva mirando hacia arriba en el medio y los otros dos se adhieren al costado del cuerpo del compañero, haciendo una cuna de protección. Con una mano se comunica con el otro compañero protector, encima de la cabeza del compañero del centro, y con la otra mano, quienes hacen de mamá y papá (u otras personas especialmente significativas en nuestra educación) dan caricias dulces y afectivas, como acariciando a un bebé. Al final de la música una de las personas que están en los costados se levanta y cambia al otro lado. De esta forma iremos cambiando para que todas las personas pasen por todos los roles. Por ejemplo quien estaba a la izquierda pasa a la derecha, así quien estaba en el centro queda a la izquierda y quien estaba a la derecha queda en el centro.",
+      "musicas": [
+        {
+          "titulo": "Cailín Na Gruaige Báine",
+          "artista": "Aoife Ní Fhearraigh",
+          "duracion": "5:34",
+          "coleccion": "Bs As 46-02",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 46,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de entrar en la empatía",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danzar sumergiéndose en la danza del compañero.<br/>Descripción o consigna: Es una danza que se realiza en par, estando de pie uno frente al otro. Uno de los dos permanece con ojos abiertos y el otro con los ojos cerrados. Quien tiene los ojos cerrados entra en su danza, en su estilo, en su sensibilidad. El otro intenta repetir sus movimientos, como un espejo, en su mismo estilo, forma y velocidad. Al momento de cambio musical, el de ojos abiertos, una vez incorporado el estilo del compañero, se acerca a él y cerrando los ojos entra en la danza del otro como si fueran uno, empáticamente.",
+      "musicas": [
+        {
+          "titulo": "Chanonry point",
+          "artista": "Manus Lunny / Phil Cunningham",
+          "duracion": "3:51",
+          "coleccion": "Bs As 27-03",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 27,
+              "pista": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de libertad acompañada",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Una persona realiza una danza de auto-realización personal acompañada por otra que posa una mano en su espalda u hombro.<br/>Descripción o consigna: La danza se realiza a dos, de pie, con ligero desplazamiento y ojos abiertos. Una persona acompaña a otra que baila su existencia. Quien acompaña se coloca detrás de quien baila y le sigue posando la mano en su espalda, en el hombro o en el lateral. Quien danza se mueve libremente y al mismo tiempo percibiendo su comparsa afectiva. Busca la expresión de su autenticidad. La danza ha de estar en consonancia con la fluidez de la propuesta musical con movimiento lento, continuo y redondo. Quien le asiste le sigue sin dirigir. No se trata de acariciar sino de regalar su presencia. Habrá cambios de roles en la misma pareja. La persona facilitadora consigna los cambios. Es apropiado hacer los cambios mientras dura el tema musical. La canción “Flying Celestial Nymphs” dura 5:08 minutos y los cambios pueden consignarse aproximadamente a los siguientes tiempos: • 1:40 minutos el primer cambio, • el segundo cambio a los 3:15 minutos y • finalmente el último cambio a los 4:00 minutos aproximadamente. Es importante que se ofrezcan estas cuatro posibilidades de danzar (cada persona danza dos veces ambos roles) pues la experiencia existencial es diferente antes y después de acompañar y el resultado vivencial es, por consiguiente, también diferente. Las categorías de movimiento pueden ser variadas. Deflagra principalmente la fluidez, la expresividad y la sensibilidad del movimiento.",
+      "musicas": [
+        {
+          "titulo": "Flying Celestial Nymphs",
+          "artista": "Kitaro",
+          "duracion": "5:08",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de viento y lluvia (danza de otoño a tres)",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: En grupos de tres, la persona del centro recibe caricias y soplidos.<br/>Descripción o consigna: Luego de la danza de otoño individual en la que uno se despojo de lo que ya no necesita en su vida, nos damos cuenta de que hay situaciones en las que no podemos solos. Se propone al grupo esta danza de otoño a tres. Uno de los tres está en postura receptiva a la sanación. Otro de los compañeros incorpora la lluvia en sus manos y con movimientos de todo el cuerpo lava y limpia esos dolores del alma, como una lluvia bautismal. El otro hace de viento donde a través de sus manos que se mueven y se agitan velozmente producen un aire sobre el cuerpo del compañero, y a su vez se le lanza un soplo con la boca. Es una lluvia y un viento de renovación, alivianando su existencia. En el curso de la danza es importante tener los tres roles.",
+      "musicas": [
+        {
+          "titulo": "Clouds Suite (acortada)",
+          "artista": "David Gates",
+          "duracion": "4:48",
+          "coleccion": "Bs As 28-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 28,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Expresión de amor infinito",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danzamos conectando con el amor universal.<br/>Descripción o consigna: La persona entra en el interior de ella misma con la música, en un momento hay una deflagración. En ese instante, ella se abre y encuentra la parte más luminosa, la más amorosa, la más plena de amor con una devoción que sale de todo su ser, de todos sus gestos y movimientos.",
+      "musicas": [
+        {
+          "titulo": "A hundred thousand angels (100.000)",
+          "artista": "Bliss",
+          "duracion": "6:05",
+          "coleccion": "Bs As 61-13",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 61,
+              "pista": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Libertad con contención",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Una persona danza con los ojos cerrados sostenida por otra.<br/>Descripción o consigna: Se realiza en pares, uno de los dos, danza con los ojos cerrados. El otro con una mano bien firme o con las dos si fuera necesario. Quien danza se desplaza y realiza movimientos hacia afuera, libres, sutiles, siempre siendo sostenido por un brazo. Después se invierten los roles.",
+      "musicas": [
+        {
+          "titulo": "Jardín do paraiso",
+          "artista": "",
+          "duracion": "2:46",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Necesito un abrazo",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Pedir un abrazo. Línea de vivencia Afectividad – Trascendencia. Objetivos • Sensibilizar sobre la importancia de expresar la necesidad de amor. • Aprender a pedir afecto.<br/>Descripción o consigna: Se elige a un compañero y se quedan de pie uno frente al otro. Uno de los dos se coloca en posición de semilla y comienza a conectarse con la necesidad de amor, mientras el otro permanece de pie en postura receptiva, observando el proceso de apertura y crecimiento del compañero. Quien ésta en postura de semilla va lentamente colocándose de pie y, al levantarse, abre los ojos y los brazos, mira a su compañero, y le dice verbalmente: “Necesito un abrazo”. El compañero responde de inmediato con un abrazo cálido y afectivo. Posteriormente se invierten los roles.",
+      "musicas": [
+        {
+          "titulo": "The light of the spirit",
+          "artista": "Kitaro",
+          "duracion": "7:28",
+          "coleccion": "Bs As 10-05",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 10,
+              "pista": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Resonancia melódica",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Danzar con otra persona generando un vínculo en conexión con la melodía.<br/>Descripción o consigna: Danzamos con otra persona mirándonos por momentos a los ojos, por momentos los cerramos y por momentos miramos el espacio y sobre todo moviendo nuestro centro afectivo junto con nuestros brazos, creando entre los dos una comunicación. Mientras uno danza con un compañero, al mismo tiempo existirán otros compañeros creando esta resonancia. Existirá un cambio, sin abrazarse, sin cortar con la danza, con liviandad cambiamos de compañero. Luego existirá un tercer momento en donde la danza será entre todos cambiando entre compañeros por momentos mirando a un compañero y por momentos mirando a otro. Y así todos juntos creando una resonancia grupal. En el tercer cambio que corresponde a danzar todos juntos, la música propone mayor desplazamiento y expansión.",
+      "musicas": [
+        {
+          "titulo": "Dam Bô",
+          "artista": "Sara Tavares",
+          "duracion": "5:37",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Ronda de confianza colectiva",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Ronda con la mitad del grupo con los ojos cerrados (alternadamente).<br/>Descripción o consigna: Nos tomamos de las manos en una ronda, alternadamente, cerrarán los ojos, una persona sí y otra no. De esta forma estará la mitad del grupo con los ojos cerrados, intercalados con la otra mitad del grupo que está con los ojos abiertos. Cuando suene la música comenzaremos a girar hacia la derecha (como en todas las rondas de Biodanza). Despacio y de forma dulce. Quienes estén con los ojos abiertos, es importante que presten atención al colectivo, que velen por la seguridad de la persona que llevan a su izquierda y al mismo tiempo de la de todo el grupo (por ejemplo, reorientar la ronda entera si se va mucho hacia una pared, reducir la velocidad si hay una parte que avanza demasiado deprisa…). Quienes estén con los ojos cerrados pueden abandonarse y confiar en el grupo y en la vida permitiendo que les guíen. Cuando termine la música y tras unos agradecimientos a las personas cercanas, cambiaremos de rol y quienes tenían los ojos abiertos, pasan a tenerlos cerrados y viceversa.",
+      "musicas": [
+        {
+          "titulo": "Serenade to spring Artista intérprete: Secret Garden",
+          "artista": "",
+          "duracion": "3:18",
+          "coleccion": "Bs As 17-07",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 17,
+              "pista": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Rondas de ecofactores positivos",
+      "grupo": "AFECTIVIDAD",
+      "detalle": "Resumen: Recibimos refuerzo de un grupo y salimos a la vida fortalecidos/as.<br/>Descripción o consigna: Nos distribuimos en grupos de unas 6 personas, formamos rondas en esos “sub-grupos”, nos conectamos con el ritmo y con nuestra capacidad de reforzar a los y las demás. Una persona pasa al centro de la ronda, danza y es calificada por su grupo, recibiendo elogios a través de gestos corporales y faciales y de palabras y onomatopeyas. Brindamos seguridad, alegría, amor… Cuando baja la música, la ronda se abre y la persona que estaba dentro sale a caminar (y/o danzar) por la vida (por toda la sala) totalmente valorizada y fortalecida. También se puede hacer de forma auto-organizada por cada grupo sin necesidad de marcarlo bajando la música. Luego regresa a la ronda para poder reforzar a otro compañero/a, y así pasan todos los integrantes de la ronda de uno en uno.",
+      "musicas": [
+        {
+          "titulo": "Te amo",
+          "artista": "Olodum",
+          "duracion": "2:58",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Caminar en tribu (caminar tribal)",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Avanzamos conjuntamente según tres roles que expresan diferentes potenciales.<br/>Descripción o consigna: Todo el grupo estará de pié en un mismo punto formando una gran tribu, en diferentes líneas de la sala, dispersos. Primero se conectan con el ritmo de la música se miran entre los compañeros reconociendo a cada uno y luego los que están en la línea de adelante se miran y deciden cuando arrancar a caminar. Entonces caminan todos juntos hacia adelante. Una vez llegado al final de la sala se da un giro de 180 grados en el lugar quedando mirando hacia el otro lado, ahora quienes estaban atrás quedaron adelante y se repite el proceso. Se puede ir alternando las posiciones, para ocupar con libertad el rol que deseo dentro de la tribu. • Los que van delante de todo caminan con seguridad y mirando un punto fijo, con foco. • Los que van al medio van danzando perdiéndose en la melodía. • Los que van detrás caminan con sus brazos abiertos en una gestualidad de sostener y cuidar.",
+      "musicas": [
+        {
+          "titulo": "May you walk in sunshine",
+          "artista": "Sacred Spirit",
+          "duracion": "4:03",
+          "coleccion": "Escuela de Buenos Aires de Verónica Toro y Raúl Terrén (en adelante Bs As) 46-09",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 46,
+              "pista": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Ceremonia de sacralidad",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Ceremonia con una secuencia de actos de imposición de manos.<br/>Descripción o consigna: Se realiza en parejas por afinidad, con cambio. Las parejas estables la realizarán entre sí. SECUENCIA: 1. BIENVENIDO A MI CORAZÓN: ambos compañeros sentados en posición “seiza” (sobre sus talones) uno frente al otro, se saludan uniendo las palmas frente al propio pecho y reverenciándose, uno al otro con un movimiento de postración simultaneo. 2. BRINDÁNDOSE CONFIANZA: se unen en un abrazo delicado y en quietud, sentados uno al lado del otro a la altura de la pelvis en sentido opuesto. 3. CEREMONIA DE VENERACION (imposición de manos): el que ofrece la ceremonia, convida gentilmente y ayuda al compañero a tenderse receptivamente, apoyando la espalda a tierra y se ubica a su lado, en posición de “seiza”, para iniciar pronunciando el nombre del venerado. Por ejemplo: “Rolando, ésta es tu frente y yo la venero, y estos son tus ojos, Rolando, y yo los venero. Este es tu rostro y tu cabeza, y yo los venero... Estos son tus labios, Rolando, este es tu pecho y yo lo venero; estos son tus brazos y tus manos, tu abdomen… este es tu sexo y yo lo venero…”. En cada parte del cuerpo pronunciada, se realiza una leve y presente imposición de manos en actitud de devoción. Al finalizar por pelvis, piernas y pies (nombrar también rodillas), se mantiene la posición en las plantas de los pies y se llevan estos al pecho del dador. Caricias de agua. 4. PULSO DE LA VIDA: apoyar las plantas de los pies del compañero, sobre el pecho para percibir el latido del propio corazón. 5. CARICIA DE INTEGRACIÓN: se integra todo el cuerpo del compañero con caricias suaves, tiernas y afectivas (agua). Integrar los tres centros (frente, pecho, bajo abdomen) con imposición de manos en quietud. Después de algunos instantes ayudar, con extrema suavidad, al compañero a alzarse hasta permanecer sentado. 6. FUSIÓN: abrazo en posición de mecimiento. 7. CONTEMPLACIÓN DE LA ESCENCIA DEL ALMA: el dador mira con infinita ternura a su homenajeado. 8. ABRAZO PROFUNDO: ambos frente a frente, de rodillas se unen en un intenso abrazo. Se repiten los pasos del 3 al 8 intercambiando los roles. 9. INTEGRACIÓN A LA COMUNIDAD: Luego de haberse puesto en pie con progresividad, los dos compañeros caminan abrazados por la cintura, cambiando dulces miradas con los otros pares. 10. ENCUENTROS EN LA LÍNEA DE TRASCENDENCIA",
+      "musicas": [
+        {
+          "titulo": "Blue lotus",
+          "artista": "Erik Berglund",
+          "duracion": "5:15",
+          "coleccion": "IBF (Rolando Toro Araneda) 17-06",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Gloryanna (Hymn a la femme)",
+          "artista": "Vangelis",
+          "duracion": "4:36",
+          "coleccion": "Hélène Levy Benseft (en adelante HLB) 08-06",
+          "referencias": [
+            {
+              "coleccion": "HLB",
+              "cd": 8,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Ave Maria",
+          "artista": "Aaron Neville",
+          "duracion": "4:49",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "A gift of a Thistle",
+          "artista": "James Horner",
+          "duracion": "4:49",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Someone to watch over me",
+          "artista": "Araken Peixoto",
+          "duracion": "4:30",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Someone to watch over me",
+          "artista": "Araken Peixoto",
+          "duracion": "4:30",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Eu se que vou te amar",
+          "artista": "Maria Creuza – De Moraes - Toquinho",
+          "duracion": "3:38",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Mania de voce",
+          "artista": "Emilio Santiago",
+          "duracion": "4:43",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Canto della terra",
+          "artista": "Sarah Brightman",
+          "duracion": "4:00",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Círculo infinito",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Una danza de vinculación con uno mismo, con las demás personas y con la totalidad. Línea de vivencia Trascendencia. Objetivos • Favorecer la integración de la identidad. • Potenciar los tres niveles vinculares.<br/>Descripción o consigna: La danza comienza de pie, con las manos en el centro afectivo, con ojos cerrados, en actitud de recogimiento, en conexión con lo más íntimo de uno. Lentamente se van retirando las manos del pecho, se abren los ojos y se mira a los compañeros con los brazos lanzados hacia los otros, en actitud de vinculación. Luego los brazos se elevan hacia el infinito, queriendo tocar el cielo con las manos en conexión con la totalidad. En un continuum, se vuelve a la posición de conexión consigo mismo, en una especie de ejercicio circular, yendo y viniendo de una conexión a otra.",
+      "musicas": [
+        {
+          "titulo": "Sacrifice",
+          "artista": "Lisa Gerrard & Pieter Bourke",
+          "duracion": "6:20",
+          "coleccion": "Bs As 29-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 29,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Conexión con los ancestros",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danza de conexión con los antepasados. Línea de vivencia Trascendencia. Objetivos • Inspirar la vinculación con agradecimiento a los ancestros. • Potenciar la línea de la trascendencia.<br/>Descripción o consigna: La danza comienza en posición de intimidad evocando en nosotros los recuerdos y la presencia de nuestros antepasados. Continuamos en una danza con gestos sensibles de apertura de pecho y brazos, elevándolos hacia el infinito con un ligero movimiento hacia atrás, ya que estamos buceando en la memoria del tiempo.",
+      "musicas": [
+        {
+          "titulo": "Hine e hine",
+          "artista": "Kiri Te Kanawa",
+          "duracion": "4:39",
+          "coleccion": "Bs As 36-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 36,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza a la luna",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Crear una danza en conexión con la luna.",
+      "musicas": [
+        {
+          "titulo": "Red Song",
+          "artista": "Jocelyn Pook",
+          "duracion": "4:11",
+          "coleccion": "Bs As 49-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 49,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza a las estrellas",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danza individual de conexión con las estrellas.<br/>Descripción o consigna: Las manos en conexión con el centro afectivo luego estas se abren progresivamente hacia el cosmos. Uno se deja perder en esta inmensidad cósmica, en lo ilimitado. Es una danza expansiva, ascendente en conexión profunda con nuestra presencia en el aquí ahora de la vida. Honramos a las estrellas. La música nos facilita percibir momentos de éxtasis e íntasis.",
+      "musicas": [
+        {
+          "titulo": "Mythodea Movement IX",
+          "artista": "Vangelis",
+          "duracion": "5:05",
+          "coleccion": "Bs As 57-12",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 57,
+              "pista": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza al sol",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Desplegar una danza de conexión con el sol.<br/>Descripción o consigna: De pie, con las manos en el centro afectivo, abrimos los ojos poco a poco y comenzamos a danzar de una manera ascendente abriendo el pecho y los brazos, en postura de gratitud. Por momentos podemos arrodillarnos manteniendo una postura de veneración a nuestro astro que nos da la vida.",
+      "musicas": [
+        {
+          "titulo": "Le ali della felicità",
+          "artista": "Paolo Buonvino",
+          "duracion": "3:41",
+          "coleccion": "Bs As 46-01",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 46,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza al viento",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Desplegar una danza de conexión con el viento. Línea de vivencia Trascendencia. Objetivos • Reforzar la conexión con la totalidad. • Potenciar la línea de trascendencia.<br/>Descripción o consigna: Conexión profunda con nuestra esencia de ser, e irradiar esa belleza en una danza de armonía y expansión, la danza es con los ojos cerrados, los movimientos son fluidos pero livianos, movimientos de entrega de si al viento, movimientos de abertura. Danza ascendente.",
+      "musicas": [
+        {
+          "titulo": "Happiness Is",
+          "artista": "Yungchen Lhamo",
+          "duracion": "5:06",
+          "coleccion": "Bs As 54-11 y HLB 20-11",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 54,
+              "pista": 11
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 20,
+              "pista": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la abundancia compartida",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Vivenciar la abundancia que emana del acto de vivir y compartirla con otras personas.<br/>Descripción o consigna: La danza consta de dos momentos. En un primer momento, vamos a danzar con nosotros mismos buscando abrir la percepción a la abundancia de estar viviendo aquí y ahora. Mirar con asombro el movimiento de nuestras manos, tocar nuestro cuerpo, todo da cuenta del milagro de existir. En un segundo momento, cuando la música lo indica (aproximadamente en el minuto 1:10/ 1:20), vamos a compartir ese milagro con el resto del grupo. Para hacerlo, nos vamos a acercar progresivamente, vamos a mirarnos a los ojos, haciéndonos cómplices de este presente único y abundante. Al mismo tiempo, vamos a hacer el gesto de “compartir vida”: Partiendo de nuestro centro afectivo, ir abriendo los brazos, dirigiendo la energía que se libera hacia quien tenemos en frente. Luego, comenzamos a socializar esa energía con todo el grupo, con toda la humanidad. Unas personas dan y otras reciben, sin necesidad de devolución. Estamos compartiendo, no se generan deudas. Confiamos en que eso que dimos se multiplicará en otros, pasando de la idea de tener para mí solo a la posibilidad de compartir con todos los seres.",
+      "musicas": [
+        {
+          "titulo": "“Bethoven´s 5 Secrets”",
+          "artista": "The Piano Guys",
+          "duracion": "5:09",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de la grandeza",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Desplegar una danza pulsante, conectando con la grandeza interior y exterior.<br/>Descripción o consigna: Es una danza pulsante, oscilando entre la grandeza interior y la exterior. De pie, con las rodillas semi-flexionadas, se realizan movimientos íntimos hacia dentro y expansivos hacia fuera, dejándose llevar por la música que marca claramente estas dos instancias. Pulsamos en conexión consigo mismo y con el todo. Esta oscilación se realiza con todo el cuerpo, por momentos llevando las manos al centro afectivo y en otros abriendo los brazos de manera ascendente.",
+      "musicas": [
+        {
+          "titulo": "Straight Away to Orion",
+          "artista": "Kítaro",
+          "duracion": "7:52",
+          "coleccion": "Bs As 33-11",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 33,
+              "pista": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza del misterio",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Desplegar una danza evocando el misterio de vivir. Línea de vivencia Trascendencia. Objetivos • Potenciar la línea de trascendencia. • Inducir la vivencia de sumergirse en lo desconocido.<br/>Descripción o consigna: Con ojos cerrados, el danzarín entra en un movimiento sin forma, en una creatividad sutil, liviana, sin comienzo ni fin. Todo el cuerpo se ve envuelto en una danza que evoca el misterio de vivir. Movimientos redondeados, fluidos, con diferentes formas.",
+      "musicas": [
+        {
+          "titulo": "Nacre et Velours",
+          "artista": "Laurent Dury",
+          "duracion": "4:34",
+          "coleccion": "Bs As 49-02",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 49,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza de recuerdos felices",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danza individual evocando momentos bonitos vividos.<br/>Descripción o consigna: Cerrar los ojos, entrar en la música y ponerse en conexión con bellos recuerdos luego hacer un círculo simbólico de protección del/ de los recuerdo(s) con los brazos partiendo desde abajo para unir las manos por encima de la cabeza. Es importante conservar en este círculo esta bella historia. Si surgieran durante la danza recuerdos tristes o dolorosos, hacemos todo lo posible para volver y reconectarnos de nuevo con el buen recuerdo. Todo el mundo tiene buenos recuerdos. Si una persona dice que no tiene, decirle que encuentre de todos modos pequeños recuerdos, hay que ir a buscarlos. Es importante guardarlos en la memoria, no olvidarlos y traerlos al presente. Rememorar varios recuerdos durante la danza.",
+      "musicas": [
+        {
+          "titulo": "Ask The Mountains",
+          "artista": "Vangelis",
+          "duracion": "5:44",
+          "coleccion": "Bs As 10-02",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 10,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza en espiral",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Es una danza con muchos giros hacia lo alto ascendiendo.<br/>Objetivo: • Facilitar la conexión con nuestra capacidad de evolucionar hacia la parte luminosa de la existencia.<br/>Descripción o consigna: Comenzamos a danzar al ritmo de la música y poco a poco buscamos un movimiento que gire sobre sí mismo en ronda con intencionalidad de ir hacia arriba. En esa rotación, los brazos suben alternativamente formando una hélice ascendente. El movimiento es siempre continuo, se trata de dar más forma a esta espiral que nos hace subir.",
+      "musicas": [
+        {
+          "titulo": "Pilgrimage Of Lost Children",
+          "artista": "Lisa Gerrard y Pieter Bourke",
+          "duracion": "3:48",
+          "coleccion": "Bs As 33-02 y HLB 15-03",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 33,
+              "pista": 2
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 15,
+              "pista": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danzar la propia existencia",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danzar agradeciendo la propia existencia. Línea de vivencia Trascendencia. Objetivos • Estimular la conexión con el sentimiento de gratitud a la vida. • Favorecer el vínculo con la poesía y la belleza de la propia existencia.<br/>Descripción o consigna: Una danza individual que comienza en posición de intimidad, con las manos en el corazón. Lentamente se van retirando las manos del corazón y se va creando una danza ascendente, fluida, con desplazamiento mínimo. La música y la danza pulsa dulcemente hacia adentro y hacia fuera en agradecimiento. Por momentos ojos cerrados y por momentos ojos abiertos.",
+      "musicas": [
+        {
+          "titulo": "Apo Stigmi Se Stigmi",
+          "artista": "Evanthia Reboutsika",
+          "duracion": "4:45",
+          "coleccion": "Bs As 66-04",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 66,
+              "pista": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Danza sufi (giro derviche)",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Giramos individualmente conectando cielo y tierra.<br/>Descripción o consigna: Se hacen círculos de cuatro o cinco personas, una se ubica en el centro y el resto alrededor. Se comienza con una posición de pie, con ojos abiertos, un brazo hacia la tierra y el otro hacia el cielo. Cuando la música comienza se toma el ritmo y se danza circularmente sobre sí mismo sin desplazarse, con la mirada hacia adelante. Girar hacia la izquierda o la derecha es una elección de la persona que danza (como sea lo mejor para ella), qué brazo sube y cual baja también es de su elección. Realizar el giro con mucha progresividad. Se va a la velocidad con la que uno se siente cómodo. Disminuimos la velocidad antes de detenernos. En el apartado de “Música” se describe una variante.",
+      "musicas": [
+        {
+          "titulo": "Whisper in a hurricane",
+          "artista": "Heart Beat",
+          "duracion": "4:10",
+          "coleccion": "",
+          "referencias": []
+        },
+        {
+          "titulo": "Moxica And The Horse [Part]",
+          "artista": "Vangelis",
+          "duracion": "4:12",
+          "coleccion": "Bs As 09-02",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 9,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "De caos a eros",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danzar en caos y luego salir con la ayuda del amor. Línea de vivencia Trascendencia – Vitalidad. Objetivos • Fortalecer la capacidad de entrega a las diversas situaciones de la vida incluidas las conflictivas. • Potenciar la confianza en la ayuda de otras personas a través de su amor. • Reforzar la resiliencia.<br/>Descripción o consigna: La mitad del grupo danza con el apoyo de la otra mitad. Quienes acompañan se sientan de momento en el suelo en un círculo lo más amplio posible y quienes danzan pasan al centro. Comenzamos la danza entregándonos a la música que va induciendo una vivencia de desorganización y falta de control de nuestros movimientos. Entramos en el caos dejándonos caer al suelo continuando la danza hasta quedar sin fuerzas y detenernos. La música nos invita entonces a buscar en nuestro interior un atractor, esa energía de vida que todos tenemos para surgir de la situaciones difíciles. De a poco vamos entrando en movimiento, arrastrándonos, luego a gatas y para poder levantarnos nos ayudamos de las manos de nuestros compañeros, que se habrán puesto de pié en círculo a nuestro alrededor. Ellos son la manifestación de Eros como la divinidad del amor que junto al Eros primordial de la vida que late en nuestro interior, configuran las dos manifestaciones de Eros, los dos atractores esenciales para salir de las situaciones caóticas. Una vez en pié caminamos cada vez de forma más firme, autónoma y triunfante. También podemos danzar celebrando la vida. Cerramos con contenedor abrazo.",
+      "musicas": [
+        {
+          "titulo": "12 - Mother Africa Reprise",
+          "artista": "",
+          "duracion": "8:05",
+          "coleccion": "Bs As 25-04",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 25,
+              "pista": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Expansión interior",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Realizar una danza que lentamente ocupe todo el espacio que nuestro cuerpo puede abarcar.<br/>Descripción o consigna: La propuesta consiste en despertar la danza desde adentro del cuerpo hacia afuera, expandiendo el Ser desde el interior (podemos imaginar los huesos, los músculos, la sangre corriendo por las venas, la piel hasta... la punta de los cabellos) hasta el límite del espacio personal (kinesfera). Ese espacio vital que somos y nos corresponde por el solo hecho de existir puede ser habitado con plenitud y sin temor de estar expandido al máximo. Esta danza tiene una primera fase de expansión donde comenzamos a sentir el espacio que el cuerpo abarca, una segunda fase donde despertamos la integración de los tres centros y una tercera fase en la cual se suma la voz que nace de las entrañas y viaja por los tres centros hasta salir potente y profunda en símbolo de unificación. Ayudados con el estímulo musical. Danzando la expansión de nuestro ser desde adentro hacia afuera, la corporeidad plena, los tres centros en integración y la voz canal de nuestra identidad.",
+      "musicas": [
+        {
+          "titulo": "Find Our Way Home",
+          "artista": "Message To Bears",
+          "duracion": "05:51",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Filiación cósmica",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danza individual de conexión con nuestro origen estelar.<br/>Descripción o consigna: Se inicia la danza individual con una profunda conexión consigo mismo, a partir de la cual, muy lentamente, se van elevando los brazos y la cabeza dulcemente hacia el infinito. Vamos entrando en una vivencia de expansión de nuestra identidad y de sentirnos parte de la totalidad.",
+      "musicas": [
+        {
+          "titulo": "Fly away Artista intérprete: Capo Productions",
+          "artista": "",
+          "duracion": "4:14",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Llamado interior",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Desde la posición de semilla, elevarnos llamándonos por nuestro nombre.<br/>Descripción o consigna: La danza comienza en posición de semilla y la persona comienza a llamarse por su nombre muy lentamente y poco a poco. Es un llamado a sí mismo, visceral, profundo, auténtico. A partir de este llamado, la persona comienza a desarrollarse, a abrirse y continuando a llamarse con dulzura. Poco a poco, se revela, siente la alegría de vivir, de ser, y de aceptar quién es. Aceptar su presencia en el mundo como un ser único e irrepetible.",
+      "musicas": [
+        {
+          "titulo": "Naked Spirit (featuring Djivan Gasparyan)",
+          "artista": "Sainkho Namtchylak",
+          "duracion": "4:40",
+          "coleccion": "Bs As 29-03",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 29,
+              "pista": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Ronda de fluidez con canto",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Ronda fluida tomados de las manos acompañando la música. Línea de vivencia Trascendencia. Objetivos • Facilitar la unión grupal. • Fortalecer el sentimiento de pertenencia a la humanidad. • Conectar con la musicalidad. • Favorecer la expresión de la voz.<br/>Descripción o consigna: Formamos una ronda tomándonos de las manos de forma sensible. Que la distancia entre las personas permita que movamos ligeramente los brazos (a poco menos de un metro aproximadamente entre persona y persona). La ronda no se desplaza, queda en el sitio. Postura relajada con ojos cerrados dulcemente, corvas un poco curvas, boca entreabierta... Según empieza la música vamos moviendo los brazos con mucha fluidez y suavidad según nos inspira la música y los movimientos de las manos y brazos de las personas de ambos lados. Por tanto, toda la ronda completa está inspirándose entre sí. Poco a poco vamos cantando con armonía y dulzura (con sonido de “aaaa”, que el aire salga de la parte baja de los pulmones o abdominal); entonando en función de la melodía de la música y manteniendo una conjunción grupal (un mismo volumen).",
+      "musicas": [
+        {
+          "titulo": "Earth born",
+          "artista": "Kítaro",
+          "duracion": "2:35",
+          "coleccion": "IBF (Rolando Toro Araneda) 11-06",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 11,
+              "pista": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Ronda de virtudes",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Comunicar valores propios.<br/>Descripción o consigna: Se forman grupos de 5 (pueden ser más). Una persona se ubica en el centro y se conecta con los ojos cerrados en postura de intimidad con sus valores, su belleza interior. Elige 3, 4 ó 5 (máximo) de sus virtudes, atributos, cualidades o bellezas. Luego abre los ojos, se conecta con sus compañeros y expresa todas sus virtudes una por compañero. Está relacionado con la autoestima. Ej. soy sensible, soy intenso, soy generosa... Si la persona no logra hablar, deja su lugar a otra y reintegra la ronda.",
+      "musicas": [
+        {
+          "titulo": "Spiritual",
+          "artista": "Charlie Haden y Pat Metheny",
+          "duracion": "08:23",
+          "coleccion": "Bs As 61-07 y HLB 23-19",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 61,
+              "pista": 7
+            },
+            {
+              "coleccion": "HLB",
+              "cd": 23,
+              "pista": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "Sanar nuestro linaje",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Danza individual que estimula la selección de los mensajes de nuestros ascendentes para que entreguemos a nuestros descendientes solo aquellos que nos parecen coherentes con nuestros valores.<br/>Descripción o consigna: La danza inicia en posición de intimidad, luego las manos van saliendo del medio del pecho, ampliando el movimiento y abriendo los ojos. Es una danza de intensidad gestual, con diferentes movimientos en los tres planos de la danza: alto, medio y bajo. En varios momentos se llevan las manos al pecho, nuestro centro afectivo, con la intención de estar en un presente aquí y ahora, lanzando hacia el futuro esa energía amorosa de sanación para nuestro linaje. De acuerdo a la música, habrá momentos de ojos cerrados y momentos de ojos abiertos cuando la música invite a la expansión.",
+      "musicas": [
+        {
+          "titulo": "London + Solomon Vandi (usar los dos temas seguidos)",
+          "artista": "",
+          "duracion": "",
+          "coleccion": "",
+          "referencias": []
+        }
+      ]
+    },
+    {
+      "nombre": "Veneración a la humanidad (y lo masculino y femenino)",
+      "grupo": "TRASCENDENCIA",
+      "detalle": "Resumen: Una reverencia hacia la humanidad.",
+      "musicas": [
+        {
+          "titulo": "The secret wedding",
+          "artista": "James Horner",
+          "duracion": "6:37",
+          "coleccion": "Bs As 61-11",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 61,
+              "pista": 11
+            }
+          ]
+        },
+        {
+          "titulo": "For the love of a princess",
+          "artista": "James Horner",
+          "duracion": "4:11",
+          "coleccion": "Bs As 61-10",
+          "referencias": [
+            {
+              "coleccion": "BSAS",
+              "cd": 61,
+              "pista": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
