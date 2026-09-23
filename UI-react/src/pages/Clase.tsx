@@ -12,6 +12,7 @@ import { DetalleEjercicioClaseModal } from '../components/DetalleEjercicioClaseM
 import { EtiquetasEditor } from '../components/EtiquetasEditor'
 import { AgregarMusicaModal } from '../components/AgregarMusicaModal'
 import { marcarDropManejado } from '../lib/dropExterno'
+import { useAsociarMusicaEjercicio } from '../lib/useAsociarMusicaEjercicio'
 import type { ClaseEjercicio, Musica } from '../types'
 
 // Puerto de claseController + clase.html (UI/biosoft.html:362-495).
@@ -61,6 +62,7 @@ export function Clase() {
   const clase = clases[claseIndex]
 
   const [vistaPlayer, setVistaPlayerState] = useState(getVistaPlayer())
+  const { consultar: consultarAsociacion, dialogo: dialogoAsociacion } = useAsociarMusicaEjercicio()
   const [buscarEjercicioNro, setBuscarEjercicioNro] = useState<number | null>(null)
   const [buscarMusicaNro, setBuscarMusicaNro] = useState<number | null>(null)
   const [detalleNro, setDetalleNro] = useState<number | null>(null)
@@ -663,6 +665,9 @@ export function Clase() {
               ejercicio: { nombre: ejercicio.nombre, nombreNormalized: ejercicio.nombreNormalized },
               ...(musica ? { musicaId: musica.id } : {}),
             })
+            // Si vino con su música ya es una asociación existente; si no, y
+            // la fila ya tenía música, ofrecer asociarla a este ejercicio.
+            if (!musica) consultarAsociacion(ejercicio.nombre, clase.ejercicios.find((e) => e.nro === buscarEjercicioNro)?.musicaId ?? null)
             setBuscarEjercicioNro(null)
           }}
           onClose={() => setBuscarEjercicioNro(null)}
@@ -672,6 +677,8 @@ export function Clase() {
         <BuscarMusicaModal
           onSelect={(musica) => {
             updateEjercicioClase(claseIndex, buscarMusicaNro, { musicaId: musica.id })
+            const ref = clase.ejercicios.find((e) => e.nro === buscarMusicaNro)?.ejercicio
+            consultarAsociacion(ref && 'nombre' in ref ? ref.nombre : null, musica.id)
             setBuscarMusicaNro(null)
           }}
           onClose={() => setBuscarMusicaNro(null)}
@@ -684,6 +691,7 @@ export function Clase() {
             <DetalleEjercicioClaseModal claseIndex={claseIndex} ejercicio={ej} onClose={() => setDetalleNro(null)} />
           ) : null
         })()}
+      {dialogoAsociacion}
       {archivosParaClase && (
         <AgregarMusicaModal
           archivosIniciales={archivosParaClase.files}

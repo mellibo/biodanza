@@ -4,6 +4,7 @@ import { useClasesStore } from '../store/clasesStore'
 import { usePlayerStore } from '../store/playerStore'
 import { infoMusica } from '../lib/musicaInfo'
 import { useEscToClose } from '../lib/useEscToClose'
+import { useAsociarMusicaEjercicio } from '../lib/useAsociarMusicaEjercicio'
 import { BuscarEjercicioModal } from './BuscarEjercicioModal'
 import { BuscarMusicaModal } from './BuscarMusicaModal'
 import type { ClaseEjercicio } from '../types'
@@ -22,6 +23,7 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
   const updateEjercicioClase = useClasesStore((s) => s.updateEjercicioClase)
   const playFile = usePlayerStore((s) => s.playFile)
 
+  const { consultar: consultarAsociacion, dialogo: dialogoAsociacion } = useAsociarMusicaEjercicio()
   const [buscarEjercicioOpen, setBuscarEjercicioOpen] = useState(false)
   const [buscarMusicaOpen, setBuscarMusicaOpen] = useState(false)
 
@@ -191,6 +193,7 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
         </div>
       </div>
 
+      {dialogoAsociacion}
       {buscarEjercicioOpen && (
         <BuscarEjercicioModal
           onSelect={(ej, musica) => {
@@ -198,6 +201,7 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
               ejercicio: { nombre: ej.nombre, nombreNormalized: ej.nombreNormalized },
               ...(musica ? { musicaId: musica.id } : {}),
             })
+            if (!musica) consultarAsociacion(ej.nombre, ejercicio.musicaId)
             setBuscarEjercicioOpen(false)
           }}
           onClose={() => setBuscarEjercicioOpen(false)}
@@ -207,6 +211,7 @@ export function DetalleEjercicioClaseModal({ claseIndex, ejercicio, onClose }: D
         <BuscarMusicaModal
           onSelect={(musica) => {
             patch({ musicaId: musica.id })
+            consultarAsociacion(nombreOrigen || null, musica.id)
             setBuscarMusicaOpen(false)
           }}
           onClose={() => setBuscarMusicaOpen(false)}
