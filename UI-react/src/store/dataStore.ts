@@ -33,13 +33,14 @@ const STORAGE_KEYS = {
   colecciones: 'biosoft_colecciones',
   grupos: 'biosoft_grupos',
   musicaPrefix: 'biosoft_musica_',
+  origenMigrado: 'biosoft_origen_ejercicios_v2',
 } as const
 
 function buildEjercicio(base: EjercicioBase): Ejercicio {
   return {
     ...base,
     etiquetas: base.etiquetas ?? [],
-    origen: base.origen ?? 'otro',
+    origen: base.origen ?? 'cimeb2012',
     id: getEjercicioId(base.nombre),
     nombreNormalized: normalize(base.nombre),
     grupoNormalized: normalize(base.grupo),
@@ -400,6 +401,19 @@ export const useDataStore = create<DataState>((set, get) => {
         ejerciciosById[id] = { ...ejercicio, musicasId: musicasIdNuevo }
         ejerciciosMigrados = true
       }
+    }
+
+    // Una sola vez: todo ejercicio que no sea del CIMEB 2018 es del CIMEB
+    // 2012 (el atributo "origen" se agregó después; un "otro" que se hubiera
+    // guardado antes de esa decisión pasa a 2012).
+    const origenMigrado = readLocalStorage<boolean>(STORAGE_KEYS.origenMigrado) === true
+    if (!origenMigrado) {
+      for (const id of ejerciciosOrder) {
+        const e = ejerciciosById[id]
+        if (e.origen !== 'cimeb2018' && e.origen !== 'cimeb2012') ejerciciosById[id] = { ...e, origen: 'cimeb2012' }
+      }
+      ejerciciosMigrados = true
+      writeLocalStorage(STORAGE_KEYS.origenMigrado, true)
     }
 
     set({ ejerciciosById, ejerciciosOrder, musicasById, musicasOrder, colecciones, grupos, initialized: true })

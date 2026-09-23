@@ -5,9 +5,12 @@ import { useEtiquetasStore } from '../store/etiquetasStore'
 import { Pagination } from '../components/Pagination'
 import { ResultadoImportarClasesModal } from '../components/ResultadoImportarClasesModal'
 import { normalize } from '../lib/normalize'
+import { usePreferencia } from '../lib/usePreferencia'
 import type { Clase, ResultadoImportacionClases } from '../types'
 
-const PAGE_SIZE = 15
+const TAMANOS_PAGINA = [10, 30, 50, 100, 200]
+const ORDENES = ['ninguno', 'nombre', 'fecha'] as const
+type Orden = (typeof ORDENES)[number]
 
 function segmentosDe(path: string): string[] {
   return path ? path.split('/') : []
@@ -200,9 +203,11 @@ export function Clases() {
   const [buscar, setBuscar] = useState('')
   // Orden de la lista mostrada (carpeta actual o resultados de búsqueda,
   // ver listaOrdenada) -- "ninguno" preserva el orden que ya traía
-  // (inserción/import), sin reordenar nada por default.
-  const [orden, setOrden] = useState<'ninguno' | 'nombre' | 'fecha'>('ninguno')
-  const [ordenDesc, setOrdenDesc] = useState(false)
+  // (inserción/import). Se recuerda entre visitas; por defecto, fecha
+  // decreciente (las más recientes primero).
+  const [orden, setOrden] = usePreferencia<Orden>('clasesOrden', 'fecha', (v): v is Orden => ORDENES.includes(v as Orden))
+  const [ordenDesc, setOrdenDesc] = usePreferencia<boolean>('clasesOrdenDesc', true, (v): v is boolean => typeof v === 'boolean')
+  const [tamanoPagina, setTamanoPagina] = usePreferencia<number>('clasesPorPagina', 50, (v): v is number => TAMANOS_PAGINA.includes(v as number))
   // Borrador del campo "Carpeta" mientras se escribe, por índice de clase
   // -- no se mueve la clase en cada tecla, solo al confirmar (blur/Enter),
   // y solo si la carpeta escrita ya existe (ver confirmarCarpeta).
@@ -436,9 +441,9 @@ export function Clases() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- listaMostrada se rearma cada render, alcanza con reaccionar a sus fuentes reales
   }, [buscando, resultadosBusqueda, enEstaCarpeta, orden, ordenDesc])
 
-  useEffect(() => setPage(1), [carpetaActual, buscar, orden, ordenDesc])
+  useEffect(() => setPage(1), [carpetaActual, buscar, orden, ordenDesc, tamanoPagina])
 
-  const paginaActual = listaOrdenada.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const paginaActual = listaOrdenada.slice((page - 1) * tamanoPagina, page * tamanoPagina)
   const segmentos = segmentosDe(carpetaActual)
 
   return (
@@ -646,12 +651,25 @@ export function Clases() {
             <button
               type="button"
               className="btn btn-default btn-sm"
-              onClick={() => setOrdenDesc((v) => !v)}
+              onClick={() => setOrdenDesc(!ordenDesc)}
               title={ordenDesc ? 'Descendente -- click para invertir' : 'Ascendente -- click para invertir'}
             >
               <span className={'glyphicon glyphicon-sort-by-attributes' + (ordenDesc ? '-alt' : '')} />
             </button>
           )}
+          <label style={{ margin: 0 }}>Por página:</label>
+          <select
+            className="form-control input-sm"
+            style={{ width: '80px', display: 'inline-block' }}
+            value={tamanoPagina}
+            onChange={(e) => setTamanoPagina(Number(e.target.value))}
+          >
+            {TAMANOS_PAGINA.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
         </div>
 
         <datalist id="bulkEtiquetasClases">
@@ -851,7 +869,7 @@ export function Clases() {
             ))}
           </tbody>
         </table>
-        <Pagination page={page} count={listaMostrada.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+        <Pagination page={page} count={listaMostrada.length} pageSize={tamanoPagina} onPageChange={setPage} />
         </div>
       </div>
       {resultadoImportacion && (

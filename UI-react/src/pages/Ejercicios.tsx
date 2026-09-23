@@ -4,6 +4,7 @@ import { usePlayerStore } from '../store/playerStore'
 import { buscarEjercicios, filtrarMusica } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import { EjercicioModal } from '../components/EjercicioModal'
+import { getPreferenciaAsociacion, setPreferenciaAsociacion, type PreferenciaAsociacion } from '../lib/useAsociarMusicaEjercicio'
 import { ORIGENES_EJERCICIO, type OrigenEjercicio } from '../types'
 
 const PAGE_SIZE = 15
@@ -32,6 +33,7 @@ export function Ejercicios() {
   const [page, setPage] = useState(1)
   const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
   const [creando, setCreando] = useState(false)
+  const [prefAsociacion, setPrefAsociacion] = useState<PreferenciaAsociacion>(getPreferenciaAsociacion())
   // Se busca en vivo por id (no se guarda el objeto Ejercicio en sí) para
   // que el modal siga reflejando cambios hechos en el propio modal (ej.
   // etiquetas) sin quedarse con una copia vieja del ejercicio.
@@ -40,7 +42,7 @@ export function Ejercicios() {
   const resultados = useMemo(
     () =>
       buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo).filter(
-        (e) => origen === 'todos' || (e.origen ?? 'otro') === origen,
+        (e) => origen === 'todos' || (e.origen ?? 'cimeb2012') === origen,
       ),
     [ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo, origen],
   )
@@ -107,7 +109,28 @@ export function Ejercicios() {
                 </select>{' '}
                 <button type="button" className="btn btn-primary" onClick={() => setCreando(true)}>
                   <span className="glyphicon glyphicon-plus" /> Nuevo ejercicio
-                </button>
+                </button>{' '}
+                <label
+                  className="control-label"
+                  htmlFor="selAsociacion"
+                  title="Qué hacer al elegir, en la edición de una clase, una música (o ejercicio) para una fila que ya tiene el otro dato"
+                >
+                  Asociar música a ejercicio desde una clase:{' '}
+                </label>
+                <select
+                  id="selAsociacion"
+                  className="form-control"
+                  value={prefAsociacion}
+                  onChange={(e) => {
+                    const v = e.target.value as PreferenciaAsociacion
+                    setPrefAsociacion(v)
+                    setPreferenciaAsociacion(v)
+                  }}
+                >
+                  <option value="preguntar">Preguntar</option>
+                  <option value="siempre">Asociar siempre</option>
+                  <option value="nunca">Nunca asociar</option>
+                </select>
               </div>
             </div>
             <div className="col-sm-12 form-group">
@@ -124,7 +147,7 @@ export function Ejercicios() {
                       <td>
                         <a onClick={() => setSeleccionadoId(ejercicio.id)}>
                           ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo}){' '}
-                          <span className="label label-default">{ORIGENES_EJERCICIO.find((o) => o.valor === (ejercicio.origen ?? 'otro'))?.etiqueta}</span>
+                          <span className="label label-default">{ORIGENES_EJERCICIO.find((o) => o.valor === (ejercicio.origen ?? 'cimeb2012'))?.etiqueta}</span>
                         </a>
                       </td>
                       <td>

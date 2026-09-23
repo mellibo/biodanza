@@ -8,15 +8,24 @@ import type { Ejercicio, Musica } from '../types'
 // ejercicio de forma permanente (en el catálogo, no solo en esa clase). La
 // respuesta se puede recordar ("No volver a preguntar"): 'siempre' asocia
 // sin preguntar, 'nunca' no asocia ni pregunta.
-type Preferencia = 'preguntar' | 'siempre' | 'nunca'
+export type PreferenciaAsociacion = 'preguntar' | 'siempre' | 'nunca'
+type Preferencia = PreferenciaAsociacion
 const KEY = 'asociarMusicaEjercicio'
+
+export function getPreferenciaAsociacion(): PreferenciaAsociacion {
+  return readLocalStorage<Preferencia>(KEY) ?? 'preguntar'
+}
+
+export function setPreferenciaAsociacion(v: PreferenciaAsociacion) {
+  writeLocalStorage(KEY, v)
+}
 
 function asociar(ejercicio: Ejercicio, musica: Musica) {
   const { guardarEjercicio } = useDataStore.getState()
   guardarEjercicio(ejercicio.id, {
     nombre: ejercicio.nombre,
     grupo: ejercicio.grupo,
-    origen: ejercicio.origen ?? 'otro',
+    origen: ejercicio.origen ?? 'cimeb2012',
     coleccion: ejercicio.coleccion,
     detalle: ejercicio.detalle,
     etiquetas: ejercicio.etiquetas,
@@ -37,7 +46,7 @@ export function useAsociarMusicaEjercicio(): {
     const ejercicio = getEjercicioByNombre(nombreEjercicio)
     const musica = getMusicaById(musicaId)
     if (!ejercicio || !musica || ejercicio.musicasId.includes(musica.id)) return
-    const pref = readLocalStorage<Preferencia>(KEY) ?? 'preguntar'
+    const pref = getPreferenciaAsociacion()
     if (pref === 'siempre') asociar(ejercicio, musica)
     else if (pref === 'preguntar') {
       setRecordar(false)
