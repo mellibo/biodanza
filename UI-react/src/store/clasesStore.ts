@@ -7,6 +7,7 @@ import { downloadJson, downloadBlob } from '../lib/download'
 import { resolveLegacyMusicaId } from '../lib/legacyMusicaId'
 import { decodeSiHaceFalta } from '../lib/decodeUrl'
 import { generarPlaylistM3U, generarPlaylistM3UMultiple, generarHtmlClase } from '../lib/exportClase'
+import { leerPlaylist, segmentosRuta } from '../lib/parsePlaylist'
 import type { Clase, ClaseEjercicio, ClaseEjercicioRef, ClaseExport, ClaseEjercicioExport, ResultadoImportacionClases } from '../types'
 
 function ejercicioRef(ejercicio: ClaseEjercicioRef | Record<string, never>): ClaseEjercicioRef {
@@ -178,6 +179,13 @@ interface ClasesState {
   descargarPlaylist: (index: number) => void
   descargarHtml: (index: number) => void
   importarClases: (file: File) => Promise<ResultadoImportacionClases>
+  // Importa playlists externas (.m3u/.m3u8/.pls, típicamente exportadas de
+  // Winamp -- ver scripts/exportar-playlists-winamp.ps1) como clases: una
+  // clase por playlist, un ejercicio por tema. Cada ruta se resuelve
+  // contra el catálogo cargado por coincidencia de nombre de archivo +
+  // carpetas (ver importarPlaylists). Comparte ultimaImportacion y el
+  // modal de resultado con importarClases.
+  importarPlaylists: (files: File[], carpeta: string) => Promise<ResultadoImportacionClases>
   // Foto de `clases` justo antes del último importarClases -- permite
   // "Cancelar importación" desde ResultadoImportarClasesModal (a pedido)
   // sin tener que borrar las clases importadas una por una a mano. Un solo
@@ -652,6 +660,138 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
       }
       reader.readAsText(file)
     })
+  },
+
+  importarPlaylists: async (files, carpeta) => {
+    const playlists = await Promise.all(files.map((f) => leerPlaylist(f)))
+    const dataStore = useDataStore.getState()
+    const { musicasOrder, musicasById } = dataStore
+
+    // Índice por nombre de archivo (minúsculas, NFC) -> candidatos con los
+    // segmentos de su ruta relativa (carpeta de la colección + carpeta +
+    // archivo). La ruta de la playlist es absoluta de OTRA PC, así que no
+    // se puede comparar entera: se elige el candidato que comparte más
+    // segmentos finales con ella (archivo, luego carpeta, luego carpeta de
+    // la colección...). Un empate con solo el nombre de archivo en común
+    // se toma igual pero se deja una nota, porque puede ser otro tema con
+    // el mismo nombre de archivo en otra colección/carpeta.
+    const indicePorArchivo = new Map<string, Array<{ id: string; segmentos: string[] }>>()
+    // Nombre de colección y nombre de su carpeta en disco -> colección,
+    // para adivinar a qué colección pertenecía un tema NO encontrado y
+    // poder decir en el resumen si esa colección está cargada o no.
+    const coleccionPorSegmento = new Map<string, string>()
+    for (const col of dataStore.colecciones) {
+      coleccionPorSegmento.set(col.nombre.toLowerCase(), col.nombre)
+      const ultima = segmentosRuta(col.carpeta || '').pop()
+      if (ultima) coleccionPorSegmento.set(ultima, col.nombre)
+    }
+    for (const id of musicasOrder) {
+      const musica = musicasById[id]
+      if (!musica || !musica.archivo) continue
+      const rel = (dataStore.getCarpetaColeccion(musica.coleccion) ?? '') + '/' + decodeSiHaceFalta(musica.carpeta || '') + '/' + decodeSiHaceFalta(musica.archivo)
+      const segmentos = segmentosRuta(rel)
+      const clave = segmentos[segmentos.length - 1]
+      const lista = indicePorArchivo.get(clave) ?? []
+      lista.push({ id, segmentos })
+      indicePorArchivo.set(clave, lista)
+      if (!coleccionPorSegmento.has(musica.coleccion.toLowerCase())) coleccionPorSegmento.set(musica.coleccion.toLowerCase(), musica.coleccion)
+    }
+
+    function resolver(ruta: string): { musicaId: string | null; ambiguo: boolean } {
+      const seg = segmentosRuta(ruta)
+      const candidatos = indicePorArchivo.get(seg[seg.length - 1] ?? '')
+      if (!candidatos || candidatos.length === 0) return { musicaId: null, ambiguo: false }
+      let mejor: string | null = null
+      let mejorPuntaje = 0
+      let empatados = 0
+      for (const c of candidatos) {
+        let puntaje = 0
+        while (
+          puntaje < c.segmentos.length &&
+          puntaje < seg.length &&
+          c.segmentos[c.segmentos.length - 1 - puntaje] === seg[seg.length - 1 - puntaje]
+        )
+          puntaje++
+        if (puntaje > mejorPuntaje) {
+          mejor = c.id
+          mejorPuntaje = puntaje
+          empatados = 1
+        } else if (puntaje === mejorPuntaje) empatados++
+      }
+      return { musicaId: mejor, ambiguo: empatados > 1 }
+    }
+
+    function adivinarColeccion(ruta: string): string | null {
+      const seg = segmentosRuta(ruta)
+      // De la carpeta más cercana al archivo hacia la raíz.
+      for (let i = seg.length - 2; i >= 0; i--) {
+        const col = coleccionPorSegmento.get(seg[i])
+        if (col) return col
+      }
+      return null
+    }
+
+    const FUERA = '(fuera de las colecciones)'
+    const statsPorColeccion = new Map<string, { total: number; resueltos: number }>()
+    let ejerciciosConMusicaReferenciada = 0
+    let ejerciciosResueltos = 0
+    const detalleFaltantes: ResultadoImportacionClases['detalleFaltantes'] = []
+    const ahora = new Date().toISOString()
+
+    const nuevas: Clase[] = playlists.map((pl) => ({
+      titulo: pl.titulo,
+      fechaCreacion: ahora,
+      fechaClase: ahora,
+      comentarios: 'Importada de playlist (' + pl.items.length + ' temas)',
+      etiquetas: [],
+      carpeta,
+      ejercicios: pl.items.map((item, i) => {
+        const nro = i + 1
+        const { musicaId, ambiguo } = resolver(item.ruta)
+        const musica = musicaId ? musicasById[musicaId] : undefined
+        const col = musica ? musica.coleccion : (adivinarColeccion(item.ruta) ?? FUERA)
+        const stat = statsPorColeccion.get(col) ?? { total: 0, resueltos: 0 }
+        stat.total++
+        ejerciciosConMusicaReferenciada++
+        let comentarios: string | null = null
+        let ejercicio: ClaseEjercicio['ejercicio'] = {}
+        if (musica) {
+          stat.resueltos++
+          ejerciciosResueltos++
+          // Si la música está asociada a UN solo ejercicio del catálogo, se
+          // completa directamente; con varios no se adivina.
+          if (musica.ejerciciosId.length === 1) {
+            const ej = dataStore.getEjercicioById(musica.ejerciciosId[0])
+            if (ej) ejercicio = { nombre: ej.nombre, nombreNormalized: ej.nombreNormalized }
+          }
+          if (ambiguo) comentarios = 'Ojo: el archivo de la playlist coincide con más de una música del catálogo -- verificar. Ruta original: ' + item.ruta
+        } else {
+          const partes = item.ruta.replace(/\\/g, '/').split('/')
+          const archivo = partes.pop() ?? item.ruta
+          detalleFaltantes.push({ clase: pl.titulo, ejercicioNro: nro, coleccion: col, carpeta: partes.join('\\'), archivo })
+          comentarios = 'Música sin asociar al importar: ' + (item.titulo || archivo) + ' [' + item.ruta + ']'
+        }
+        statsPorColeccion.set(col, stat)
+        return { ...nuevoEjercicio(nro), ejercicio, musicaId, comentarios }
+      }),
+    }))
+
+    const clasesAntes = get().clases
+    const clases = [...nuevas, ...clasesAntes]
+    set({ clases, ultimaImportacion: { clasesAntes } })
+    get().saveClases(clases)
+
+    const coleccionesCargadas = new Set(Array.from(musicasOrder, (id) => musicasById[id]?.coleccion).filter((c): c is string => !!c))
+    return {
+      totalClases: nuevas.length,
+      totalEjercicios: nuevas.reduce((acc, c) => acc + c.ejercicios.length, 0),
+      ejerciciosConMusicaReferenciada,
+      ejerciciosResueltos,
+      porColeccion: Array.from(statsPorColeccion.entries())
+        .map(([coleccion, stat]) => ({ coleccion, ...stat, cargada: coleccionesCargadas.has(coleccion) }))
+        .sort((a, b) => a.coleccion.localeCompare(b.coleccion)),
+      detalleFaltantes,
+    }
   },
 
   // Restaura `clases` a como estaba antes del último importarClases (ver

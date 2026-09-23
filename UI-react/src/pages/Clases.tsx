@@ -175,6 +175,7 @@ export function Clases() {
   const exportarClases = useClasesStore((s) => s.exportarClases)
   const exportarClase = useClasesStore((s) => s.exportarClase)
   const importarClases = useClasesStore((s) => s.importarClases)
+  const importarPlaylists = useClasesStore((s) => s.importarPlaylists)
   const deleteClases = useClasesStore((s) => s.deleteClases)
   const moverClases = useClasesStore((s) => s.moverClases)
   const exportarClasesSeleccionadas = useClasesStore((s) => s.exportarClasesSeleccionadas)
@@ -190,6 +191,7 @@ export function Clases() {
 
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const playlistInputRef = useRef<HTMLInputElement>(null)
   const [vistaCompacta, setVistaCompacta] = useState(true)
   const [page, setPage] = useState(1)
   const [carpetaActual, setCarpetaActual] = useState('')
@@ -321,6 +323,18 @@ export function Clases() {
       window.alert('El archivo de clases no tiene un formato válido.')
     }
     if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  // Playlists externas (Winamp: .m3u/.m3u8/.pls) -> una clase por
+  // playlist, dentro de la carpeta que se está viendo (igual que "Nueva
+  // Clase"). Se aceptan varias a la vez.
+  async function onImportPlaylists(files: File[]) {
+    try {
+      if (files.length > 0) setResultadoImportacion(await importarPlaylists(files, carpetaActual))
+    } catch {
+      window.alert('No se pudieron leer las playlists seleccionadas.')
+    }
+    if (playlistInputRef.current) playlistInputRef.current.value = ''
   }
 
   function crearCarpeta() {
@@ -509,6 +523,14 @@ export function Clases() {
           <button type="button" className="btn btn-primary" onClick={() => fileInputRef.current?.click()} title="Importar clases de un archivo">
             <span className="glyphicon glyphicon-import" /> Importar Clases
           </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => playlistInputRef.current?.click()}
+            title="Importar playlists (.m3u, .m3u8, .pls -- ej. exportadas de Winamp) como clases, en la carpeta actual"
+          >
+            <span className="glyphicon glyphicon-list" /> Importar Playlists
+          </button>
         </div>
         {creandoCarpeta && (
           <span>
@@ -532,6 +554,14 @@ export function Clases() {
           type="file"
           style={{ visibility: 'hidden' }}
           onChange={(e) => e.target.files?.[0] && onImportFile(e.target.files[0])}
+        />
+        <input
+          ref={playlistInputRef}
+          type="file"
+          multiple
+          accept=".m3u,.m3u8,.pls"
+          style={{ display: 'none' }}
+          onChange={(e) => onImportPlaylists(Array.from(e.target.files ?? []))}
         />
 
         {buscando ? (
