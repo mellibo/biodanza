@@ -3,10 +3,22 @@
 // y diccionario (propiedades "x<id>" colgadas del mismo array); acá se
 // reemplaza por Record<string, T> + arrays derivados, ver src/store/dataStore.ts.
 
+// De dónde viene un ejercicio: los catálogos del CIMEB (2012 = catálogo IBF,
+// 2018 = Escuela de Buenos Aires/Toro-Terrén) u otro origen (propios, etc.).
+export type OrigenEjercicio = 'cimeb2012' | 'cimeb2018' | 'otro'
+export const ORIGENES_EJERCICIO: Array<{ valor: OrigenEjercicio; etiqueta: string }> = [
+  { valor: 'cimeb2012', etiqueta: 'CIMEB 2012' },
+  { valor: 'cimeb2018', etiqueta: 'CIMEB 2018' },
+  { valor: 'otro', etiqueta: 'Otro' },
+]
+
 export interface EjercicioBase {
   nombre: string
   grupo: string
   coleccion: string
+  // Ausente en ejercicios guardados antes de existir el campo -- se lee
+  // como 'otro' (ver buildEjercicio en dataStore.ts).
+  origen?: OrigenEjercicio
   detalle: string
   musicasId: string[]
   // Etiquetas libres (ver src/store/etiquetasStore.ts) -- mismo mecanismo

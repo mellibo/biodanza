@@ -39,6 +39,7 @@ function buildEjercicio(base: EjercicioBase): Ejercicio {
   return {
     ...base,
     etiquetas: base.etiquetas ?? [],
+    origen: base.origen ?? 'otro',
     id: getEjercicioId(base.nombre),
     nombreNormalized: normalize(base.nombre),
     grupoNormalized: normalize(base.grupo),
@@ -111,7 +112,7 @@ interface DataState {
   getCarpetaColeccion: (coleccionNombre: string) => string | undefined
 
   addEjercicio: (base: EjercicioBase) => Ejercicio
-  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion' | 'etiquetas'>>) => void
+  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion' | 'etiquetas' | 'origen'>>) => void
   removeEjercicio: (id: string) => void
   saveEjerciciosSnapshot: () => void
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
@@ -703,7 +704,7 @@ export const useDataStore = create<DataState>((set, get) => {
       if (ejercicio) {
         resultado.ejerciciosExistentes++
       } else {
-        ejercicio = get().addEjercicio({ nombre: e.nombre, grupo: e.grupo, coleccion: 'CIMEB', detalle: e.detalle, musicasId: [], etiquetas: [] })
+        ejercicio = get().addEjercicio({ nombre: e.nombre, grupo: e.grupo, coleccion: 'CIMEB', origen: 'cimeb2018', detalle: e.detalle, musicasId: [], etiquetas: [] })
         resultado.ejerciciosNuevos++
       }
       const ejId = ejercicio.id

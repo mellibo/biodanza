@@ -4,6 +4,7 @@ import { usePlayerStore } from '../store/playerStore'
 import { buscarEjercicios, filtrarMusica } from '../lib/search'
 import { Pagination } from '../components/Pagination'
 import { EjercicioModal } from '../components/EjercicioModal'
+import { ORIGENES_EJERCICIO, type OrigenEjercicio } from '../types'
 
 const PAGE_SIZE = 15
 
@@ -26,6 +27,7 @@ export function Ejercicios() {
 
   const [buscar, setBuscar] = useState('')
   const [grupo, setGrupo] = useState('TODOS')
+  const [origen, setOrigen] = useState<'todos' | OrigenEjercicio>('todos')
   const [colapsado, setColapsado] = useState(false)
   const [page, setPage] = useState(1)
   const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
@@ -35,11 +37,14 @@ export function Ejercicios() {
   const seleccionado = seleccionadoId ? (ejerciciosById[seleccionadoId] ?? null) : null
 
   const resultados = useMemo(
-    () => buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo),
-    [ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo],
+    () =>
+      buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo).filter(
+        (e) => origen === 'todos' || (e.origen ?? 'otro') === origen,
+      ),
+    [ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo, origen],
   )
 
-  useEffect(() => setPage(1), [buscar, grupo])
+  useEffect(() => setPage(1), [buscar, grupo, origen])
 
   const paginaActual = resultados.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -82,7 +87,23 @@ export function Ejercicios() {
                   className="form-control"
                   value={buscar}
                   onChange={(e) => setBuscar(e.target.value)}
-                />
+                />{' '}
+                <label className="control-label" htmlFor="selOrigen">
+                  Origen:{' '}
+                </label>
+                <select
+                  id="selOrigen"
+                  className="form-control"
+                  value={origen}
+                  onChange={(e) => setOrigen(e.target.value as 'todos' | OrigenEjercicio)}
+                >
+                  <option value="todos">Todos</option>
+                  {ORIGENES_EJERCICIO.map((o) => (
+                    <option key={o.valor} value={o.valor}>
+                      {o.etiqueta}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="col-sm-12 form-group">
@@ -98,7 +119,8 @@ export function Ejercicios() {
                     <tr key={ejercicio.id}>
                       <td>
                         <a onClick={() => setSeleccionadoId(ejercicio.id)}>
-                          ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo})
+                          ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo}){' '}
+                          <span className="label label-default">{ORIGENES_EJERCICIO.find((o) => o.valor === (ejercicio.origen ?? 'otro'))?.etiqueta}</span>
                         </a>
                       </td>
                       <td>
