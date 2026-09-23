@@ -16,6 +16,9 @@ export interface ItemPlaylist {
 
 export interface PlaylistLeida {
   titulo: string
+  // "#FECHA:" que escribe scripts/exportar-playlists-winamp.ps1 (fecha de
+  // creación de la playlist en Winamp), como ISO -- null si no viene.
+  fecha: string | null
   items: ItemPlaylist[]
 }
 
@@ -60,6 +63,7 @@ function tituloDesdeNombreArchivo(nombre: string): string {
 
 function parseM3U(texto: string, tituloPorDefecto: string): PlaylistLeida {
   let titulo = tituloPorDefecto
+  let fecha: string | null = null
   const items: ItemPlaylist[] = []
   let pendiente: { titulo: string | null; segundos: number | null } | null = null
   for (const lineaCruda of texto.split(/\r?\n/)) {
@@ -74,12 +78,17 @@ function parseM3U(texto: string, tituloPorDefecto: string): PlaylistLeida {
       }
       const pl = linea.match(/^#PLAYLIST:(.*)$/i)
       if (pl && pl[1].trim()) titulo = pl[1].trim()
+      const fe = linea.match(/^#FECHA:(.*)$/i)
+      if (fe) {
+        const d = new Date(fe[1].trim())
+        if (!isNaN(d.getTime())) fecha = d.toISOString()
+      }
       continue
     }
     items.push({ ruta: limpiarRuta(linea), titulo: pendiente?.titulo ?? null, segundos: pendiente?.segundos ?? null })
     pendiente = null
   }
-  return { titulo, items }
+  return { titulo, fecha, items }
 }
 
 function parsePLS(texto: string, tituloPorDefecto: string): PlaylistLeida {
@@ -102,7 +111,7 @@ function parsePLS(texto: string, tituloPorDefecto: string): PlaylistLeida {
     .sort((a, b) => a[0] - b[0])
     .map(([, it]) => it)
     .filter((it) => it.ruta)
-  return { titulo: tituloPorDefecto, items }
+  return { titulo: tituloPorDefecto, fecha: null, items }
 }
 
 export async function leerPlaylist(file: File): Promise<PlaylistLeida> {
