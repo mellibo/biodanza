@@ -31,6 +31,7 @@ export function Ejercicios() {
   const [colapsado, setColapsado] = useState(false)
   const [page, setPage] = useState(1)
   const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
+  const [creando, setCreando] = useState(false)
   // Se busca en vivo por id (no se guarda el objeto Ejercicio en sí) para
   // que el modal siga reflejando cambios hechos en el propio modal (ej.
   // etiquetas) sin quedarse con una copia vieja del ejercicio.
@@ -103,7 +104,10 @@ export function Ejercicios() {
                       {o.etiqueta}
                     </option>
                   ))}
-                </select>
+                </select>{' '}
+                <button type="button" className="btn btn-primary" onClick={() => setCreando(true)}>
+                  <span className="glyphicon glyphicon-plus" /> Nuevo ejercicio
+                </button>
               </div>
             </div>
             <div className="col-sm-12 form-group">
@@ -144,13 +148,8 @@ export function Ejercicios() {
           </div>
         </div>
       </div>
-      {seleccionado && (
-        <EjercicioModal
-          ejercicio={seleccionado}
-          musicas={getMusicasForEjercicio(seleccionado)}
-          onClose={() => setSeleccionadoId(null)}
-        />
-      )}
+      {seleccionado && <EjercicioModal key={seleccionado.id} ejercicio={seleccionado} onClose={() => setSeleccionadoId(null)} />}
+      {creando && <EjercicioModal ejercicio={null} onClose={() => setCreando(false)} />}
     </div>
   )
 }

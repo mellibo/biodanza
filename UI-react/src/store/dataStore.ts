@@ -8,7 +8,7 @@ import { parseLineasToEtiquetas } from '../lib/etiquetasParsing'
 import { parseDuracion } from '../lib/duration'
 import { eliminarBlobMusica } from '../lib/musicaBlobStore'
 import { useClasesStore } from './clasesStore'
-import type { Coleccion, DatosCimeb, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase, ResultadoImportacionCimeb } from '../types'
+import type { Coleccion, DatosCimeb, DatosEjercicioEditable, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase, ResultadoImportacionCimeb } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
 // eran simultáneamente array (para iterar en orden) y diccionario (props
@@ -131,6 +131,10 @@ interface DataState {
   // Ejercicios + músicas asociadas leídos del PDF del CIMEB (ver
   // scripts/importar-cimeb-2018.cjs y CargarEjercicios.tsx).
   importarEjerciciosCimeb: (datos: DatosCimeb) => ResultadoImportacionCimeb
+  // Crea (idOriginal null) o edita un ejercicio -- nombre, grupo, origen,
+  // detalle, etiquetas y músicas asociadas, todo junto (ver EjercicioModal).
+  // Renombrar cambia el id (se deriva del nombre): se re-apuntan las músicas.
+  guardarEjercicio: (idOriginal: string | null, datos: DatosEjercicioEditable) => { ok: true; id: string } | { ok: false; error: string }
 }
 
 // Forma de cada fila validada de la grilla de importación de música
@@ -750,6 +754,74 @@ export const useDataStore = create<DataState>((set, get) => {
       saveMusicasColeccion(col, musicas)
     }
     return resultado
+  },
+
+  guardarEjercicio: (idOriginal, datos) => {
+    const nombre = datos.nombre.trim()
+    if (!nombre) return { ok: false, error: 'El ejercicio necesita un nombre.' }
+    const nuevoId = getEjercicioId(nombre)
+    if (nuevoId !== idOriginal && get().ejerciciosById[nuevoId]) return { ok: false, error: 'Ya existe un ejercicio con ese nombre.' }
+    const anterior = idOriginal ? get().ejerciciosById[idOriginal] : undefined
+    const grupo = datos.grupo.trim() || 'Otros'
+
+    if (!get().grupos.some((g) => normalize(g.nombre) === normalize(grupo))) {
+      const grupos = [...get().grupos, { idGrupo: Math.max(0, ...get().grupos.map((g) => g.idGrupo)) + 1, nombre: grupo }]
+      set({ grupos })
+      writeLocalStorage(STORAGE_KEYS.grupos, grupos)
+    }
+
+    const musicasAntes = new Set(anterior?.musicasId ?? [])
+    const musicasDespues = new Set(datos.musicasId.filter((id) => get().musicasById[id]))
+    const ejercicio = buildEjercicio({
+      nombre,
+      grupo,
+      coleccion: datos.coleccion,
+      origen: datos.origen,
+      detalle: datos.detalle,
+      etiquetas: datos.etiquetas,
+      musicasId: Array.from(musicasDespues),
+    })
+
+    set((state) => {
+      const ejerciciosById = { ...state.ejerciciosById }
+      let ejerciciosOrder = state.ejerciciosOrder
+      if (idOriginal && idOriginal !== nuevoId) {
+        delete ejerciciosById[idOriginal]
+        ejerciciosOrder = ejerciciosOrder.map((id) => (id === idOriginal ? nuevoId : id))
+      } else if (!idOriginal) {
+        ejerciciosOrder = [...ejerciciosOrder, nuevoId]
+      }
+      ejerciciosById[nuevoId] = ejercicio
+
+      // Ida y vuelta: musica.ejerciciosId sigue a ejercicio.musicasId.
+      const musicasById = { ...state.musicasById }
+      for (const id of state.musicasOrder) {
+        const m = musicasById[id]
+        if (!m) continue
+        const tenia = idOriginal ? m.ejerciciosId.includes(idOriginal) : false
+        const debe = musicasDespues.has(id)
+        if (!tenia && !debe) continue
+        const sinViejo = m.ejerciciosId.filter((e) => e !== idOriginal && e !== nuevoId)
+        const ejerciciosId = debe ? [...sinViejo, nuevoId] : sinViejo
+        if (ejerciciosId.length !== m.ejerciciosId.length || ejerciciosId.some((e, i) => e !== m.ejerciciosId[i])) musicasById[id] = { ...m, ejerciciosId }
+      }
+      return { ejerciciosById, ejerciciosOrder, musicasById }
+    })
+
+    get().saveEjerciciosSnapshot()
+    const coleccionesTocadas = new Set<string>()
+    for (const id of new Set([...musicasAntes, ...musicasDespues])) {
+      const m = get().musicasById[id]
+      if (m) coleccionesTocadas.add(m.coleccion)
+    }
+    for (const col of coleccionesTocadas) {
+      const musicas = get()
+        .musicasOrder.map((id) => get().musicasById[id])
+        .filter((m): m is Musica => !!m && m.coleccion === col)
+        .map(toMusicaBase)
+      saveMusicasColeccion(col, musicas)
+    }
+    return { ok: true, id: nuevoId }
   },
 
   removeColeccion: (nombreColeccion) => {

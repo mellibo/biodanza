@@ -235,3 +235,14 @@ export interface ResultadoImportacionCimeb {
   // Músicas del PDF que no se pudieron ubicar en el catálogo cargado.
   sinResolver: Array<{ ejercicio: string; titulo: string; artista: string; referencia: string }>
 }
+
+// Lo que edita el usuario de un ejercicio (ver dataStore.guardarEjercicio).
+export interface DatosEjercicioEditable {
+  nombre: string
+  grupo: string
+  origen: OrigenEjercicio
+  coleccion: string
+  detalle: string
+  etiquetas: string[]
+  musicasId: string[]
+}
