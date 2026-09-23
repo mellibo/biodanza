@@ -48,3 +48,18 @@ vínculo con las músicas: faltan ~119 vínculos, hay 14 de más, y para los CD 
 (y 21, que no existe) la clave del PDF no apunta a la misma canción que la del disco,
 así que **no conviene importar los vínculos del PDF tal cual**: habría que mapear esos
 CD por título/intérprete.
+
+## Vínculos que faltan: cómo se agregan
+
+`scripts/mapear-vinculos-cimeb-2012.cjs` lleva cada música del PDF a la clave que
+tiene en el disco (por título/intérprete cuando la clave del PDF no coincide: los
+CD 20 y 21 del PDF son los 19 y 20 del disco, y el CD 05 está corrido desde la
+pista 11) y arma `cimeb/vinculos-ibf-2012.json` con **95 vínculos en 30 ejercicios**.
+
+Para aplicarlos: con la colección IBF cargada, en **Cargar Ejercicios** usar
+**Importar CIMEB (JSON)** y elegir `cimeb/vinculos-ibf-2012.json`. Solo agrega
+vínculos (los ejercicios ya existen; no modifica su texto, grupo ni origen).
+
+Quedan **120 apariciones (54 músicas distintas) sin ubicar**, porque no existen en el
+disco (CD 19 y 21 del PDF, pistas nuevas) o la clave del disco es otra canción:
+`vinculos-sin-ubicar.csv`. Esas hay que cargarlas primero como música.

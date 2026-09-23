@@ -1,0 +1,1450 @@
+{
+  "fuente": "CIMEB 2012 (vínculos que faltan)",
+  "ejercicios": [
+    {
+      "nombre": "RONDAS CONCÉNTRICAS DE MIRADAS",
+      "grupo": "LAS RONDAS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Ay Fond Kiss",
+          "artista": "Fairground Attraction",
+          "duracion": "3:20",
+          "coleccion": "IBF 19:01 (por título (20:01 -> 19:01))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "RONDA DE ACTIVACIÓN",
+      "grupo": "LAS RONDAS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Aquarela do Brasil",
+          "artista": "Santiago, Emílio",
+          "duracion": "5:31",
+          "coleccion": "IBF 01:16 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 16
+            }
+          ]
+        },
+        {
+          "titulo": "Batuque",
+          "artista": "Mercury, Daniela",
+          "duracion": "3:23",
+          "coleccion": "IBF 05:21 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 21
+            }
+          ]
+        },
+        {
+          "titulo": "Behind That Locked Door",
+          "artista": "Harrison, George",
+          "duracion": "3:07",
+          "coleccion": "IBF 01:06 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Canta, Canta minha gente",
+          "artista": "da Vila, Martinho",
+          "duracion": "2:33",
+          "coleccion": "IBF 04:08 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 8
+            }
+          ]
+        },
+        {
+          "titulo": "Canto do Povo de um lugar",
+          "artista": "Veloso, Caetano",
+          "duracion": "4:12",
+          "coleccion": "IBF 02:05 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 5
+            }
+          ]
+        },
+        {
+          "titulo": "Coisa de Pele",
+          "artista": "Carvalho, Beth",
+          "duracion": "3:26",
+          "coleccion": "IBF 03:12 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 12
+            }
+          ]
+        },
+        {
+          "titulo": "Coisa mais linda",
+          "artista": "Veloso, Caetano",
+          "duracion": "3:12",
+          "coleccion": "IBF 02:06 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Conto de Areia",
+          "artista": "Nunes, Clara",
+          "duracion": "3:40",
+          "coleccion": "IBF 03:09 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 9
+            }
+          ]
+        },
+        {
+          "titulo": "Coqueiro de Itapoã",
+          "artista": "Veloso, Caetano",
+          "duracion": "2:37",
+          "coleccion": "IBF 02:04 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 4
+            }
+          ]
+        },
+        {
+          "titulo": "Eu quero mais",
+          "artista": "Carvalho, Beth",
+          "duracion": "2:20",
+          "coleccion": "IBF 05:09 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 9
+            }
+          ]
+        },
+        {
+          "titulo": "Eu quero meu amor",
+          "artista": "Ramalho, Elba",
+          "duracion": "2:40",
+          "coleccion": "IBF 05:13 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 13
+            }
+          ]
+        },
+        {
+          "titulo": "Eu sei que vou te amar",
+          "artista": "de Moraes-Creuza-Toquinho",
+          "duracion": "3:30",
+          "coleccion": "IBF 12:01 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 12,
+              "pista": 1
+            }
+          ]
+        },
+        {
+          "titulo": "Fava de Cheiro",
+          "artista": "Sivuca",
+          "duracion": "2:37",
+          "coleccion": "IBF 05:12 (por título (05:11 -> 05:12))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 12
+            }
+          ]
+        },
+        {
+          "titulo": "Feira de Mangaio",
+          "artista": "Nunes, Clara",
+          "duracion": "3:19",
+          "coleccion": "IBF 05:10 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 10
+            }
+          ]
+        },
+        {
+          "titulo": "Fim de Reinado (ao vivo)",
+          "artista": "Carvalho, Beth",
+          "duracion": "2:27",
+          "coleccion": "IBF 01:14 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 14
+            }
+          ]
+        },
+        {
+          "titulo": "Folhas secas (ao vivo)",
+          "artista": "Carvalho, Beth",
+          "duracion": "2:27",
+          "coleccion": "IBF 04:10 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 10
+            }
+          ]
+        },
+        {
+          "titulo": "I'd Have You Anytime",
+          "artista": "Harrison, George",
+          "duracion": "2:56",
+          "coleccion": "IBF 02:07 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "Juizio final",
+          "artista": "Nunes, Clara",
+          "duracion": "2:54",
+          "coleccion": "IBF 04:06 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "Lenda das Sereias, Rainha do Mar",
+          "artista": "Monte, Marisa",
+          "duracion": "4:08",
+          "coleccion": "IBF 04:02 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 2
+            }
+          ]
+        },
+        {
+          "titulo": "Let It Be",
+          "artista": "The Beatles",
+          "duracion": "4:03",
+          "coleccion": "IBF 01:02 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 2
+            }
+          ]
+        },
+        {
+          "titulo": "Meu Sapato Já Furou",
+          "artista": "Nunes, Clara",
+          "duracion": "3:06",
+          "coleccion": "IBF 04:22 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 22
+            }
+          ]
+        },
+        {
+          "titulo": "My Sweet Lord",
+          "artista": "Harrison, George",
+          "duracion": "4:41",
+          "coleccion": "IBF 03:07 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "Nada por mim/Fullgás",
+          "artista": "Santiago, Emílio",
+          "duracion": "6:06",
+          "coleccion": "IBF 14:05 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 14,
+              "pista": 5
+            }
+          ]
+        },
+        {
+          "titulo": "Não Enche",
+          "artista": "Veloso, Caetano",
+          "duracion": "3:31",
+          "coleccion": "IBF 03:15 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 15
+            }
+          ]
+        },
+        {
+          "titulo": "O mar Serenou",
+          "artista": "Nunes, Clara",
+          "duracion": "3:00",
+          "coleccion": "IBF 01:13 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 13
+            }
+          ]
+        },
+        {
+          "titulo": "O qué é O qué é?",
+          "artista": "Gonzaguinha",
+          "duracion": "4:21",
+          "coleccion": "IBF 03:16 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 16
+            }
+          ]
+        },
+        {
+          "titulo": "Olho por Olho",
+          "artista": "Carvalho, Beth",
+          "duracion": "3:11",
+          "coleccion": "IBF 04:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Paixão de Beata",
+          "artista": "do Acordeon, Pinto",
+          "duracion": "3:27",
+          "coleccion": "IBF 05:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Pedi ao céu",
+          "artista": "Carvalho, Beth",
+          "duracion": "2:53",
+          "coleccion": "IBF 04:11 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 11
+            }
+          ]
+        },
+        {
+          "titulo": "Portela na avenida",
+          "artista": "Nunes, Clara",
+          "duracion": "3:46",
+          "coleccion": "IBF 04:19 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 19
+            }
+          ]
+        },
+        {
+          "titulo": "Preciso me encontrar",
+          "artista": "Monte, Marisa",
+          "duracion": "3:33",
+          "coleccion": "IBF 04:01 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 1
+            }
+          ]
+        },
+        {
+          "titulo": "Que Nem Vem Vem",
+          "artista": "Ramalho, Elba",
+          "duracion": "2:46",
+          "coleccion": "IBF 05:04 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 4
+            }
+          ]
+        },
+        {
+          "titulo": "Queixa",
+          "artista": "Veloso, Caetano",
+          "duracion": "4:27",
+          "coleccion": "IBF 04:17 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 17
+            }
+          ]
+        },
+        {
+          "titulo": "Rumba Azul",
+          "artista": "Veloso, Caetano",
+          "duracion": "4:02",
+          "coleccion": "IBF 03:14 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 3,
+              "pista": 14
+            }
+          ]
+        },
+        {
+          "titulo": "Saco de Feijão/Corda no pescoço/Sonhando eu sou feliz (ao vivo)",
+          "artista": "Carvalho, Beth",
+          "duracion": "5:13",
+          "coleccion": "IBF 04:21 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 21
+            }
+          ]
+        },
+        {
+          "titulo": "Samba no quintal",
+          "artista": "Carvalho, Beth",
+          "duracion": "3:29",
+          "coleccion": "IBF 01:15 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 15
+            }
+          ]
+        },
+        {
+          "titulo": "Sete mil vezes",
+          "artista": "Veloso, Caetano",
+          "duracion": "2:21",
+          "coleccion": "IBF 02:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Stewball",
+          "artista": "Baez, Joan",
+          "duracion": "2:59",
+          "coleccion": "IBF 02:14 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 14
+            }
+          ]
+        },
+        {
+          "titulo": "Tema de Amor de Gabriela",
+          "artista": "Costa, Gal / Jobim, Tom",
+          "duracion": "4:04",
+          "coleccion": "IBF 01:11 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 11
+            }
+          ]
+        },
+        {
+          "titulo": "The Girl From Ipanema (feat. Astrud Gilberto)",
+          "artista": "Getz, Stan / Gilberto, João",
+          "duracion": "5:16",
+          "coleccion": "IBF 14:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 14,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Trem das cores",
+          "artista": "Veloso, Caetano",
+          "duracion": "2:26",
+          "coleccion": "IBF 02:15 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 15
+            }
+          ]
+        },
+        {
+          "titulo": "Um Canto de Afoxé Para O Bloco do Ilê",
+          "artista": "Veloso, Caetano",
+          "duracion": "3:03",
+          "coleccion": "IBF 04:18 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 4,
+              "pista": 18
+            }
+          ]
+        },
+        {
+          "titulo": "Vltava (Die Moldau) [Part] - Symphonic Poem n°2  from cycle 'Ma Vlast'",
+          "artista": "Smetana, Bedřich (1824-1884)",
+          "duracion": "3:52",
+          "coleccion": "IBF 11:17 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 11,
+              "pista": 17
+            }
+          ]
+        },
+        {
+          "titulo": "Xote das meninas",
+          "artista": "Monte, Marisa",
+          "duracion": "4:07",
+          "coleccion": "IBF 02:21 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 2,
+              "pista": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "RONDA FINAL",
+      "grupo": "LAS RONDAS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Carnaval de São Vicente",
+          "artista": "Evora, Cesaria",
+          "duracion": "3:50",
+          "coleccion": "IBF 20:17 (por título (21:06 -> 20:17))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 17
+            }
+          ]
+        },
+        {
+          "titulo": "O Amanhã",
+          "artista": "Simone",
+          "duracion": "4:48",
+          "coleccion": "IBF 20:15 (por título (21:10 -> 20:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "MARCHA SINÉRGICA",
+      "grupo": "LA MARCHA",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "When The Saints Go Marchin' In",
+          "artista": "The New Orleans Banjo Band",
+          "duracion": "3:39",
+          "coleccion": "IBF 06:22 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 6,
+              "pista": 22
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "CAMINAR EXALTANDO LA PROPIA PRESENCIA (Llamado también “Iluminación de la propia",
+      "grupo": "LA MARCHA",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Suo Gan (Vocal Ambrosian Junior Choir)",
+          "artista": "OST Empire Of The Sun",
+          "duracion": "2:18",
+          "coleccion": "IBF 17:13 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "MARCHA ALEGRE",
+      "grupo": "LA MARCHA",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "When You Smile",
+          "artista": "Flack, Roberta",
+          "duracion": "3:44",
+          "coleccion": "IBF 20:01 (por título (21:07 -> 20:01))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "JUEGOS DE VITALIDAD",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Yellow Submarine",
+          "artista": "The Beatles",
+          "duracion": "2:40",
+          "coleccion": "IBF 19:02 (por título (20:02 -> 19:02))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "JUEGOS DE VITALIDAD Y DE SAMBA EN GRUPO",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Fava de Cheiro",
+          "artista": "Sivuca",
+          "duracion": "2:37",
+          "coleccion": "IBF 05:12 (por título (05:11 -> 05:12))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 12
+            }
+          ]
+        },
+        {
+          "titulo": "O Amanhã",
+          "artista": "Simone",
+          "duracion": "4:48",
+          "coleccion": "IBF 20:15 (por título (21:10 -> 20:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "AHORA O NUNCA",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Fava de Cheiro",
+          "artista": "Sivuca",
+          "duracion": "2:37",
+          "coleccion": "IBF 05:12 (por título (05:11 -> 05:12))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 12
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "COORDINACIÓN RÍTMICA EN PARES (llamado también “Caminar en pares”)",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "All Together Now",
+          "artista": "The Beatles",
+          "duracion": "2:11",
+          "coleccion": "IBF 19:03 (por título (20:03 -> 19:03))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "When You Smile",
+          "artista": "Flack, Roberta",
+          "duracion": "3:44",
+          "coleccion": "IBF 20:01 (por título (21:07 -> 20:01))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 1
+            }
+          ]
+        },
+        {
+          "titulo": "With A Little Help From My Friends",
+          "artista": "The Beatles",
+          "duracion": "2:38",
+          "coleccion": "IBF 19:04 (por título (20:04 -> 19:04))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 4
+            }
+          ]
+        },
+        {
+          "titulo": "Yellow Submarine",
+          "artista": "The Beatles",
+          "duracion": "2:40",
+          "coleccion": "IBF 19:02 (por título (20:02 -> 19:02))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "SINCRONIZACIÓN RÍTMICA EN PARES",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Fava de Cheiro",
+          "artista": "Sivuca",
+          "duracion": "2:37",
+          "coleccion": "IBF 05:12 (por título (05:11 -> 05:12))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 5,
+              "pista": 12
+            }
+          ]
+        },
+        {
+          "titulo": "My Aphrodisiac Is You",
+          "artista": "Melua, Katie",
+          "duracion": "3:32",
+          "coleccion": "IBF 19:16 (por título (20:16 -> 19:16))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 16
+            }
+          ]
+        },
+        {
+          "titulo": "When You Smile",
+          "artista": "Flack, Roberta",
+          "duracion": "3:44",
+          "coleccion": "IBF 20:01 (por título (21:07 -> 20:01))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "SINCRONIZACIÓN MELÓDICA EN PARES",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Dream A Little Dream Of Me",
+          "artista": "Fygi, Laura",
+          "duracion": "3:40",
+          "coleccion": "IBF 20:11 (por título (21:13 -> 20:11))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 11
+            }
+          ]
+        },
+        {
+          "titulo": "Learnin' The Blues",
+          "artista": "Melua, Katie",
+          "duracion": "3:21",
+          "coleccion": "IBF 19:15 (por título (20:15 -> 19:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA CON INTENSIDAD",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "I've Got A Woman",
+          "artista": "Charles, Ray",
+          "duracion": "2:54",
+          "coleccion": "IBF 19:06 (por título (20:06 -> 19:06))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 6
+            }
+          ]
+        },
+        {
+          "titulo": "When The Saints Go Marchin' In",
+          "artista": "Jackson, Mahalia",
+          "duracion": "3:01",
+          "coleccion": "IBF 06:22 (por título (21:08 -> 06:22))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 6,
+              "pista": 22
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA RÍTMICA EXPRESIVA",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Diamonds Are A Girl's Best Friend (live)",
+          "artista": "Fygi, Laura",
+          "duracion": "2:47",
+          "coleccion": "IBF 19:10 (por título (20:10 -> 19:10))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 10
+            }
+          ]
+        },
+        {
+          "titulo": "That Old Feeling (live)",
+          "artista": "Fygi, Laura",
+          "duracion": "3:31",
+          "coleccion": "IBF 19:08 (por título (20:08 -> 19:08))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA CREATIVA EN PARES",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Diamonds Are A Girl's Best Friend (live)",
+          "artista": "Fygi, Laura",
+          "duracion": "2:47",
+          "coleccion": "IBF 19:10 (por título (20:10 -> 19:10))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 10
+            }
+          ]
+        },
+        {
+          "titulo": "That Old Feeling (live)",
+          "artista": "Fygi, Laura",
+          "duracion": "3:31",
+          "coleccion": "IBF 19:08 (por título (20:08 -> 19:08))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA DE SEDUCCIÓN",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "What A Diff'rence A Day Made",
+          "artista": "Franklin, Aretha",
+          "duracion": "3:31",
+          "coleccion": "IBF 14:17 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 14,
+              "pista": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA DE SEDUCCIÓN DE LAS MUJERES",
+      "grupo": "LOS JUEGOS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Learnin' The Blues",
+          "artista": "Melua, Katie",
+          "duracion": "3:21",
+          "coleccion": "IBF 19:15 (por título (20:15 -> 19:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "ENCUENTRO FUGAZ",
+      "grupo": "LOS ENCUENTROS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Ay Fond Kiss",
+          "artista": "Fairground Attraction",
+          "duracion": "3:20",
+          "coleccion": "IBF 19:01 (por título (20:01 -> 19:01))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "ENCUENTROS PULSANTES",
+      "grupo": "LOS ENCUENTROS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Learnin' The Blues",
+          "artista": "Melua, Katie",
+          "duracion": "3:21",
+          "coleccion": "IBF 19:15 (por título (20:15 -> 19:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "ENCUENTROS DIVERSOS",
+      "grupo": "LOS ENCUENTROS",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Call Off The Search",
+          "artista": "Melua, Katie",
+          "duracion": "3:23",
+          "coleccion": "IBF 19:14 (por título (20:14 -> 19:14))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "GRUPO COMPACTO DE CARICIAS",
+      "grupo": "CONTACTO INDIFERENCIADO",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Who Needs Forever",
+          "artista": "Peixoto, Araken",
+          "duracion": "3:18",
+          "coleccion": "IBF 12:21 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 12,
+              "pista": 21
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "TÚNEL DE CARICIAS",
+      "grupo": "CONTACTO INDIFERENCIADO",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Voz e Suor",
+          "artista": "Caymmi, Nana",
+          "duracion": "3:55",
+          "coleccion": "IBF 13:09 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 13,
+              "pista": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "RECIBIR",
+      "grupo": "POSICIONES GENERATRICES - CÓDIGO 1",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Bilitis",
+          "artista": "Zamfir, Gheorghe",
+          "duracion": "4:30",
+          "coleccion": "IBF 09:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 9,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Ponteio",
+          "artista": "Branco, Waltel",
+          "duracion": "2:21",
+          "coleccion": "IBF 17:05 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 5
+            }
+          ]
+        },
+        {
+          "titulo": "V podvečer (At Twilight), Idyll for Orchestra - Op.39 {Mistaked Known as Poème op.41, No.6}",
+          "artista": "Fibich, Zděnek (1850-1900)",
+          "duracion": "2:27",
+          "coleccion": "IBF 10:20 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 10,
+              "pista": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA DE LA CREACIÓN",
+      "grupo": "DANZAS SECUENCIALES",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Finlandia 'Symphonic poem' op. 26 (Munih)",
+          "artista": "Sibelius, Jean (1865-1957)",
+          "duracion": "8:34",
+          "coleccion": "IBF 15:19 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 15,
+              "pista": 19
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "TRANCE DE SUSPENSIÓN",
+      "grupo": "DANZAS SECUENCIALES",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Adagio - Concerto in re minore per oboe, archi e BC - 2, SF 935",
+          "artista": "Marcello, Alessandro (1669-1747)",
+          "duracion": "4:46",
+          "coleccion": "IBF 01:20 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 20
+            }
+          ]
+        },
+        {
+          "titulo": "Adagio - Streichquintett in C-Dur - 2, op.post.163 D 956",
+          "artista": "Schubert, Franz (1797-1828)",
+          "duracion": "4:43",
+          "coleccion": "IBF 17:15 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 15
+            }
+          ]
+        },
+        {
+          "titulo": "Allegro - Concerto 'La primavera' in Mi Maggiore - 1 (Le quattro stagioni op.8/1, RV 269)",
+          "artista": "Vivaldi, Antonio (1678-1741)",
+          "duracion": "3:29",
+          "coleccion": "IBF 01:19 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 1,
+              "pista": 19
+            }
+          ]
+        },
+        {
+          "titulo": "Ave Maria (after Johann Sebastian Bach)",
+          "artista": "Gounod, Charles (1818-1893)",
+          "duracion": "3:23",
+          "coleccion": "IBF 17:16 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 16
+            }
+          ]
+        },
+        {
+          "titulo": "Bilitis",
+          "artista": "Zamfir, Gheorghe",
+          "duracion": "4:30",
+          "coleccion": "IBF 09:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 9,
+              "pista": 3
+            }
+          ]
+        },
+        {
+          "titulo": "Clair de lune [Orchestral version] Suite Bergamasque pour piano - 3",
+          "artista": "Debussy, Claude (1862-1918)",
+          "duracion": "4:42",
+          "coleccion": "IBF 17:07 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 7
+            }
+          ]
+        },
+        {
+          "titulo": "L'horloge de ma vie",
+          "artista": "Posit, Jean-Pierre",
+          "duracion": "4:43",
+          "coleccion": "IBF 17:04 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 17,
+              "pista": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA DEL ÁNGEL DE LA ILUMINACIÓN",
+      "grupo": "DANZAS DE LOS ÁNGELES",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Largo - Concerto in re minore - 2 (Il cimento dell'armonia e dell'inventione op.8/7, RV 242)",
+          "artista": "Vivaldi, Antonio (1678-1741)",
+          "duracion": "2:13",
+          "coleccion": "IBF 18:03 (misma clave e intérprete)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 18,
+              "pista": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "ANIMACIÓN DEL MOVIMIENTO",
+      "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Carnaval de São Vicente",
+          "artista": "Evora, Cesaria",
+          "duracion": "3:50",
+          "coleccion": "IBF 20:17 (por título (21:06 -> 20:17))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA LIBRE",
+      "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "O Amanhã",
+          "artista": "Simone",
+          "duracion": "4:48",
+          "coleccion": "IBF 20:15 (por título (21:10 -> 20:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "DANZA EN PARES",
+      "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "Call Off The Search",
+          "artista": "Melua, Katie",
+          "duracion": "3:23",
+          "coleccion": "IBF 19:14 (por título (20:14 -> 19:14))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 14
+            }
+          ]
+        },
+        {
+          "titulo": "Dream A Little Dream Of Me",
+          "artista": "Fygi, Laura",
+          "duracion": "3:40",
+          "coleccion": "IBF 20:11 (por título (21:13 -> 20:11))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 20,
+              "pista": 11
+            }
+          ]
+        },
+        {
+          "titulo": "Learnin' The Blues",
+          "artista": "Melua, Katie",
+          "duracion": "3:21",
+          "coleccion": "IBF 19:15 (por título (20:15 -> 19:15))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 15
+            }
+          ]
+        },
+        {
+          "titulo": "Mockingbird Song",
+          "artista": "Melua, Katie",
+          "duracion": "3:05",
+          "coleccion": "IBF 19:17 (por título (20:17 -> 19:17))",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 19,
+              "pista": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nombre": "MARCHA EN PARES (para autoregulación)",
+      "grupo": "PROCEDIMIENTOS DE FACILITACIÓN",
+      "detalle": "",
+      "musicas": [
+        {
+          "titulo": "The Girl From Ipanema (feat. Astrud Gilberto)",
+          "artista": "Getz, Stan / Gilberto, João",
+          "duracion": "5:16",
+          "coleccion": "IBF 14:03 (misma clave)",
+          "referencias": [
+            {
+              "coleccion": "IBF",
+              "cd": 14,
+              "pista": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
