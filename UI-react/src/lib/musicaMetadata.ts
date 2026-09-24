@@ -21,10 +21,14 @@ export async function leerMetadata(file: File): Promise<MetadataMusica | null> {
     const { common } = await parseBlob(file)
     const comentarios = (common.comment ?? []).map((c) => c.text).filter((t): t is string => !!t)
     const generos = common.genre ?? []
-    const camposTexto = [common.title, common.artist, common.album, ...generos, ...comentarios].filter(
+    // common.grouping = ID3v2 TIT1 ("Content group description") -- campo
+    // reservado para etiquetas Biosoft escritas por scripts externos (ej.
+    // scripts/escribir-etiquetas.cjs). Presente en MP3/M4A/AIFF.
+    const grouping = common.grouping ? [common.grouping] : []
+    const camposTexto = [common.title, common.artist, common.album, ...generos, ...comentarios, ...grouping].filter(
       (v): v is string => !!v && v.trim() !== '',
     )
-    const tagsExtra = [...generos, ...comentarios, common.album].filter((v): v is string => !!v && v.trim() !== '').join(' ')
+    const tagsExtra = [...generos, ...comentarios, common.album, ...grouping].filter((v): v is string => !!v && v.trim() !== '').join(' ')
     return { titulo: common.title, interprete: common.artist, tagsExtra, camposTexto }
   } catch {
     return null
