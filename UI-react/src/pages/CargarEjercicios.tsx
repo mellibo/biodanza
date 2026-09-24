@@ -4,11 +4,11 @@ import { useDataStore } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
 import { downloadBlob, downloadCsv } from '../lib/download'
 import { Pagination } from '../components/Pagination'
-import type { DatosCimeb, EjercicioBase, ResultadoImportacionCimeb } from '../types'
+import { ORIGENES_EJERCICIO, type DatosCimeb, type EjercicioBase, type OrigenEjercicio, type ResultadoImportacionCimeb } from '../types'
 
 const PAGE_SIZE = 10
 
-interface SampleRow extends Pick<EjercicioBase, 'nombre' | 'grupo' | 'coleccion' | 'detalle'> {
+interface SampleRow extends Pick<EjercicioBase, 'nombre' | 'grupo' | 'coleccion' | 'detalle' | 'origen'> {
   estado: string
 }
 
@@ -40,9 +40,21 @@ export function CargarEjercicios() {
   const [validado, setValidado] = useState(false)
   const [page, setPage] = useState(1)
   const [totales, setTotales] = useState({ nuevos: 0, eliminados: 0, modificados: 0, sinCambios: 0, error: 0 })
+  // Alcance de la importación/exportación: "todos" mantiene el comportamiento
+  // de siempre; con un origen puntual, el Excel solo trae (al exportar) o solo
+  // se compara contra (al importar) los ejercicios de ese origen -- así
+  // reimportar un Excel de un solo origen (ej. solo CIMEB 2018) no marca como
+  // "Eliminado" a los ejercicios de los demás orígenes, que ese Excel nunca
+  // pretendió incluir.
+  const [origenExport, setOrigenExport] = useState<'todos' | OrigenEjercicio>('todos')
+  const [origenImport, setOrigenImport] = useState<'todos' | OrigenEjercicio>('todos')
 
   function loadSheet(sheet: XLSX.WorkSheet) {
     const rawRows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet)
+    // Si el Excel no trae columna Origen, se asume que TODO el archivo es del
+    // origen elegido antes de importar (o "otro" si se dejó en "Todos").
+    const origenPorDefecto: OrigenEjercicio = origenImport === 'todos' ? 'otro' : origenImport
+    const origenesValidos = new Set(ORIGENES_EJERCICIO.map((o) => o.valor))
     let colsError = ''
     if (rawRows.length === 0) {
       colsError += 'No hay datos en la hoja excel.'
@@ -64,10 +76,11 @@ export function CargarEjercicios() {
       const coleccion = raw.Coleccion || ''
       const nombre = raw.Ejercicio || ''
       const detalle = (raw.Detalle || '').replace(/\r\n/g, '<br/>')
+      const origen = origenesValidos.has(raw.Origen as OrigenEjercicio) ? (raw.Origen as OrigenEjercicio) : origenPorDefecto
 
       if (nombre === '') {
         totalesLocal.error++
-        rows.push({ nombre, grupo, coleccion, detalle, estado: 'error: falta nombre ejercicio.' })
+        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'error: falta nombre ejercicio.' })
         continue
       }
       nombresLeidos.add(nombre)
@@ -79,38 +92,50 @@ export function CargarEjercicios() {
           grupo,
           coleccion,
           detalle,
+          origen,
           estado: 'Nuevo.' + (detalle === '' ? 'Sin detalle.' : ''),
         })
         continue
       }
       if (grupo !== dbEj.grupo) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, estado: 'Cambio de Grupo.' })
+        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Grupo.' })
         continue
       }
       if (detalle !== dbEj.detalle) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, estado: 'Cambio de Detalle.' })
+        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Detalle.' })
         continue
       }
       if (coleccion !== dbEj.coleccion) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, estado: 'Cambio de Colección.' })
+        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Colección.' })
+        continue
+      }
+      if (origen !== (dbEj.origen ?? 'cimeb2012')) {
+        totalesLocal.modificados++
+        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Origen.' })
         continue
       }
       totalesLocal.sinCambios++
-      rows.push({ nombre, grupo, coleccion, detalle, estado: 'Igual.' })
+      rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Igual.' })
     }
 
+    // El universo de "puede aparecer como Eliminado" son los ejercicios YA
+    // cargados que están dentro del alcance elegido -- con alcance "todos" es
+    // el comportamiento de siempre (todo lo no leído se marca eliminado); con
+    // un origen puntual, solo se comparan entre sí los de ese mismo origen.
     for (const id of ejerciciosOrder) {
       const ejercicio = ejerciciosById[id]
       if (!ejercicio || nombresLeidos.has(ejercicio.nombre)) continue
+      if (origenImport !== 'todos' && (ejercicio.origen ?? 'cimeb2012') !== origenImport) continue
       totalesLocal.eliminados++
       rows.push({
         nombre: ejercicio.nombre,
         grupo: ejercicio.grupo,
         coleccion: ejercicio.coleccion,
         detalle: ejercicio.detalle,
+        origen: ejercicio.origen ?? 'cimeb2012',
         estado: 'Eliminado',
       })
     }
@@ -149,10 +174,10 @@ export function CargarEjercicios() {
     for (const row of sampleRows) {
       const dbEj = getEjercicioByNombre(row.nombre)
       if (nuevos && row.estado.substring(0, 5) === 'Nuevo') {
-        addEjercicio({ nombre: row.nombre, grupo: row.grupo, coleccion: row.coleccion, detalle: row.detalle, musicasId: [], etiquetas: [] })
+        addEjercicio({ nombre: row.nombre, grupo: row.grupo, coleccion: row.coleccion, origen: row.origen, detalle: row.detalle, musicasId: [], etiquetas: [] })
       }
       if (modificados && row.estado.substring(0, 6) === 'Cambio' && dbEj) {
-        updateEjercicio(dbEj.id, { grupo: row.grupo, detalle: row.detalle, coleccion: row.coleccion })
+        updateEjercicio(dbEj.id, { grupo: row.grupo, detalle: row.detalle, coleccion: row.coleccion, origen: row.origen })
       }
       if (eliminados && row.estado.substring(0, 9) === 'Eliminado' && dbEj) {
         removeEjercicio(dbEj.id)
@@ -164,21 +189,25 @@ export function CargarEjercicios() {
 
   function exportExcel() {
     const wb = XLSX.utils.book_new()
-    const aoa: string[][] = [['Coleccion', 'Ejercicio', 'Grupo', 'Detalle']]
+    const aoa: string[][] = [['Coleccion', 'Ejercicio', 'Grupo', 'Detalle', 'Origen']]
     for (const id of ejerciciosOrder) {
       const ejercicio = ejerciciosById[id]
       if (!ejercicio) continue
+      const origen = ejercicio.origen ?? 'cimeb2012'
+      if (origenExport !== 'todos' && origen !== origenExport) continue
       aoa.push([
         ejercicio.coleccion,
         ejercicio.nombre,
         ejercicio.grupo,
         (ejercicio.detalle || '').replace(/<br\/>/g, '\r\n'),
+        origen,
       ])
     }
     const ws = XLSX.utils.aoa_to_sheet(aoa)
     XLSX.utils.book_append_sheet(wb, ws, 'Ejercicios')
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-    downloadBlob(new Blob([wbout], { type: 'application/octet-stream' }), 'Ejercicios.xlsx')
+    const sufijo = origenExport === 'todos' ? '' : ' ' + ORIGENES_EJERCICIO.find((o) => o.valor === origenExport)?.etiqueta
+    downloadBlob(new Blob([wbout], { type: 'application/octet-stream' }), 'Ejercicios' + sufijo + '.xlsx')
   }
 
   const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
@@ -228,6 +257,34 @@ export function CargarEjercicios() {
               </div>
             </div>
           )}
+          <div className="form-group col-md-12" style={{ marginBottom: '8px' }}>
+            <label className="control-label" htmlFor="selOrigenExport" title="Qué ejercicios incluye el Excel exportado">
+              Exportar origen:{' '}
+            </label>
+            <select id="selOrigenExport" className="form-control" value={origenExport} onChange={(e) => setOrigenExport(e.target.value as 'todos' | OrigenEjercicio)}>
+              <option value="todos">Todos</option>
+              {ORIGENES_EJERCICIO.map((o) => (
+                <option key={o.valor} value={o.valor}>
+                  {o.etiqueta}
+                </option>
+              ))}
+            </select>{' '}
+            <label
+              className="control-label"
+              htmlFor="selOrigenImport"
+              title="Origen del Excel a leer: si no trae columna Origen, se asume este para todas las filas. También limita qué ejercicios ya cargados pueden aparecer como Eliminado -- con un origen puntual, solo se comparan entre sí los de ese mismo origen."
+            >
+              Importar origen:{' '}
+            </label>
+            <select id="selOrigenImport" className="form-control" value={origenImport} onChange={(e) => setOrigenImport(e.target.value as 'todos' | OrigenEjercicio)}>
+              <option value="todos">Todos</option>
+              {ORIGENES_EJERCICIO.map((o) => (
+                <option key={o.valor} value={o.valor}>
+                  {o.etiqueta}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="form-group col-md-12 btn-group" role="toolbar">
             <button type="button" className="btn btn-primary" onClick={exportExcel} title="Descargar Excel de  Ejercicios">
               <span className="glyphicon glyphicon-import" /> Descargar Excel de Ejercicios

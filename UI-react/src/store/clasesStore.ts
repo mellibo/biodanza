@@ -742,7 +742,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
       titulo: pl.titulo,
       fechaCreacion: pl.fecha ?? ahora,
       fechaClase: pl.fecha ?? ahora,
-      comentarios: 'Importada de playlist (' + pl.items.length + ' temas)',
+      comentarios: 'Importada de playlist "' + pl.archivo + '" (' + pl.items.length + ' temas)',
       etiquetas: [],
       carpeta,
       ejercicios: pl.items.map((item, i) => {

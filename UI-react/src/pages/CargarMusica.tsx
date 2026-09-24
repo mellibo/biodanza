@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as XLSX from 'xlsx'
 import { useDataStore, type RowImportMusica } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
+import { downloadBlob } from '../lib/download'
 import { useEtiquetasStore } from '../store/etiquetasStore'
 import { checkFileExists } from '../lib/loadJs'
 import { normalize } from '../lib/normalize'
@@ -87,6 +88,9 @@ export function CargarMusica() {
   const colecciones = useDataStore((s) => s.colecciones)
   const removeColeccion = useDataStore((s) => s.removeColeccion)
   const getEjercicioByNombre = useDataStore((s) => s.getEjercicioByNombre)
+  const musicasById = useDataStore((s) => s.musicasById)
+  const musicasOrder = useDataStore((s) => s.musicasOrder)
+  const getEjerciciosForMusica = useDataStore((s) => s.getEjerciciosForMusica)
   const addAlert = useAlertStore((s) => s.addAlert)
   const initEtiquetas = useEtiquetasStore((s) => s.init)
   const vocabularioEtiquetas = useEtiquetasStore((s) => s.etiquetas)
@@ -452,6 +456,36 @@ export function CargarMusica() {
     addAlert('info', 'Colección "' + nombre + '" eliminada.')
   }
 
+  // Genera el mismo Excel que se espera encontrar dentro de la carpeta de
+  // cada colección (ej. IBF.xlsx, BsAs.xlsx -- ver CLAUDE.md, "Organizacion
+  // de archivos de musicas"): mismas columnas que el modo Excel de esta
+  // pantalla (CdPista/Titulo/Interprete/Ejercicio/Grupo/Lineas/Carpeta/
+  // Archivo/Tags), una fila por cada vínculo música-ejercicio (una música
+  // sin ejercicios asignados sale en una sola fila, con esas dos columnas
+  // vacías) -- así este Excel sirve tanto para reimportar en esta misma app
+  // como de catálogo de referencia, igual que los que ya vienen con cada
+  // colección.
+  function generarExcelColeccion(nombreColeccion: string) {
+    const musicas = musicasOrder.map((id) => musicasById[id]).filter((m): m is NonNullable<typeof m> => !!m && m.coleccion === nombreColeccion)
+    const aoa: (string | number)[][] = [['CdPista', 'Titulo', 'Interprete', 'Ejercicio', 'Grupo', 'Lineas', 'Carpeta', 'Archivo', 'Tags']]
+    for (const musica of musicas) {
+      const lineas = musica.etiquetas.join(', ')
+      const ejercicios = getEjerciciosForMusica(musica)
+      if (ejercicios.length === 0) {
+        aoa.push([musica.idMusica, musica.nombre, musica.interprete, '', '', lineas, musica.carpeta, musica.archivo, musica.tags])
+        continue
+      }
+      for (const ejercicio of ejercicios) {
+        aoa.push([musica.idMusica, musica.nombre, musica.interprete, ejercicio.nombre, ejercicio.grupo, lineas, musica.carpeta, musica.archivo, musica.tags])
+      }
+    }
+    const wbOut = XLSX.utils.book_new()
+    const ws = XLSX.utils.aoa_to_sheet(aoa)
+    XLSX.utils.book_append_sheet(wbOut, ws, nombreColeccion)
+    const wbout = XLSX.write(wbOut, { bookType: 'xlsx', type: 'array' })
+    downloadBlob(new Blob([wbout], { type: 'application/octet-stream' }), nombreColeccion + '.xlsx')
+  }
+
   function resetCarpeta() {
     setArchivosEscaneados([])
     setRootColeccion('')
@@ -761,7 +795,15 @@ export function CargarMusica() {
                 <tr key={col.nombre}>
                   <td style={{ width: '200px' }}>{col.nombre}</td>
                   <td>{col.carpeta}</td>
-                  <td style={{ width: '40px' }}>
+                  <td style={{ width: '80px', whiteSpace: 'nowrap' }}>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-sm"
+                      onClick={() => generarExcelColeccion(col.nombre)}
+                      title="Generar el Excel de esta colección (mismas columnas que IBF.xlsx, BsAs.xlsx, etc.)"
+                    >
+                      <span className="glyphicon glyphicon-download-alt" />
+                    </button>{' '}
                     <button type="button" className="btn btn-danger btn-sm" onClick={() => eliminarColeccion(col.nombre)} title="Eliminar colección">
                       <span className="glyphicon glyphicon-trash" />
                     </button>

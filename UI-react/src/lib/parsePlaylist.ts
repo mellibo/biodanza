@@ -16,6 +16,12 @@ export interface ItemPlaylist {
 
 export interface PlaylistLeida {
   titulo: string
+  // Nombre del archivo de playlist original (con extensión) -- a diferencia
+  // de `titulo` (que puede venir de un "#PLAYLIST:" dentro del archivo,
+  // distinto del nombre real), esto siempre es el nombre tal cual se
+  // eligió/arrastró, para poder referenciarlo en el comentario de la clase
+  // importada (ver clasesStore.importarPlaylists).
+  archivo: string
   // "#FECHA:" que escribe scripts/exportar-playlists-winamp.ps1 (fecha de
   // creación de la playlist en Winamp), como ISO -- null si no viene.
   fecha: string | null
@@ -61,7 +67,7 @@ function tituloDesdeNombreArchivo(nombre: string): string {
   return sinExt.trim() || nombre
 }
 
-function parseM3U(texto: string, tituloPorDefecto: string): PlaylistLeida {
+function parseM3U(texto: string, tituloPorDefecto: string): Omit<PlaylistLeida, 'archivo'> {
   let titulo = tituloPorDefecto
   let fecha: string | null = null
   const items: ItemPlaylist[] = []
@@ -91,7 +97,7 @@ function parseM3U(texto: string, tituloPorDefecto: string): PlaylistLeida {
   return { titulo, fecha, items }
 }
 
-function parsePLS(texto: string, tituloPorDefecto: string): PlaylistLeida {
+function parsePLS(texto: string, tituloPorDefecto: string): Omit<PlaylistLeida, 'archivo'> {
   const porIndice = new Map<number, ItemPlaylist>()
   for (const lineaCruda of texto.split(/\r?\n/)) {
     const m = lineaCruda.trim().match(/^(File|Title|Length)(\d+)=(.*)$/i)
@@ -118,8 +124,8 @@ export async function leerPlaylist(file: File): Promise<PlaylistLeida> {
   const texto = decodificarTexto(await file.arrayBuffer())
   const tituloPorDefecto = tituloDesdeNombreArchivo(file.name)
   const ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
-  if (ext === 'pls' || /^\s*\[playlist\]/i.test(texto)) return parsePLS(texto, tituloPorDefecto)
-  return parseM3U(texto, tituloPorDefecto)
+  const leida = ext === 'pls' || /^\s*\[playlist\]/i.test(texto) ? parsePLS(texto, tituloPorDefecto) : parseM3U(texto, tituloPorDefecto)
+  return { ...leida, archivo: file.name }
 }
 
 // Separa una ruta (Windows o Unix) en segmentos comparables: sin letra de
