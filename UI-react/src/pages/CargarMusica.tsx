@@ -12,6 +12,7 @@ import { getPathMusica } from '../lib/config'
 import { testMusica } from '../lib/testMusica'
 import { analizarArchivoAudio, esArchivoDeAudio } from '../lib/analizarArchivoAudio'
 import { ubicarEnArbol } from '../lib/ubicarEnArbol'
+import { buscarEnExcelColeccion, claveDesdeMascaras, leerDatosExcelColeccion, parsearMascaras, type DatoExcelArchivo } from '../lib/clavesEscaneo'
 import { Pagination } from '../components/Pagination'
 import { EtiquetasEditor } from '../components/EtiquetasEditor'
 import type { Coleccion } from '../types'
@@ -38,6 +39,19 @@ interface ArchivoEscaneado {
   ejerciciosDetectados: string[]
   estado: string
   duracion?: string
+  // Clave real "CD:pista" del archivo, si se pudo determinar -- desde el
+  // Excel de catálogo de la colección o, si no está, adivinada por
+  // nombre de carpeta/archivo (ver clavesEscaneo.ts). Cuando está
+  // presente se usa como idMusica al importar (ver importarCarpeta), en
+  // vez de la ruta, para que la música quede vinculable por clave con
+  // catálogos externos (CIMEB, .bio, etc.) igual que si se hubiera
+  // cargado "Desde Excel".
+  claveDetectada: string | null
+  // Ejercicio(s) vinculados según el Excel de catálogo de la colección
+  // (si está presente) -- se suman a ejerciciosDetectados recién al
+  // analizar (ver analizarArchivosEscaneados), para no perderlos si el
+  // análisis de metadatos corre después y los pisara.
+  ejerciciosExcel: string[]
 }
 
 function claveCarpetaEscaneo(coleccion: string, carpeta: string) {
@@ -533,7 +547,14 @@ export function CargarMusica() {
         equivalenciaEjercicios,
         equivalenciaInterpretes,
       )
-      actualizados[i] = { ...item, ...analisis }
+      actualizados[i] = {
+        ...item,
+        ...analisis,
+        // El análisis de metadatos no sabe nada del Excel de catálogo --
+        // se suman acá los ejercicios que salieron de ahí (ver
+        // escanearCarpeta) para que no se pierdan.
+        ejerciciosDetectados: Array.from(new Set([...item.ejerciciosExcel, ...analisis.ejerciciosDetectados])),
+      }
       setArchivosEscaneados([...actualizados])
     }
     setEscaneando(false)
@@ -603,6 +624,8 @@ export function CargarMusica() {
         etiquetasDetectadas: [],
         ejerciciosDetectados: [],
         estado: 'pendiente',
+        claveDetectada: null,
+        ejerciciosExcel: [],
       })
     }
     if (encontrados.length === 0) {
@@ -618,6 +641,75 @@ export function CargarMusica() {
     if (ignorados > 0) {
       addAlert('danger', ignorados + ' archivo(s) de audio se ignoraron.')
     }
+
+    // Complementar con el Excel de catálogo de la colección, si está
+    // presente en la raíz de la carpeta escaneada (ver CLAUDE.md,
+    // "Organizacion de archivos de musicas") -- de ahí sale la clave real
+    // (CD:pista) y los ejercicios vinculados de cada archivo, sin
+    // adivinar nada. Si no está, o no tiene una hoja con columnas
+    // Archivo+Carpeta, se intenta derivar la clave a partir del nombre de
+    // carpeta/archivo con las máscaras conocidas (ver clavesEscaneo.ts).
+    function archivoRaiz(nombre: RegExp) {
+      return archivos.find((file) => {
+        const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
+        if (!rel) return false
+        const partes = rel.split('/')
+        return partes.length === 2 && nombre.test(partes[1])
+      })
+    }
+    async function leerTexto(file: File): Promise<string> {
+      return file.text()
+    }
+
+    let datosExcel: Map<string, DatoExcelArchivo> | null = null
+    const archivoExcel = archivoRaiz(/\.xlsx?$/i)
+    if (archivoExcel) {
+      try {
+        const buf = await archivoExcel.arrayBuffer()
+        const wb = XLSX.read(buf, { type: 'array' })
+        datosExcel = leerDatosExcelColeccion(wb)
+      } catch {
+        datosExcel = null
+      }
+    }
+    // Si la colección trae sus propios MascaraCarpetas.txt/
+    // MascaraArchivosMusica.txt en la raíz (como ya existe hoy en algunas
+    // colecciones reales, ej. BSAS/HLB/JEXP -- copias de trabajo de
+    // Hyperlinks/FormatosCarpetas.txt y FormatosArchivosMusica.txt, ver
+    // Biodanza.Model/BioCol.cs) se usan esas en vez de las genéricas.
+    const archivoMascarasCarpeta = archivoRaiz(/^MascaraCarpetas\.txt$/i)
+    const archivoMascarasArchivo = archivoRaiz(/^MascaraArchivosMusica\.txt$/i)
+    const mascarasCarpeta = archivoMascarasCarpeta ? parsearMascaras(await leerTexto(archivoMascarasCarpeta)) : undefined
+    const mascarasArchivo = archivoMascarasArchivo ? parsearMascaras(await leerTexto(archivoMascarasArchivo)) : undefined
+
+    let porExcel = 0
+    let porMascara = 0
+    for (const a of encontrados) {
+      const datoExcel = datosExcel ? buscarEnExcelColeccion(datosExcel, a.carpeta, a.archivo) : undefined
+      if (datoExcel) {
+        a.claveDetectada = datoExcel.cdPista
+        a.ejerciciosExcel = datoExcel.ejercicios
+        porExcel++
+        continue
+      }
+      const clave = claveDesdeMascaras(a.carpeta, a.archivo, a.coleccion, mascarasCarpeta, mascarasArchivo)
+      if (clave) {
+        a.claveDetectada = clave.cd + ':' + clave.pista
+        porMascara++
+      }
+    }
+    if (porExcel > 0 || porMascara > 0) {
+      addAlert(
+        'info',
+        'Clave detectada en ' +
+          porExcel +
+          ' archivo(s) desde el Excel de la colección y en ' +
+          porMascara +
+          ' archivo(s) por nombre de carpeta/archivo' +
+          (porExcel + porMascara < encontrados.length ? ' (' + (encontrados.length - porExcel - porMascara) + ' sin clave detectada).' : '.'),
+      )
+    }
+
     setArchivosEscaneados(encontrados)
     // Antes de pedirle nada al usuario, probamos si la colección sigue la
     // convención documentada (musica/<NOMBRE>/, ver CLAUDE.md) -- si un
@@ -660,12 +752,17 @@ export function CargarMusica() {
         Titulo: a.titulo,
         Interprete: a.interprete || 'Desconocido',
         Tags: a.tagsExtra,
-        // Se arma con el nombre de archivo real (estable), no con el
-        // título (a.titulo puede salir de metadatos y variar entre
-        // escaneos del mismo archivo -- si el id cambiara con eso, cada
-        // reimportación crearía una música "nueva" en vez de actualizar
-        // la existente, perdiendo los ejercicios ya asignados).
-        idMusica: (a.carpeta ? a.carpeta + '/' : '') + a.archivo,
+        // Si se pudo determinar la clave real "CD:pista" (Excel de
+        // catálogo o máscaras de nombre, ver escanearCarpeta), se usa esa
+        // -- así la música queda vinculable por clave con catálogos
+        // externos (CIMEB, .bio, etc.), igual que si se hubiera cargado
+        // "Desde Excel". Si no, se arma con el nombre de archivo real
+        // (estable), no con el título (a.titulo puede salir de metadatos
+        // y variar entre escaneos del mismo archivo -- si el id cambiara
+        // con eso, cada reimportación crearía una música "nueva" en vez
+        // de actualizar la existente, perdiendo los ejercicios ya
+        // asignados).
+        idMusica: a.claveDetectada ?? (a.carpeta ? a.carpeta + '/' : '') + a.archivo,
         duracion: a.duracion ?? '',
         etiquetasOverride,
       }
@@ -1125,6 +1222,7 @@ export function CargarMusica() {
                       </td>
                       <td>Interprete</td>
                       <td>Duración</td>
+                      <td>Clave</td>
                       <td>Etiquetas (auto)</td>
                       <td>Ejercicio(s) (auto)</td>
                       <td>
@@ -1147,6 +1245,7 @@ export function CargarMusica() {
                         <td>{a.titulo}</td>
                         <td>{a.interprete}</td>
                         <td>{a.duracion}</td>
+                        <td>{a.claveDetectada ?? ''}</td>
                         <td>{a.etiquetasDetectadas.join(', ')}</td>
                         <td>{a.ejerciciosDetectados.join(', ')}</td>
                         <td style={{ color: 'white', backgroundColor: a.estado === 'ok' ? '#04f95a' : a.estado === 'pendiente' ? '#999' : 'orange' }}>
