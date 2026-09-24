@@ -732,7 +732,14 @@ export const useDataStore = create<DataState>((set, get) => {
           musicaId = porClave.get(r.coleccion + '|' + r.cd + '|' + r.pista) ?? null
           if (musicaId) break
         }
-        if (!musicaId && mu.referencias.length === 0) {
+        // Respaldo por título exacto -- antes solo se probaba cuando el PDF
+        // no traía ninguna referencia a colección; pero una referencia que
+        // SÍ vino y no resolvió (ej. la colección está cargada con un
+        // esquema de clave distinto al "CD.pista" del PDF, como al cargarla
+        // con "Escanear Carpeta" en vez de Excel) tampoco encuentra nada por
+        // clave, y sin este respaldo se perdía igual aunque el título
+        // matcheara exacto y sin ambigüedad.
+        if (!musicaId) {
           const candidatas = porTitulo.get(normalize(mu.titulo))
           if (candidatas?.length === 1) musicaId = candidatas[0]
         }
