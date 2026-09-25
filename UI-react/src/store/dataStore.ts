@@ -9,7 +9,7 @@ import { parseLineasToEtiquetas } from '../lib/etiquetasParsing'
 import { parseDuracion } from '../lib/duration'
 import { eliminarBlobMusica } from '../lib/musicaBlobStore'
 import { useClasesStore } from './clasesStore'
-import type { Coleccion, DatosCimeb, DatosEjercicioEditable, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase, ResultadoImportacionCimeb } from '../types'
+import type { Coleccion, DatosEjercicioEditable, Ejercicio, EjercicioBase, Grupo, Musica, MusicaBase } from '../types'
 
 // Reemplaza el `db` global de loaderService.js. Ahí db.ejercicios/db.musicas
 // eran simultáneamente array (para iterar en orden) y diccionario (props
@@ -130,9 +130,6 @@ interface DataState {
   removeEtiquetaGlobal: (etiqueta: string) => void
   toggleColeccionCargar: (nombreColeccion: string, cargar: boolean) => void
   removeColeccion: (nombreColeccion: string) => void
-  // Ejercicios + músicas asociadas leídos del PDF del CIMEB (ver
-  // scripts/importar-cimeb-2018.cjs y CargarEjercicios.tsx).
-  importarEjerciciosCimeb: (datos: DatosCimeb) => ResultadoImportacionCimeb
   // Crea (idOriginal null) o edita un ejercicio -- nombre, grupo, origen,
   // detalle, etiquetas y músicas asociadas, todo junto (ver EjercicioModal).
   // Renombrar cambia el id (se deriva del nombre): se re-apuntan las músicas.
@@ -418,16 +415,56 @@ export const useDataStore = create<DataState>((set, get) => {
     }
 
     // Seed de CIMEB 2018: agrega los ejercicios del catálogo 2018 que falten
-    // (idéntico al seed de CIMEB 2012 vía ejerciciosData, pero como merge
-    // incremental para no pisar los que el usuario ya importó con sus vínculos
-    // de músicas).
-    for (const base of ejerciciosCimeb2018Data) {
-      const id = getEjercicioId(base.nombre)
-      if (!ejerciciosById[id]) {
-        const ejercicio = buildEjercicio(base)
-        ejerciciosById[ejercicio.id] = ejercicio
-        ejerciciosOrder.push(ejercicio.id)
-        ejerciciosMigrados = true
+    // y vincula sus músicas contra las colecciones ya cargadas (mismo criterio
+    // que importarEjerciciosCimeb, ahora automático). El merge es incremental:
+    // ejercicios ya importados (con sus vínculos) no se tocan.
+    {
+      const porClave2018 = new Map<string, string>()
+      const porTitulo2018 = new Map<string, string[]>()
+      for (const id of musicasOrder) {
+        const m = musicasById[id]
+        if (!m) continue
+        const k = m.idMusica.match(/^(\d{1,3})[.\-:](\d{1,3})$/)
+        if (k) porClave2018.set(m.coleccion + '|' + parseInt(k[1], 10) + '|' + parseInt(k[2], 10), id)
+        const t = normalize(m.nombre)
+        if (t) porTitulo2018.set(t, [...(porTitulo2018.get(t) ?? []), id])
+      }
+      const coleccionesTocadas2018 = new Set<string>()
+      for (const entry of ejerciciosCimeb2018Data) {
+        const ejId = getEjercicioId(entry.ejercicio.nombre)
+        if (!ejerciciosById[ejId]) {
+          const ejercicio = buildEjercicio(entry.ejercicio)
+          ejerciciosById[ejercicio.id] = ejercicio
+          ejerciciosOrder.push(ejercicio.id)
+          ejerciciosMigrados = true
+        }
+        for (const mu of entry.musicas) {
+          let musicaId: string | null = null
+          for (const r of mu.referencias) {
+            musicaId = porClave2018.get(r.coleccion + '|' + r.cd + '|' + r.pista) ?? null
+            if (musicaId) break
+          }
+          if (!musicaId) {
+            const candidatas = porTitulo2018.get(normalize(mu.titulo))
+            if (candidatas?.length === 1) musicaId = candidatas[0]
+          }
+          if (!musicaId) continue
+          const musica = musicasById[musicaId]
+          if (!musica) continue
+          const ejAlreadyInMusica = musica.ejerciciosId.includes(ejId)
+          const musicaAlreadyInEj = ejerciciosById[ejId].musicasId.includes(musicaId)
+          if (ejAlreadyInMusica && musicaAlreadyInEj) continue
+          if (!ejAlreadyInMusica) musicasById[musicaId] = { ...musica, ejerciciosId: [...musica.ejerciciosId, ejId] }
+          if (!musicaAlreadyInEj) {
+            ejerciciosById[ejId] = { ...ejerciciosById[ejId], musicasId: [...ejerciciosById[ejId].musicasId, musicaId] }
+            ejerciciosMigrados = true
+          }
+          coleccionesTocadas2018.add(musica.coleccion)
+        }
+      }
+      for (const col of coleccionesTocadas2018) {
+        const musicasCol = musicasOrder.map((id) => musicasById[id]).filter((m): m is Musica => !!m && m.coleccion === col).map(toMusicaBase)
+        saveMusicasColeccion(col, musicasCol)
       }
     }
 
@@ -697,101 +734,6 @@ export const useDataStore = create<DataState>((set, get) => {
   // ya se toleran en todos lados con lookups que devuelven undefined
   // (mismo criterio que una reimportación que cambia los ids), así que
   // simplemente dejan de resolver en vez de romper algo.
-  // Crea los ejercicios que no existan (por nombre) y los vincula, en los
-  // dos sentidos (ejercicio.musicasId / musica.ejerciciosId), con las
-  // músicas del catálogo ya cargado: primero por la referencia a colección
-  // (ej. "Bs As 08-13" = BSAS, CD 8, pista 13, contra la clave "08:13"), y
-  // si no trae, por título exacto. Un ejercicio que ya existía conserva su
-  // grupo y detalle -- solo se le suman las músicas.
-  importarEjerciciosCimeb: (datos) => {
-    const inicial = get()
-    const porClave = new Map<string, string>()
-    const porTitulo = new Map<string, string[]>()
-    for (const id of inicial.musicasOrder) {
-      const m = inicial.musicasById[id]
-      if (!m) continue
-      const k = m.idMusica.match(/^(\d{1,3})[.\-:](\d{1,3})$/)
-      if (k) porClave.set(m.coleccion + '|' + parseInt(k[1], 10) + '|' + parseInt(k[2], 10), id)
-      const t = normalize(m.nombre)
-      if (t) porTitulo.set(t, [...(porTitulo.get(t) ?? []), id])
-    }
-
-    // Grupos (líneas de vivencia) que todavía no existan, para que se
-    // puedan filtrar en /ejercicios.
-    const grupos = [...inicial.grupos]
-    let gruposCambiaron = false
-    for (const nombre of new Set(datos.ejercicios.map((e) => e.grupo))) {
-      if (grupos.some((g) => normalize(g.nombre) === normalize(nombre))) continue
-      grupos.push({ idGrupo: Math.max(0, ...grupos.map((g) => g.idGrupo)) + 1, nombre })
-      gruposCambiaron = true
-    }
-    if (gruposCambiaron) {
-      set({ grupos })
-      writeLocalStorage(STORAGE_KEYS.grupos, grupos)
-    }
-
-    const resultado: ResultadoImportacionCimeb = { ejerciciosNuevos: 0, ejerciciosExistentes: 0, musicasVinculadas: 0, sinResolver: [] }
-    const coleccionesTocadas = new Set<string>()
-    for (const e of datos.ejercicios) {
-      let ejercicio = get().getEjercicioByNombre(e.nombre)
-      if (ejercicio) {
-        resultado.ejerciciosExistentes++
-      } else {
-        ejercicio = get().addEjercicio({ nombre: e.nombre, grupo: e.grupo, coleccion: 'CIMEB', origen: 'cimeb2018', detalle: e.detalle, musicasId: [], etiquetas: [] })
-        resultado.ejerciciosNuevos++
-      }
-      const ejId = ejercicio.id
-      for (const mu of e.musicas) {
-        let musicaId: string | null = null
-        for (const r of mu.referencias) {
-          musicaId = porClave.get(r.coleccion + '|' + r.cd + '|' + r.pista) ?? null
-          if (musicaId) break
-        }
-        // Respaldo por título exacto -- antes solo se probaba cuando el PDF
-        // no traía ninguna referencia a colección; pero una referencia que
-        // SÍ vino y no resolvió (ej. la colección está cargada con un
-        // esquema de clave distinto al "CD.pista" del PDF, como al cargarla
-        // con "Escanear Carpeta" en vez de Excel) tampoco encuentra nada por
-        // clave, y sin este respaldo se perdía igual aunque el título
-        // matcheara exacto y sin ambigüedad.
-        if (!musicaId) {
-          const candidatas = porTitulo.get(normalize(mu.titulo))
-          if (candidatas?.length === 1) musicaId = candidatas[0]
-        }
-        if (!musicaId) {
-          resultado.sinResolver.push({
-            ejercicio: e.nombre,
-            titulo: mu.titulo,
-            artista: mu.artista,
-            referencia: mu.referencias.length ? mu.referencias.map((r) => r.coleccion + ' ' + r.cd + '-' + r.pista).join(', ') : '(sin referencia)',
-          })
-          continue
-        }
-        const musica = get().musicasById[musicaId]
-        if (musica.ejerciciosId.includes(ejId)) continue
-        set((state) => ({
-          musicasById: { ...state.musicasById, [musicaId!]: { ...musica, ejerciciosId: [...musica.ejerciciosId, ejId] } },
-          ejerciciosById: {
-            ...state.ejerciciosById,
-            [ejId]: { ...state.ejerciciosById[ejId], musicasId: Array.from(new Set([...state.ejerciciosById[ejId].musicasId, musicaId!])) },
-          },
-        }))
-        coleccionesTocadas.add(musica.coleccion)
-        resultado.musicasVinculadas++
-      }
-    }
-
-    get().saveEjerciciosSnapshot()
-    for (const col of coleccionesTocadas) {
-      const musicas = get()
-        .musicasOrder.map((id) => get().musicasById[id])
-        .filter((m): m is Musica => !!m && m.coleccion === col)
-        .map(toMusicaBase)
-      saveMusicasColeccion(col, musicas)
-    }
-    return resultado
-  },
-
   guardarEjercicio: (idOriginal, datos) => {
     const nombre = datos.nombre.trim()
     if (!nombre) return { ok: false, error: 'El ejercicio necesita un nombre.' }
