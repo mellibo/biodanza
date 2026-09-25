@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import ejerciciosData from '../data/ejercicios.generated'
+import ejerciciosCimeb2018Data from '../data/ejercicios-cimeb2018.generated'
 import gruposData from '../data/grupos.generated'
 import { getEjercicioId, getMusicaId, normalize } from '../lib/normalize'
 import { readLocalStorage, writeLocalStorage, removeLocalStorage } from '../lib/storage'
@@ -414,6 +415,20 @@ export const useDataStore = create<DataState>((set, get) => {
       }
       ejerciciosMigrados = true
       writeLocalStorage(STORAGE_KEYS.origenMigrado, true)
+    }
+
+    // Seed de CIMEB 2018: agrega los ejercicios del catálogo 2018 que falten
+    // (idéntico al seed de CIMEB 2012 vía ejerciciosData, pero como merge
+    // incremental para no pisar los que el usuario ya importó con sus vínculos
+    // de músicas).
+    for (const base of ejerciciosCimeb2018Data) {
+      const id = getEjercicioId(base.nombre)
+      if (!ejerciciosById[id]) {
+        const ejercicio = buildEjercicio(base)
+        ejerciciosById[ejercicio.id] = ejercicio
+        ejerciciosOrder.push(ejercicio.id)
+        ejerciciosMigrados = true
+      }
     }
 
     set({ ejerciciosById, ejerciciosOrder, musicasById, musicasOrder, colecciones, grupos, initialized: true })
