@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { routes } from './routes'
 import { AlertBanner } from './components/AlertBanner'
@@ -88,6 +88,12 @@ function Layout() {
   const [archivosParaAgregar, setArchivosParaAgregar] = useState<File[] | null>(null)
   const arrastrando = useDragAndDropArchivos(setArchivosParaAgregar)
   const [temaOscuro, setTemaOscuroState] = useState(getTemaOscuro())
+  const fileInputNavRef = useRef<HTMLInputElement>(null)
+  const onFilesNavbar = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    if (files.length > 0) setArchivosParaAgregar(files)
+    e.target.value = ''
+  }, [])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', temaOscuro ? 'dark' : 'light')
@@ -116,11 +122,17 @@ function Layout() {
             </ul>
             <ul className="nav navbar-nav navbar-right">
               <li>
+                <a onClick={() => fileInputNavRef.current?.click()} title="Agregar músicas a SIN_COLECCION" style={{ cursor: 'pointer' }}>
+                  <span className="glyphicon glyphicon-music" /> Agregar Músicas
+                </a>
+              </li>
+              <li>
                 <a onClick={toggleTema} title={temaOscuro ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'} style={{ cursor: 'pointer' }}>
                   <span className="glyphicon glyphicon-adjust" />
                 </a>
               </li>
             </ul>
+            <input ref={fileInputNavRef} type="file" multiple accept="audio/*" style={{ display: 'none' }} onChange={onFilesNavbar} />
           </div>
         </div>
       </div>
