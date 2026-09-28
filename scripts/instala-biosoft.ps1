@@ -3,9 +3,15 @@
 # Uso: doble clic en "Instalar Biosoft.bat"
 
 # --- CONFIGURACION -----------------------------------------------
-$HTML_DRIVE_ID      = "REEMPLAZAR_CON_FILE_ID_DE_biosoft.html"
-$COLECCIONES_FOLDER = "REEMPLAZAR_CON_FOLDER_ID_DE_colecciones_de_musica"
-$DRIVE_API_KEY      = "REEMPLAZAR_CON_API_KEY"
+$HTML_DRIVE_ID = "REEMPLAZAR_CON_FILE_ID_DE_biosoft.html"
+
+$COLECCIONES = @(
+    [pscustomobject]@{ Nombre="IBF";  Id="REEMPLAZAR_CON_FILE_ID_IBF.zip"  }
+    [pscustomobject]@{ Nombre="BsAs"; Id="REEMPLAZAR_CON_FILE_ID_BsAs.zip" }
+    [pscustomobject]@{ Nombre="CPAZ"; Id="REEMPLAZAR_CON_FILE_ID_CPAZ.zip" }
+    [pscustomobject]@{ Nombre="HLB";  Id="REEMPLAZAR_CON_FILE_ID_HLB.zip"  }
+    [pscustomobject]@{ Nombre="JEXP"; Id="REEMPLAZAR_CON_FILE_ID_JEXP.zip" }
+)
 # -----------------------------------------------------------------
 
 Set-StrictMode -Version Latest
@@ -32,7 +38,6 @@ $VELOCIDAD_BYTES_SEG = 625 * 1KB
 function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
     $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
     Write-Host "  Descargando $descripcion ..." -ForegroundColor Gray
-    $ProgressPreference = 'SilentlyContinue'
     $wc = $null
     try {
         $wc = New-Object System.Net.WebClient
@@ -45,6 +50,22 @@ function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
         }
     } finally {
         if ($wc) { $wc.Dispose() }
+    }
+}
+
+function Get-DriveFileSize($fileId) {
+    # HEAD request para obtener el tamano sin descargar
+    try {
+        $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
+        $req = [System.Net.WebRequest]::Create($url)
+        $req.Method = "HEAD"
+        $req.AllowAutoRedirect = $true
+        $resp = $req.GetResponse()
+        $size = $resp.ContentLength
+        $resp.Close()
+        return $size
+    } catch {
+        return -1
     }
 }
 
@@ -66,8 +87,8 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 
 # --- 3. Verificar configuracion ----------------------------------
 
-if ($HTML_DRIVE_ID -like "REEMPLAZAR*" -or $COLECCIONES_FOLDER -like "REEMPLAZAR*") {
-    Write-Host "ERROR: El instalador no esta configurado (IDs de Drive vacios)." -ForegroundColor Red
+if ($HTML_DRIVE_ID -like "REEMPLAZAR*") {
+    Write-Host "ERROR: El instalador no esta configurado." -ForegroundColor Red
     Write-Host "Contacta al administrador para obtener una version configurada." -ForegroundColor Yellow
     Read-Host "Presiona Enter para salir"
     exit 1
@@ -135,62 +156,53 @@ try {
     exit 1
 }
 
-# --- 8. Listar colecciones disponibles via Drive API -------------
+# --- 8. Mostrar colecciones disponibles --------------------------
 
 Write-Host ""
-Write-Host "Consultando colecciones disponibles ..." -ForegroundColor Cyan
+Write-Host "Colecciones disponibles:" -ForegroundColor White
+Write-Host ""
+Write-Host "  Consultando tamanos, espere..." -ForegroundColor Gray
 
-$zips = @()
-try {
-    $apiUrl = "https://www.googleapis.com/drive/v3/files?q='$COLECCIONES_FOLDER'+in+parents+and+trashed=false&fields=files(id,name,size)&orderBy=name&key=$DRIVE_API_KEY"
-    $ProgressPreference = 'SilentlyContinue'
-    $resp = Invoke-RestMethod -Uri $apiUrl -UseBasicParsing
-    $zips = @($resp.files | Where-Object { $_.name -like "*.zip" })
-} catch {
-    Write-Host "  [!] No se pudieron listar las colecciones: $_" -ForegroundColor Yellow
-    Write-Host "  Verifica la conexion a internet y la configuracion del instalador." -ForegroundColor Yellow
+$infos = @()
+foreach ($col in $COLECCIONES) {
+    $bytes = Get-DriveFileSize $col.Id
+    $infos += [pscustomobject]@{ Nombre=$col.Nombre; Id=$col.Id; Bytes=$bytes }
 }
 
-$selCol = ''
-if ($zips.Count -eq 0) {
-    Write-Host "  (No se encontraron colecciones disponibles)" -ForegroundColor Gray
-} else {
-    Write-Host ""
-    Write-Host "Colecciones disponibles:" -ForegroundColor White
-    Write-Host ""
-    for ($i = 0; $i -lt $zips.Count; $i++) {
-        $z     = $zips[$i]
-        $bytes = $z.size -as [long]
-        $tam   = if ($bytes -gt 0) { Format-Bytes $bytes } else { "tamano desconocido" }
-        $dur   = if ($bytes -gt 0) { "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($bytes / $VELOCIDAD_BYTES_SEG))))" } else { "" }
-        Write-Host ("  [{0}] {1,-12} - {2,8}  ({3})" -f ($i+1), ($z.name -replace '\.zip$',''), $tam, $dur)
-    }
-    Write-Host ""
-    Write-Host "  Ingresa los numeros separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
-    $selCol = Read-Host "Colecciones a instalar"
+# Limpiar linea "Consultando..."
+Write-Host "`r                                    " -NoNewline
+
+for ($i = 0; $i -lt $infos.Count; $i++) {
+    $info = $infos[$i]
+    $tam  = if ($info.Bytes -gt 0) { Format-Bytes $info.Bytes } else { "tamano desconocido" }
+    $dur  = if ($info.Bytes -gt 0) { "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($info.Bytes / $VELOCIDAD_BYTES_SEG))))" } else { "" }
+    Write-Host ("  [{0}] {1,-10} - {2,8}  ({3})" -f ($i+1), $info.Nombre, $tam, $dur)
 }
+
+Write-Host ""
+Write-Host "  Ingresa los numeros separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
+$selCol = Read-Host "Colecciones a instalar"
 
 # --- 9. Descargar y extraer colecciones --------------------------
 
-if ($selCol.Trim() -ne '' -and $zips.Count -gt 0) {
+if ($selCol.Trim() -ne '') {
     $indices = $selCol -split ',' |
                ForEach-Object { $_.Trim() -as [int] } |
-               Where-Object { $_ -ge 1 -and $_ -le $zips.Count }
+               Where-Object { $_ -ge 1 -and $_ -le $infos.Count }
 
     Write-Host ""
     foreach ($idx in $indices) {
-        $zip    = $zips[$idx - 1]
-        $nombre = $zip.name -replace '\.zip$', ''
-        $tmpZip = "$env:TEMP\biosoft-$($zip.name)"
-        Write-Host "Instalando coleccion $nombre ..." -ForegroundColor Cyan
+        $info   = $infos[$idx - 1]
+        $tmpZip = "$env:TEMP\biosoft-$($info.Nombre).zip"
+        Write-Host "Instalando coleccion $($info.Nombre) ..." -ForegroundColor Cyan
         try {
-            Invoke-DriveDownload $zip.id $tmpZip $zip.name
+            Invoke-DriveDownload $info.Id $tmpZip "$($info.Nombre).zip"
             Write-Host "  Extrayendo ..." -ForegroundColor Gray
             Expand-Archive -Path $tmpZip -DestinationPath "$destino\musica" -Force
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
-            Write-Host "  [OK] $nombre instalada." -ForegroundColor Green
+            Write-Host "  [OK] $($info.Nombre) instalada." -ForegroundColor Green
         } catch {
-            Write-Host "  [ERROR] instalando $nombre : $_" -ForegroundColor Red
+            Write-Host "  [ERROR] instalando $($info.Nombre): $_" -ForegroundColor Red
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
         }
     }
