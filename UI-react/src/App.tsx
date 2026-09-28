@@ -119,13 +119,13 @@ function Layout() {
               {Object.entries(navLabels).map(([path, label]) => (
                 <NavItem key={path} path={path} label={label} />
               ))}
-            </ul>
-            <ul className="nav navbar-nav navbar-right">
               <li>
                 <a onClick={() => fileInputNavRef.current?.click()} title="Agregar músicas a SIN_COLECCION" style={{ cursor: 'pointer' }}>
                   <span className="glyphicon glyphicon-music" /> Agregar Músicas
                 </a>
               </li>
+            </ul>
+            <ul className="nav navbar-nav navbar-right">
               <li>
                 <a onClick={toggleTema} title={temaOscuro ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'} style={{ cursor: 'pointer' }}>
                   <span className="glyphicon glyphicon-adjust" />

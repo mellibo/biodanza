@@ -4,9 +4,6 @@ import { useDataStore, type RowImportMusica } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
 import { downloadBlob } from '../lib/download'
 import { useEtiquetasStore } from '../store/etiquetasStore'
-import { checkFileExists } from '../lib/loadJs'
-import { normalize } from '../lib/normalize'
-import { decodeSiHaceFalta } from '../lib/decodeUrl'
 import { getCurrentPath } from '../lib/path'
 import { getPathMusica } from '../lib/config'
 import { testMusica } from '../lib/testMusica'
@@ -72,23 +69,6 @@ interface EquivalenciaGrupo {
   CorrespondeA: string
 }
 
-// Fila cruda de la hoja Excel de la colección, tal como llega de
-// sheet_to_json -- nombres de columna del catálogo (ver CLAUDE.md,
-// "Organizacion de archivos de musicas").
-interface RawRow extends RowImportMusica {
-  CdPista?: string
-  Nro?: string
-  L?: string
-  lineas?: string
-  Danza?: string
-  Tema?: string
-  Grupo?: string
-  Link?: string
-}
-
-function nuevaColeccion(): Coleccion {
-  return { nombre: '', carpeta: '', excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now() }
-}
 
 // Puerto de cargarMusicaController.js + cargarMusica.html
 // (UI/biosoft.html:227-304). Flujo: 1) cargar un Excel de "equivalencias"
@@ -114,25 +94,12 @@ export function CargarMusica() {
     initEtiquetas()
   }, [init, initEtiquetas])
 
-  const [modo, setModo] = useState<'excel' | 'carpeta'>('carpeta')
-
-  const fileImportRef = useRef<HTMLInputElement>(null)
   const fileEquivalenciasRef = useRef<HTMLInputElement>(null)
-  const musicasOkRef = useRef<string[]>([])
   const dirInputRef = useRef<HTMLInputElement>(null)
 
   const [equivalenciaEjercicios, setEquivalenciaEjercicios] = useState<EquivalenciaEjercicio[]>([])
   const [equivalenciaInterpretes, setEquivalenciaInterpretes] = useState<EquivalenciaInterprete[]>([])
   const [equivalenciaGrupo, setEquivalenciaGrupo] = useState<EquivalenciaGrupo[]>([])
-
-  const [wb, setWb] = useState<XLSX.WorkBook | null>(null)
-  const [sheets, setSheets] = useState<string[]>([])
-  const [coleccion, setColeccion] = useState<Coleccion>(nuevaColeccion())
-  const [sampleRows, setSampleRows] = useState<RawRow[]>([])
-  const [totales, setTotales] = useState({ ok: 0, leidos: 0, error: 0 })
-  const [validado, setValidado] = useState(false)
-  const [validando, setValidando] = useState(false)
-  const [page, setPage] = useState(1)
 
   // --- Modo "Escanear Carpeta" (sin Excel) ---
   const [archivosEscaneados, setArchivosEscaneados] = useState<ArchivoEscaneado[]>([])
@@ -153,31 +120,12 @@ export function CargarMusica() {
   const [etiquetasPorCarpeta, setEtiquetasPorCarpeta] = useState<Record<string, string[]>>({})
   const [filtroEscaneo, setFiltroEscaneo] = useState({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
 
-  const pathMusicas = (getCurrentPath() ?? '') + 'musica/'
   const pathApp = getCurrentPath() ?? ''
 
-  // El atributo "webkitdirectory" no es JSX estándar -- se setea a mano vía
-  // ref callback (no un useEffect con [] de dependencias) porque el
-  // <input> recién se monta la primera vez que se entra al modo "carpeta"
-  // (arranca en modo "excel"), momento en el que un efecto que solo corre
-  // una vez al montar el componente ya pasó de largo y nunca ve el nodo.
+  // webkitdirectory no es JSX estándar -- se setea vía ref callback.
   function setDirInputRef(el: HTMLInputElement | null) {
     dirInputRef.current = el
     el?.setAttribute('webkitdirectory', '')
-  }
-
-  function reset() {
-    setWb(null)
-    setSheets([])
-    setSampleRows([])
-    setTotales({ ok: 0, leidos: 0, error: 0 })
-    setValidado(false)
-    setColeccion(nuevaColeccion())
-  }
-
-  function pickImportFile(which: 'fileImport' | 'fileEquivalencias') {
-    reset()
-    ;(which === 'fileImport' ? fileImportRef : fileEquivalenciasRef).current?.click()
   }
 
   async function leerEquivalencias(file: File) {
@@ -211,249 +159,6 @@ export function CargarMusica() {
 
     addAlert('info', 'Archivo de Equivalencias Cargado.')
     if (fileEquivalenciasRef.current) fileEquivalenciasRef.current.value = ''
-  }
-
-  async function leerColeccion(file: File) {
-    const nombre = file.name.substring(0, file.name.indexOf('.'))
-    // Solo un default -- la colección puede estar en cualquier carpeta del
-    // disco, así que esto NO bloquea la lectura si no coincide: se avisa y
-    // el usuario corrige la "Carpeta de la coleccion" (más abajo, editable)
-    // antes de verificar/importar.
-    const carpetaColeccion = 'musica/' + nombre + '/'
-    const filePath = carpetaColeccion + file.name
-
-    try {
-      await checkFileExists(filePath)
-    } catch {
-      addAlert(
-        'danger',
-        'No se encontro el archivo excel en la ubicación por default: ' +
-          filePath +
-          '<br/>Si la colección está en otra carpeta, corregí "Carpeta de la coleccion a importar" antes de verificar/importar.',
-      )
-    }
-
-    setColeccion((c) => ({ ...c, nombre: nombre.toUpperCase(), carpeta: carpetaColeccion }))
-
-    let wbCol: XLSX.WorkBook
-    try {
-      wbCol = XLSX.read(await file.arrayBuffer(), { type: 'array' })
-    } catch {
-      addAlert('danger', 'Archivo Excel invalido.')
-      return
-    }
-    setWb(wbCol)
-    setSheets(wbCol.SheetNames)
-    if (fileImportRef.current) fileImportRef.current.value = ''
-  }
-
-  function changeSheet(sheetName: string) {
-    if (!wb) return
-    setValidado(false)
-    setColeccion((c) => ({ ...c, hojaEjercicios: sheetName }))
-    loadSheet(wb.Sheets[sheetName])
-  }
-
-  async function loadSheet(sheet: XLSX.WorkSheet) {
-    setValidando(true)
-    const rawRows = XLSX.utils.sheet_to_json<RawRow>(sheet)
-
-    // Detectar la columna con hipervínculos (agregados por Hyperlinks.exe,
-    // ver CLAUDE.md) y usarlos para completar Carpeta/Archivo si faltan.
-    let linkCol = -1
-    outer: for (let r = 0; r < 10; r++) {
-      for (let c = 0; c < 10; c++) {
-        const cell = sheet[XLSX.utils.encode_cell({ r, c })]
-        if (cell?.l) {
-          linkCol = c
-          break outer
-        }
-      }
-    }
-    if (linkCol !== -1) {
-      rawRows.forEach((item, index) => {
-        const cell = sheet[XLSX.utils.encode_cell({ r: index + 1, c: linkCol })]
-        if (!cell?.l) return
-        const target = cell.l.Target as string
-        item.Link = target
-        if (!item.Carpeta || item.Carpeta.length === 0) {
-          const parts = target.split('/')
-          if (parts.length < 2) return
-          item.Carpeta = decodeSiHaceFalta(parts[parts.length - 2])
-          item.Archivo = decodeSiHaceFalta(parts[parts.length - 1])
-        }
-      })
-    }
-
-    let totalError = 0
-    const listaACheckMusica: RawRow[] = []
-    for (const item of rawRows) {
-      item.Lineas = item.Lineas || item.L || item.lineas
-      item.CdPista = item.CdPista || item.Nro
-      if (typeof item.CdPista !== 'string' || item.CdPista.trim() === '') {
-        item.estado = 'Error: Clave (CdPista) vacia o incorrecta.'
-        totalError++
-        continue
-      }
-      item.CdPista = item.CdPista.trim()
-      item.idMusica = item.CdPista
-
-      if (typeof item.Ejercicio !== 'string') {
-        item.estado = 'Error: Columna Ejercicio Incorrecta.'
-        totalError++
-        continue
-      }
-      item.Ejercicio = item.Ejercicio.trim()
-      if (typeof item.Titulo !== 'string' || item.Titulo === '') item.Titulo = 'Desconocido'
-      item.Titulo = item.Titulo.trim()
-      if (typeof item.Interprete !== 'string' || item.Interprete === '') item.Interprete = 'Desconocido'
-      item.Interprete = item.Interprete.trim()
-
-      if (typeof item.Carpeta !== 'string' || item.Carpeta.length < 1) {
-        item.estado = 'Error: Columna Carpeta Incorrecta.'
-        totalError++
-        continue
-      }
-      if (typeof item.Archivo !== 'string' || item.Archivo.length < 4) {
-        item.estado = 'Error: Columna Archivo Incorrecta.'
-        totalError++
-        continue
-      }
-      item.Carpeta = decodeSiHaceFalta(item.Carpeta)
-      item.Archivo = decodeSiHaceFalta(item.Archivo)
-      if (typeof item.Tags === 'string') {
-        item.Tags = normalize(
-          item.Tags.replace(item.Ejercicio + ';', '')
-            .replace(item.Interprete + ';', '')
-            .replace(item.Titulo + ';', '')
-            .replace(item.Archivo + ';', '')
-            .replace(item.Carpeta + ';', ''),
-        )
-      }
-
-      for (const eq of equivalenciaEjercicios) {
-        if (item.Ejercicio.toLowerCase().indexOf(eq.Ejercicio.toLowerCase()) > -1) {
-          item.Ejercicio = eq.CorrespondeA
-          break
-        }
-      }
-      for (const eq of equivalenciaInterpretes) {
-        if (item.Interprete.toLowerCase().indexOf(eq.Interprete.toLowerCase()) > -1) {
-          item.Interprete = eq.CorrespondeA
-          break
-        }
-      }
-      item.grupo = item.grupo || item.Grupo
-      if (!item.grupo) {
-        for (const eq of equivalenciaGrupo) {
-          if (item.Ejercicio.toLowerCase().indexOf(eq.EjercicioContiene.toLowerCase()) > -1) {
-            item.grupo = eq.CorrespondeA
-            break
-          }
-        }
-      }
-      item.grupo = item.grupo || 'OTROS'
-      listaACheckMusica.push(item)
-    }
-
-    let colsError = ''
-    if (rawRows.length === 0) {
-      colsError += 'No hay datos en la hoja excel.'
-    } else {
-      const props = Object.keys(rawRows[0])
-      if (props.indexOf('Ejercicio') === -1 && props.indexOf('Danza') === -1) colsError += 'No se encontro la columna Ejercicio.'
-      if (props.indexOf('CdPista') === -1 && props.indexOf('Nro') === -1) colsError += 'No se encontro la columna CdPista.'
-      if (props.indexOf('Titulo') === -1 && props.indexOf('Tema') === -1) colsError += 'No se encontro la columna Titulo.'
-      if (props.indexOf('Interprete') === -1) colsError += 'No se encontro la columna Interprete.'
-      if (props.indexOf('Carpeta') === -1) colsError += 'No se encontro la columna Carpeta.'
-      if (props.indexOf('Archivo') === -1) colsError += 'No se encontro la columna Archivo.'
-    }
-    if (colsError.length > 1) addAlert('danger', 'Error:' + colsError)
-
-    setSampleRows(rawRows)
-    setTotales({ ok: 0, leidos: rawRows.length, error: totalError })
-    setPage(1)
-
-    await checkMusicas(listaACheckMusica)
-    setSampleRows([...rawRows])
-    setValidando(false)
-    setValidado(true)
-  }
-
-  // Puerto de checkMusicas/checkNextMusica (cargarMusicaController.js:304-357):
-  // valida secuencialmente cada fila probando si el archivo de audio existe
-  // de verdad, reintentando con la ruta del hipervínculo si la ruta
-  // Carpeta/Archivo declarada falla.
-  async function checkMusicas(musicas: RawRow[]) {
-    let totalOk = 0
-    let totalError = 0
-    const cola = [...musicas]
-    while (cola.length > 0) {
-      const item = cola.shift()!
-      if (item.CdPista && musicasOkRef.current.includes(item.CdPista)) {
-        item.estado = 'ok'
-        totalOk++
-        setTotales((t) => ({ ...t, ok: totalOk, error: totalError }))
-        continue
-      }
-      const raiz = coleccion.carpeta.trim()
-      const src = (raiz.endsWith('/') ? raiz : raiz + '/') + item.Carpeta + '/' + item.Archivo
-      const result = await testMusica(src)
-      if (result.ok) {
-        item.estado = 'ok'
-        item.duracion = result.duracion
-        if (item.CdPista) musicasOkRef.current.push(item.CdPista)
-        totalOk++
-      } else if (item.Link) {
-        const parts = item.Link.split('/')
-        if (parts.length === 2) {
-          item.Carpeta = decodeSiHaceFalta(parts[parts.length - 2])
-          item.Archivo = decodeSiHaceFalta(parts[parts.length - 1])
-          delete item.Link
-          cola.push(item)
-          continue
-        }
-        item.estado = 'Error. ' + result.errorMessage
-        totalError++
-      } else {
-        item.estado = 'Error. ' + result.errorMessage
-        totalError++
-      }
-      setTotales((t) => ({ ...t, ok: totalOk, error: totalError }))
-    }
-  }
-
-  // Vuelve a probar la ubicación de cada fila con la "Carpeta de la
-  // coleccion" actual -- hace falta re-ejecutar esto a mano si el usuario
-  // la corrige después de la lectura inicial (que solo prueba el default
-  // "musica/<nombre>/"), porque la colección puede estar en cualquier
-  // otra carpeta del disco. Se excluyen las filas con error de columna
-  // (esas no dependen de dónde esté la carpeta) y se limpia la caché de
-  // "ya confirmados" (musicasOkRef), que quedó validada contra la
-  // ubicación vieja.
-  async function revalidarUbicacion() {
-    const paraVerificar = sampleRows.filter((r) => !(typeof r.estado === 'string' && r.estado.startsWith('Error:')))
-    if (paraVerificar.length === 0) return
-    musicasOkRef.current = []
-    setValidando(true)
-    setValidado(false)
-    setTotales((t) => ({ ...t, ok: 0, error: 0 }))
-    await checkMusicas(paraVerificar)
-    setSampleRows([...sampleRows])
-    setValidando(false)
-    setValidado(true)
-  }
-
-  function importarExcelMusicas() {
-    let result: ReturnType<typeof importarColeccionMusicas>
-    try {
-      result = importarColeccionMusicas(coleccion, sampleRows)
-    } catch (e) {
-      addAlert('danger', 'No se pudo importar: ' + (e instanceof Error ? e.message : String(e)))
-      return
-    }
-    addAlert('info', 'se importaron ' + result.length + ' renglones de la colección ' + coleccion.nombre)
-    reset()
   }
 
   function eliminarColeccion(nombre: string) {
@@ -811,8 +516,6 @@ export function CargarMusica() {
     resetCarpeta()
   }
 
-  const paginaActual = sampleRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-
   // Cantidad de archivos de la colección detectada en el escaneo (siempre
   // una sola, ver ubicarEnArbol). El root NO sale de acá -- se edita
   // aparte (ver rootColeccion) porque no hay forma de detectarlo con
@@ -918,7 +621,7 @@ export function CargarMusica() {
         onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
       />
       <div className="form-group col-md-12 btn-group" role="toolbar" style={{ marginBottom: '10px' }}>
-        <button type="button" className="btn btn-primary" onClick={() => pickImportFile('fileEquivalencias')}>
+        <button type="button" className="btn btn-primary" onClick={() => fileEquivalenciasRef.current?.click()}>
           <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
         </button>{' '}
         {equivalenciaEjercicios.length > 0 && (
@@ -928,137 +631,7 @@ export function CargarMusica() {
           </span>
         )}
       </div>
-      <div className="form-group col-md-12 btn-group" role="group" style={{ marginBottom: '10px' }}>
-        <button type="button" className={'btn ' + (modo === 'excel' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('excel')}>
-          Desde Excel
-        </button>
-        <button type="button" className={'btn ' + (modo === 'carpeta' ? 'btn-warning' : 'btn-primary')} onClick={() => setModo('carpeta')}>
-          Escanear Carpeta
-        </button>
-      </div>
-
-      {modo === 'excel' && (
-        <form className="form-inline">
-          <div className="row">
-            <br />
-            <div className="form-group col-md-12">
-              <label className="control-label">
-                Por default se asume que la colección está en: {pathMusicas} -- si en realidad está en cualquier otra carpeta del
-                disco, corregí la ruta de abajo (relativa a donde corre esta app) y presioná "Verificar Ubicación".
-              </label>
-            </div>
-            <div className="form-group col-md-12">
-              <label className="control-label">Carpeta de la coleccion a importar:</label>
-              <input
-                type="text"
-                className="form-control"
-                style={{ width: '500px' }}
-                value={coleccion.carpeta}
-                onChange={(e) => setColeccion((c) => ({ ...c, carpeta: e.target.value }))}
-              />{' '}
-              <button
-                type="button"
-                className={'btn btn-primary' + (sampleRows.length === 0 || validando ? ' disabled' : '')}
-                disabled={sampleRows.length === 0 || validando}
-                onClick={revalidarUbicacion}
-                title="Volver a verificar que los archivos existan en la carpeta indicada arriba"
-              >
-                <span className="glyphicon glyphicon-refresh" /> Verificar Ubicación
-              </button>
-            </div>
-            <input
-              ref={fileImportRef}
-              type="file"
-              style={{ visibility: 'hidden' }}
-              onChange={(e) => e.target.files?.[0] && leerColeccion(e.target.files[0])}
-            />
-            <div className="form-group col-md-12 btn-group" role="toolbar">
-              <button
-                type="button"
-                className={'btn btn-primary' + (equivalenciaEjercicios.length < 1 ? ' disabled' : '')}
-                disabled={equivalenciaEjercicios.length < 1}
-                onClick={() => pickImportFile('fileImport')}
-              >
-                <span className="glyphicon glyphicon-import" /> Leer Excel Colección Música
-              </button>
-              <button
-                type="button"
-                className={'btn btn-success' + (!validado ? ' disabled' : '')}
-                disabled={!validado}
-                onClick={importarExcelMusicas}
-              >
-                <span className="glyphicon glyphicon-import" /> Importación Colección Música
-              </button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
-              <label className="control-label">Seleccione la Hoja a importar:</label>
-              <div className="btn-group" role="group">
-                {sheets.map((sheet) => (
-                  <button
-                    key={sheet}
-                    type="button"
-                    className={'btn ' + (sheet === coleccion.hojaEjercicios ? 'btn-warning' : 'btn-primary')}
-                    onClick={() => changeSheet(sheet)}
-                  >
-                    {sheet}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
-              <label className="control-label">renglones leidos:</label>
-              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.leidos} />
-              <label className="control-label">renglones ok para importar:</label>
-              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.ok} />
-              <label className="control-label">renglones con error:</label>
-              <input type="text" readOnly className="form-control" style={{ width: '70px' }} value={totales.error} />
-            </div>
-            {validando && (
-              <div className="col-md-12">
-                <strong className="aviso-espera">Probando que cada archivo exista y se pueda reproducir, esto puede tardar. Por favor espere...</strong>
-              </div>
-            )}
-            <div className="col-md-12">
-              <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
-                <thead>
-                  <tr>
-                    <td>Clave</td>
-                    <td>Ejercicio</td>
-                    <td>Titulo</td>
-                    <td>Interprete</td>
-                    <td>Lineas</td>
-                    <td>Carpeta</td>
-                    <td>Archivo</td>
-                    <td>Estado</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginaActual.map((row, i) => (
-                    <tr key={i}>
-                      <td>{row.CdPista}</td>
-                      <td>{row.Ejercicio}</td>
-                      <td>{row.Titulo}</td>
-                      <td>{row.Interprete}</td>
-                      <td>{row.Lineas}</td>
-                      <td>{row.Carpeta}</td>
-                      <td>{row.Archivo}</td>
-                      <td style={{ color: 'white', backgroundColor: row.estado === 'ok' ? '#04f95a' : 'orange' }}>
-                        {row.estado}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <Pagination page={page} count={sampleRows.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
-            </div>
-          </div>
-        </form>
-      )}
-
-      {modo === 'carpeta' && (
-        <form className="form-inline">
+      <form className="form-inline">
           <div className="row">
             <br />
             <div className="form-group col-md-12">
@@ -1260,7 +833,6 @@ export function CargarMusica() {
             </div>
           )}
         </form>
-      )}
     </div>
   )
 }
