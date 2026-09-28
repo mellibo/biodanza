@@ -3,14 +3,15 @@
 # Uso: doble clic en "Instalar Biosoft.bat"
 
 # --- CONFIGURACION -----------------------------------------------
-$HTML_DRIVE_ID = "REEMPLAZAR_CON_FILE_ID_DE_biosoft.html"
+$HTML_DRIVE_ID = "102kSTnhJKoozEjHSkCYlLQaSYfJUJIQ6"
 
 $COLECCIONES = @(
-    [pscustomobject]@{ Nombre="IBF";  Id="REEMPLAZAR_CON_FILE_ID_IBF.zip"  }
-    [pscustomobject]@{ Nombre="BsAs"; Id="REEMPLAZAR_CON_FILE_ID_BsAs.zip" }
-    [pscustomobject]@{ Nombre="CPAZ"; Id="REEMPLAZAR_CON_FILE_ID_CPAZ.zip" }
-    [pscustomobject]@{ Nombre="HLB";  Id="REEMPLAZAR_CON_FILE_ID_HLB.zip"  }
-    [pscustomobject]@{ Nombre="JEXP"; Id="REEMPLAZAR_CON_FILE_ID_JEXP.zip" }
+    [pscustomobject]@{ Nombre="IBF";   Id="15QrdaK17bzq-xwymnhYUCbJnVD9pLl9_" }
+    [pscustomobject]@{ Nombre="Areco"; Id="1Wz2KjDqBsp2gSgBDPq7pvTY6MCuNxPXM"  }
+    [pscustomobject]@{ Nombre="HLB";   Id="1Vz8Qxj5UWsbU29DD0ZNUQ3YmFVX23MsO"  }
+    [pscustomobject]@{ Nombre="JEXP";  Id="1I-yBIrUzi8_7QbLgtqBBM5raYg2P5Jp4"  }
+    [pscustomobject]@{ Nombre="BsAs";  Id="PENDIENTE"                            }
+    [pscustomobject]@{ Nombre="CPAZ";  Id="PENDIENTE"                            }
 )
 # -----------------------------------------------------------------
 
@@ -164,7 +165,7 @@ Write-Host ""
 Write-Host "  Consultando tamanos, espere..." -ForegroundColor Gray
 
 $infos = @()
-foreach ($col in $COLECCIONES) {
+foreach ($col in ($COLECCIONES | Where-Object { $_.Id -ne "PENDIENTE" })) {
     $bytes = Get-DriveFileSize $col.Id
     $infos += [pscustomobject]@{ Nombre=$col.Nombre; Id=$col.Id; Bytes=$bytes }
 }
