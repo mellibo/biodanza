@@ -11,7 +11,7 @@ const navLabels: Record<string, string> = {
   '/clases': 'Clases',
   '/ejercicios': 'Ejercicios',
   '/musicas': 'Música',
-  '/cargarMusica': 'Cargar Música',
+  '/cargarMusica': 'Cargar Colección Música',
   '/cargarEjercicios': 'Cargar Ejercicios',
   '/etiquetas': 'Etiquetas',
   '/acercade': 'Acerca De...',
@@ -132,7 +132,7 @@ function Layout() {
                 </a>
               </li>
             </ul>
-            <input ref={fileInputNavRef} type="file" multiple accept="audio/*" style={{ display: 'none' }} onChange={onFilesNavbar} />
+            <input ref={fileInputNavRef} type="file" accept="audio/*" style={{ display: 'none' }} onChange={onFilesNavbar} />
           </div>
         </div>
       </div>
