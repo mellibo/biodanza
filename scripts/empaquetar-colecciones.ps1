@@ -1,9 +1,12 @@
 # empaquetar-colecciones.ps1
 # Genera o actualiza los zips de cada coleccion de musica en la carpeta de distribucion.
+# Origen: UI\musica\ del repo (subcarpeta = una coleccion).
+# Destino: carpeta en Drive desde donde los usuarios finales los descargan.
 # Ejecutar desde cualquier lugar; usa rutas absolutas.
 
 # ─── CONFIGURACIÓN ────────────────────────────────────────────────
-$MUSICA_FUENTE = "G:\Mi unidad\Biodanza\Musica"
+# UI\musica\ del repo -- cada subcarpeta es una coleccion (IBF, BsAs, CPAZ, HLB, JEXP)
+$MUSICA_FUENTE = Join-Path $PSScriptRoot "..\UI\musica"
 $DESTINO_ZIPS  = "G:\Mi unidad\biosoft\colecciones de musica"
 # ──────────────────────────────────────────────────────────────────
 
