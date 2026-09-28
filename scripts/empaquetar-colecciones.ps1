@@ -4,11 +4,11 @@
 # Destino: carpeta en Drive desde donde los usuarios finales los descargan.
 # Ejecutar desde cualquier lugar; usa rutas absolutas.
 
-# ─── CONFIGURACIÓN ────────────────────────────────────────────────
+# --- CONFIGURACION -----------------------------------------------
 # UI\musica\ del repo -- cada subcarpeta es una coleccion (IBF, BsAs, CPAZ, HLB, JEXP)
 $MUSICA_FUENTE = Join-Path $PSScriptRoot "..\UI\musica"
-$DESTINO_ZIPS  = "G:\Mi unidad\biosoft\colecciones de musica"
-# ──────────────────────────────────────────────────────────────────
+$DESTINO_ZIPS  = "H:\Mi unidad\biosoft\colecciones de musica"
+# -----------------------------------------------------------------
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -29,15 +29,15 @@ Write-Host ""
 if ($7z) {
     Write-Host "7-Zip encontrado: $7z" -ForegroundColor Green
 } else {
-    Write-Host "7-Zip no encontrado -- se usará Compress-Archive (más lento, límite ~4 GB por zip)." -ForegroundColor Yellow
+    Write-Host "7-Zip no encontrado -- se usara Compress-Archive (mas lento, limite ~4 GB por zip)." -ForegroundColor Yellow
 }
 Write-Host ""
 
 # Verificar fuente
 if (-not (Test-Path $MUSICA_FUENTE)) {
-    Write-Host "ERROR: No se encontró $MUSICA_FUENTE" -ForegroundColor Red
-    Write-Host "Asegurate de que Google Drive esté sincronizado." -ForegroundColor Yellow
-    Read-Host "Presioná Enter para salir"
+    Write-Host "ERROR: No se encontro $MUSICA_FUENTE" -ForegroundColor Red
+    Write-Host "Asegurate de que Google Drive este sincronizado." -ForegroundColor Yellow
+    Read-Host "Presiona Enter para salir"
     exit 1
 }
 
@@ -47,18 +47,18 @@ New-Item -ItemType Directory -Path $DESTINO_ZIPS -Force | Out-Null
 $colecciones = @(Get-ChildItem $MUSICA_FUENTE -Directory)
 if ($colecciones.Count -eq 0) {
     Write-Host "No se encontraron colecciones en $MUSICA_FUENTE" -ForegroundColor Yellow
-    Read-Host "Presioná Enter para salir"
+    Read-Host "Presiona Enter para salir"
     exit 0
 }
 
 Write-Host "Colecciones a empaquetar:" -ForegroundColor Cyan
 foreach ($col in $colecciones) {
-    Write-Host "  · $($col.Name)" -ForegroundColor White
+    Write-Host "  - $($col.Name)" -ForegroundColor White
 }
 Write-Host ""
 
-$total = $colecciones.Count
-$idx   = 0
+$total   = $colecciones.Count
+$idx     = 0
 $errores = @()
 
 foreach ($col in $colecciones) {
@@ -66,7 +66,7 @@ foreach ($col in $colecciones) {
     $zipPath = "$DESTINO_ZIPS\$($col.Name).zip"
     $existe  = Test-Path $zipPath
 
-    Write-Host "[$idx/$total] $($col.Name) → $($col.Name).zip" -ForegroundColor Cyan
+    Write-Host "[$idx/$total] $($col.Name) -> $($col.Name).zip" -ForegroundColor Cyan
     if ($existe) {
         Write-Host "       (ya existe, actualizando)" -ForegroundColor Gray
     }
@@ -75,7 +75,7 @@ foreach ($col in $colecciones) {
     $ok     = $false
 
     if ($7z) {
-        # 7z a: añadir/actualizar; -r: recursivo; -mx=5: compresión media (velocidad/tamaño)
+        # 7z a: agregar/actualizar; -r: recursivo; -mx=5: compresion media
         & $7z a -r -mx=5 $zipPath "$($col.FullName)\*" | Out-Null
         $ok = ($LASTEXITCODE -eq 0)
     } else {
@@ -92,20 +92,20 @@ foreach ($col in $colecciones) {
     $duracion = ((Get-Date) - $inicio).TotalSeconds
     if ($ok) {
         $tamZip = (Get-Item $zipPath).Length
-        Write-Host ("       ✓ OK  — {0}  ({1:N0}s)" -f (Format-Bytes $tamZip), $duracion) -ForegroundColor Green
+        Write-Host ("       [OK] {0}  ({1:N0}s)" -f (Format-Bytes $tamZip), $duracion) -ForegroundColor Green
     } else {
-        Write-Host "       ✗ Error empaquetando $($col.Name)" -ForegroundColor Red
+        Write-Host "       [ERROR] empaquetando $($col.Name)" -ForegroundColor Red
         $errores += $col.Name
     }
 }
 
 Write-Host ""
 if ($errores.Count -eq 0) {
-    Write-Host "══ Listo. $total zip(s) generados en:" -ForegroundColor Green
+    Write-Host "== Listo. $total zip(s) generados en:" -ForegroundColor Green
     Write-Host "   $DESTINO_ZIPS" -ForegroundColor White
 } else {
-    Write-Host "══ Terminado con $($errores.Count) error(es):" -ForegroundColor Yellow
-    $errores | ForEach-Object { Write-Host "   · $_" -ForegroundColor Red }
+    Write-Host "== Terminado con $($errores.Count) error(es):" -ForegroundColor Yellow
+    $errores | ForEach-Object { Write-Host "   - $_" -ForegroundColor Red }
 }
 Write-Host ""
-Read-Host "Presioná Enter para salir"
+Read-Host "Presiona Enter para salir"

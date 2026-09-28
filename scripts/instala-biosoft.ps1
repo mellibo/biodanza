@@ -2,24 +2,14 @@
 # Instala Biosoft en Windows 10/11 descargando desde Google Drive.
 # Uso: doble clic en "Instalar Biosoft.bat"
 
-# ─── CONFIGURACIÓN ────────────────────────────────────────────────
+# --- CONFIGURACION -----------------------------------------------
 $HTML_DRIVE_ID      = "REEMPLAZAR_CON_FILE_ID_DE_biosoft.html"
 $COLECCIONES_FOLDER = "REEMPLAZAR_CON_FOLDER_ID_DE_colecciones_de_musica"
 $DRIVE_API_KEY      = "REEMPLAZAR_CON_API_KEY"
-# ──────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-
-# ── Helpers ──────────────────────────────────────────────────────
-
-function Write-Header {
-    Clear-Host
-    Write-Host "╔══════════════════════════════════════════╗" -ForegroundColor Cyan
-    Write-Host "║          INSTALADOR BIOSOFT               ║" -ForegroundColor Cyan
-    Write-Host "╚══════════════════════════════════════════╝" -ForegroundColor Cyan
-    Write-Host ""
-}
 
 function Format-Bytes($bytes) {
     if ($bytes -ge 1GB) { "{0:N1} GB" -f ($bytes / 1GB) }
@@ -42,59 +32,60 @@ $VELOCIDAD_BYTES_SEG = 625 * 1KB
 function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
     $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
     Write-Host "  Descargando $descripcion ..." -ForegroundColor Gray
-    $ProgressPreference = 'SilentlyContinue'   # evita la barra lenta de PS5
+    $ProgressPreference = 'SilentlyContinue'
+    $wc = $null
     try {
-        # WebClient.DownloadFile transmite directo a disco sin cargar en memoria
         $wc = New-Object System.Net.WebClient
         $wc.DownloadFile($url, $destPath)
-        # Verificar que no nos devolvió una página HTML de error de Drive
-        $header = [System.IO.File]::ReadAllBytes($destPath) | Select-Object -First 5
-        $htmlMagic = [byte[]]@(0x3C, 0x21, 0x44, 0x4F, 0x43)   # <!DOC
-        $htmlMagic2 = [byte[]]@(0x3C, 0x68, 0x74, 0x6D, 0x6C)  # <html
-        if (($header[0] -eq $htmlMagic[0] -and $header[1] -eq $htmlMagic[1]) -or
-            ($header[0] -eq $htmlMagic2[0] -and $header[1] -eq $htmlMagic2[1])) {
+        # Verificar que no devolvio una pagina HTML de error de Drive
+        $primeros = [System.IO.File]::ReadAllBytes($destPath) | Select-Object -First 5
+        if ($primeros[0] -eq 0x3C) {   # '<' = posible HTML
             Remove-Item $destPath -Force
-            throw "Drive devolvió una página HTML en lugar del archivo. Verificá que el archivo esté compartido como público."
+            throw "Drive devolvio HTML en lugar del archivo. Verifica que el archivo este compartido como publico."
         }
     } finally {
         if ($wc) { $wc.Dispose() }
     }
 }
 
-# ── 1. Header ─────────────────────────────────────────────────────
+# --- 1. Header ---------------------------------------------------
 
-Write-Header
+Clear-Host
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "         INSTALADOR BIOSOFT              " -ForegroundColor Cyan
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host ""
 
-# ── 2. Verificar PS 5+ ────────────────────────────────────────────
+# --- 2. Verificar PS 5+ ------------------------------------------
 
 if ($PSVersionTable.PSVersion.Major -lt 5) {
     Write-Host "ERROR: Se requiere PowerShell 5 o superior (Windows 10 lo incluye)." -ForegroundColor Red
-    Read-Host "Presioná Enter para salir"
+    Read-Host "Presiona Enter para salir"
     exit 1
 }
 
-# ── 3. Verificar configuración ────────────────────────────────────
+# --- 3. Verificar configuracion ----------------------------------
 
-if ($HTML_DRIVE_ID -like "REEMPLAZAR*" -or $COLECCIONES_FOLDER -like "REEMPLAZAR*" -or $DRIVE_API_KEY -like "REEMPLAZAR*") {
-    Write-Host "ERROR: El instalador no está configurado (IDs de Drive y API Key vacíos)." -ForegroundColor Red
-    Write-Host "Contactá al administrador para obtener una versión configurada." -ForegroundColor Yellow
-    Read-Host "Presioná Enter para salir"
+if ($HTML_DRIVE_ID -like "REEMPLAZAR*" -or $COLECCIONES_FOLDER -like "REEMPLAZAR*") {
+    Write-Host "ERROR: El instalador no esta configurado (IDs de Drive vacios)." -ForegroundColor Red
+    Write-Host "Contacta al administrador para obtener una version configurada." -ForegroundColor Yellow
+    Read-Host "Presiona Enter para salir"
     exit 1
 }
 
-# ── 4. Elegir carpeta de instalación ──────────────────────────────
+# --- 4. Elegir carpeta de instalacion ----------------------------
 
-Write-Host "¿Dónde instalar Biosoft?" -ForegroundColor White
+Write-Host "Donde instalar Biosoft?" -ForegroundColor White
 Write-Host ""
 
 $opciones = @()
-foreach ($letra in @('G','C','D','E')) {
+foreach ($letra in @('H','C','D','E')) {
     if (Test-Path "${letra}:\") {
-        $tag = if ($letra -eq 'G') { "  ← Google Drive (recomendado)" } else { "" }
-        $opciones += [pscustomobject]@{ Letra = $letra; Ruta = "${letra}:\biosoft"; Tag = $tag }
+        $tag = if ($letra -eq 'H') { "  <- Google Drive (recomendado)" } else { "" }
+        $opciones += [pscustomobject]@{ Ruta = "${letra}:\biosoft"; Tag = $tag }
     }
 }
-$opciones += [pscustomobject]@{ Letra = ''; Ruta = 'Ruta personalizada'; Tag = '' }
+$opciones += [pscustomobject]@{ Ruta = 'Ruta personalizada'; Tag = '' }
 
 for ($i = 0; $i -lt $opciones.Count; $i++) {
     Write-Host ("  [{0}] {1}{2}" -f ($i+1), $opciones[$i].Ruta, $opciones[$i].Tag)
@@ -102,62 +93,62 @@ for ($i = 0; $i -lt $opciones.Count; $i++) {
 Write-Host ""
 
 do {
-    $sel = Read-Host "Elegí una opción (1-$($opciones.Count))"
+    $sel = Read-Host "Elegi una opcion (1-$($opciones.Count))"
     $selNum = $sel -as [int]
 } while ($selNum -lt 1 -or $selNum -gt $opciones.Count)
 
 if ($opciones[$selNum - 1].Ruta -eq 'Ruta personalizada') {
-    $destino = (Read-Host "Ingresá la ruta completa").TrimEnd('\')
+    $destino = (Read-Host "Ingresa la ruta completa").TrimEnd('\')
 } else {
     $destino = $opciones[$selNum - 1].Ruta
 }
 
 Write-Host ""
 
-# ── 5. Detectar reinstalación ─────────────────────────────────────
+# --- 5. Detectar reinstalacion -----------------------------------
 
 $htmlDestino = "$destino\biosoft.html"
 if (Test-Path $htmlDestino) {
-    Write-Host "Ya existe una instalación en $destino" -ForegroundColor Yellow
-    $resp = Read-Host "¿Actualizar? (S/N)"
+    Write-Host "Ya existe una instalacion en $destino" -ForegroundColor Yellow
+    $resp = Read-Host "Actualizar? (S/N)"
     if ($resp -notmatch '^[sS]') {
         Write-Host "Cancelado." -ForegroundColor Gray
-        Read-Host "Presioná Enter para salir"
+        Read-Host "Presiona Enter para salir"
         exit 0
     }
 }
 
-# ── 6. Crear estructura ───────────────────────────────────────────
+# --- 6. Crear estructura -----------------------------------------
 
 Write-Host "Creando carpeta $destino ..." -ForegroundColor Cyan
 New-Item -ItemType Directory -Path "$destino\musica" -Force | Out-Null
 
-# ── 7. Descargar biosoft.html ─────────────────────────────────────
+# --- 7. Descargar biosoft.html -----------------------------------
 
 Write-Host "Descargando biosoft.html ..." -ForegroundColor Cyan
 try {
     Invoke-DriveDownload $HTML_DRIVE_ID $htmlDestino "biosoft.html"
-    Write-Host "  ✓ biosoft.html descargado." -ForegroundColor Green
+    Write-Host "  [OK] biosoft.html descargado." -ForegroundColor Green
 } catch {
-    Write-Host "  ✗ Error: $_" -ForegroundColor Red
-    Read-Host "Presioná Enter para salir"
+    Write-Host "  [ERROR] $_" -ForegroundColor Red
+    Read-Host "Presiona Enter para salir"
     exit 1
 }
 
-# ── 8. Listar colecciones disponibles vía Drive API ───────────────
+# --- 8. Listar colecciones disponibles via Drive API -------------
 
 Write-Host ""
 Write-Host "Consultando colecciones disponibles ..." -ForegroundColor Cyan
 
+$zips = @()
 try {
     $apiUrl = "https://www.googleapis.com/drive/v3/files?q='$COLECCIONES_FOLDER'+in+parents+and+trashed=false&fields=files(id,name,size)&orderBy=name&key=$DRIVE_API_KEY"
     $ProgressPreference = 'SilentlyContinue'
     $resp = Invoke-RestMethod -Uri $apiUrl -UseBasicParsing
     $zips = @($resp.files | Where-Object { $_.name -like "*.zip" })
 } catch {
-    Write-Host "  ! No se pudieron listar las colecciones: $_" -ForegroundColor Yellow
-    Write-Host "  Verificá la conexión a internet y la configuración del instalador." -ForegroundColor Yellow
-    $zips = @()
+    Write-Host "  [!] No se pudieron listar las colecciones: $_" -ForegroundColor Yellow
+    Write-Host "  Verifica la conexion a internet y la configuracion del instalador." -ForegroundColor Yellow
 }
 
 $selCol = ''
@@ -168,18 +159,18 @@ if ($zips.Count -eq 0) {
     Write-Host "Colecciones disponibles:" -ForegroundColor White
     Write-Host ""
     for ($i = 0; $i -lt $zips.Count; $i++) {
-        $z    = $zips[$i]
+        $z     = $zips[$i]
         $bytes = $z.size -as [long]
-        $tam   = if ($bytes -gt 0) { Format-Bytes $bytes } else { "tamaño desconocido" }
+        $tam   = if ($bytes -gt 0) { Format-Bytes $bytes } else { "tamano desconocido" }
         $dur   = if ($bytes -gt 0) { "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($bytes / $VELOCIDAD_BYTES_SEG))))" } else { "" }
-        Write-Host ("  [{0}] {1,-12} — {2,8}  ({3})" -f ($i+1), ($z.name -replace '\.zip$',''), $tam, $dur)
+        Write-Host ("  [{0}] {1,-12} - {2,8}  ({3})" -f ($i+1), ($z.name -replace '\.zip$',''), $tam, $dur)
     }
     Write-Host ""
-    Write-Host "  Ingresá los números separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
+    Write-Host "  Ingresa los numeros separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
     $selCol = Read-Host "Colecciones a instalar"
 }
 
-# ── 9. Descargar y extraer colecciones elegidas ───────────────────
+# --- 9. Descargar y extraer colecciones --------------------------
 
 if ($selCol.Trim() -ne '' -and $zips.Count -gt 0) {
     $indices = $selCol -split ',' |
@@ -188,24 +179,24 @@ if ($selCol.Trim() -ne '' -and $zips.Count -gt 0) {
 
     Write-Host ""
     foreach ($idx in $indices) {
-        $zip     = $zips[$idx - 1]
-        $nombre  = $zip.name -replace '\.zip$', ''
-        $tmpZip  = "$env:TEMP\biosoft-$($zip.name)"
-        Write-Host "Instalando colección $nombre ..." -ForegroundColor Cyan
+        $zip    = $zips[$idx - 1]
+        $nombre = $zip.name -replace '\.zip$', ''
+        $tmpZip = "$env:TEMP\biosoft-$($zip.name)"
+        Write-Host "Instalando coleccion $nombre ..." -ForegroundColor Cyan
         try {
             Invoke-DriveDownload $zip.id $tmpZip $zip.name
             Write-Host "  Extrayendo ..." -ForegroundColor Gray
             Expand-Archive -Path $tmpZip -DestinationPath "$destino\musica" -Force
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
-            Write-Host "  ✓ $nombre instalada." -ForegroundColor Green
+            Write-Host "  [OK] $nombre instalada." -ForegroundColor Green
         } catch {
-            Write-Host "  ✗ Error instalando $nombre : $_" -ForegroundColor Red
+            Write-Host "  [ERROR] instalando $nombre : $_" -ForegroundColor Red
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
         }
     }
 }
 
-# ── 10. Acceso directo en el escritorio ───────────────────────────
+# --- 10. Acceso directo en el escritorio -------------------------
 
 Write-Host ""
 Write-Host "Creando acceso directo en el escritorio ..." -ForegroundColor Cyan
@@ -214,25 +205,25 @@ try {
     $lnk   = $shell.CreateShortcut("$env:USERPROFILE\Desktop\Biosoft.lnk")
     $lnk.TargetPath   = $htmlDestino
     $lnk.IconLocation = "%SystemRoot%\system32\shell32.dll,116"
-    $lnk.Description  = "Biosoft — Planificador de clases de Biodanza"
+    $lnk.Description  = "Biosoft - Planificador de clases de Biodanza"
     $lnk.Save()
-    Write-Host "  ✓ Acceso directo creado." -ForegroundColor Green
+    Write-Host "  [OK] Acceso directo creado." -ForegroundColor Green
 } catch {
-    Write-Host "  ! No se pudo crear el acceso directo: $_" -ForegroundColor Yellow
+    Write-Host "  [!] No se pudo crear el acceso directo: $_" -ForegroundColor Yellow
 }
 
-# ── 11. Resumen ────────────────────────────────────────────────────
+# --- 11. Resumen -------------------------------------------------
 
 Write-Host ""
-Write-Host "══════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "  Instalación completada." -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host "  Instalacion completada." -ForegroundColor Green
 Write-Host "  Biosoft instalado en: $destino" -ForegroundColor White
-Write-Host "══════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
-$respAbrir = Read-Host "¿Abrir Biosoft ahora? (S/N)"
+$respAbrir = Read-Host "Abrir Biosoft ahora? (S/N)"
 if ($respAbrir -match '^[sS]') {
     Start-Process $htmlDestino
 }
 
-Read-Host "Presioná Enter para salir"
+Read-Host "Presiona Enter para salir"
