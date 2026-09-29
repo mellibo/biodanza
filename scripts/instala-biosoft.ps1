@@ -244,6 +244,7 @@ do {
 } while ($selMusicaNum -lt 1 -or $selMusicaNum -gt 3)
 
 $resumenMusica = ""
+$musicaConfigurada = $false
 
 # Opcion 1: descargar colecciones
 if ($selMusicaNum -eq 1) {
@@ -288,6 +289,7 @@ if ($selMusicaNum -eq 1) {
             }
         }
     }
+    $musicaConfigurada = $true
     if ($colDescargadas.Count -gt 0) {
         $resumenMusica = "Musica descargada: $($colDescargadas -join ', ') en $destino\musica\"
     } else {
@@ -357,6 +359,7 @@ elseif ($selMusicaNum -eq 2) {
                 Write-Host "       Los archivos NO se copiaron -- Biosoft los lee desde:" -ForegroundColor Gray
                 Write-Host "       $carpetaMusica" -ForegroundColor Gray
                 $resumenMusica = "Musica enlazada desde: $carpetaMusica"
+                $musicaConfigurada = $true
             } catch {
                 Write-Host "  [ERROR] No se pudo crear el enlace: $_" -ForegroundColor Red
                 $resumenMusica = "Musica: pendiente -- no se pudo crear el enlace"
@@ -373,6 +376,20 @@ else {
     Write-Host "      - Abri Biosoft y usa 'Cargar Coleccion Musica'" -ForegroundColor Gray
     Write-Host "      - O volvé a correr este instalador." -ForegroundColor Gray
     $resumenMusica = "Musica: pendiente -- configura desde 'Cargar Coleccion Musica' en la app"
+}
+
+# --- 8b. Inyectar config de musica en biosoft.html ---------------
+
+if ($musicaConfigurada) {
+    try {
+        $html = [System.IO.File]::ReadAllText($htmlDestino, [System.Text.Encoding]::UTF8)
+        $installPath = $destino.Replace('\', '\\')
+        $tag = "<script>window.__BIOSOFT_MUSICA_ROOT__='musica/';window.__BIOSOFT_INSTALL_PATH__='$installPath\\';</script>"
+        $html = $html.Replace('</body>', "$tag</body>")
+        [System.IO.File]::WriteAllText($htmlDestino, $html, [System.Text.Encoding]::UTF8)
+    } catch {
+        Write-Host "  [!] No se pudo guardar la configuracion de musica: $_" -ForegroundColor Yellow
+    }
 }
 
 # --- 9. Acceso directo en el escritorio -------------------------

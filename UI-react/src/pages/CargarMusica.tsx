@@ -93,6 +93,8 @@ export function CargarMusica() {
   useEffect(() => {
     init()
     initEtiquetas()
+    const w = window as unknown as { __BIOSOFT_MUSICA_ROOT__?: string }
+    if (w.__BIOSOFT_MUSICA_ROOT__) setRootColeccion(w.__BIOSOFT_MUSICA_ROOT__)
   }, [init, initEtiquetas])
 
   const fileEquivalenciasRef = useRef<HTMLInputElement>(null)
@@ -942,7 +944,14 @@ export function CargarMusica() {
                             <div style={{ color: '#2e7d32' }}>✓ Verificada -- se pudo reproducir un archivo ahí.</div>
                           )}
                           {raizVerificada === false && (
-                            <div style={{ color: '#a94442' }}>⚠ No se encontró ningún archivo ahí -- corregí la ruta.</div>
+                            <div style={{ color: '#a94442' }}>
+                              ⚠ No se encontró ningún archivo ahí — corregí la ruta.
+                              {(window as unknown as { __BIOSOFT_INSTALL_PATH__?: string }).__BIOSOFT_INSTALL_PATH__ && (
+                                <> La carpeta de música de tu instalación es:{' '}
+                                  <code>{(window as unknown as { __BIOSOFT_INSTALL_PATH__: string }).__BIOSOFT_INSTALL_PATH__}musica\</code>
+                                </>
+                              )}
+                            </div>
                           )}
                         </div>
                         <hr style={{ margin: '6px 0' }} />
