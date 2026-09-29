@@ -439,9 +439,10 @@ export function CargarMusica() {
       setColeccionesSeleccionadas(new Set(grupos.keys()))
       setArchivosEscaneados(reagrupados)
 
-      // Verificar raíz usando la primera subcolección
+      // Verificar raíz usando la primera subcolección.
+      // Prioridad: rootColeccion pre-seteado (ej. por el instalador) > getPathMusica() > default.
       const [[firstRawCol, firstFiles]] = [...grupos.entries()]
-      const candidatoParent = getPathMusica()
+      const candidatoParent = rootColeccion || getPathMusica()
       if (await existeEnRaiz(candidatoParent + firstRawCol + '/', firstFiles[0])) {
         setRootColeccion(candidatoParent)
         setRaizVerificada(true)
@@ -504,7 +505,9 @@ export function CargarMusica() {
     // falta que el usuario toque la raíz. Si no, se deja el default
     // "hermana de la app" para que la corrija a mano (ver input "Raíz").
     const coleccionNombre = encontrados[0].coleccion
-    const candidato = getPathMusica() + coleccionNombre + '/'
+    // Prioridad: rootColeccion pre-seteado (ej. por el instalador) > getPathMusica() > default.
+    const baseRaiz = rootColeccion || getPathMusica()
+    const candidato = baseRaiz + coleccionNombre + '/'
     if (await existeEnRaiz(candidato, encontrados[0])) {
       setRootColeccion(candidato)
       setRaizVerificada(true)
@@ -829,7 +832,7 @@ export function CargarMusica() {
             )}
           </div>
 
-          {coleccionesAnidadas !== null && raizVerificada === true && (
+          {coleccionesAnidadas !== null && raizVerificada === true && !escaneando && (
             <div className="row">
               <div className="col-md-12" style={{ marginTop: '20px' }}>
                 <div className="panel panel-success">
