@@ -18,6 +18,24 @@ $COLECCIONES = @(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+# Detectar 7-Zip (maneja caracteres especiales mejor que Expand-Archive)
+$_7z = $null
+foreach ($c in @('7z','C:\Program Files\7-Zip\7z.exe','C:\Program Files (x86)\7-Zip\7z.exe')) {
+    if (Get-Command $c -ErrorAction SilentlyContinue) { $_7z = $c; break }
+}
+
+function Expand-Zip($zipPath, $destDir) {
+    New-Item -ItemType Directory -Path $destDir -Force | Out-Null
+    if ($_7z) {
+        & $_7z x $zipPath "-o$destDir" -aoa -y | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "7-Zip fallo con codigo $LASTEXITCODE" }
+    } else {
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $destDir)
+    }
+}
+
 function Format-Bytes($bytes) {
     if ($bytes -ge 1GB) { "{0:N1} GB" -f ($bytes / 1GB) }
     elseif ($bytes -ge 1MB) { "{0:N0} MB" -f ($bytes / 1MB) }
@@ -203,7 +221,7 @@ if ($selCol.Trim() -ne '') {
         try {
             Invoke-DriveDownload $info.Id $tmpZip "$($info.Nombre).zip"
             Write-Host "  Extrayendo ..." -ForegroundColor Gray
-            Expand-Archive -Path $tmpZip -DestinationPath "$destino\musica\$($info.Nombre)" -Force
+            Expand-Zip $tmpZip "$destino\musica\$($info.Nombre)"
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
             Write-Host "  [OK] $($info.Nombre) instalada." -ForegroundColor Green
         } catch {
