@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as XLSX from 'xlsx'
 import { useDataStore, type RowImportMusica } from '../store/dataStore'
 import { useAlertStore } from '../store/alertStore'
@@ -8,7 +9,7 @@ import { getCurrentPath } from '../lib/path'
 import { getPathMusica } from '../lib/config'
 import { testMusica } from '../lib/testMusica'
 import { analizarArchivoAudio, esArchivoDeAudio } from '../lib/analizarArchivoAudio'
-import { ubicarEnArbol } from '../lib/ubicarEnArbol'
+import { ubicarEnArbol, detectarColeccionesAnidadas } from '../lib/ubicarEnArbol'
 import { buscarEnExcelColeccion, claveDesdeMascaras, leerDatosExcelColeccion, parsearMascaras, type DatoExcelArchivo } from '../lib/clavesEscaneo'
 import { Pagination } from '../components/Pagination'
 import { EtiquetasEditor } from '../components/EtiquetasEditor'
@@ -120,7 +121,13 @@ export function CargarMusica() {
   const [etiquetasPorCarpeta, setEtiquetasPorCarpeta] = useState<Record<string, string[]>>({})
   const [filtroEscaneo, setFiltroEscaneo] = useState({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
 
+  const navigate = useNavigate()
   const pathApp = getCurrentPath() ?? ''
+
+  // Multi-colección: cuando el usuario elige la carpeta padre (ej. musica/)
+  // en lugar de una colección individual.
+  const [coleccionesAnidadas, setColeccionesAnidadas] = useState<Map<string, ArchivoEscaneado[]> | null>(null)
+  const [coleccionesSeleccionadas, setColeccionesSeleccionadas] = useState<Set<string>>(new Set())
 
   // webkitdirectory no es JSX estándar -- se setea vía ref callback.
   function setDirInputRef(el: HTMLInputElement | null) {
@@ -213,6 +220,8 @@ export function CargarMusica() {
     setEtiquetasPorCarpeta({})
     setPageCarpeta(1)
     setFiltroEscaneo({ coleccion: '', carpeta: '', archivo: '', titulo: '', estado: '' })
+    setColeccionesAnidadas(null)
+    setColeccionesSeleccionadas(new Set())
     if (dirInputRef.current) dirInputRef.current.value = ''
   }
 
@@ -273,14 +282,22 @@ export function CargarMusica() {
   async function verificarRaizManual() {
     const muestra = archivosEscaneados[0]
     if (!muestra) return
-    const ok = await existeEnRaiz(rootColeccion, muestra)
+    // Para multi-colección, la raíz efectiva incluye el rawNombre de la subcolección.
+    const raizEfectiva = coleccionesAnidadas
+      ? (() => {
+          const rawNombre = [...coleccionesAnidadas.keys()].find(k => k.toUpperCase() === muestra.coleccion) ?? muestra.coleccion
+          const base = rootColeccion.endsWith('/') ? rootColeccion : rootColeccion + '/'
+          return base + rawNombre + '/'
+        })()
+      : rootColeccion
+    const ok = await existeEnRaiz(raizEfectiva, muestra)
     setRaizVerificada(ok)
     if (ok) {
       await analizarArchivosEscaneados(archivosEscaneados)
     } else {
       addAlert(
         'danger',
-        'No se encontraron los archivos en "' + rootColeccion + '". Corregí la ruta e intentá "Verificar" de nuevo.',
+        'No se encontraron los archivos en "' + raizEfectiva + '". Corregí la ruta e intentá "Verificar" de nuevo.',
       )
     }
   }
@@ -347,13 +364,12 @@ export function CargarMusica() {
       addAlert('danger', ignorados + ' archivo(s) de audio se ignoraron.')
     }
 
-    // Complementar con el Excel de catálogo de la colección, si está
-    // presente en la raíz de la carpeta escaneada (ver CLAUDE.md,
-    // "Organizacion de archivos de musicas") -- de ahí sale la clave real
-    // (CD:pista) y los ejercicios vinculados de cada archivo, sin
-    // adivinar nada. Si no está, o no tiene una hoja con columnas
-    // Archivo+Carpeta, se intenta derivar la clave a partir del nombre de
-    // carpeta/archivo con las máscaras conocidas (ver clavesEscaneo.ts).
+    async function leerTexto(file: File): Promise<string> {
+      return file.text()
+    }
+
+    // Busca un archivo en la raíz de la carpeta elegida (depth 2: raiz/nombre).
+    // Para colección individual. Para multi-colección ver archivoRaizSubcol.
     function archivoRaiz(nombre: RegExp) {
       return archivos.find((file) => {
         const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
@@ -362,12 +378,92 @@ export function CargarMusica() {
         return partes.length === 2 && nombre.test(partes[1])
       })
     }
-    async function leerTexto(file: File): Promise<string> {
-      return file.text()
+    // Busca un archivo en la raíz de una subcolección (depth 3: raiz/rawCol/nombre).
+    function archivoRaizSubcol(rawCol: string, nombre: RegExp) {
+      return archivos.find((file) => {
+        const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
+        if (!rel) return false
+        const partes = rel.split('/')
+        return partes.length === 3 && partes[1] === rawCol && nombre.test(partes[2])
+      })
     }
 
-    let datosExcel: Map<string, DatoExcelArchivo> | null = null
+    async function leerClavesPorColeccion(
+      lista: ArchivoEscaneado[],
+      datosExcel: Map<string, DatoExcelArchivo> | null,
+      mascarasCarpeta: ReturnType<typeof parsearMascaras> | undefined,
+      mascarasArchivo: ReturnType<typeof parsearMascaras> | undefined,
+    ): Promise<{ porExcel: number; porMascara: number }> {
+      let porExcel = 0, porMascara = 0
+      for (const a of lista) {
+        const datoExcel = datosExcel ? buscarEnExcelColeccion(datosExcel, a.carpeta, a.archivo) : undefined
+        if (datoExcel) { a.claveDetectada = datoExcel.cdPista; a.ejerciciosExcel = datoExcel.ejercicios; porExcel++; continue }
+        const clave = claveDesdeMascaras(a.carpeta, a.archivo, a.coleccion, mascarasCarpeta, mascarasArchivo)
+        if (clave) { a.claveDetectada = clave.cd + ':' + clave.pista; porMascara++ }
+      }
+      return { porExcel, porMascara }
+    }
+
+    // --- Detectar si es carpeta contenedora de múltiples colecciones ---
+    const grupos = detectarColeccionesAnidadas(encontrados)
+
+    if (grupos) {
+      // Reagrupar archivos con coleccion/carpeta corregidos
+      const reagrupados: ArchivoEscaneado[] = []
+      for (const files of grupos.values()) reagrupados.push(...files)
+
+      // Aplicar Excel y máscaras por subcolección
+      let porExcelTotal = 0, porMascaraTotal = 0
+      for (const [rawCol, lista] of grupos) {
+        const excelSubcol = archivoRaizSubcol(rawCol, /\.xlsx?$/i)
+        let datosExcel: Map<string, DatoExcelArchivo> | null = null
+        if (excelSubcol) {
+          try { const buf = await excelSubcol.arrayBuffer(); datosExcel = leerDatosExcelColeccion(XLSX.read(buf, { type: 'array' })) } catch { /* sin excel */ }
+        }
+        const mascarasCarpetaSubcol = archivoRaizSubcol(rawCol, /^MascaraCarpetas\.txt$/i)
+        const mascarasArchivoSubcol = archivoRaizSubcol(rawCol, /^MascaraArchivosMusica\.txt$/i)
+        const mascarasCarpeta = mascarasCarpetaSubcol ? parsearMascaras(await leerTexto(mascarasCarpetaSubcol)) : undefined
+        const mascarasArchivo = mascarasArchivoSubcol ? parsearMascaras(await leerTexto(mascarasArchivoSubcol)) : undefined
+        const { porExcel, porMascara } = await leerClavesPorColeccion(lista, datosExcel, mascarasCarpeta, mascarasArchivo)
+        porExcelTotal += porExcel; porMascaraTotal += porMascara
+      }
+      if (porExcelTotal > 0 || porMascaraTotal > 0) {
+        addAlert('info',
+          'Clave detectada en ' + porExcelTotal + ' archivo(s) desde Excel y en ' + porMascaraTotal + ' archivo(s) por nombre' +
+          (porExcelTotal + porMascaraTotal < reagrupados.length ? ' (' + (reagrupados.length - porExcelTotal - porMascaraTotal) + ' sin clave).' : '.'))
+      }
+
+      setColeccionesAnidadas(grupos)
+      setColeccionesSeleccionadas(new Set(grupos.keys()))
+      setArchivosEscaneados(reagrupados)
+
+      // Verificar raíz usando la primera subcolección
+      const [[firstRawCol, firstFiles]] = [...grupos.entries()]
+      const candidatoParent = getPathMusica()
+      if (await existeEnRaiz(candidatoParent + firstRawCol + '/', firstFiles[0])) {
+        setRootColeccion(candidatoParent)
+        setRaizVerificada(true)
+        await analizarArchivosEscaneados(reagrupados)
+        return
+      }
+      setRootColeccion(candidatoParent)
+      setRaizVerificada(false)
+      setEscaneando(false)
+      addAlert('danger',
+        'No se encontraron los archivos en "' + candidatoParent + firstRawCol + '/" (ubicación por default). Corregí la Raíz y presioná "Verificar".')
+      return
+    }
+
+    // --- Colección individual (flujo original) ---
+    // Complementar con el Excel de catálogo de la colección, si está
+    // presente en la raíz de la carpeta escaneada (ver CLAUDE.md,
+    // "Organizacion de archivos de musicas") -- de ahí sale la clave real
+    // (CD:pista) y los ejercicios vinculados de cada archivo, sin
+    // adivinar nada. Si no está, o no tiene una hoja con columnas
+    // Archivo+Carpeta, se intenta derivar la clave a partir del nombre de
+    // carpeta/archivo con las máscaras conocidas (ver clavesEscaneo.ts).
     const archivoExcel = archivoRaiz(/\.xlsx?$/i)
+    let datosExcel: Map<string, DatoExcelArchivo> | null = null
     if (archivoExcel) {
       try {
         const buf = await archivoExcel.arrayBuffer()
@@ -386,23 +482,7 @@ export function CargarMusica() {
     const archivoMascarasArchivo = archivoRaiz(/^MascaraArchivosMusica\.txt$/i)
     const mascarasCarpeta = archivoMascarasCarpeta ? parsearMascaras(await leerTexto(archivoMascarasCarpeta)) : undefined
     const mascarasArchivo = archivoMascarasArchivo ? parsearMascaras(await leerTexto(archivoMascarasArchivo)) : undefined
-
-    let porExcel = 0
-    let porMascara = 0
-    for (const a of encontrados) {
-      const datoExcel = datosExcel ? buscarEnExcelColeccion(datosExcel, a.carpeta, a.archivo) : undefined
-      if (datoExcel) {
-        a.claveDetectada = datoExcel.cdPista
-        a.ejerciciosExcel = datoExcel.ejercicios
-        porExcel++
-        continue
-      }
-      const clave = claveDesdeMascaras(a.carpeta, a.archivo, a.coleccion, mascarasCarpeta, mascarasArchivo)
-      if (clave) {
-        a.claveDetectada = clave.cd + ':' + clave.pista
-        porMascara++
-      }
-    }
+    const { porExcel, porMascara } = await leerClavesPorColeccion(encontrados, datosExcel, mascarasCarpeta, mascarasArchivo)
     if (porExcel > 0 || porMascara > 0) {
       addAlert(
         'info',
@@ -514,6 +594,56 @@ export function CargarMusica() {
           : ' (sin asignar a ningún ejercicio).'),
     )
     resetCarpeta()
+  }
+
+  // Importa todas las colecciones seleccionadas del modo multi-colección.
+  function importarTodasLasColecciones() {
+    if (!coleccionesAnidadas) return
+    const raizBase = rootColeccion.endsWith('/') ? rootColeccion : rootColeccion + '/'
+    let totalColecciones = 0
+    for (const [rawNombre, lista] of coleccionesAnidadas) {
+      if (!coleccionesSeleccionadas.has(rawNombre)) continue
+      const rows: RowImportMusica[] = []
+      let archivosConEjercicio = 0
+      for (const a of lista) {
+        if (a.estado !== 'ok') continue
+        const propias = etiquetasPorCarpeta[claveCarpetaEscaneo(a.coleccion, a.carpeta)] ?? []
+        const etiquetasOverride = Array.from(new Set([...etiquetasGlobales, ...propias, ...a.etiquetasDetectadas]))
+        const base = {
+          estado: 'ok' as const,
+          Archivo: a.archivo, Carpeta: a.carpeta,
+          Titulo: a.titulo, Interprete: a.interprete || 'Desconocido',
+          Tags: a.tagsExtra,
+          idMusica: a.claveDetectada ?? (a.carpeta ? a.carpeta + '/' : '') + a.archivo,
+          duracion: a.duracion ?? '', etiquetasOverride,
+        }
+        if (a.ejerciciosDetectados.length > 0) {
+          archivosConEjercicio++
+          for (const ej of a.ejerciciosDetectados) rows.push({ ...base, Ejercicio: ej })
+        } else {
+          rows.push(base)
+        }
+      }
+      if (rows.length === 0) continue
+      const coleccionObj: Coleccion = {
+        nombre: rawNombre.toUpperCase(),
+        carpeta: raizBase + rawNombre + '/',
+        excel: '', hojaEjercicios: 'Por Nro', cargar: true, lastModified: Date.now(),
+      }
+      try {
+        const n = importarColeccionMusicas(coleccionObj, rows).length
+        addAlert('info',
+          'Colección ' + rawNombre.toUpperCase() + ': ' + n + ' archivo(s) importados' +
+          (archivosConEjercicio > 0 ? ' (' + archivosConEjercicio + ' con ejercicio).' : '.'))
+        totalColecciones++
+      } catch (e) {
+        addAlert('danger', 'Error importando ' + rawNombre + ': ' + (e instanceof Error ? e.message : String(e)))
+      }
+    }
+    if (totalColecciones > 0) {
+      resetCarpeta()
+      navigate('/clases')
+    }
   }
 
   // Cantidad de archivos de la colección detectada en el escaneo (siempre
@@ -636,22 +766,25 @@ export function CargarMusica() {
             <br />
             <div className="col-md-12" style={{ marginBottom: '10px' }}>
               <p style={{ marginBottom: '6px' }}>
-                Elegí la carpeta de la colección que querés importar. El nombre de la carpeta se usa como nombre de la colección.
+                Elegí la carpeta de música para importar. Podés elegir:
               </p>
               <ul style={{ marginBottom: '8px', paddingLeft: '20px' }}>
                 <li>
-                  Tiene que estar dentro de <strong>{pathApp}</strong> — si está en otro lugar del disco los archivos no se van a poder reproducir.
+                  <strong>La carpeta raíz de toda la música</strong> (ej. <code>musica/</code>) si tiene subcarpetas por colección — la app detecta todas y las importa de una vez.
                 </li>
                 <li>
-                  Se importa una sola colección por escaneo; todos los archivos de audio adentro (y en subcarpetas como <code>CD1</code>, <code>CD1/Bonus</code>) se incluyen.
+                  <strong>Una carpeta de colección</strong> (ej. <code>musica/IBF/</code>) para importar solo esa.
                 </li>
                 <li>
-                  Para que una música quede asociada a un ejercicio automáticamente, el nombre exacto del ejercicio tiene que estar en el campo <strong>Género</strong> de sus metadatos (varios separados por coma). Si no, se importa igual y se asigna a mano después.
+                  La carpeta tiene que estar dentro de <strong>{pathApp}</strong> para que los archivos se puedan reproducir.
+                </li>
+                <li>
+                  Para asignar una música a un ejercicio automáticamente, el nombre del ejercicio tiene que estar en el campo <strong>Género</strong> de sus metadatos (varios separados por coma).
                 </li>
               </ul>
               {pathApp && (
                 <div className="well well-sm" style={{ marginBottom: 0, padding: '8px 12px' }}>
-                  <strong>Si instalaste con el instalador, tus colecciones están en:</strong>
+                  <strong>Si instalaste con el instalador</strong>, elegí la carpeta <code>{pathApp}musica/</code> para importar todo de una vez, o una subcolección:
                   <ul style={{ marginBottom: 0, marginTop: '4px', paddingLeft: '20px', fontFamily: 'monospace', fontSize: '93%' }}>
                     {['IBF', 'Areco', 'HLB', 'JEXP', 'BsAs', 'CPAZ'].map((col) => (
                       <li key={col}>{pathApp}musica/{col}/</li>
@@ -671,15 +804,17 @@ export function CargarMusica() {
               <button type="button" className="btn btn-primary" onClick={pickCarpeta}>
                 <span className="glyphicon glyphicon-folder-open" /> Elegir Carpeta
               </button>
-              <button
-                type="button"
-                className={'btn btn-success' + (archivosEscaneados.length === 0 || escaneando || raizVerificada !== true ? ' disabled' : '')}
-                disabled={archivosEscaneados.length === 0 || escaneando || raizVerificada !== true}
-                title={raizVerificada !== true ? 'Verificá la raíz de la colección antes de importar' : undefined}
-                onClick={importarCarpeta}
-              >
-                <span className="glyphicon glyphicon-import" /> Importar Archivos Escaneados
-              </button>
+              {coleccionesAnidadas === null && (
+                <button
+                  type="button"
+                  className={'btn btn-success' + (archivosEscaneados.length === 0 || escaneando || raizVerificada !== true ? ' disabled' : '')}
+                  disabled={archivosEscaneados.length === 0 || escaneando || raizVerificada !== true}
+                  title={raizVerificada !== true ? 'Verificá la raíz de la colección antes de importar' : undefined}
+                  onClick={importarCarpeta}
+                >
+                  <span className="glyphicon glyphicon-import" /> Importar Archivos Escaneados
+                </button>
+              )}
             </div>
             {escaneando && (
               <div className="col-md-12" style={{ marginTop: '10px' }}>
@@ -692,7 +827,71 @@ export function CargarMusica() {
             )}
           </div>
 
-          {archivosEscaneados.length > 0 && (
+          {coleccionesAnidadas !== null && raizVerificada === true && (
+            <div className="row">
+              <div className="col-md-12" style={{ marginTop: '20px' }}>
+                <div className="panel panel-success">
+                  <div className="panel-heading">
+                    <strong>
+                      <span className="glyphicon glyphicon-th-large" />{' '}
+                      Se detectaron {coleccionesAnidadas.size} colecciones en la carpeta elegida
+                    </strong>
+                  </div>
+                  <div className="panel-body">
+                    <p className="text-muted" style={{ marginBottom: '12px' }}>
+                      Seleccioná las colecciones que querés importar y hacé clic en <strong>Importar seleccionadas</strong>.
+                    </p>
+                    <table className="table table-condensed" style={{ marginBottom: '12px' }}>
+                      <thead>
+                        <tr>
+                          <th style={{ width: '40px' }}></th>
+                          <th>Colección</th>
+                          <th style={{ width: '100px', textAlign: 'right' }}>Archivos</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {Array.from(coleccionesAnidadas.entries()).map(([rawNombre, archivos]) => {
+                          const colNombre = rawNombre.toUpperCase()
+                          const checked = coleccionesSeleccionadas.has(rawNombre)
+                          return (
+                            <tr key={rawNombre}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={(e) => {
+                                    setColeccionesSeleccionadas((prev) => {
+                                      const next = new Set(prev)
+                                      if (e.target.checked) next.add(rawNombre)
+                                      else next.delete(rawNombre)
+                                      return next
+                                    })
+                                  }}
+                                />
+                              </td>
+                              <td><strong>{colNombre}</strong></td>
+                              <td style={{ textAlign: 'right' }}>{archivos.length}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                    <button
+                      type="button"
+                      className={'btn btn-success' + (coleccionesSeleccionadas.size === 0 ? ' disabled' : '')}
+                      disabled={coleccionesSeleccionadas.size === 0}
+                      onClick={importarTodasLasColecciones}
+                    >
+                      <span className="glyphicon glyphicon-import" />{' '}
+                      Importar seleccionadas ({coleccionesSeleccionadas.size})
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {coleccionesAnidadas === null && archivosEscaneados.length > 0 && (
             <div className="row">
               <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
                 <label className="control-label">archivos leidos:</label>
