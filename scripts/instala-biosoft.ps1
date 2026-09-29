@@ -203,7 +203,7 @@ if ($selCol.Trim() -ne '') {
         try {
             Invoke-DriveDownload $info.Id $tmpZip "$($info.Nombre).zip"
             Write-Host "  Extrayendo ..." -ForegroundColor Gray
-            Expand-Archive -Path $tmpZip -DestinationPath "$destino\musica" -Force
+            Expand-Archive -Path $tmpZip -DestinationPath "$destino\musica\$($info.Nombre)" -Force
             Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
             Write-Host "  [OK] $($info.Nombre) instalada." -ForegroundColor Green
         } catch {
