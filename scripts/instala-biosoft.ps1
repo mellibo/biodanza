@@ -36,6 +36,25 @@ function Expand-Zip($zipPath, $destDir) {
     }
 }
 
+function New-Junction($junctionPath, $targetPath) {
+    if (Test-Path $junctionPath) {
+        Remove-Item $junctionPath -Force -Recurse -ErrorAction SilentlyContinue
+    }
+    $result = cmd /c mklink /J "$junctionPath" "$targetPath" 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "No se pudo crear el enlace: $result" }
+}
+
+function Get-ResumenMusica($carpeta) {
+    $extensiones = @('.mp3','.flac','.ogg','.wav','.m4a','.wma','.aac')
+    $resultado = @{}
+    foreach ($sub in Get-ChildItem $carpeta -Directory -ErrorAction SilentlyContinue) {
+        $count = (Get-ChildItem $sub.FullName -Recurse -File -ErrorAction SilentlyContinue |
+                  Where-Object { $extensiones -contains $_.Extension.ToLower() }).Count
+        if ($count -gt 0) { $resultado[$sub.Name] = $count }
+    }
+    return $resultado
+}
+
 function Format-Bytes($bytes) {
     if ($bytes -ge 1GB) { "{0:N1} GB" -f ($bytes / 1GB) }
     elseif ($bytes -ge 1MB) { "{0:N0} MB" -f ($bytes / 1MB) }
@@ -169,10 +188,11 @@ if (Test-Path $htmlDestino) {
     }
 }
 
-# --- 6. Crear estructura -----------------------------------------
+# --- 6. Crear carpeta de instalacion -----------------------------
 
 Write-Host "Creando carpeta $destino ..." -ForegroundColor Cyan
-New-Item -ItemType Directory -Path "$destino\musica" -Force | Out-Null
+New-Item -ItemType Directory -Path $destino -Force | Out-Null
+# La subcarpeta musica se crea o enlaza en el paso 8 segun la opcion elegida
 
 # --- 7. Descargar biosoft.html -----------------------------------
 
@@ -186,52 +206,158 @@ try {
     exit 1
 }
 
-# --- 8. Mostrar colecciones disponibles --------------------------
+# --- 8. Configurar musica ----------------------------------------
 
 Write-Host ""
-Write-Host "Colecciones disponibles:" -ForegroundColor White
+Write-Host "-----------------------------------------" -ForegroundColor DarkCyan
+Write-Host "  Musica para Biosoft" -ForegroundColor White
+Write-Host "-----------------------------------------" -ForegroundColor DarkCyan
+Write-Host ""
+Write-Host "Biosoft necesita acceder a los archivos de musica de Biodanza." -ForegroundColor White
+Write-Host "Tenes tres opciones:" -ForegroundColor White
+Write-Host ""
+Write-Host "  [1] Descargar colecciones desde Internet" -ForegroundColor White
+Write-Host "      (mas simple, recomendado si no tenes organizada la musica de Biodanza en esta PC)" -ForegroundColor Gray
+Write-Host ""
+Write-Host "  [2] Ya tengo una carpeta con musica de Biodanza en esta PC" -ForegroundColor White
+Write-Host "      No se copia nada -- Biosoft la va a leer desde donde esta." -ForegroundColor Gray
+Write-Host ""
+Write-Host "  [3] Configurar la musica despues" -ForegroundColor White
+Write-Host "      Biosoft queda instalado pero sin musica." -ForegroundColor Gray
 Write-Host ""
 
-$infos = @($COLECCIONES | Where-Object { $_.Id -ne "PENDIENTE" })
+do {
+    $selMusica = Read-Host "Elegi una opcion (1-3)"
+    $selMusicaNum = $selMusica -as [int]
+} while ($selMusicaNum -lt 1 -or $selMusicaNum -gt 3)
 
-for ($i = 0; $i -lt $infos.Count; $i++) {
-    $info  = $infos[$i]
-    $bytes = [long]($info.GBytes * 1GB)
-    $tam   = "{0:N2} GB" -f $info.GBytes
-    $dur   = "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($bytes / $VELOCIDAD_BYTES_SEG))))"
-    Write-Host ("  [{0}] {1,-10} - {2,8}  ({3})" -f ($i+1), $info.Nombre, $tam, $dur)
-}
+$resumenMusica = ""
 
-Write-Host ""
-Write-Host "  Ingresa los numeros separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
-$selCol = Read-Host "Colecciones a instalar"
+# Opcion 1: descargar colecciones
+if ($selMusicaNum -eq 1) {
+    New-Item -ItemType Directory -Path "$destino\musica" -Force | Out-Null
 
-# --- 9. Descargar y extraer colecciones --------------------------
-
-if ($selCol.Trim() -ne '') {
-    $indices = $selCol -split ',' |
-               ForEach-Object { $_.Trim() -as [int] } |
-               Where-Object { $_ -ge 1 -and $_ -le $infos.Count }
+    $infos = @($COLECCIONES | Where-Object { $_.Id -ne "PENDIENTE" })
 
     Write-Host ""
-    foreach ($idx in $indices) {
-        $info   = $infos[$idx - 1]
-        $tmpZip = "$env:TEMP\biosoft-$($info.Nombre).zip"
-        Write-Host "Instalando coleccion $($info.Nombre) ..." -ForegroundColor Cyan
-        try {
-            Invoke-DriveDownload $info.Id $tmpZip "$($info.Nombre).zip"
-            Write-Host "  Extrayendo ..." -ForegroundColor Gray
-            Expand-Zip $tmpZip "$destino\musica\$($info.Nombre)"
-            Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
-            Write-Host "  [OK] $($info.Nombre) instalada." -ForegroundColor Green
-        } catch {
-            Write-Host "  [ERROR] instalando $($info.Nombre): $_" -ForegroundColor Red
-            Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
+    Write-Host "Colecciones disponibles:" -ForegroundColor White
+    Write-Host ""
+    for ($i = 0; $i -lt $infos.Count; $i++) {
+        $info  = $infos[$i]
+        $bytes = [long]($info.GBytes * 1GB)
+        $tam   = "{0:N2} GB" -f $info.GBytes
+        $dur   = "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($bytes / $VELOCIDAD_BYTES_SEG))))"
+        Write-Host ("  [{0}] {1,-10} - {2,8}  ({3})" -f ($i+1), $info.Nombre, $tam, $dur)
+    }
+    Write-Host ""
+    Write-Host "  Ingresa los numeros separados por coma (ej: 1,3) o Enter para ninguna." -ForegroundColor Gray
+    $selCol = Read-Host "Colecciones a instalar"
+
+    $colDescargadas = @()
+    if ($selCol.Trim() -ne '') {
+        $indices = $selCol -split ',' |
+                   ForEach-Object { $_.Trim() -as [int] } |
+                   Where-Object { $_ -ge 1 -and $_ -le $infos.Count }
+        Write-Host ""
+        foreach ($idx in $indices) {
+            $info   = $infos[$idx - 1]
+            $tmpZip = "$env:TEMP\biosoft-$($info.Nombre).zip"
+            Write-Host "Instalando coleccion $($info.Nombre) ..." -ForegroundColor Cyan
+            try {
+                Invoke-DriveDownload $info.Id $tmpZip "$($info.Nombre).zip"
+                Write-Host "  Extrayendo ..." -ForegroundColor Gray
+                Expand-Zip $tmpZip "$destino\musica\$($info.Nombre)"
+                Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
+                Write-Host "  [OK] $($info.Nombre) instalada." -ForegroundColor Green
+                $colDescargadas += $info.Nombre
+            } catch {
+                Write-Host "  [ERROR] instalando $($info.Nombre): $_" -ForegroundColor Red
+                Remove-Item $tmpZip -Force -ErrorAction SilentlyContinue
+            }
+        }
+    }
+    if ($colDescargadas.Count -gt 0) {
+        $resumenMusica = "Musica descargada: $($colDescargadas -join ', ') en $destino\musica\"
+    } else {
+        $resumenMusica = "Musica: ninguna coleccion descargada (carpeta $destino\musica\ creada)"
+    }
+}
+
+# Opcion 2: carpeta existente
+elseif ($selMusicaNum -eq 2) {
+    Write-Host ""
+    Write-Host "Ingresa la ruta completa de tu carpeta de musica." -ForegroundColor White
+    Write-Host "Ejemplo:  C:\Musica\Biodanza   o   D:\Biodanza\Musica" -ForegroundColor Gray
+    Write-Host "Dentro tiene que haber subcarpetas por coleccion (IBF, BsAs, HLB...)," -ForegroundColor Gray
+    Write-Host "cada una con sus CDs adentro." -ForegroundColor Gray
+    Write-Host ""
+    $carpetaMusica = (Read-Host "Ruta de tu carpeta de musica").TrimEnd('\')
+    Write-Host ""
+
+    $junctionOk = $false
+    if (-not (Test-Path $carpetaMusica -PathType Container)) {
+        Write-Host "  [ERROR] No se encontro la carpeta: $carpetaMusica" -ForegroundColor Red
+        Write-Host "  Biosoft queda instalado pero sin musica. Podes configurarla" -ForegroundColor Yellow
+        Write-Host "  volviendo a correr este instalador o desde la app." -ForegroundColor Yellow
+        $resumenMusica = "Musica: pendiente -- la carpeta indicada no existe"
+    } else {
+        Write-Host "  Analizando contenido de $carpetaMusica ..." -ForegroundColor Gray
+        $resumen = Get-ResumenMusica $carpetaMusica
+
+        if ($resumen.Count -eq 0) {
+            Write-Host "  [!] No se encontraron archivos de audio en subcarpetas de:" -ForegroundColor Yellow
+            Write-Host "      $carpetaMusica" -ForegroundColor Yellow
+            Write-Host "      Verifica que sea la carpeta correcta y que tenga subcarpetas" -ForegroundColor Gray
+            Write-Host "      con archivos MP3/FLAC/etc. adentro." -ForegroundColor Gray
+            Write-Host ""
+            $continuar = Read-Host "Continuar igual y apuntar a esa carpeta? (S/N)"
+            if ($continuar -notmatch '^[sS]') {
+                Write-Host "  Biosoft queda instalado pero sin musica." -ForegroundColor Yellow
+                $resumenMusica = "Musica: pendiente -- no se configuro"
+            } else {
+                $junctionOk = $true
+            }
+        } else {
+            Write-Host ""
+            Write-Host "  Colecciones encontradas:" -ForegroundColor White
+            $totalArchivos = 0
+            foreach ($nombre in ($resumen.Keys | Sort-Object)) {
+                Write-Host ("    {0,-15} {1} archivos de audio" -f $nombre, $resumen[$nombre]) -ForegroundColor White
+                $totalArchivos += $resumen[$nombre]
+            }
+            Write-Host "    ---------------"
+            Write-Host "    Total: $totalArchivos archivos de audio"
+            Write-Host ""
+            $junctionOk = $true
+        }
+
+        if ($junctionOk) {
+            Write-Host "  Creando enlace musica -> $carpetaMusica ..." -ForegroundColor Cyan
+            try {
+                New-Junction "$destino\musica" $carpetaMusica
+                Write-Host "  [OK] Enlace creado." -ForegroundColor Green
+                Write-Host "       Los archivos NO se copiaron -- Biosoft los lee desde:" -ForegroundColor Gray
+                Write-Host "       $carpetaMusica" -ForegroundColor Gray
+                $resumenMusica = "Musica enlazada desde: $carpetaMusica"
+            } catch {
+                Write-Host "  [ERROR] No se pudo crear el enlace: $_" -ForegroundColor Red
+                $resumenMusica = "Musica: pendiente -- no se pudo crear el enlace"
+            }
         }
     }
 }
 
-# --- 10. Acceso directo en el escritorio -------------------------
+# Opcion 3: despues
+else {
+    Write-Host ""
+    Write-Host "  [!] Biosoft queda instalado pero sin musica." -ForegroundColor Yellow
+    Write-Host "      Para configurarla mas adelante:" -ForegroundColor Gray
+    Write-Host "      - Abri Biosoft y usa 'Cargar Coleccion Musica'" -ForegroundColor Gray
+    Write-Host "      - O volvé a correr este instalador." -ForegroundColor Gray
+    $resumenMusica = "Musica: pendiente -- configura desde 'Cargar Coleccion Musica' en la app"
+}
+
+# --- 9. Acceso directo en el escritorio -------------------------
 
 Write-Host ""
 Write-Host "Creando acceso directo en el escritorio ..." -ForegroundColor Cyan
@@ -247,12 +373,13 @@ try {
     Write-Host "  [!] No se pudo crear el acceso directo: $_" -ForegroundColor Yellow
 }
 
-# --- 11. Resumen -------------------------------------------------
+# --- 10. Resumen -------------------------------------------------
 
 Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "  Instalacion completada." -ForegroundColor Green
 Write-Host "  Biosoft instalado en: $destino" -ForegroundColor White
+Write-Host "  $resumenMusica" -ForegroundColor White
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
