@@ -19,6 +19,18 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.Windows.Forms
+
+function Select-Carpeta($descripcion) {
+    $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
+    $dialog.Description = $descripcion
+    $dialog.ShowNewFolderButton = $false
+    $result = $dialog.ShowDialog()
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+        return $dialog.SelectedPath
+    }
+    return $null
+}
 
 # Detectar 7-Zip (maneja caracteres especiales mejor que Expand-Archive)
 $_7z = $null
@@ -286,16 +298,22 @@ if ($selMusicaNum -eq 1) {
 # Opcion 2: carpeta existente
 elseif ($selMusicaNum -eq 2) {
     Write-Host ""
-    Write-Host "Ingresa la ruta completa de tu carpeta de musica." -ForegroundColor White
-    Write-Host "Ejemplo:  C:\Musica\Biodanza   o   D:\Biodanza\Musica" -ForegroundColor Gray
+    Write-Host "Se va a abrir un cuadro para elegir la carpeta." -ForegroundColor Gray
     Write-Host "Dentro tiene que haber subcarpetas por coleccion (IBF, BsAs, HLB...)," -ForegroundColor Gray
     Write-Host "cada una con sus CDs adentro." -ForegroundColor Gray
     Write-Host ""
-    $carpetaMusica = (Read-Host "Ruta de tu carpeta de musica").TrimEnd('\')
+    $carpetaMusica = Select-Carpeta "Selecciona la carpeta de musica de Biodanza"
+    if (-not $carpetaMusica) {
+        Write-Host "  Seleccion cancelada. Biosoft queda instalado pero sin musica." -ForegroundColor Yellow
+        $resumenMusica = "Musica: pendiente -- no se configuro"
+        $selMusicaNum = 0   # saltar el resto del bloque
+    }
     Write-Host ""
 
     $junctionOk = $false
-    if (-not (Test-Path $carpetaMusica -PathType Container)) {
+    if ($selMusicaNum -eq 0) {
+        # cancelado en el dialogo -- resumenMusica ya seteado arriba
+    } elseif (-not (Test-Path $carpetaMusica -PathType Container)) {
         Write-Host "  [ERROR] No se encontro la carpeta: $carpetaMusica" -ForegroundColor Red
         Write-Host "  Biosoft queda instalado pero sin musica. Podes configurarla" -ForegroundColor Yellow
         Write-Host "  volviendo a correr este instalador o desde la app." -ForegroundColor Yellow
