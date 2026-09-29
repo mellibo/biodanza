@@ -10,8 +10,8 @@ $COLECCIONES = @(
     [pscustomobject]@{ Nombre="Areco"; Id="1Wz2KjDqBsp2gSgBDPq7pvTY6MCuNxPXM"  }
     [pscustomobject]@{ Nombre="HLB";   Id="1Vz8Qxj5UWsbU29DD0ZNUQ3YmFVX23MsO"  }
     [pscustomobject]@{ Nombre="JEXP";  Id="1I-yBIrUzi8_7QbLgtqBBM5raYg2P5Jp4"  }
-    [pscustomobject]@{ Nombre="BsAs";  Id="PENDIENTE"                            }
-    [pscustomobject]@{ Nombre="CPAZ";  Id="PENDIENTE"                            }
+    [pscustomobject]@{ Nombre="BsAs";  Id="1F4tes2TuRL-vh-qPsPgLBcr79DRSFvEK"  }
+    [pscustomobject]@{ Nombre="CPAZ";  Id="1hCpBUUzZ0lM-u7DQ-_3WJERs9nB3yEz_"  }
 )
 # -----------------------------------------------------------------
 
