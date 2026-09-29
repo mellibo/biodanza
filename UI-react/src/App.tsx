@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
+import { useDataStore } from './store/dataStore'
 import { routes } from './routes'
 import { AlertBanner } from './components/AlertBanner'
 import { PlayerControls } from './components/PlayerControls'
@@ -84,6 +85,11 @@ function useDragAndDropArchivos(onArchivos: (files: File[]) => void) {
   return arrastrando
 }
 
+function RootRedirect() {
+  const hayMusicas = useDataStore((s) => s.musicasOrder.length > 0)
+  return <Navigate to={hayMusicas ? '/clases' : '/cargarMusica'} replace />
+}
+
 function Layout() {
   const [archivosParaAgregar, setArchivosParaAgregar] = useState<File[] | null>(null)
   const arrastrando = useDragAndDropArchivos(setArchivosParaAgregar)
@@ -160,7 +166,7 @@ function Layout() {
             (mucho más visible ahora que el layout usa todo el ancho). */}
         <div style={{ paddingTop: '6px' }}>
           <Routes>
-            <Route path="/" element={<Navigate to="/clases" replace />} />
+            <Route path="/" element={<RootRedirect />} />
             {routes.map((r) => (
               <Route key={r.path} path={r.path} element={r.element} />
             ))}
