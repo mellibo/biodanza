@@ -382,11 +382,10 @@ else {
 
 if ($musicaConfigurada) {
     try {
-        $html = [System.IO.File]::ReadAllText($htmlDestino, [System.Text.Encoding]::UTF8)
         $installPath = $destino.Replace('\', '\\')
-        $tag = "<script>window.__BIOSOFT_MUSICA_ROOT__='musica/';window.__BIOSOFT_INSTALL_PATH__='$installPath\\';</script>"
-        $html = $html.Replace('</body>', "$tag</body>")
-        [System.IO.File]::WriteAllText($htmlDestino, $html, [System.Text.Encoding]::UTF8)
+        $tag = "`n<script>window.__BIOSOFT_MUSICA_ROOT__='musica/';window.__BIOSOFT_INSTALL_PATH__='$installPath\\';</script>"
+        $enc = New-Object System.Text.UTF8Encoding $false   # UTF-8 sin BOM
+        [System.IO.File]::AppendAllText($htmlDestino, $tag, $enc)
     } catch {
         Write-Host "  [!] No se pudo guardar la configuracion de musica: $_" -ForegroundColor Yellow
     }
