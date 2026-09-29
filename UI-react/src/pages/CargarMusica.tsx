@@ -634,19 +634,31 @@ export function CargarMusica() {
       <form className="form-inline">
           <div className="row">
             <br />
-            <div className="form-group col-md-12">
-              <label className="control-label">
-                Elija la carpeta de la colección que quiere importar (puede tener cualquier nombre; ese nombre se usa como nombre de
-                la colección). Por seguridad del navegador, esa carpeta tiene que ser subcarpeta (a cualquier profundidad) de donde
-                corre esta app: <strong>{pathApp}</strong> -- si está en otro lado del disco, no va a poder reproducirse. Se carga una
-                sola colección por escaneo: todos los archivos de audio que haya adentro, en cualquier subcarpeta (ej. CD1, o
-                CD1/Bonus), se toman como parte de esta colección, usando esa ruta relativa como su carpeta. Para que una música quede
-                asociada a uno o más ejercicios automáticamente, el/los nombre(s) del ejercicio (exactos, tal como están cargados en
-                /ejercicios) tienen que estar en los metadatos del archivo, en el campo <strong>género</strong> -- si hay más de uno,
-                separados por coma. Sin eso en los metadatos, la música se importa igual pero queda sin asociar, para asignarla a mano
-                después. La app no puede saber en qué subcarpeta exacta de {pathApp} está -- abajo se propone una raíz por default,
-                corregila si hace falta antes de importar.
-              </label>
+            <div className="col-md-12" style={{ marginBottom: '10px' }}>
+              <p style={{ marginBottom: '6px' }}>
+                Elegí la carpeta de la colección que querés importar. El nombre de la carpeta se usa como nombre de la colección.
+              </p>
+              <ul style={{ marginBottom: '8px', paddingLeft: '20px' }}>
+                <li>
+                  Tiene que estar dentro de <strong>{pathApp}</strong> — si está en otro lugar del disco los archivos no se van a poder reproducir.
+                </li>
+                <li>
+                  Se importa una sola colección por escaneo; todos los archivos de audio adentro (y en subcarpetas como <code>CD1</code>, <code>CD1/Bonus</code>) se incluyen.
+                </li>
+                <li>
+                  Para que una música quede asociada a un ejercicio automáticamente, el nombre exacto del ejercicio tiene que estar en el campo <strong>Género</strong> de sus metadatos (varios separados por coma). Si no, se importa igual y se asigna a mano después.
+                </li>
+              </ul>
+              {pathApp && (
+                <div className="well well-sm" style={{ marginBottom: 0, padding: '8px 12px' }}>
+                  <strong>Si instalaste con el instalador, tus colecciones están en:</strong>
+                  <ul style={{ marginBottom: 0, marginTop: '4px', paddingLeft: '20px', fontFamily: 'monospace', fontSize: '93%' }}>
+                    {['IBF', 'Areco', 'HLB', 'JEXP', 'BsAs', 'CPAZ'].map((col) => (
+                      <li key={col}>{pathApp}musica/{col}/</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
             <input
               ref={setDirInputRef}
