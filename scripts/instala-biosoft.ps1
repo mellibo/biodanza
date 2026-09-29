@@ -6,12 +6,12 @@
 $HTML_DRIVE_ID = "102kSTnhJKoozEjHSkCYlLQaSYfJUJIQ6"
 
 $COLECCIONES = @(
-    [pscustomobject]@{ Nombre="IBF";   Id="15QrdaK17bzq-xwymnhYUCbJnVD9pLl9_" }
-    [pscustomobject]@{ Nombre="Areco"; Id="1Wz2KjDqBsp2gSgBDPq7pvTY6MCuNxPXM"  }
-    [pscustomobject]@{ Nombre="HLB";   Id="1Vz8Qxj5UWsbU29DD0ZNUQ3YmFVX23MsO"  }
-    [pscustomobject]@{ Nombre="JEXP";  Id="1I-yBIrUzi8_7QbLgtqBBM5raYg2P5Jp4"  }
-    [pscustomobject]@{ Nombre="BsAs";  Id="1F4tes2TuRL-vh-qPsPgLBcr79DRSFvEK"  }
-    [pscustomobject]@{ Nombre="CPAZ";  Id="1hCpBUUzZ0lM-u7DQ-_3WJERs9nB3yEz_"  }
+    [pscustomobject]@{ Nombre="IBF";   Id="15QrdaK17bzq-xwymnhYUCbJnVD9pLl9_"; GBytes=1.98 }
+    [pscustomobject]@{ Nombre="Areco"; Id="1Wz2KjDqBsp2gSgBDPq7pvTY6MCuNxPXM";  GBytes=1.46 }
+    [pscustomobject]@{ Nombre="HLB";   Id="1Vz8Qxj5UWsbU29DD0ZNUQ3YmFVX23MsO";  GBytes=3.12 }
+    [pscustomobject]@{ Nombre="JEXP";  Id="1I-yBIrUzi8_7QbLgtqBBM5raYg2P5Jp4";  GBytes=0.67 }
+    [pscustomobject]@{ Nombre="BsAs";  Id="1F4tes2TuRL-vh-qPsPgLBcr79DRSFvEK";   GBytes=9.65 }
+    [pscustomobject]@{ Nombre="CPAZ";  Id="1hCpBUUzZ0lM-u7DQ-_3WJERs9nB3yEz_";  GBytes=2.12 }
 )
 # -----------------------------------------------------------------
 
@@ -38,37 +38,48 @@ $VELOCIDAD_BYTES_SEG = 625 * 1KB
 
 function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
     $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
-    Write-Host "  Descargando $descripcion ..." -ForegroundColor Gray
-    $wc = $null
+    Write-Host "  $descripcion :" -NoNewline -ForegroundColor Gray
+
+    $wc = New-Object System.Net.WebClient
+    $global:_dlDone  = $false
+    $global:_dlError = $null
+
+    Register-ObjectEvent -InputObject $wc -EventName DownloadFileCompleted -SourceIdentifier "_BsDlDone" -Action {
+        $global:_dlError = $Event.SourceEventArgs.Error
+        $global:_dlDone  = $true
+    } | Out-Null
+
     try {
-        $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile($url, $destPath)
-        # Verificar que no devolvio una pagina HTML de error de Drive
-        $primeros = [System.IO.File]::ReadAllBytes($destPath) | Select-Object -First 5
-        if ($primeros[0] -eq 0x3C) {   # '<' = posible HTML
+        $wc.DownloadFileAsync([uri]$url, $destPath)
+
+        $ultimo = 0
+        while (-not $global:_dlDone) {
+            Start-Sleep -Milliseconds 500
+            if (Test-Path $destPath) {
+                $tam = (Get-Item $destPath -ErrorAction SilentlyContinue).Length
+                if ($tam -and $tam -ne $ultimo) {
+                    $mb = "{0:N1} MB" -f ($tam / 1MB)
+                    Write-Host "`r  $descripcion : $mb  " -NoNewline -ForegroundColor Gray
+                    $ultimo = $tam
+                }
+            }
+        }
+        Write-Host ""   # salto de linea al terminar
+
+        if ($global:_dlError) { throw $global:_dlError }
+
+        $tamFinal = (Get-Item $destPath).Length
+        if ($tamFinal -lt 100KB) {
             Remove-Item $destPath -Force
-            throw "Drive devolvio HTML en lugar del archivo. Verifica que el archivo este compartido como publico."
+            throw "Drive devolvio una respuesta inesperadamente chica ($tamFinal bytes). Verifica que el archivo este compartido como publico."
         }
     } finally {
-        if ($wc) { $wc.Dispose() }
+        Unregister-Event -SourceIdentifier "_BsDlDone" -ErrorAction SilentlyContinue
+        $wc.Dispose()
+        Remove-Variable _dlDone, _dlError -Scope Global -ErrorAction SilentlyContinue
     }
 }
 
-function Get-DriveFileSize($fileId) {
-    # HEAD request para obtener el tamano sin descargar
-    try {
-        $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
-        $req = [System.Net.WebRequest]::Create($url)
-        $req.Method = "HEAD"
-        $req.AllowAutoRedirect = $true
-        $resp = $req.GetResponse()
-        $size = $resp.ContentLength
-        $resp.Close()
-        return $size
-    } catch {
-        return -1
-    }
-}
 
 # --- 1. Header ---------------------------------------------------
 
@@ -162,21 +173,14 @@ try {
 Write-Host ""
 Write-Host "Colecciones disponibles:" -ForegroundColor White
 Write-Host ""
-Write-Host "  Consultando tamanos, espere..." -ForegroundColor Gray
 
-$infos = @()
-foreach ($col in ($COLECCIONES | Where-Object { $_.Id -ne "PENDIENTE" })) {
-    $bytes = Get-DriveFileSize $col.Id
-    $infos += [pscustomobject]@{ Nombre=$col.Nombre; Id=$col.Id; Bytes=$bytes }
-}
-
-# Limpiar linea "Consultando..."
-Write-Host "`r                                    " -NoNewline
+$infos = @($COLECCIONES | Where-Object { $_.Id -ne "PENDIENTE" })
 
 for ($i = 0; $i -lt $infos.Count; $i++) {
-    $info = $infos[$i]
-    $tam  = if ($info.Bytes -gt 0) { Format-Bytes $info.Bytes } else { "tamano desconocido" }
-    $dur  = if ($info.Bytes -gt 0) { "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($info.Bytes / $VELOCIDAD_BYTES_SEG))))" } else { "" }
+    $info  = $infos[$i]
+    $bytes = [long]($info.GBytes * 1GB)
+    $tam   = "{0:N2} GB" -f $info.GBytes
+    $dur   = "~$(Format-Duracion ([math]::Max(1,[math]::Ceiling($bytes / $VELOCIDAD_BYTES_SEG))))"
     Write-Host ("  [{0}] {1,-10} - {2,8}  ({3})" -f ($i+1), $info.Nombre, $tam, $dur)
 }
 
