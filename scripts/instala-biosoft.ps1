@@ -2,6 +2,13 @@
 # Instala Biosoft en Windows 10/11 descargando desde Google Drive.
 # Uso: doble clic en "Instalar Biosoft.bat"
 
+# FolderBrowserDialog requiere modo STA. Si no estamos en STA, relanzar.
+if ([System.Threading.Thread]::CurrentThread.ApartmentState -ne 'STA') {
+    $args2 = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File', $MyInvocation.MyCommand.Path)
+    Start-Process powershell.exe -ArgumentList $args2 -Wait -NoNewWindow
+    exit
+}
+
 # --- CONFIGURACION -----------------------------------------------
 $HTML_DRIVE_ID = "102kSTnhJKoozEjHSkCYlLQaSYfJUJIQ6"
 
