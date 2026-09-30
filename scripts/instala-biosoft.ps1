@@ -518,7 +518,7 @@ Write-Host ""
 Write-Host "Creando acceso directo en el escritorio ..." -ForegroundColor Cyan
 try {
     $shell = New-Object -ComObject WScript.Shell
-    $lnk   = $shell.CreateShortcut("$env:USERPROFILE\Desktop\Biosoft.lnk")
+    $lnk   = $shell.CreateShortcut($shell.SpecialFolders("Desktop") + "\Biosoft.lnk")
     $lnk.TargetPath   = $htmlDestino
     $lnk.IconLocation = "%SystemRoot%\system32\shell32.dll,116"
     $lnk.Description  = "Biosoft - Planificador de clases de Biodanza"
