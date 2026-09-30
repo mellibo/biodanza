@@ -454,6 +454,21 @@ export function CargarMusica() {
         await analizarArchivosEscaneados(reagrupados)
         return
       }
+      // Segundo candidato: derivar la raíz desde webkitRelativePath (equiv. a Find-MusicaRoot
+      // del instalador: 2 niveles arriba desde la carpeta del primer audio).
+      const webkitParent = (() => {
+        const rel = ((encontrados[0].file as unknown) as { webkitRelativePath?: string }).webkitRelativePath ?? ''
+        const pp = rel.split('/')
+        if (pp.length < 2) return ''
+        const inner = pp.slice(1, -1)
+        return inner.length >= 2 ? [pp[0], ...inner.slice(0, -2)].join('/') + '/' : pp[0] + '/'
+      })()
+      if (webkitParent && webkitParent !== candidatoParent && await existeEnRaiz(webkitParent + firstRawCol + '/', firstFiles[0])) {
+        setRootColeccion(webkitParent)
+        setRaizVerificada(true)
+        await analizarArchivosEscaneados(reagrupados)
+        return
+      }
       setRootColeccion(candidatoParent)
       setRaizVerificada(false)
       setEscaneando(false)
@@ -519,6 +534,22 @@ export function CargarMusica() {
       : baseRaiz + coleccionNombre + '/'
     if (await existeEnRaiz(candidato, encontrados[0])) {
       setRootColeccion(candidato)
+      setRaizVerificada(true)
+      await analizarArchivosEscaneados(encontrados)
+      return
+    }
+    // Segundo candidato: derivar la raíz desde webkitRelativePath (equiv. a Find-MusicaRoot
+    // del instalador: 2 niveles arriba desde la carpeta del primer audio). Útil cuando la
+    // música está directamente al lado de biosoft.html (sin subcarpeta musica/).
+    const webkitCandidato = (() => {
+      const rel = ((encontrados[0].file as unknown) as { webkitRelativePath?: string }).webkitRelativePath ?? ''
+      const pp = rel.split('/')
+      if (pp.length < 2) return ''
+      const inner = pp.slice(1, -1)
+      return inner.length >= 2 ? [pp[0], ...inner.slice(0, -2)].join('/') + '/' : pp[0] + '/'
+    })()
+    if (webkitCandidato && webkitCandidato !== candidato && await existeEnRaiz(webkitCandidato, encontrados[0])) {
+      setRootColeccion(webkitCandidato)
       setRaizVerificada(true)
       await analizarArchivosEscaneados(encontrados)
       return
@@ -767,8 +798,13 @@ export function CargarMusica() {
         style={{ visibility: 'hidden' }}
         onChange={(e) => e.target.files?.[0] && leerEquivalencias(e.target.files[0])}
       />
-      <div className="form-group col-md-12 btn-group" role="toolbar" style={{ marginBottom: '10px' }}>
-        <button type="button" className="btn btn-primary" onClick={() => fileEquivalenciasRef.current?.click()}>
+      <div className="form-group col-md-12 btn-group" role="toolbar" style={{ marginBottom: '4px' }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => fileEquivalenciasRef.current?.click()}
+          title="Carga un Excel con tres hojas (Ejercicios, Interpretes, Grupo) que mapea nombres alternativos a los nombres canónicos de ejercicios/intérpretes. Se aplica al importar desde Excel y al Escanear Carpeta."
+        >
           <span className="glyphicon glyphicon-import" /> Leer Excel Equivalencias Nombres
         </button>{' '}
         {equivalenciaEjercicios.length > 0 && (
@@ -778,6 +814,10 @@ export function CargarMusica() {
           </span>
         )}
       </div>
+      <p className="text-muted col-md-12" style={{ fontSize: '89%', marginBottom: '10px', marginTop: 0 }}>
+        Excel con tres hojas (<em>Ejercicios</em>, <em>Interpretes</em>, <em>Grupo</em>): mapea nombres alternativos a nombres canónicos de ejercicios e intérpretes.
+        El archivo <code>EquivalenciasDeNombres.xlsx</code> está en la misma carpeta que <code>biosoft.html</code>.
+      </p>
       <form className="form-inline">
           <div className="row">
             <br />
