@@ -450,6 +450,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
   exportarClases: () => {
     const clases = get().clases.map(buildExpClase)
     downloadJson(clases, 'clases biodanza.bio')
+    localStorage.setItem('ngStorage-biosoft_lastExport', String(Date.now()))
   },
 
   exportarClase: (index) => {
@@ -457,6 +458,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     if (!clase) return
     const claseExp = buildExpClase(clase)
     downloadJson([claseExp], claseExp.titulo + '.bio')
+    localStorage.setItem('ngStorage-biosoft_lastExport', String(Date.now()))
   },
 
   // Playlist M3U (Winamp, VLC, Windows Media Player, etc.) con el orden
@@ -869,6 +871,7 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     if (seleccionadas.length === 0) return
     const nombre = seleccionadas.length === 1 ? seleccionadas[0].titulo : seleccionadas.length + ' clases'
     downloadJson(seleccionadas, nombre + '.bio')
+    localStorage.setItem('ngStorage-biosoft_lastExport', String(Date.now()))
   },
 
   // Playlist M3U combinada con las pistas de todas las clases elegidas,

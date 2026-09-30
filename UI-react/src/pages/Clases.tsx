@@ -192,6 +192,16 @@ export function Clases() {
     initEtiquetas()
   }, [init, initEtiquetas])
 
+  const DIAS_BACKUP = 30
+  const [mostrarRecordatorioBackup, setMostrarRecordatorioBackup] = useState(() => {
+    try {
+      const raw = localStorage.getItem('ngStorage-biosoft_lastExport')
+      if (!raw) return true  // nunca exportó
+      const diasDesde = (Date.now() - Number(raw)) / (1000 * 60 * 60 * 24)
+      return diasDesde >= DIAS_BACKUP
+    } catch { return false }
+  })
+
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const playlistInputRef = useRef<HTMLInputElement>(null)
@@ -448,6 +458,25 @@ export function Clases() {
 
   return (
     <div className="row">
+      {mostrarRecordatorioBackup && (
+        <div className="col-md-12">
+          <div className="alert alert-warning alert-dismissible" style={{ marginBottom: '10px' }}>
+            <button type="button" className="close" onClick={() => setMostrarRecordatorioBackup(false)}>
+              <span>&times;</span>
+            </button>
+            <strong>Recordatorio de copia de seguridad:</strong>{' '}
+            Hace más de {DIAS_BACKUP} días que no exportás tus clases.
+            Exportalas para no perder tu trabajo en caso de que el navegador borre el almacenamiento local.{' '}
+            <button
+              type="button"
+              className="btn btn-warning btn-xs"
+              onClick={() => { exportarClases(); setMostrarRecordatorioBackup(false) }}
+            >
+              <span className="glyphicon glyphicon-export" /> Exportar ahora
+            </button>
+          </div>
+        </div>
+      )}
       <datalist id="carpetasClases">
         {todasCarpetas.map((c) => (
           <option key={c} value={c} />

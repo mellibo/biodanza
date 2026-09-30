@@ -63,6 +63,21 @@ function New-Junction($junctionPath, $targetPath) {
     if ($LASTEXITCODE -ne 0) { throw "No se pudo crear el enlace: $result" }
 }
 
+function Find-MusicaRoot($carpeta) {
+    # Busca el primer archivo de audio en el arbol y sube 2 niveles desde
+    # su carpeta para obtener la raiz de colecciones (estructura tipica:
+    # raiz/coleccion/CD/track.mp3 -- 2 niveles sobre el CD = raiz).
+    $extensiones = @('.mp3','.flac','.ogg','.wav','.m4a','.wma','.aac')
+    $primerAudio = Get-ChildItem $carpeta -Recurse -File -ErrorAction SilentlyContinue |
+                   Where-Object { $extensiones -contains $_.Extension.ToLower() } |
+                   Select-Object -First 1
+    if (-not $primerAudio) { return $null }
+    $p1 = Split-Path $primerAudio.DirectoryName -Parent
+    $p2 = Split-Path $p1 -Parent
+    if (-not $p2 -or -not (Test-Path $p2)) { return $carpeta }
+    return $p2
+}
+
 function Get-ResumenMusica($carpeta) {
     $extensiones = @('.mp3','.flac','.ogg','.wav','.m4a','.wma','.aac')
     $resultado = @{}
@@ -356,42 +371,40 @@ if ($selMusicaNum -eq 1) {
 # Opcion 2: carpeta existente
 elseif ($selMusicaNum -eq 2) {
     Write-Host ""
-    Write-Host "Se va a abrir un cuadro para elegir la carpeta." -ForegroundColor Gray
-    Write-Host "Dentro tiene que haber subcarpetas por coleccion (IBF, BsAs, HLB...)," -ForegroundColor Gray
-    Write-Host "cada una con sus CDs adentro." -ForegroundColor Gray
-    Write-Host ""
-    $carpetaMusica = Select-Carpeta "Selecciona la carpeta de musica de Biodanza"
-    if (-not $carpetaMusica) {
-        Write-Host "  Seleccion cancelada. Biosoft queda instalado pero sin musica." -ForegroundColor Yellow
-        $resumenMusica = "Musica: pendiente -- no se configuro"
-        $selMusicaNum = 0   # saltar el resto del bloque
-    }
-    Write-Host ""
+    Write-Host "Selecciona cualquier carpeta de tu musica de Biodanza." -ForegroundColor Gray
+    Write-Host "(podes elegir una coleccion, un CD o la carpeta raiz -- se detecta automaticamente)" -ForegroundColor Gray
 
     $junctionOk = $false
-    if ($selMusicaNum -eq 0) {
-        # cancelado en el dialogo -- resumenMusica ya seteado arriba
-    } elseif (-not (Test-Path $carpetaMusica -PathType Container)) {
-        Write-Host "  [ERROR] No se encontro la carpeta: $carpetaMusica" -ForegroundColor Red
-        Write-Host "  Biosoft queda instalado pero sin musica. Podes configurarla" -ForegroundColor Yellow
-        Write-Host "  volviendo a correr este instalador o desde la app." -ForegroundColor Yellow
-        $resumenMusica = "Musica: pendiente -- la carpeta indicada no existe"
-    } else {
-        Write-Host "  Analizando contenido de $carpetaMusica ..." -ForegroundColor Gray
+    $carpetaMusica = $null
+
+    while (-not $junctionOk) {
+        Write-Host ""
+        $seleccionada = Select-Carpeta "Selecciona cualquier carpeta de musica de Biodanza"
+        if (-not $seleccionada) {
+            Write-Host "  Seleccion cancelada." -ForegroundColor Yellow
+            $resumenMusica = "Musica: pendiente -- no se configuro"
+            break
+        }
+
+        Write-Host "  Detectando carpeta raiz ..." -ForegroundColor Gray
+        $raizDetectada = Find-MusicaRoot $seleccionada
+        $carpetaMusica = if ($raizDetectada) { $raizDetectada } else { $seleccionada }
+        Write-Host "  Carpeta raiz: $carpetaMusica" -ForegroundColor Cyan
+
         $resumen = Get-ResumenMusica $carpetaMusica
 
         if ($resumen.Count -eq 0) {
-            Write-Host "  [!] No se encontraron archivos de audio en subcarpetas de:" -ForegroundColor Yellow
-            Write-Host "      $carpetaMusica" -ForegroundColor Yellow
-            Write-Host "      Verifica que sea la carpeta correcta y que tenga subcarpetas" -ForegroundColor Gray
-            Write-Host "      con archivos MP3/FLAC/etc. adentro." -ForegroundColor Gray
+            Write-Host "  [!] No se encontraron colecciones de audio en $carpetaMusica" -ForegroundColor Yellow
             Write-Host ""
-            $continuar = Read-Host "Continuar igual y apuntar a esa carpeta? (S/N)"
-            if ($continuar -notmatch '^[sS]') {
-                Write-Host "  Biosoft queda instalado pero sin musica." -ForegroundColor Yellow
+            Write-Host "  [R] Elegir otra carpeta"
+            Write-Host "  [C] Continuar igual con esta carpeta"
+            Write-Host "  [S] Saltar (configurar la musica despues)"
+            $resp = Read-Host "  Opcion"
+            if ($resp -match '^[rR]') { continue }
+            elseif ($resp -match '^[cC]') { $junctionOk = $true }
+            else {
                 $resumenMusica = "Musica: pendiente -- no se configuro"
-            } else {
-                $junctionOk = $true
+                break
             }
         } else {
             Write-Host ""
@@ -404,22 +417,24 @@ elseif ($selMusicaNum -eq 2) {
             Write-Host "    ---------------"
             Write-Host "    Total: $totalArchivos archivos de audio"
             Write-Host ""
-            $junctionOk = $true
+            $confirmar = Read-Host "  Usar esta carpeta? (S=Si, N=Elegir otra)"
+            if ($confirmar -match '^[sS]') { $junctionOk = $true }
+            # else: loop again
         }
+    }
 
-        if ($junctionOk) {
-            Write-Host "  Creando enlace musica -> $carpetaMusica ..." -ForegroundColor Cyan
-            try {
-                New-Junction "$destino\musica" $carpetaMusica
-                Write-Host "  [OK] Enlace creado." -ForegroundColor Green
-                Write-Host "       Los archivos NO se copiaron -- Biosoft los lee desde:" -ForegroundColor Gray
-                Write-Host "       $carpetaMusica" -ForegroundColor Gray
-                $resumenMusica = "Musica enlazada desde: $carpetaMusica"
-                $musicaConfigurada = $true
-            } catch {
-                Write-Host "  [ERROR] No se pudo crear el enlace: $_" -ForegroundColor Red
-                $resumenMusica = "Musica: pendiente -- no se pudo crear el enlace"
-            }
+    if ($junctionOk -and $carpetaMusica) {
+        Write-Host "  Creando enlace musica -> $carpetaMusica ..." -ForegroundColor Cyan
+        try {
+            New-Junction "$destino\musica" $carpetaMusica
+            Write-Host "  [OK] Enlace creado." -ForegroundColor Green
+            Write-Host "       Los archivos NO se copiaron -- Biosoft los lee desde:" -ForegroundColor Gray
+            Write-Host "       $carpetaMusica" -ForegroundColor Gray
+            $resumenMusica = "Musica enlazada desde: $carpetaMusica"
+            $musicaConfigurada = $true
+        } catch {
+            Write-Host "  [ERROR] No se pudo crear el enlace: $_" -ForegroundColor Red
+            $resumenMusica = "Musica: pendiente -- no se pudo crear el enlace"
         }
     }
 }
