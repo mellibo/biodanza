@@ -512,7 +512,11 @@ export function CargarMusica() {
     const coleccionNombre = encontrados[0].coleccion
     // Prioridad: rootColeccion pre-seteado (ej. por el instalador) > getPathMusica() > default.
     const baseRaiz = rootColeccion || getPathMusica()
-    const candidato = baseRaiz + coleccionNombre + '/'
+    // Evitar duplicación: si baseRaiz ya termina con "coleccion/" (ej. rootColeccion='musica/'
+    // y coleccionNombre='musica' cuando el symlink apunta al padre), usar baseRaiz directo.
+    const candidato = baseRaiz.endsWith(coleccionNombre + '/')
+      ? baseRaiz
+      : baseRaiz + coleccionNombre + '/'
     if (await existeEnRaiz(candidato, encontrados[0])) {
       setRootColeccion(candidato)
       setRaizVerificada(true)
@@ -522,7 +526,7 @@ export function CargarMusica() {
     // No se pudo confirmar la raíz por default -- se corta acá (no se
     // analizan metadatos todavía) y se le pide al usuario que la corrija
     // y presione "Verificar" antes de seguir (ver verificarRaizManual).
-    setRootColeccion(coleccionNombre + '/')
+    setRootColeccion(candidato)
     setRaizVerificada(false)
     setEscaneando(false)
     addAlert(
