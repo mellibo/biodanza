@@ -126,6 +126,8 @@ export function CargarMusica() {
   const navigate = useNavigate()
   const pathApp = getCurrentPath() ?? ''
 
+  const [analizandoPct, setAnalizandoPct] = useState<number | null>(null)
+
   // Multi-colección: cuando el usuario elige la carpeta padre (ej. musica/)
   // en lugar de una colección individual.
   const [coleccionesAnidadas, setColeccionesAnidadas] = useState<Map<string, ArchivoEscaneado[]> | null>(null)
@@ -251,6 +253,7 @@ export function CargarMusica() {
   // corregir la ubicación y esto ya no importa.
   async function analizarArchivosEscaneados(lista: ArchivoEscaneado[]) {
     setEscaneando(true)
+    setAnalizandoPct(0)
     const actualizados = [...lista]
     for (let i = 0; i < actualizados.length; i++) {
       const item = actualizados[i]
@@ -272,8 +275,10 @@ export function CargarMusica() {
         ejerciciosDetectados: Array.from(new Set([...item.ejerciciosExcel, ...analisis.ejerciciosDetectados])),
       }
       setArchivosEscaneados([...actualizados])
+      setAnalizandoPct(Math.round((i + 1) / actualizados.length * 100))
     }
     setEscaneando(false)
+    setAnalizandoPct(null)
   }
 
   // Vuelve a probar la raíz actual (rootColeccion) contra un archivo de
@@ -826,7 +831,10 @@ export function CargarMusica() {
                 <strong className="aviso-espera">
                   {archivosEscaneados.length === 0
                     ? 'Escaneando archivos, por favor espere...'
-                    : 'Probando que cada archivo exista y se pueda reproducir, esto puede tardar. Por favor espere...'}
+                    : <>
+                        Probando archivos de audio, esto puede tardar.{' '}
+                        {analizandoPct !== null ? `${analizandoPct}%` : 'Por favor espere...'}
+                      </>}
                 </strong>
               </div>
             )}
