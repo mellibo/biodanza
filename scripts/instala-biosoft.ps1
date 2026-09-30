@@ -77,6 +77,16 @@ function Find-MusicaRoot($carpeta) {
     $primerAudio = Get-ChildItem $carpeta -Recurse -File -ErrorAction SilentlyContinue |
                    Where-Object { $extensiones -contains $_.Extension.ToLower() } |
                    Select-Object -First 1
+    if (-not $primerAudio) {
+        # PS 5.1 no sigue symlinks con -Recurse (solo junctions); iterar subdirs
+        # de primer nivel para cubrir el caso musica->symlink
+        foreach ($sub in @(Get-ChildItem $carpeta -Directory -Force -ErrorAction SilentlyContinue)) {
+            $primerAudio = Get-ChildItem $sub.FullName -Recurse -File -ErrorAction SilentlyContinue |
+                           Where-Object { $extensiones -contains $_.Extension.ToLower() } |
+                           Select-Object -First 1
+            if ($primerAudio) { break }
+        }
+    }
     if (-not $primerAudio) { return $null }
     $p1 = Split-Path $primerAudio.DirectoryName -Parent
     $p2 = Split-Path $p1 -Parent
@@ -415,6 +425,20 @@ elseif ($selMusicaNum -eq 2) {
         Write-Host "  Detectando carpeta raiz ..." -ForegroundColor Gray
         $raizDetectada = Find-MusicaRoot $seleccionada
         $carpetaMusica = if ($raizDetectada) { $raizDetectada } else { $seleccionada }
+
+        # Si la raiz detectada es la misma carpeta que el usuario selecciono, puede ser
+        # que haya elegido la carpeta de instalacion (ej. c:\biosoft) en lugar de la
+        # subcarpeta de musica. Verificar si hay una subcarpeta 'musica' con audio.
+        if ($carpetaMusica.TrimEnd('\').ToLower() -eq $seleccionada.TrimEnd('\').ToLower()) {
+            $subMusica = Join-Path $seleccionada 'musica'
+            $subItem = Get-Item $subMusica -Force -ErrorAction SilentlyContinue
+            if ($subItem -and $subItem.PSIsContainer) {
+                $raizSub = Find-MusicaRoot $subMusica
+                $carpetaMusica = if ($raizSub) { $raizSub } else { $subMusica }
+                Write-Host "  (subcarpeta musica/ detectada: usando $carpetaMusica)" -ForegroundColor Gray
+            }
+        }
+
         Write-Host "  Carpeta raiz: $carpetaMusica" -ForegroundColor Cyan
 
         $resumen = Get-ResumenMusica $carpetaMusica
