@@ -107,7 +107,7 @@ function Format-Duracion($segundos) {
 # Velocidad de referencia para estimar tiempo de descarga (~5 Mbps = 625 KB/s)
 $VELOCIDAD_BYTES_SEG = 625 * 1KB
 
-function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
+function Invoke-DriveDownload($fileId, $destPath, $descripcion, $minBytes = 102400) {
     $url = "https://drive.usercontent.google.com/download?id=$fileId&export=download&confirm=t"
     Write-Host "  $descripcion :" -NoNewline -ForegroundColor Gray
 
@@ -140,7 +140,7 @@ function Invoke-DriveDownload($fileId, $destPath, $descripcion) {
         if ($global:_dlError) { throw $global:_dlError }
 
         $tamFinal = (Get-Item $destPath).Length
-        if ($tamFinal -lt 100KB) {
+        if ($tamFinal -lt $minBytes) {
             Remove-Item $destPath -Force
             throw "Drive devolvio una respuesta inesperadamente chica ($tamFinal bytes). Verifica que el archivo este compartido como publico."
         }
@@ -288,6 +288,26 @@ try {
 }
 
 }   # fin bloque "instalar/actualizar" (no soloMusica)
+
+# --- 7b. Descargar archivos adicionales --------------------------
+# Siempre se actualiza (tanto en instalacion nueva como en soloMusica).
+# minBytes bajo porque son archivos pequenos (el .ps1 pesa pocos KB).
+
+$ARCHIVOS_EXTRA = @(
+    [pscustomobject]@{ Id="1TJu7qEn9omd9nUfpejZWarRCN3NBCoOd"; Nombre="EquivalenciasDeNombres.xlsx"; Desc="EquivalenciasDeNombres.xlsx" }
+    [pscustomobject]@{ Id="1XWcsv7t75-BUo-gIVRyjRB3ujGGkktjD"; Nombre="exportar-playlists-winamp.ps1"; Desc="exportar-playlists-winamp.ps1" }
+)
+
+Write-Host "Descargando archivos adicionales ..." -ForegroundColor Cyan
+foreach ($extra in $ARCHIVOS_EXTRA) {
+    $destExtra = "$destino\$($extra.Nombre)"
+    try {
+        Invoke-DriveDownload $extra.Id $destExtra $extra.Desc 1000
+        Write-Host "  [OK] $($extra.Nombre)" -ForegroundColor Green
+    } catch {
+        Write-Host "  [!] No se pudo descargar $($extra.Nombre): $_" -ForegroundColor Yellow
+    }
+}
 
 # --- 8. Configurar musica ----------------------------------------
 
