@@ -32,10 +32,16 @@ function Select-Carpeta($descripcion) {
     $dialog = New-Object System.Windows.Forms.FolderBrowserDialog
     $dialog.Description = $descripcion
     $dialog.ShowNewFolderButton = $false
+    Write-Host "  (Si el cuadro no te deja seleccionar la carpeta, cierralo y escribi la ruta a mano)" -ForegroundColor DarkGray
     $result = $dialog.ShowDialog()
     if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
         return $dialog.SelectedPath
     }
+    # Fallback: ingreso manual -- util cuando el dialogo no muestra symlinks/junctions
+    $manual = (Read-Host "  Ruta de la carpeta (o Enter para cancelar)").Trim().Trim('"').Trim("'")
+    if (-not $manual) { return $null }
+    if (Test-Path -LiteralPath $manual) { return $manual }
+    Write-Host "  [!] La carpeta '$manual' no existe." -ForegroundColor Yellow
     return $null
 }
 

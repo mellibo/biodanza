@@ -327,13 +327,29 @@ export function CargarMusica() {
     // lugar a React para pintar el mensaje de "espere" antes de bloquear
     // el hilo con ese loop.
     await new Promise((resolve) => setTimeout(resolve, 0))
+    // Si ya se conoce la raíz de música (ej. del instalador vía __BIOSOFT_MUSICA_ROOT__)
+    // y la carpeta elegida es un padre de ella, calcular cuántos segmentos del
+    // webkitRelativePath hay que saltar para alinear con la estructura esperada.
+    // Ej.: rootColeccion='musica/', usuario elige 'biosoft/' → autoSkip=1 (salta 'biosoft').
+    const primerAudio = archivos.find((f) => esArchivoDeAudio(f.name))
+    const primerRel = (primerAudio as (File & { webkitRelativePath?: string }) | undefined)?.webkitRelativePath ?? ''
+    const rootBaseConocida = (rootColeccion || getPathMusica()).replace(/\/$/, '').split('/')[0]
+    let autoSkip = 0
+    if (rootBaseConocida && primerRel) {
+      const primerPartes = primerRel.split('/')
+      if (primerPartes.length > 1 && primerPartes[0].toLowerCase() !== rootBaseConocida.toLowerCase()) {
+        const idx = primerPartes.findIndex((s) => s.toLowerCase() === rootBaseConocida.toLowerCase())
+        if (idx > 0) autoSkip = idx
+      }
+    }
+
     const encontrados: ArchivoEscaneado[] = []
     let ignorados = 0
     for (const file of archivos) {
       const rel = (file as File & { webkitRelativePath?: string }).webkitRelativePath
       if (!rel) continue
       if (!esArchivoDeAudio(file.name)) continue
-      const ubicacion = ubicarEnArbol(rel.split('/'))
+      const ubicacion = ubicarEnArbol(autoSkip > 0 ? rel.split('/').slice(autoSkip) : rel.split('/'))
       if (!ubicacion) {
         ignorados++
         continue
@@ -471,13 +487,11 @@ export function CargarMusica() {
       }
       setRootColeccion(candidatoParent)
       setRaizVerificada(false)
-      setEscaneando(false)
-      addAlert('danger',
-        'No se encontraron los archivos en "' + candidatoParent + firstRawCol + '/" (ubicación por default). Corregí la Raíz y presioná "Verificar".')
-      return
+      // no se pudo verificar la raíz -- continuar al fallback skip=1
     }
 
-    // --- Colección individual (flujo original) ---
+    // --- Colección individual (solo si no es multi-col) ---
+    if (!grupos) {
     // Complementar con el Excel de catálogo de la colección, si está
     // presente en la raíz de la carpeta escaneada (ver CLAUDE.md,
     // "Organizacion de archivos de musicas") -- de ahí sale la clave real
@@ -554,15 +568,51 @@ export function CargarMusica() {
       await analizarArchivosEscaneados(encontrados)
       return
     }
-    // No se pudo confirmar la raíz por default -- se corta acá (no se
-    // analizan metadatos todavía) y se le pide al usuario que la corrija
-    // y presione "Verificar" antes de seguir (ver verificarRaizManual).
     setRootColeccion(candidato)
     setRaizVerificada(false)
+    }  // fin if (!grupos)
+
+    // --- Fallback skip=1: re-procesar descartando el primer segmento del path ---
+    // Cubre el caso en que el usuario elige la carpeta padre de musica/ (ej. la
+    // carpeta de instalacion "biosoft/") sin que __BIOSOFT_MUSICA_ROOT__ esté
+    // configurado o cuando autoSkip no alcanzó a corregir la estructura.
+    const skip1Archivos: ArchivoEscaneado[] = []
+    for (const f of archivos) {
+      if (!esArchivoDeAudio(f.name)) continue
+      const relS = (f as File & { webkitRelativePath?: string }).webkitRelativePath ?? ''
+      const ppS = relS.split('/')
+      if (ppS.length < 3) continue
+      const ubS = ubicarEnArbol(ppS.slice(1))
+      if (!ubS) continue
+      const archS = f.name; const puntS = archS.lastIndexOf('.'); const titS = puntS > 0 ? archS.substring(0, puntS) : archS
+      skip1Archivos.push({ file: f, coleccion: ubS.coleccion.toUpperCase(), carpeta: ubS.carpeta, archivo: archS, titulo: titS, interprete: '', tagsExtra: '', etiquetasDetectadas: [], ejerciciosDetectados: [], estado: 'pendiente', claveDetectada: null, ejerciciosExcel: [] })
+    }
+    if (skip1Archivos.length > 0) {
+      const grupos2 = detectarColeccionesAnidadas(skip1Archivos)
+      if (grupos2) {
+        const reagrupados2 = [...grupos2.values()].flat()
+        const [[rc2, rf2]] = [...grupos2.entries()]
+        const cp2 = rootColeccion || getPathMusica()
+        if (await existeEnRaiz(cp2 + rc2 + '/', rf2[0])) {
+          setColeccionesAnidadas(grupos2); setColeccionesSeleccionadas(new Set(grupos2.keys()))
+          setArchivosEscaneados(reagrupados2); setRootColeccion(cp2); setRaizVerificada(true)
+          await analizarArchivosEscaneados(reagrupados2); return
+        }
+      } else {
+        const cn2 = skip1Archivos[0].coleccion
+        const cand2 = (rootColeccion || getPathMusica()) + cn2 + '/'
+        if (await existeEnRaiz(cand2, skip1Archivos[0])) {
+          setArchivosEscaneados(skip1Archivos); setRootColeccion(cand2); setRaizVerificada(true)
+          await analizarArchivosEscaneados(skip1Archivos); return
+        }
+      }
+    }
+
+    // Todos los candidatos fallaron.
     setEscaneando(false)
     addAlert(
       'danger',
-      'No se encontraron los archivos en "' + candidato + '" (ubicación por default). Corregí la Raíz de la colección y presioná "Verificar" antes de continuar.',
+      'No se encontraron los archivos de audio en ninguna ubicación conocida. Corregí la Raíz y presioná "Verificar" antes de continuar.',
     )
   }
 
