@@ -615,8 +615,11 @@ export function CargarMusica() {
     if (!coleccionesAnidadas) return
     const raizBase = rootColeccion.endsWith('/') ? rootColeccion : rootColeccion + '/'
     let totalColecciones = 0
-    for (const [rawNombre, lista] of coleccionesAnidadas) {
+    for (const rawNombre of coleccionesAnidadas.keys()) {
       if (!coleccionesSeleccionadas.has(rawNombre)) continue
+      // Usar archivosEscaneados (actualizado por analizarArchivosEscaneados)
+      // en vez de coleccionesAnidadas que tiene los datos crudos pre-análisis.
+      const lista = archivosEscaneados.filter(a => a.coleccion === rawNombre.toUpperCase())
       const rows: RowImportMusica[] = []
       let archivosConEjercicio = 0
       for (const a of lista) {
