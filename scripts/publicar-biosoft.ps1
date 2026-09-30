@@ -2,11 +2,16 @@
 # Build de UI-react y copia biosoft.html a Google Drive (H:) para distribucion.
 # Uso: .\scripts\publicar-biosoft.ps1  (desde la raiz del repo)
 
-$DESTINO           = "H:\Mi unidad\biosoft\biosoft.html"
-$DESTINO_INSTALLER = "H:\Mi unidad\biosoft\instala-biosoft.ps1"
+$DIR_DRIVE  = "H:\Mi unidad\biosoft"
+$DESTINO           = "$DIR_DRIVE\biosoft.html"
+$DESTINO_INSTALLER = "$DIR_DRIVE\instala-biosoft.ps1"
+$DESTINO_XLSX      = "$DIR_DRIVE\EquivalenciasDeNombres.xlsx"
+$DESTINO_WINAMP    = "$DIR_DRIVE\exportar-playlists-winamp.ps1"
 $UI_DIR  = Join-Path $PSScriptRoot "..\UI-react"
 $BUILD   = Join-Path $UI_DIR "dist\index.html"
+$XLSX_SRC      = Join-Path $UI_DIR "dist\EquivalenciasDeNombres.xlsx"
 $INSTALLER_SRC = Join-Path $PSScriptRoot "instala-biosoft.ps1"
+$WINAMP_SRC    = Join-Path $PSScriptRoot "exportar-playlists-winamp.ps1"
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -38,8 +43,23 @@ Copy-Item $BUILD $DESTINO -Force
 $tam = "{0:N0} KB" -f ((Get-Item $DESTINO).Length / 1KB)
 Write-Host "[OK] biosoft.html publicado ($tam)" -ForegroundColor Green
 
-# --- Copiar instalador con UTF-8 BOM para que PS 5.1 lo lea correctamente ---
+# --- Copiar scripts con UTF-8 BOM (PS 5.1 requiere BOM para leer UTF-8) ---
 Write-Host "Copiando instalador a $DESTINO_INSTALLER ..." -ForegroundColor Cyan
 Get-Content $INSTALLER_SRC -Raw | Out-File $DESTINO_INSTALLER -Encoding UTF8 -Force
 $tam2 = "{0:N0} KB" -f ((Get-Item $DESTINO_INSTALLER).Length / 1KB)
 Write-Host "[OK] instala-biosoft.ps1 publicado ($tam2)" -ForegroundColor Green
+
+Write-Host "Copiando exportar-playlists-winamp.ps1 a $DESTINO_WINAMP ..." -ForegroundColor Cyan
+Get-Content $WINAMP_SRC -Raw | Out-File $DESTINO_WINAMP -Encoding UTF8 -Force
+$tam3 = "{0:N0} KB" -f ((Get-Item $DESTINO_WINAMP).Length / 1KB)
+Write-Host "[OK] exportar-playlists-winamp.ps1 publicado ($tam3)" -ForegroundColor Green
+
+# --- Copiar EquivalenciasDeNombres.xlsx (binario, copia directa) ---
+if (Test-Path $XLSX_SRC) {
+    Write-Host "Copiando EquivalenciasDeNombres.xlsx a $DESTINO_XLSX ..." -ForegroundColor Cyan
+    Copy-Item $XLSX_SRC $DESTINO_XLSX -Force
+    $tam4 = "{0:N0} KB" -f ((Get-Item $DESTINO_XLSX).Length / 1KB)
+    Write-Host "[OK] EquivalenciasDeNombres.xlsx publicado ($tam4)" -ForegroundColor Green
+} else {
+    Write-Host "[!] No se encontro $XLSX_SRC -- saltando xlsx" -ForegroundColor Yellow
+}

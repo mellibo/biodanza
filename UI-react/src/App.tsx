@@ -117,7 +117,7 @@ function Layout() {
         <div className="container-fluid">
           <div className="navbar-header">
             <Link className="navbar-brand" to="/clases">
-              Biodanza
+              Biosoft
             </Link>
           </div>
           <div className="navbar-collapse collapse">

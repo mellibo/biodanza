@@ -193,14 +193,20 @@ export function Clases() {
   }, [init, initEtiquetas])
 
   const DIAS_BACKUP = 30
-  const [mostrarRecordatorioBackup, setMostrarRecordatorioBackup] = useState(() => {
+  const [recordatorioDescartado, setRecordatorioDescartado] = useState(false)
+  const mostrarRecordatorioBackup = useMemo(() => {
+    if (recordatorioDescartado || clases.length === 0) return false
+    const primerFecha = clases.reduce(
+      (min, c) => (c.fechaCreacion < min ? c.fechaCreacion : min),
+      clases[0].fechaCreacion,
+    )
+    if ((Date.now() - new Date(primerFecha).getTime()) / (1000 * 60 * 60 * 24) < DIAS_BACKUP) return false
     try {
       const raw = localStorage.getItem('ngStorage-biosoft_lastExport')
-      if (!raw) return true  // nunca exportó
-      const diasDesde = (Date.now() - Number(raw)) / (1000 * 60 * 60 * 24)
-      return diasDesde >= DIAS_BACKUP
+      if (!raw) return true
+      return (Date.now() - Number(raw)) / (1000 * 60 * 60 * 24) >= DIAS_BACKUP
     } catch { return false }
-  })
+  }, [clases, recordatorioDescartado])
 
   const navigate = useNavigate()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -461,7 +467,7 @@ export function Clases() {
       {mostrarRecordatorioBackup && (
         <div className="col-md-12">
           <div className="alert alert-warning alert-dismissible" style={{ marginBottom: '10px' }}>
-            <button type="button" className="close" onClick={() => setMostrarRecordatorioBackup(false)}>
+            <button type="button" className="close" onClick={() => setRecordatorioDescartado(true)}>
               <span>&times;</span>
             </button>
             <strong>Recordatorio de copia de seguridad:</strong>{' '}
@@ -470,7 +476,7 @@ export function Clases() {
             <button
               type="button"
               className="btn btn-warning btn-xs"
-              onClick={() => { exportarClases(); setMostrarRecordatorioBackup(false) }}
+              onClick={() => { exportarClases(); setRecordatorioDescartado(true) }}
             >
               <span className="glyphicon glyphicon-export" /> Exportar ahora
             </button>
