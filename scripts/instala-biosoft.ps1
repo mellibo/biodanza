@@ -164,21 +164,26 @@ if ($HTML_DRIVE_ID -like "REEMPLAZAR*") {
 
 # --- 4. Elegir carpeta de instalacion ----------------------------
 
-Write-Host "Donde instalar Biosoft?" -ForegroundColor White
+Write-Host "Que queres hacer?" -ForegroundColor White
 Write-Host ""
 
 $opciones = @()
 foreach ($letra in @('H','C','D','E')) {
     if (Test-Path "${letra}:\") {
         $tag = if ($letra -eq 'H') { "  <- Google Drive (recomendado)" } else { "" }
-        $opciones += [pscustomobject]@{ Ruta = "${letra}:\biosoft"; Tag = $tag }
+        $opciones += [pscustomobject]@{ Ruta = "${letra}:\biosoft"; Tag = $tag; SoloMusica = $false }
     }
 }
-$opciones += [pscustomobject]@{ Ruta = 'Ruta personalizada'; Tag = '' }
+$opciones += [pscustomobject]@{ Ruta = 'Ruta personalizada'; Tag = ''; SoloMusica = $false }
+$opciones += [pscustomobject]@{ Ruta = 'Ya esta instalado -- solo configurar la carpeta de musica'; Tag = ''; SoloMusica = $true }
 
-for ($i = 0; $i -lt $opciones.Count; $i++) {
+Write-Host "  --- Instalar / actualizar Biosoft en: ---" -ForegroundColor DarkCyan
+$iSoloMusica = $opciones.Count - 1
+for ($i = 0; $i -lt $iSoloMusica; $i++) {
     Write-Host ("  [{0}] {1}{2}" -f ($i+1), $opciones[$i].Ruta, $opciones[$i].Tag)
 }
+Write-Host ""
+Write-Host ("  [{0}] {1}" -f ($iSoloMusica+1), $opciones[$iSoloMusica].Ruta) -ForegroundColor Yellow
 Write-Host ""
 
 do {
@@ -186,17 +191,59 @@ do {
     $selNum = $sel -as [int]
 } while ($selNum -lt 1 -or $selNum -gt $opciones.Count)
 
-if ($opciones[$selNum - 1].Ruta -eq 'Ruta personalizada') {
+$soloMusica = $opciones[$selNum - 1].SoloMusica
+
+if ($soloMusica) {
+    Write-Host ""
+    Write-Host "Donde esta instalado Biosoft?" -ForegroundColor White
+    Write-Host "  (la carpeta que contiene biosoft.html)" -ForegroundColor Gray
+    Write-Host ""
+    # Detectar instalaciones existentes
+    $encontradas = @()
+    foreach ($letra in @('H','C','D','E')) {
+        if (Test-Path "${letra}:\biosoft\biosoft.html") { $encontradas += "${letra}:\biosoft" }
+    }
+    if ($encontradas.Count -gt 0) {
+        for ($i = 0; $i -lt $encontradas.Count; $i++) {
+            Write-Host ("  [{0}] {1}" -f ($i+1), $encontradas[$i])
+        }
+        Write-Host ("  [{0}] Otra ruta" -f ($encontradas.Count+1))
+        Write-Host ""
+        do {
+            $selInst = Read-Host "Elegi una opcion (1-$($encontradas.Count+1))"
+            $selInstNum = $selInst -as [int]
+        } while ($selInstNum -lt 1 -or $selInstNum -gt ($encontradas.Count+1))
+        if ($selInstNum -le $encontradas.Count) {
+            $destino = $encontradas[$selInstNum - 1]
+        } else {
+            $destino = (Read-Host "Ingresa la ruta completa").TrimEnd('\')
+        }
+    } else {
+        $destino = (Read-Host "Ingresa la ruta completa").TrimEnd('\')
+    }
+} elseif ($opciones[$selNum - 1].Ruta -eq 'Ruta personalizada') {
     $destino = (Read-Host "Ingresa la ruta completa").TrimEnd('\')
 } else {
     $destino = $opciones[$selNum - 1].Ruta
 }
 
 Write-Host ""
+$htmlDestino = "$destino\biosoft.html"
+
+if ($soloMusica) {
+    # Verificar que existe una instalacion valida
+    if (-not (Test-Path $htmlDestino)) {
+        Write-Host "  [ERROR] No se encontro biosoft.html en $destino" -ForegroundColor Red
+        Write-Host "  Verifica la ruta o instala Biosoft primero." -ForegroundColor Yellow
+        Read-Host "Presiona Enter para salir"
+        exit 1
+    }
+    Write-Host "  Instalacion encontrada en $destino" -ForegroundColor Green
+    Write-Host ""
+} else {
 
 # --- 5. Detectar reinstalacion -----------------------------------
 
-$htmlDestino = "$destino\biosoft.html"
 if (Test-Path $htmlDestino) {
     Write-Host "Ya existe una instalacion en $destino" -ForegroundColor Yellow
     $resp = Read-Host "Actualizar? (S/N)"
@@ -224,6 +271,8 @@ try {
     Read-Host "Presiona Enter para salir"
     exit 1
 }
+
+}   # fin bloque "instalar/actualizar" (no soloMusica)
 
 # --- 8. Configurar musica ----------------------------------------
 
@@ -418,8 +467,12 @@ try {
 
 Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
-Write-Host "  Instalacion completada." -ForegroundColor Green
-Write-Host "  Biosoft instalado en: $destino" -ForegroundColor White
+if ($soloMusica) {
+    Write-Host "  Configuracion de musica completada." -ForegroundColor Green
+} else {
+    Write-Host "  Instalacion completada." -ForegroundColor Green
+    Write-Host "  Biosoft instalado en: $destino" -ForegroundColor White
+}
 Write-Host "  $resumenMusica" -ForegroundColor White
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
