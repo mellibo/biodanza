@@ -82,7 +82,7 @@ function Get-ResumenMusica($carpeta) {
     $extensiones = @('.mp3','.flac','.ogg','.wav','.m4a','.wma','.aac')
     $resultado = @{}
     foreach ($sub in Get-ChildItem $carpeta -Directory -ErrorAction SilentlyContinue) {
-        $count = (Get-ChildItem $sub.FullName -Recurse -File -ErrorAction SilentlyContinue |
+        $count = @(Get-ChildItem $sub.FullName -Recurse -File -ErrorAction SilentlyContinue |
                   Where-Object { $extensiones -contains $_.Extension.ToLower() }).Count
         if ($count -gt 0) { $resultado[$sub.Name] = $count }
     }
