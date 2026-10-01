@@ -198,7 +198,7 @@ export const useDataStore = create<DataState>((set, get) => {
       if (!ejercicio) {
         ejercicio = get().addEjercicio({
           nombre: row.Ejercicio,
-          grupo: row.grupo ?? '',
+          grupo: row.grupo || 'OTROS',
           coleccion: nombreCol,
           detalle: '',
           musicasId: [],
