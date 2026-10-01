@@ -334,7 +334,7 @@ export function Musicas() {
                       title="Seleccionar todas (todas las páginas)"
                     />
                   </td>
-                  <td style={{ width: '70px' }}>
+                  <td style={{ width: '110px' }}>
                     Clave
                     <input
                       type="text"
@@ -372,7 +372,12 @@ export function Musicas() {
                     <td>
                       <input type="checkbox" checked={seleccionados.has(musica.id)} onChange={() => toggleSeleccionado(musica.id)} />
                     </td>
-                    <td>{musica.idMusica}</td>
+                    <td>
+                      {musica.coleccion !== SIN_COLECCION && (
+                        <span style={{ color: '#888', fontSize: '0.85em', display: 'block' }}>{musica.coleccion}</span>
+                      )}
+                      {musica.idMusica}
+                    </td>
                     <td className="col-md-4 col-lg-4">
                       <span>{musica.nombre}</span> ({musica.interprete})
                     </td>
