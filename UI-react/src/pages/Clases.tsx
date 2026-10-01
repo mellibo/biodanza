@@ -465,8 +465,8 @@ export function Clases() {
   return (
     <div className="row">
       {mostrarRecordatorioBackup && (
-        <div className="col-md-12">
-          <div className="alert alert-warning alert-dismissible" style={{ marginBottom: '10px' }}>
+        <div style={{ width: '100%', marginBottom: '10px' }}>
+          <div className="alert alert-warning alert-dismissible" style={{ marginBottom: 0 }}>
             <button type="button" className="close" onClick={() => setRecordatorioDescartado(true)}>
               <span>&times;</span>
             </button>
