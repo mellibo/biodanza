@@ -85,7 +85,10 @@ function useDragAndDropArchivos(onArchivos: (files: File[]) => void) {
 }
 
 function RootRedirect() {
+  const initialized = useDataStore((s) => s.initialized)
   const hayMusicas = useDataStore((s) => s.musicasOrder.length > 0)
+  useEffect(() => { useDataStore.getState().init() }, [])
+  if (!initialized) return null
   return <Navigate to={hayMusicas ? '/clases' : '/cargarMusica'} replace />
 }
 
