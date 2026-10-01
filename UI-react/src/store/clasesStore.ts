@@ -248,7 +248,14 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     // idempotente, así que no importa si la pantalla actual ya lo llamó o no
     // (Clases.tsx, por ejemplo, nunca inicializa dataStore por su cuenta).
     useDataStore.getState().init()
-    const stored = readLocalStorage<Clase[]>(STORAGE_KEY) ?? []
+    const raw = readLocalStorage<unknown[]>(STORAGE_KEY) ?? []
+    // Defensa ante datos corrompidos (ej. clases del AngularJS con estructura
+    // diferente donde ejercicios puede no ser un array): se descartan los
+    // elementos que no sean objetos con el campo ejercicios como array para
+    // evitar crashes en migrateLegacyMusicaIds y en el render de Clases.tsx.
+    const stored: Clase[] = Array.isArray(raw)
+      ? (raw.filter((c): c is Clase => !!c && typeof c === 'object' && Array.isArray((c as Clase).ejercicios)))
+      : []
     const { clases, changed } = migrateLegacyMusicaIds(stored)
     const carpetas = readLocalStorage<string[]>(CARPETAS_KEY) ?? []
     set({ clases, carpetas, initialized: true })
