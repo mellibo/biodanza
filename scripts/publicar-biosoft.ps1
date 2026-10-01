@@ -2,11 +2,14 @@
 # Build de UI-react y copia biosoft.html a Google Drive (H:) para distribucion.
 # Uso: .\scripts\publicar-biosoft.ps1  (desde la raiz del repo)
 
-$DIR_DRIVE  = "H:\Mi unidad\biosoft"
-$DESTINO           = "$DIR_DRIVE\biosoft.html"
-$DESTINO_INSTALLER = "$DIR_DRIVE\instala-biosoft.ps1"
-$DESTINO_XLSX      = "$DIR_DRIVE\EquivalenciasDeNombres.xlsx"
-$DESTINO_WINAMP    = "$DIR_DRIVE\exportar-playlists-winamp.ps1"
+$DIR_DRIVE           = "H:\Mi unidad\biosoft"
+$DIR_INSTALADOR      = "H:\Mi unidad\Instalador biosoft"
+$DESTINO             = "$DIR_DRIVE\biosoft.html"
+$DESTINO_INSTALLER   = "$DIR_DRIVE\instala-biosoft.ps1"
+$DESTINO_XLSX        = "$DIR_DRIVE\EquivalenciasDeNombres.xlsx"
+$DESTINO_WINAMP      = "$DIR_DRIVE\exportar-playlists-winamp.ps1"
+$DESTINO_INSTALLER2  = "$DIR_INSTALADOR\instala-biosoft.ps1"
+$DESTINO_WINAMP2     = "$DIR_INSTALADOR\exportar-playlists-winamp.ps1"
 $UI_DIR  = Join-Path $PSScriptRoot "..\UI-react"
 $BUILD   = Join-Path $UI_DIR "dist\index.html"
 $XLSX_SRC      = Join-Path $UI_DIR "dist\EquivalenciasDeNombres.xlsx"
@@ -63,3 +66,15 @@ if (Test-Path $XLSX_SRC) {
 } else {
     Write-Host "[!] No se encontro $XLSX_SRC -- saltando xlsx" -ForegroundColor Yellow
 }
+
+# --- Copiar instaladores a "Instalador biosoft" ---
+if (-not (Test-Path $DIR_INSTALADOR)) {
+    New-Item -ItemType Directory -Path $DIR_INSTALADOR -Force | Out-Null
+}
+Write-Host "Copiando instalador a $DESTINO_INSTALLER2 ..." -ForegroundColor Cyan
+Get-Content $INSTALLER_SRC -Raw | Out-File $DESTINO_INSTALLER2 -Encoding UTF8 -Force
+Write-Host "[OK] instala-biosoft.ps1 copiado a Instalador biosoft" -ForegroundColor Green
+
+Write-Host "Copiando exportar-playlists-winamp.ps1 a $DESTINO_WINAMP2 ..." -ForegroundColor Cyan
+Get-Content $WINAMP_SRC -Raw | Out-File $DESTINO_WINAMP2 -Encoding UTF8 -Force
+Write-Host "[OK] exportar-playlists-winamp.ps1 copiado a Instalador biosoft" -ForegroundColor Green
