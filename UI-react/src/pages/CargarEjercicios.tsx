@@ -8,7 +8,7 @@ import { ORIGENES_EJERCICIO, type EjercicioBase, type OrigenEjercicio } from '..
 
 const PAGE_SIZE = 10
 
-interface SampleRow extends Pick<EjercicioBase, 'nombre' | 'grupo' | 'coleccion' | 'detalle' | 'origen'> {
+interface SampleRow extends Pick<EjercicioBase, 'nombre' | 'grupo' | 'detalle' | 'origen'> {
   estado: string
 }
 
@@ -58,7 +58,7 @@ export function CargarEjercicios() {
       const props = Object.keys(rawRows[0])
       if (props.indexOf('Ejercicio') === -1) colsError += 'No se encontro la columna Ejercicio.'
       if (props.indexOf('Grupo') === -1) colsError += 'No se encontro la columna Grupo.'
-      if (props.indexOf('Coleccion') === -1) colsError += 'No se encontro la columna Coleccion.'
+
       if (props.indexOf('Detalle') === -1) colsError += 'No se encontro la columna Detalle.'
     }
     if (colsError.length > 1) addAlert('danger', 'Error:' + colsError)
@@ -69,14 +69,13 @@ export function CargarEjercicios() {
 
     for (const raw of rawRows) {
       const grupo = raw.Grupo || 'Otros'
-      const coleccion = raw.Coleccion || ''
       const nombre = raw.Ejercicio || ''
       const detalle = (raw.Detalle || '').replace(/\r\n/g, '<br/>')
       const origen = origenesValidos.has(raw.Origen as OrigenEjercicio) ? (raw.Origen as OrigenEjercicio) : origenPorDefecto
 
       if (nombre === '') {
         totalesLocal.error++
-        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'error: falta nombre ejercicio.' })
+        rows.push({ nombre, grupo, detalle, origen, estado: 'error: falta nombre ejercicio.' })
         continue
       }
       nombresLeidos.add(nombre)
@@ -86,7 +85,6 @@ export function CargarEjercicios() {
         rows.push({
           nombre,
           grupo,
-          coleccion,
           detalle,
           origen,
           estado: 'Nuevo.' + (detalle === '' ? 'Sin detalle.' : ''),
@@ -95,26 +93,21 @@ export function CargarEjercicios() {
       }
       if (grupo !== dbEj.grupo) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Grupo.' })
+        rows.push({ nombre, grupo, detalle, origen, estado: 'Cambio de Grupo.' })
         continue
       }
       if (detalle !== dbEj.detalle) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Detalle.' })
-        continue
-      }
-      if (coleccion !== dbEj.coleccion) {
-        totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Colección.' })
+        rows.push({ nombre, grupo, detalle, origen, estado: 'Cambio de Detalle.' })
         continue
       }
       if (origen !== (dbEj.origen ?? 'cimeb2012')) {
         totalesLocal.modificados++
-        rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Cambio de Origen.' })
+        rows.push({ nombre, grupo, detalle, origen, estado: 'Cambio de Origen.' })
         continue
       }
       totalesLocal.sinCambios++
-      rows.push({ nombre, grupo, coleccion, detalle, origen, estado: 'Igual.' })
+      rows.push({ nombre, grupo, detalle, origen, estado: 'Igual.' })
     }
 
     // El universo de "puede aparecer como Eliminado" son los ejercicios YA
@@ -129,7 +122,6 @@ export function CargarEjercicios() {
       rows.push({
         nombre: ejercicio.nombre,
         grupo: ejercicio.grupo,
-        coleccion: ejercicio.coleccion,
         detalle: ejercicio.detalle,
         origen: ejercicio.origen ?? 'cimeb2012',
         estado: 'Eliminado',
@@ -159,10 +151,10 @@ export function CargarEjercicios() {
     for (const row of sampleRows) {
       const dbEj = getEjercicioByNombre(row.nombre)
       if (nuevos && row.estado.substring(0, 5) === 'Nuevo') {
-        addEjercicio({ nombre: row.nombre, grupo: row.grupo, coleccion: row.coleccion, origen: row.origen, detalle: row.detalle, musicasId: [], etiquetas: [] })
+        addEjercicio({ nombre: row.nombre, grupo: row.grupo, origen: row.origen, detalle: row.detalle, musicasId: [], etiquetas: [] })
       }
       if (modificados && row.estado.substring(0, 6) === 'Cambio' && dbEj) {
-        updateEjercicio(dbEj.id, { grupo: row.grupo, detalle: row.detalle, coleccion: row.coleccion, origen: row.origen })
+        updateEjercicio(dbEj.id, { grupo: row.grupo, detalle: row.detalle, origen: row.origen })
       }
       if (eliminados && row.estado.substring(0, 9) === 'Eliminado' && dbEj) {
         removeEjercicio(dbEj.id)
@@ -174,14 +166,13 @@ export function CargarEjercicios() {
 
   function exportExcel() {
     const wb = XLSX.utils.book_new()
-    const aoa: string[][] = [['Coleccion', 'Ejercicio', 'Grupo', 'Detalle', 'Origen']]
+    const aoa: string[][] = [['Ejercicio', 'Grupo', 'Detalle', 'Origen']]
     for (const id of ejerciciosOrder) {
       const ejercicio = ejerciciosById[id]
       if (!ejercicio) continue
       const origen = ejercicio.origen ?? 'cimeb2012'
       if (origenExport !== 'todos' && origen !== origenExport) continue
       aoa.push([
-        ejercicio.coleccion,
         ejercicio.nombre,
         ejercicio.grupo,
         (ejercicio.detalle || '').replace(/<br\/>/g, '\r\n'),
@@ -294,7 +285,6 @@ export function CargarEjercicios() {
             <table id="tblImport" className="table table-striped table-hover" style={{ marginBottom: 0 }}>
               <thead>
                 <tr>
-                  <td>Coleccion</td>
                   <td>Ejercicio</td>
                   <td>Grupo</td>
                   <td>Estado</td>
@@ -303,7 +293,6 @@ export function CargarEjercicios() {
               <tbody>
                 {paginaActual.map((row, i) => (
                   <tr key={i}>
-                    <td>{row.coleccion}</td>
                     <td>{row.nombre}</td>
                     <td>{row.grupo}</td>
                     <td style={{ color: 'white', backgroundColor: row.estado === 'ok' ? '#04f95a' : 'orange' }}>

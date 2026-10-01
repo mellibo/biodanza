@@ -15,7 +15,6 @@ export const ORIGENES_EJERCICIO: Array<{ valor: OrigenEjercicio; etiqueta: strin
 export interface EjercicioBase {
   nombre: string
   grupo: string
-  coleccion: string
   // Ausente en ejercicios guardados antes de existir el campo -- se lee
   // como 'otro' (ver buildEjercicio en dataStore.ts).
   origen?: OrigenEjercicio
@@ -216,7 +215,6 @@ export interface DatosEjercicioEditable {
   nombre: string
   grupo: string
   origen: OrigenEjercicio
-  coleccion: string
   detalle: string
   etiquetas: string[]
   musicasId: string[]

@@ -146,7 +146,7 @@ export function Ejercicios() {
                     <tr key={ejercicio.id}>
                       <td>
                         <a onClick={() => setSeleccionadoId(ejercicio.id)}>
-                          ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo}){' '}
+                          {ejercicio.nombre} ({ejercicio.grupo}){' '}
                           <span className="label label-default">{ORIGENES_EJERCICIO.find((o) => o.valor === (ejercicio.origen ?? 'cimeb2012'))?.etiqueta}</span>
                         </a>
                       </td>

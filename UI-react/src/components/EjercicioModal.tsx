@@ -29,7 +29,6 @@ export function EjercicioModal({ ejercicio, onClose }: EjercicioModalProps) {
   const [nombre, setNombre] = useState(ejercicio?.nombre ?? '')
   const [grupo, setGrupo] = useState(ejercicio?.grupo ?? '')
   const [origen, setOrigen] = useState<OrigenEjercicio>(ejercicio?.origen ?? 'otro')
-  const [coleccion, setColeccion] = useState(ejercicio?.coleccion ?? '')
   const [detalle, setDetalle] = useState(aTexto(ejercicio?.detalle ?? ''))
   const [etiquetas, setEtiquetas] = useState<string[]>(ejercicio?.etiquetas ?? [])
   const [musicasId, setMusicasId] = useState<string[]>(ejercicio?.musicasId ?? [])
@@ -41,7 +40,6 @@ export function EjercicioModal({ ejercicio, onClose }: EjercicioModalProps) {
       nombre,
       grupo,
       origen,
-      coleccion,
       detalle: aHtml(detalle),
       etiquetas,
       musicasId,
@@ -101,12 +99,6 @@ export function EjercicioModal({ ejercicio, onClose }: EjercicioModalProps) {
                       </option>
                     ))}
                   </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="col-sm-2 control-label">Colección</label>
-                <div className="col-sm-4">
-                  <input type="text" className="form-control" value={coleccion} onChange={(e) => setColeccion(e.target.value)} />
                 </div>
               </div>
               <div className="form-group">

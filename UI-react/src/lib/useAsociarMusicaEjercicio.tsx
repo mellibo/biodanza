@@ -26,7 +26,6 @@ function asociar(ejercicio: Ejercicio, musica: Musica) {
     nombre: ejercicio.nombre,
     grupo: ejercicio.grupo,
     origen: ejercicio.origen ?? 'cimeb2012',
-    coleccion: ejercicio.coleccion,
     detalle: ejercicio.detalle,
     etiquetas: ejercicio.etiquetas,
     musicasId: [...ejercicio.musicasId, musica.id],

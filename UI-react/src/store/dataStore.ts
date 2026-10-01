@@ -114,7 +114,7 @@ interface DataState {
   getCarpetaColeccion: (coleccionNombre: string) => string | undefined
 
   addEjercicio: (base: EjercicioBase) => Ejercicio
-  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'coleccion' | 'etiquetas' | 'origen'>>) => void
+  updateEjercicio: (id: string, patch: Partial<Pick<EjercicioBase, 'grupo' | 'detalle' | 'etiquetas' | 'origen'>>) => void
   removeEjercicio: (id: string) => void
   saveEjerciciosSnapshot: () => void
   updateMusica: (id: string, patch: Partial<Pick<MusicaBase, 'etiquetas'>>) => void
@@ -199,7 +199,6 @@ export const useDataStore = create<DataState>((set, get) => {
         ejercicio = get().addEjercicio({
           nombre: row.Ejercicio,
           grupo: row.grupo || 'OTROS',
-          coleccion: nombreCol,
           detalle: '',
           musicasId: [],
           etiquetas: [],
@@ -753,7 +752,6 @@ export const useDataStore = create<DataState>((set, get) => {
     const ejercicio = buildEjercicio({
       nombre,
       grupo,
-      coleccion: datos.coleccion,
       origen: datos.origen,
       detalle: datos.detalle,
       etiquetas: datos.etiquetas,

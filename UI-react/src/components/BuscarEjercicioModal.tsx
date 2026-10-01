@@ -89,7 +89,7 @@ export function BuscarEjercicioModal({ onSelect, onClose }: BuscarEjercicioModal
                     <tr key={ejercicio.id}>
                       <td>
                         <a onClick={() => onSelect(ejercicio)}>
-                          ({ejercicio.coleccion}) {ejercicio.nombre} ({ejercicio.grupo})
+                          {ejercicio.nombre} ({ejercicio.grupo})
                         </a>
                         <div>
                           <button type="button" className="btn btn-success btn-xs" onClick={() => onSelect(ejercicio)}>
