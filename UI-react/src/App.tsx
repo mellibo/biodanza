@@ -15,7 +15,6 @@ const navLabels: Record<string, string> = {
   '/cargarMusica': 'Cargar Colección Música',
   '/cargarEjercicios': 'Cargar Ejercicios',
   '/etiquetas': 'Etiquetas',
-  '/acercade': 'Acerca De...',
 }
 
 function NavItem({ path, label }: { path: string; label: string }) {
@@ -130,6 +129,7 @@ function Layout() {
                   <span className="glyphicon glyphicon-music" /> Agregar Músicas
                 </a>
               </li>
+              <NavItem path="/acercade" label="Acerca De..." />
             </ul>
             <ul className="nav navbar-nav navbar-right">
               <li>
