@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, Component, type ReactNode, type ErrorInfo } from 'react'
 import { HashRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom'
 import { useDataStore } from './store/dataStore'
 import { routes } from './routes'
@@ -7,6 +7,27 @@ import { PlayerControls } from './components/PlayerControls'
 import { AgregarMusicaModal } from './components/AgregarMusicaModal'
 import { getTemaOscuro, setTemaOscuro } from './lib/tema'
 import { dropYaManejado } from './lib/dropExterno'
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  constructor(props: { children: ReactNode }) {
+    super(props)
+    this.state = { error: null }
+  }
+  static getDerivedStateFromError(error: Error) { return { error } }
+  componentDidCatch(error: Error, info: ErrorInfo) { console.error('ErrorBoundary caught:', error, info) }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{ padding: '20px', color: 'red', fontFamily: 'monospace', whiteSpace: 'pre-wrap', fontSize: '13px' }}>
+          <strong>Error al cargar la vista:</strong>{'\n\n'}
+          {this.state.error.message}{'\n\n'}
+          {this.state.error.stack}
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 const navLabels: Record<string, string> = {
   '/clases': 'Clases',
@@ -168,12 +189,14 @@ function Layout() {
             hacia la izquierda y cortando el borde contra el viewport
             (mucho más visible ahora que el layout usa todo el ancho). */}
         <div style={{ paddingTop: '6px' }}>
+          <ErrorBoundary>
           <Routes>
             <Route path="/" element={<RootRedirect />} />
             {routes.map((r) => (
               <Route key={r.path} path={r.path} element={r.element} />
             ))}
           </Routes>
+          </ErrorBoundary>
         </div>
       </div>
       {arrastrando && (
