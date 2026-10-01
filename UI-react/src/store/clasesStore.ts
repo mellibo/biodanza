@@ -254,7 +254,14 @@ export const useClasesStore = create<ClasesState>((set, get) => ({
     // elementos que no sean objetos con el campo ejercicios como array para
     // evitar crashes en migrateLegacyMusicaIds y en el render de Clases.tsx.
     const stored: Clase[] = Array.isArray(raw)
-      ? (raw.filter((c): c is Clase => !!c && typeof c === 'object' && Array.isArray((c as Clase).ejercicios)))
+      ? (raw
+          .filter((c): c is Record<string, unknown> => !!c && typeof c === 'object' && Array.isArray((c as Record<string, unknown>).ejercicios))
+          .map((c): Clase => ({
+            ...(c as unknown as Clase),
+            // AngularJS podía guardar etiquetas como string en vez de array
+            etiquetas: Array.isArray(c.etiquetas) ? (c.etiquetas as string[]) : [],
+            carpeta: typeof c.carpeta === 'string' ? c.carpeta : '',
+          })))
       : []
     const { clases, changed } = migrateLegacyMusicaIds(stored)
     const carpetas = readLocalStorage<string[]>(CARPETAS_KEY) ?? []

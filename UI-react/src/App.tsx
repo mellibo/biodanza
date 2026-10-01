@@ -227,9 +227,11 @@ function Layout() {
 
 function App() {
   return (
-    <HashRouter>
-      <Layout />
-    </HashRouter>
+    <ErrorBoundary>
+      <HashRouter>
+        <Layout />
+      </HashRouter>
+    </ErrorBoundary>
   )
 }
 
