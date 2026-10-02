@@ -129,12 +129,14 @@ hr.divider { max-width:860px; margin:48px auto 0; border:none; border-top:1px so
       <span class="step-tag">Inicio</span>
       <h2>Abrir el instalador</h2>
     </div>
-    <p>La carpeta de instalación contiene dos archivos. El instalador es el <code>.bat</code>:</p>
+    <p>Descargá los dos archivos del instalador desde este enlace de Google Drive:</p>
+    <p><a href="https://drive.google.com/drive/folders/141-np89GPxy7VNLt8w4zgBE0MRGw1v-9" target="_blank" style="color:var(--blue); font-weight:600;">📁 Carpeta de instalación en Google Drive →</a></p>
     <ul>
       <li><strong>Instalar Biosoft.bat</strong> — hacé doble clic acá para empezar</li>
-      <li><code>instala-biosoft.ps1</code> — el script PowerShell que usa el <code>.bat</code> (no hace falta abrirlo)</li>
+      <li><code>instala-biosoft.ps1</code> — el script PowerShell que usa el <code>.bat</code> (no hace falta abrirlo directamente)</li>
     </ul>
-    <p>Windows puede mostrar una advertencia de seguridad al ejecutar el <code>.bat</code>. Hacé clic en <strong>"Más información" → "Ejecutar de todas formas"</strong>.</p>
+    <p>Guardá los dos archivos en la misma carpeta y ejecutá el <code>.bat</code>.</p>
+    <p><strong>Alerta de seguridad de Windows (SmartScreen):</strong> al ejecutar el <code>.bat</code> por primera vez, Windows puede mostrar una pantalla azul que dice "Windows protegió su PC". Esto es normal para cualquier archivo descargado de internet. Hacé clic en <strong>"Más información"</strong> y luego en <strong>"Ejecutar de todas formas"</strong>.</p>
     <p>Se abre una ventana negra de PowerShell con el título <strong>INSTALADOR BIOSOFT</strong>. Todo el proceso se hace desde ahí, respondiendo preguntas con el teclado.</p>
     <div class="tip"><strong>Necesitás conexión a internet</strong> para descargar Biosoft y (opcionalmente) las colecciones de música.</div>
   </section>
@@ -149,35 +151,24 @@ hr.divider { max-width:860px; margin:48px auto 0; border:none; border-top:1px so
       <h2>Elegir dónde instalar</h2>
     </div>
     <p>El instalador pregunta dónde crear la carpeta de Biosoft. Las opciones que aparecen dependen de los discos conectados a tu PC:</p>
-
-    <div class="screen">
-<span class="c">=========================================</span>
-<span class="c">         INSTALADOR BIOSOFT</span>
-<span class="c">=========================================</span>
-
-<span class="w">Que queres hacer?</span>
-
-  <span class="d">--- Instalar / actualizar Biosoft en: ---</span>
-  [1] H:\biosoft   <span class="g">&lt;- Google Drive (recomendado)</span>
-  [2] C:\biosoft
-  [3] D:\biosoft
-  [4] Ruta personalizada
-
-  [5] Ya esta instalado -- solo configurar la carpeta de musica
-
-<span class="w">Elegi una opcion (1-5):</span>
-    </div>
+    <ul>
+      <li><strong>[1] H:\biosoft</strong> — Google Drive (solo aparece si tenés Google Drive instalado)</li>
+      <li><strong>[2] C:\biosoft</strong> — disco local, recomendado para la mayoría de los casos</li>
+      <li><strong>[3] D:\biosoft</strong> — otro disco interno o externo</li>
+      <li><strong>[4] Ruta personalizada</strong> — escribís vos la carpeta donde instalar</li>
+      <li><strong>[5] Ya está instalado — solo configurar la carpeta de música</strong> — para agregar o cambiar música sin reinstalar</li>
+    </ul>
 
     <div class="opts" style="margin-top:16px;">
       <div class="opt">
-        <div class="opt-num">H:</div>
-        <h3>Google Drive <span style="color:var(--green)">★ recomendado</span></h3>
-        <p>La app queda en la nube y se sincroniza entre tus dispositivos automáticamente. Requiere tener Google Drive instalado en la PC.</p>
+        <div class="opt-num">C:</div>
+        <h3>Disco local (C:) <span style="color:var(--green)">★ recomendado</span></h3>
+        <p>Se instala en <code>C:\biosoft</code>. No requiere ninguna app extra. Es la opción más simple para la mayoría.</p>
       </div>
       <div class="opt">
-        <div class="opt-num">C:</div>
-        <h3>Disco local (C:)</h3>
-        <p>Se instala en <code>C:\biosoft</code>. No requiere Google Drive. Hacé backup manual del archivo <code>biosoft.html</code>.</p>
+        <div class="opt-num">H:</div>
+        <h3>Google Drive</h3>
+        <p>La app queda en la nube y se sincroniza entre tus dispositivos automáticamente. Solo si ya usás Google Drive en esta PC.</p>
       </div>
       <div class="opt">
         <div class="opt-num">✎</div>
@@ -185,7 +176,6 @@ hr.divider { max-width:860px; margin:48px auto 0; border:none; border-top:1px so
         <p>Escribís la ruta completa donde querés instalar, por ejemplo <code>D:\mis-cosas\biosoft</code>.</p>
       </div>
     </div>
-    <div class="tip"><strong>Tip:</strong> Si ya usás Google Drive en esta PC, instalá en <code>H:\biosoft</code> (o la letra que corresponda). Tu clase del lunes estará disponible en la notebook del jueves sin hacer nada extra.</div>
   </section>
 
   <hr class="divider">
