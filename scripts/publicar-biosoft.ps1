@@ -10,6 +10,8 @@ $DESTINO_XLSX        = "$DIR_DRIVE\EquivalenciasDeNombres.xlsx"
 $DESTINO_WINAMP      = "$DIR_DRIVE\exportar-playlists-winamp.ps1"
 $DESTINO_INSTALLER2  = "$DIR_INSTALADOR\instala-biosoft.ps1"
 $DESTINO_WINAMP2     = "$DIR_INSTALADOR\exportar-playlists-winamp.ps1"
+$DESTINO_TUTORIAL    = "$DIR_DRIVE\tutorial.html"
+$DESTINO_TUTORIAL2   = "$DIR_INSTALADOR\tutorial.html"
 $UI_DIR  = Join-Path $PSScriptRoot "..\UI-react"
 $BUILD   = Join-Path $UI_DIR "dist\index.html"
 $XLSX_SRC      = Join-Path $UI_DIR "dist\EquivalenciasDeNombres.xlsx"
@@ -78,3 +80,18 @@ Write-Host "[OK] instala-biosoft.ps1 copiado a Instalador biosoft" -ForegroundCo
 Write-Host "Copiando exportar-playlists-winamp.ps1 a $DESTINO_WINAMP2 ..." -ForegroundColor Cyan
 Get-Content $WINAMP_SRC -Raw | Out-File $DESTINO_WINAMP2 -Encoding UTF8 -Force
 Write-Host "[OK] exportar-playlists-winamp.ps1 copiado a Instalador biosoft" -ForegroundColor Green
+
+# --- Copiar tutorial ---
+$TUTORIAL_SRC = Join-Path $UI_DIR "tutorial.html"
+if (Test-Path $TUTORIAL_SRC) {
+    Write-Host "Copiando tutorial.html a $DESTINO_TUTORIAL ..." -ForegroundColor Cyan
+    Copy-Item $TUTORIAL_SRC $DESTINO_TUTORIAL -Force
+    $tamT = "{0:N0} KB" -f ((Get-Item $DESTINO_TUTORIAL).Length / 1KB)
+    Write-Host "[OK] tutorial.html publicado ($tamT)" -ForegroundColor Green
+
+    Write-Host "Copiando tutorial.html a $DESTINO_TUTORIAL2 ..." -ForegroundColor Cyan
+    Copy-Item $TUTORIAL_SRC $DESTINO_TUTORIAL2 -Force
+    Write-Host "[OK] tutorial.html copiado a Instalador biosoft" -ForegroundColor Green
+} else {
+    Write-Host "[!] No se encontro $TUTORIAL_SRC -- saltando tutorial" -ForegroundColor Yellow
+}
