@@ -29,6 +29,7 @@ export function Ejercicios() {
   const [buscar, setBuscar] = useState('')
   const [grupo, setGrupo] = useState('TODOS')
   const [origen, setOrigen] = useState<'todos' | OrigenEjercicio>('todos')
+  const [etiquetaFilter, setEtiquetaFilter] = useState('')
   const [colapsado, setColapsado] = useState(false)
   const [page, setPage] = useState(1)
   const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
@@ -41,13 +42,13 @@ export function Ejercicios() {
 
   const resultados = useMemo(
     () =>
-      buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo).filter(
-        (e) => origen === 'todos' || (e.origen ?? 'cimeb2012') === origen,
-      ),
-    [ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo, origen],
+      buscarEjercicios(ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo)
+        .filter((e) => origen === 'todos' || (e.origen ?? 'cimeb2012') === origen)
+        .filter((e) => !etiquetaFilter || (e.etiquetas ?? []).some((et) => et.toUpperCase().includes(etiquetaFilter.toUpperCase()))),
+    [ejerciciosOrder, ejerciciosById, getMusicasForEjercicio, buscar, grupo, origen, etiquetaFilter],
   )
 
-  useEffect(() => setPage(1), [buscar, grupo, origen])
+  useEffect(() => setPage(1), [buscar, grupo, origen, etiquetaFilter])
 
   const paginaActual = resultados.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -107,6 +108,17 @@ export function Ejercicios() {
                     </option>
                   ))}
                 </select>{' '}
+                <label className="control-label" htmlFor="inputEtiquetaFiltro">
+                  Etiqueta:{' '}
+                </label>
+                <input
+                  id="inputEtiquetaFiltro"
+                  type="text"
+                  className="form-control"
+                  placeholder="Filtrar por etiqueta…"
+                  value={etiquetaFilter}
+                  onChange={(e) => setEtiquetaFilter(e.target.value)}
+                />{' '}
                 <button type="button" className="btn btn-primary" onClick={() => setCreando(true)}>
                   <span className="glyphicon glyphicon-plus" /> Nuevo ejercicio
                 </button>{' '}

@@ -354,10 +354,10 @@ export function Clase() {
                   className={esSeleccionado(ej) ? 'selected' : ''}
                   style={{
                     ...(ej.deshabilitado ? { backgroundColor: '#b3b7bc' } : undefined),
-                    ...(dragOverNro === ej.nro && dragNro !== null && dragNro !== ej.nro ? { boxShadow: 'inset 0 3px 0 0 #2a6496' } : undefined),
+                    ...(dragOverNro === ej.nro && dragNro !== ej.nro ? { boxShadow: 'inset 0 3px 0 0 #2a6496' } : undefined),
                   }}
                   onDragOver={(e) => {
-                    if (dragNro === null) return
+                    if (dragNro === null && !e.dataTransfer.types.includes('Files')) return
                     e.preventDefault()
                     if (dragOverNro !== ej.nro) setDragOverNro(ej.nro)
                   }}
@@ -366,9 +366,10 @@ export function Clase() {
                   }}
                   onDrop={(e) => {
                     e.preventDefault()
+                    setDragOverNro(null)
+                    if (manejarDropExterno(e, ej.nro)) { setDragNro(null); return }
                     if (dragNro !== null && dragNro !== ej.nro) moverEjercicio(claseIndex, dragNro, ej.nro)
                     setDragNro(null)
-                    setDragOverNro(null)
                   }}
                 >
                   <td className="col-md-1 form-inline" onClick={(e) => e.stopPropagation()}>
