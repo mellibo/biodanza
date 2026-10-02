@@ -12,6 +12,7 @@ $DESTINO_INSTALLER2  = "$DIR_INSTALADOR\instala-biosoft.ps1"
 $DESTINO_WINAMP2     = "$DIR_INSTALADOR\exportar-playlists-winamp.ps1"
 $DESTINO_TUTORIAL    = "$DIR_DRIVE\tutorial.html"
 $DESTINO_TUTORIAL2   = "$DIR_INSTALADOR\tutorial.html"
+$DESTINO_TUTORIAL_INST = "$DIR_INSTALADOR\tutorial-instalacion.html"
 $UI_DIR  = Join-Path $PSScriptRoot "..\UI-react"
 $BUILD   = Join-Path $UI_DIR "dist\index.html"
 $XLSX_SRC      = Join-Path $UI_DIR "dist\EquivalenciasDeNombres.xlsx"
@@ -94,4 +95,14 @@ if (Test-Path $TUTORIAL_SRC) {
     Write-Host "[OK] tutorial.html copiado a Instalador biosoft" -ForegroundColor Green
 } else {
     Write-Host "[!] No se encontro $TUTORIAL_SRC -- saltando tutorial" -ForegroundColor Yellow
+}
+
+# --- Copiar tutorial de instalacion (solo a carpeta Instalador) ---
+$TUTORIAL_INST_SRC = Join-Path $UI_DIR "tutorial-instalacion.html"
+if (Test-Path $TUTORIAL_INST_SRC) {
+    Write-Host "Copiando tutorial-instalacion.html a $DESTINO_TUTORIAL_INST ..." -ForegroundColor Cyan
+    Copy-Item $TUTORIAL_INST_SRC $DESTINO_TUTORIAL_INST -Force
+    Write-Host "[OK] tutorial-instalacion.html copiado a Instalador biosoft" -ForegroundColor Green
+} else {
+    Write-Host "[!] No se encontro $TUTORIAL_INST_SRC -- saltando tutorial instalacion" -ForegroundColor Yellow
 }

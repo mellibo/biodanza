@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<title>Instalar Biosoft en Windows</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --blue: #2FA4E7;
+  --green: #3aaa5c;
+  --yellow: #f0a500;
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --border: #dde3ed;
+  --text: #1e2b3c;
+  --muted: #5d6f85;
+  --pill-bg: #e8f4fd;
+  --code-bg: #1e2b3c;
+  --code-text: #e8edf3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111820; --card: #1a2332; --border: #2a3a4f;
+    --text: #e8edf3; --muted: #8899aa; --pill-bg: #1a3a55;
+    --code-bg: #0d1520; --code-text: #c8d8e8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111820; --card: #1a2332; --border: #2a3a4f;
+  --text: #e8edf3; --muted: #8899aa; --pill-bg: #1a3a55;
+  --code-bg: #0d1520; --code-text: #c8d8e8;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; padding: 0 16px; }
+
+/* HEADER */
+.site-header {
+  background: linear-gradient(135deg, #2FA4E7 0%, #1a6fa0 100%);
+  color: #fff; padding: 48px 32px 40px; margin: 0 -16px;
+  position: relative; overflow: hidden;
+}
+.site-header::before { content:''; position:absolute; right:-60px; top:-60px; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,.07); }
+.header-inner { max-width: 860px; margin: 0 auto; position: relative; }
+.app-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.3); border-radius:6px; padding:4px 12px; font-size:13px; font-weight:600; letter-spacing:.04em; margin-bottom:18px; }
+.site-header h1 { font-size:clamp(26px,5vw,42px); font-weight:800; line-height:1.1; margin-bottom:12px; }
+.site-header p { font-size:16px; opacity:.88; max-width:520px; }
+
+/* TOC */
+.toc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 24px; max-width:860px; margin:28px auto 0; }
+.toc-label { font-size:11px; font-weight:700; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
+.toc ol { padding-left:18px; }
+.toc li { margin:4px 0; }
+.toc a { color:var(--blue); text-decoration:none; font-size:14px; }
+.toc a:hover { text-decoration:underline; }
+
+/* STEPS */
+.steps { max-width:860px; margin:0 auto; padding:8px 0 56px; }
+.step { margin-top:48px; }
+.step-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.step-num { width:34px; height:34px; border-radius:50%; background:var(--blue); color:#fff; font-weight:800; font-size:15px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.step-tag { font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--blue); background:var(--pill-bg); border-radius:4px; padding:3px 8px; }
+.step h2 { font-size:clamp(19px,3vw,24px); font-weight:700; line-height:1.2; }
+.step p { font-size:15px; color:var(--text); margin-bottom:10px; }
+.step ul, .step ol { padding-left:22px; font-size:14px; color:var(--muted); }
+.step li { margin:6px 0; }
+.step li strong { color:var(--text); }
+
+/* Opción grid */
+.opts { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:14px; margin-top:14px; }
+.opt { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+.opt-num { display:inline-block; width:22px; height:22px; background:var(--blue); color:#fff; border-radius:50%; font-size:12px; font-weight:700; text-align:center; line-height:22px; margin-bottom:6px; }
+.opt h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
+.opt p { font-size:13px; color:var(--muted); margin:0; }
+
+/* Boxes */
+.tip { background:var(--pill-bg); border-left:3px solid var(--blue); border-radius:0 6px 6px 0; padding:10px 14px; font-size:13px; color:var(--muted); margin-top:12px; }
+.tip strong { color:var(--blue); }
+.warn { background:#fff8e6; border-left:3px solid var(--yellow); border-radius:0 6px 6px 0; padding:10px 14px; font-size:13px; color:#7a5a00; margin-top:12px; }
+.warn strong { color:var(--yellow); }
+.ok { background:#edfaf3; border-left:3px solid var(--green); border-radius:0 6px 6px 0; padding:10px 14px; font-size:13px; color:#1a5c38; margin-top:12px; }
+.ok strong { color:var(--green); }
+[data-theme="dark"] .warn { background:#2a2000; color:#c8a840; }
+[data-theme="dark"] .warn strong { color:#f0b520; }
+[data-theme="dark"] .ok { background:#0d2a1a; color:#5dcc8a; }
+[data-theme="dark"] .ok strong { color:#3aaa5c; }
+
+/* Inline code */
+code { background:var(--code-bg); color:var(--code-text); border-radius:4px; padding:1px 5px; font-size:13px; font-family:'Cascadia Code','Consolas',monospace; }
+
+/* Screen mockup */
+.screen { background:var(--code-bg); color:var(--code-text); border-radius:8px; padding:16px 20px; font-family:'Cascadia Code','Consolas',monospace; font-size:13px; line-height:1.7; margin-top:14px; overflow-x:auto; }
+.screen .c { color:#2FA4E7; }
+.screen .g { color:#3aaa5c; }
+.screen .y { color:#f0a500; }
+.screen .w { color:#ffffff; }
+.screen .d { color:#8899aa; }
+
+hr.divider { max-width:860px; margin:48px auto 0; border:none; border-top:1px solid var(--border); }
+.site-footer { max-width:860px; margin:0 auto; padding:24px 0 40px; font-size:13px; color:var(--muted); text-align:center; }
+</style>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="app-badge">🎵 Biosoft — Instalación</div>
+    <h1>Instalar Biosoft en Windows</h1>
+    <p>Guía paso a paso para instalar la aplicación y configurar tu biblioteca de música de Biodanza.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-label">Contenido</div>
+  <ol>
+    <li><a href="#paso1">Abrir el instalador</a></li>
+    <li><a href="#paso2">Elegir dónde instalar</a></li>
+    <li><a href="#paso3">Descarga automática</a></li>
+    <li><a href="#paso4">Configurar la música</a></li>
+    <li><a href="#paso5">Acceso directo y primer uso</a></li>
+    <li><a href="#paso6">Actualizar Biosoft</a></li>
+    <li><a href="#paso7">Preguntas frecuentes</a></li>
+  </ol>
+</nav>
+
+<main class="steps">
+
+  <!-- 1 -->
+  <section class="step" id="paso1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <span class="step-tag">Inicio</span>
+      <h2>Abrir el instalador</h2>
+    </div>
+    <p>La carpeta de instalación contiene dos archivos. El instalador es el <code>.bat</code>:</p>
+    <ul>
+      <li><strong>Instalar Biosoft.bat</strong> — hacé doble clic acá para empezar</li>
+      <li><code>instala-biosoft.ps1</code> — el script PowerShell que usa el <code>.bat</code> (no hace falta abrirlo)</li>
+    </ul>
+    <p>Windows puede mostrar una advertencia de seguridad al ejecutar el <code>.bat</code>. Hacé clic en <strong>"Más información" → "Ejecutar de todas formas"</strong>.</p>
+    <p>Se abre una ventana negra de PowerShell con el título <strong>INSTALADOR BIOSOFT</strong>. Todo el proceso se hace desde ahí, respondiendo preguntas con el teclado.</p>
+    <div class="tip"><strong>Necesitás conexión a internet</strong> para descargar Biosoft y (opcionalmente) las colecciones de música.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 2 -->
+  <section class="step" id="paso2">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <span class="step-tag">Ubicación</span>
+      <h2>Elegir dónde instalar</h2>
+    </div>
+    <p>El instalador pregunta dónde crear la carpeta de Biosoft. Las opciones que aparecen dependen de los discos conectados a tu PC:</p>
+
+    <div class="screen">
+<span class="c">=========================================</span>
+<span class="c">         INSTALADOR BIOSOFT</span>
+<span class="c">=========================================</span>
+
+<span class="w">Que queres hacer?</span>
+
+  <span class="d">--- Instalar / actualizar Biosoft en: ---</span>
+  [1] H:\biosoft   <span class="g">&lt;- Google Drive (recomendado)</span>
+  [2] C:\biosoft
+  [3] D:\biosoft
+  [4] Ruta personalizada
+
+  [5] Ya esta instalado -- solo configurar la carpeta de musica
+
+<span class="w">Elegi una opcion (1-5):</span>
+    </div>
+
+    <div class="opts" style="margin-top:16px;">
+      <div class="opt">
+        <div class="opt-num">H:</div>
+        <h3>Google Drive <span style="color:var(--green)">★ recomendado</span></h3>
+        <p>La app queda en la nube y se sincroniza entre tus dispositivos automáticamente. Requiere tener Google Drive instalado en la PC.</p>
+      </div>
+      <div class="opt">
+        <div class="opt-num">C:</div>
+        <h3>Disco local (C:)</h3>
+        <p>Se instala en <code>C:\biosoft</code>. No requiere Google Drive. Hacé backup manual del archivo <code>biosoft.html</code>.</p>
+      </div>
+      <div class="opt">
+        <div class="opt-num">✎</div>
+        <h3>Ruta personalizada</h3>
+        <p>Escribís la ruta completa donde querés instalar, por ejemplo <code>D:\mis-cosas\biosoft</code>.</p>
+      </div>
+    </div>
+    <div class="tip"><strong>Tip:</strong> Si ya usás Google Drive en esta PC, instalá en <code>H:\biosoft</code> (o la letra que corresponda). Tu clase del lunes estará disponible en la notebook del jueves sin hacer nada extra.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 3 -->
+  <section class="step" id="paso3">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <span class="step-tag">Descarga</span>
+      <h2>Descarga automática</h2>
+    </div>
+    <p>El instalador descarga automáticamente los archivos necesarios desde Google Drive:</p>
+    <ul>
+      <li><strong>biosoft.html</strong> — la aplicación completa (~2 MB)</li>
+      <li><strong>EquivalenciasDeNombres.xlsx</strong> — tabla de equivalencias de nombres de pistas</li>
+      <li><strong>exportar-playlists-winamp.ps1</strong> — herramienta para importar playlists de Winamp</li>
+    </ul>
+    <p>Ves el progreso en tiempo real:</p>
+    <div class="screen">
+<span class="c">Descargando biosoft.html ...</span>
+  <span class="d">biosoft.html : 1,8 MB</span>
+  <span class="g">[OK] biosoft.html descargado.</span>
+<span class="c">Descargando archivos adicionales ...</span>
+  <span class="g">[OK] EquivalenciasDeNombres.xlsx</span>
+  <span class="g">[OK] exportar-playlists-winamp.ps1</span>
+    </div>
+    <div class="warn"><strong>Si falla la descarga:</strong> verificá que tenés internet y que Google Drive no está bloqueado por tu red o antivirus. Podés reintentar ejecutando el instalador de nuevo — detecta la instalación existente y pregunta si querés actualizar.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 4 -->
+  <section class="step" id="paso4">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <span class="step-tag">Música</span>
+      <h2>Configurar la música</h2>
+    </div>
+    <p>Biosoft necesita acceder a los archivos de audio de Biodanza. Hay tres opciones:</p>
+
+    <div class="screen">
+<span class="d">-----------------------------------------</span>
+<span class="w">  Musica para Biosoft</span>
+<span class="d">-----------------------------------------</span>
+
+  [1] <span class="w">Descargar colecciones desde Internet</span>
+      <span class="d">(recomendado si no tenes la musica organizada en esta PC)</span>
+
+  [2] <span class="w">Ya tengo una carpeta con musica de Biodanza en esta PC</span>
+      <span class="d">No se copia nada -- Biosoft la va a leer desde donde esta.</span>
+
+  [3] <span class="w">Configurar la musica despues</span>
+      <span class="d">Biosoft queda instalado pero sin musica.</span>
+    </div>
+
+    <div class="opts" style="margin-top:16px;">
+      <div class="opt">
+        <div class="opt-num">1</div>
+        <h3>Descargar colecciones</h3>
+        <p>El instalador lista las colecciones disponibles con su tamaño y tiempo estimado. Elegís cuáles instalar escribiendo los números separados por coma, por ejemplo <code>1,3</code>.</p>
+        <p style="margin-top:6px; font-size:12px; color:var(--muted);">Colecciones: IBF (~2 GB), Areco (~1.5 GB), HLB (~3 GB), JEXP (~0.7 GB), BsAs (~10 GB), CPAZ (~2 GB).</p>
+      </div>
+      <div class="opt">
+        <div class="opt-num">2</div>
+        <h3>Música ya en esta PC</h3>
+        <p>Abre un selector de carpetas. Elegís cualquier carpeta de tu música de Biodanza — el instalador detecta la raíz automáticamente y crea un enlace sin copiar nada.</p>
+        <p style="margin-top:6px; font-size:12px; color:var(--muted);">La música ocupa el mismo espacio de siempre; no se duplica.</p>
+      </div>
+      <div class="opt">
+        <div class="opt-num">3</div>
+        <h3>Configurar después</h3>
+        <p>Biosoft queda instalado sin música. Podés agregar música después desde dentro de la app (menú <strong>Cargar Colección Música</strong>) o volviendo a correr el instalador.</p>
+      </div>
+    </div>
+
+    <div class="tip"><strong>Opción 2 — selector de carpeta:</strong> si el cuadro de diálogo no te deja seleccionar la carpeta (por ejemplo, si la música está en un disco externo o en una ruta con caracteres especiales), cerralo y escribí la ruta a mano cuando el instalador te lo pida.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 5 -->
+  <section class="step" id="paso5">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <span class="step-tag">Listo</span>
+      <h2>Acceso directo y primer uso</h2>
+    </div>
+    <p>El instalador crea un acceso directo <strong>Biosoft</strong> en el escritorio y pregunta si querés abrir la aplicación ahora.</p>
+    <div class="screen">
+<span class="c">=========================================</span>
+<span class="c">  Instalacion completada.</span>
+<span class="w">  Biosoft instalado en: H:\biosoft</span>
+<span class="w">  Musica descargada: IBF, BsAs en H:\biosoft\musica\</span>
+<span class="c">=========================================</span>
+
+<span class="w">Abrir Biosoft ahora? (S/N):</span> <span class="g">s</span>
+    </div>
+    <p>La primera vez que se abre, Biosoft redirige automáticamente a <strong>Cargar Colección Música</strong> para que importes el catálogo de la música instalada.</p>
+    <ol>
+      <li>Hacé clic en <strong>Elegir carpeta</strong> y seleccioná la carpeta <code>musica</code> dentro de donde instalaste Biosoft (o la subcarpeta de una colección si prefereís importarlas de a una)</li>
+      <li>Aparece la lista de archivos encontrados — hacé clic en <strong>Importar</strong></li>
+      <li>Esperá unos minutos mientras se procesa el catálogo</li>
+      <li>¡Listo! Podés empezar a crear clases</li>
+    </ol>
+    <div class="ok"><strong>Desde la segunda vez</strong> en adelante, Biosoft abre directamente en la lista de clases.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 6 -->
+  <section class="step" id="paso6">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <span class="step-tag">Actualizar</span>
+      <h2>Actualizar Biosoft</h2>
+    </div>
+    <p>Para actualizar a una versión más nueva, ejecutá el mismo <code>Instalar Biosoft.bat</code> de nuevo. El instalador detecta la instalación existente y pregunta si querés actualizar:</p>
+    <div class="screen">
+<span class="y">Ya existe una instalacion en H:\biosoft</span>
+<span class="w">Actualizar? (S/N):</span> <span class="g">s</span>
+    </div>
+    <p>Solo se descarga el nuevo <code>biosoft.html</code>. La música y las clases guardadas <strong>no se tocan</strong>.</p>
+    <div class="tip"><strong>Tus clases y configuración están guardadas en el navegador</strong> (localStorage), no en el archivo HTML. Actualizar Biosoft no borra tus datos. De todas formas, es buena práctica exportar tus clases antes de actualizar: abrí Biosoft → Clases → <strong>Exportar Clases</strong>.</div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 7 -->
+  <section class="step" id="paso7">
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <span class="step-tag">FAQ</span>
+      <h2>Preguntas frecuentes</h2>
+    </div>
+
+    <p><strong>¿Se puede instalar en Mac o Linux?</strong><br>
+    El instalador (<code>.bat</code>/<code>.ps1</code>) es solo para Windows. En Mac o Linux podés copiar el archivo <code>biosoft.html</code> manualmente y abrirlo con doble clic — la aplicación en sí funciona en cualquier sistema.</p>
+
+    <p><strong>¿Qué pasa si no aparece la opción H: (Google Drive)?</strong><br>
+    Significa que Google Drive no está instalado o no está montado en esa letra. Elegí otra opción (C:, D:, o ruta personalizada) o instalá Google Drive primero.</p>
+
+    <p><strong>¿La música se copia o se mueve?</strong><br>
+    Con la opción 2 (música ya en la PC), no se copia ni mueve nada — el instalador crea un enlace (<em>junction</em>) a la carpeta original. La música sigue ocupando el mismo espacio y sigue en el mismo lugar.</p>
+
+    <p><strong>¿Por qué el antivirus puede alertar sobre el .bat?</strong><br>
+    Los archivos <code>.bat</code> y <code>.ps1</code> son scripts ejecutables y algunos antivirus los marcan por precaución. El instalador de Biosoft no modifica el sistema más allá de crear una carpeta y un acceso directo en el escritorio.</p>
+
+    <p><strong>Abrí Biosoft y no aparece música.</strong><br>
+    Hay que importar el catálogo: en el menú de Biosoft hacé clic en <strong>Cargar Colección Música</strong>, elegí la carpeta de música y hacé clic en <strong>Importar</strong>. Solo hay que hacerlo una vez por colección.</p>
+
+    <p><strong>Perdí mis clases al cambiar de navegador o PC.</strong><br>
+    Los datos se guardan en el navegador (<em>localStorage</em>). Para llevarlos a otro navegador o PC: en Biosoft → Clases → <strong>Exportar Clases</strong> → guardá el archivo <code>.bio</code> → en la nueva PC abrí Biosoft → <strong>Importar Clases</strong>.</p>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Biosoft · Herramienta para facilitadores de Biodanza · <a href="tutorial.html" style="color:var(--blue)">Ver tutorial de uso →</a></p>
+</footer>
